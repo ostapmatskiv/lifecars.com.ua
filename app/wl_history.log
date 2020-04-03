@@ -1,0 +1,104 @@
+White Lion 1.1    16.12.2019
+	Додано файли wl_files
+	Додано/оновлно бібліотеки:
+		data 1.4.2
+		db 2.4.5 До getAliasImageSizes() додано кешування у сесії
+		images 1.3.1
+		facebook_feed 1.0
+		google_feed 1.0
+	Додано кешування __page_bofore_init
+	Доопрацьовано внутрішнє кешування в оперативну пам'ять, використовуючи $_SESSION['alias-cache']. Зокрема:
+		$_SESSION['alias-cache'][$_SESSION['alias']->id]->alias**
+		$_SESSION['alias-cache'][$_SESSION['alias']->id]->service**
+		$_SESSION['alias-cache'][$_SESSION['alias']->id]->options**
+		$_SESSION['alias-cache'][$_SESSION['alias']->id]->imageReSizes*
+		$_SESSION['alias-cache'][$_SESSION['alias']->id]->textWords*
+		$_SESSION['alias-cache'][$_SESSION['alias']->id]->ntkd_robot_1*
+		$_SESSION['alias-cache'][$_SESSION['alias']->id]->ntkd_robot__1*
+		$_SESSION['alias-cache'][$_SESSION['alias']->id]->ntkd_robot_0*
+		* - додано
+		** - доопрацьовано
+		з динамічним редагуванням (при зміні менеджером даних через панель керування, очищуються локальні дані у сесії)
+	До wl_ntkd додано get_ivafc - колонка, яка індикує наявність:
+		i - images
+		v - video
+		a - audio
+		f - files
+		c - comments*
+		* - реалізовано не до кінця.
+		з динамічним маркуванням даних через панель керування та дозбором даних в процесі експлуатації сайту.
+
+	shopshowcase 2.8.1	Кешування сесії даних сервісом уніфіковано до $_SESSION[$_SESSION['alias']->alias]
+			Додано кешування allGroups для shop_model
+
+20.12.2019
+	video 1.2.2 fix size()
+	wl. fix auth manager permissions
+
+31.12.2019
+	shopshowcase 2.9.2
+		Фільтр будується як для кінцевої групи, так і для батьківських груп
+		Додано __product_additionall_fields-info.php, __product_additionall_fields.php - налаштовувані додаткові поля товару
+		Додано кешування allGroups для shop_model
+		Додано керування (редагувати/проглянути/видалити) до списку товарів в панелі керування
+		Розширено очищення кешу при редагуванні групи/товару через панель керування
+
+08.01.2020
+	Shop Showcase 2.9.3
+		Скасовано 2.9.1 Кешування сесії даних сервісом до $_SESSION[$_SESSION['alias']->alias] з метою економії даних сесії
+		Перероблено кешування allGroups для shop_model в загальний кеш (оптимізацію кешу)
+		Панель керування. Перегляд товару: додано перегляд фото, додано файли. Редагувати товар: додано файли.
+		Додано __get_Group($id)
+
+09.01.2020
+	Google Recaptcha 1.1
+		add callback and expired_callback
+	save forms
+		Перевірка Google Recaptcha тільки для неавторизованих користувачів
+
+17.01.2020
+	WL. Manager can admin user profiles.
+		Менеджер отримує доступ (за дозволом 'profile') до користувачів сайту з можливістю вносити зміни, увійти як користувач. Враховуючи обмеження (менеджер керувати іншими менеджерами/адміністратором не може).
+	WL. 301 redirect for index.php (site.com/index.php => site.com)
+
+22.01.2020
+	compare v1.0
+
+23.01.2020
+	WL. Виправлено __page_before_init
+	WL. wl_language_model. Виправлено вибірку перекладів для варіативної ситуації (дані з різних alias на одній сторінці)
+		Виправлено дублювання даних, додано самоочистку.
+		Оптимізовано кешування з кешу сесії до файлового кешу.
+		Для reset, save, cart додано мультовність до фраз.
+
+29.01.2020
+	WL. Виправлено admin/wl_aliases/add_admin_option очищення кешу сесії
+	WL. Налаштування SEO.
+		Оптимізовано роботу: додано пагінацію, покращено зовнішній вигляд кнопок
+		Додано автоочистку дублів wl_sitemap
+		Додано пошук по назві
+	Shop Showcase 2.9.4
+		Виправлено роботу товарів на батьківських групах
+		Додано option:showProductsParentsPages
+		Виправлено очищення кешу при додачі підгруп
+
+07.02.2020
+	Shop Showcase 2.9.5	Виправлено:
+		обрізка артикулів в назвах товарів (додано за article_show)
+		getProducts/один товар = одна група/не працювало $noInclude
+		option:showProductsParentsPages=0/виправлено витягування товарів
+		save_price_format/ додано очищення файлового кешу
+
+	WL. Оптимізовано пошук (додано екранування спец. символів: заміна всіх не букв і цифр)
+
+20.02.2020
+	db 2.4.6 - до get('count') додано (виправлено) коректно роботу параметрів $debug, $get
+	db 2.5   - до makeWhere() додано keyValue & (&, &&, &&&, &&&&+) ['&' => 'p.old_price > p.price || p.promo > 0'] - дозволяє додати "складні" sql умови до запиту
+
+	Shop Showcase 2.9.6 - Додано __setProduct_sPrice()
+
+5.03.2020
+	WL. Admin. Add __dashboard_subview
+	Cart. Add __dashboard_subview
+	ShopShowcase 3.0 - Додано Акції, оновлено/розширено керування експортом (індивідуальне керування під різни канали вигрузки)
+	Currency 2.2 - Add __clear_cache(), admin ui optimize
