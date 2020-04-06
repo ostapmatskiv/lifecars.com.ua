@@ -1,6 +1,8 @@
+@import url(fonts/miriadpro/font.css);
+
 body {
-font-family: MyriadProRegular;
-background-color: #F2F2F2;
+	font-family: MyriadProRegular, Arial;
+	background-color: #F2F2F2;
 }
 
 a {text-decoration: none;}
@@ -10,10 +12,10 @@ header {
 }
 
 /*      Header        */
-.header__forms {
+header form {
 	position: relative;
 }
-.fa-chevron-down {
+header form .fa-chevron-down {
 	font-size: 22px;
 	color: #888888;
 	position: absolute;
@@ -21,7 +23,7 @@ header {
     transform: translateY(-50%);
     left: 125px;
 }
-.header__forms select {
+header form select {
 	height: 45px;
 	width: 150px;
 	border-radius: 3px;
@@ -34,10 +36,10 @@ header {
 	-webkit-appearance: none;
 
 }
-.header__search {
-	position: relative;
+header form select + i.fas {
+
 }
-.header__search input {
+header form input {
 	height: 45px;
     width: 250px;
     border-radius: 3px;
@@ -47,13 +49,18 @@ header {
     font-size: 16px;
     color: #888888;
 }
-.header__search .fa-search {
+header form button {
+	position: absolute;
+	right: 10px;
+	border: none;
+}
+header form button i {
 	font-size: 22px;
 	color: #888888;
-	position: absolute;
+	
     top: 50%;
     transform: translateY(-50%);
-    right: 10px;
+    
 }
 .header__address {
 	margin-left: -50px;
@@ -71,7 +78,7 @@ header {
 	font-size: 18px;
 	color: #888888;
 }
-.fa-shopping-cart {
+.header__shoping i.fa-shopping-cart {
 	height: 50px;
 	width: 50px;
 	font-size: 25px;
@@ -83,7 +90,7 @@ header {
     align-items: center;
 }
 .header__shoping { position: relative; }
-.header__shoping:before {
+.header__shoping i.label {
 	content: "238";
 	display: block;
 	position: absolute;
@@ -101,12 +108,12 @@ header {
 header nav {
 	margin-top: 30px;
 }
-header nav a.nav__link {
+header nav a {
 	font-size: 18px;
 	color: #888888;
 	text-align: center;
 }
-header nav a.nav__link:before {
+header nav a:before {
 	content: "";
 	display: block;
 	height: 4px;

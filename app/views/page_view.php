@@ -23,9 +23,8 @@
 	<link rel="alternate" hreflang="uk-UA" href="<?=SITE_URL_UK?>">
 	<link rel="alternate" hreflang="ru-UA" href="<?=SITE_URL_RU?>">
 	<link rel="shortcut icon" type="image/x-icon" href="<?=SERVER_URL?>favicon.ico">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
-	<link rel="stylesheet" href="fonts/miriadpro/font.css">
 	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>style/ws__main.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
 	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>style/style.css">
 </head>
 <body>
