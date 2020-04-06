@@ -7,11 +7,12 @@ body {
 
 a {text-decoration: none;}
 
+
+/*      Header        */
 header {
 	padding: 20px 0 40px 0;
 }
 
-/*      Header        */
 header form {
 	position: relative;
 }
@@ -34,11 +35,8 @@ header form select {
 	outline: none;
 	appearance: none;
 	-webkit-appearance: none;
-
 }
-header form select + i.fas {
 
-}
 header form input {
 	height: 45px;
     width: 250px;
@@ -49,36 +47,42 @@ header form input {
     font-size: 16px;
     color: #888888;
 }
+
 header form button {
 	position: absolute;
+	top: 50%;
+    background: transparent;
 	right: 10px;
 	border: none;
 }
+
 header form button i {
 	font-size: 22px;
 	color: #888888;
-	
-    top: 50%;
-    transform: translateY(-50%);
-    
+	top: 50%;
+    transform: translateY(-50%); 
 }
-.header__address {
+
+header .header__address {
 	margin-left: -50px;
 	font-size: 18px;
 	color: #888888;
 }
-.header__address address {font-style: normal;}
-.header__address .fa-map-marker-alt,
-.header__phone .fa-phone-alt {
+
+header .header__address address {font-style: normal;}
+header .header__address .fa-map-marker-alt,
+header .header__phone .fa-phone-alt {
 	font-size: 25px;
     margin-right: 10px;
     color: #888888;
 }
-.header__phone .phone__descr {
+
+header .header__phone div {
 	font-size: 18px;
 	color: #888888;
 }
-.header__shoping i.fa-shopping-cart {
+
+header .header__shoping i.fa-shopping-cart {
 	height: 50px;
 	width: 50px;
 	font-size: 25px;
@@ -89,16 +93,14 @@ header form button i {
     justify-content: center;
     align-items: center;
 }
-.header__shoping { position: relative; }
-.header__shoping i.label {
-	content: "238";
+header .header__shoping { position: relative; }
+header .header__shoping i.label {
+	content: "";
 	display: block;
 	position: absolute;
     top: 50%;
     transform: translateY(-50%);
     left: -22px;
-    text-align: center;
-    height: 15px;
 	text-align: center;
 	height: 15px;
 	width: 30px;
