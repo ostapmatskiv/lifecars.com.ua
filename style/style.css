@@ -1,1 +1,118 @@
-a { text-decoration: none }
+body {
+font-family: MyriadProRegular;
+background-color: #F2F2F2;
+}
+
+a {text-decoration: none;}
+
+header {
+	padding: 20px 0 40px 0;
+}
+
+/*      Header        */
+.header__forms {
+	position: relative;
+}
+.fa-chevron-down {
+	font-size: 22px;
+	color: #888888;
+	position: absolute;
+	top: 50%;
+    transform: translateY(-50%);
+    left: 125px;
+}
+.header__forms select {
+	height: 45px;
+	width: 150px;
+	border-radius: 3px;
+	border: 0;
+	padding: 0 15px;
+	font-size: 16px;
+	color: #888888;
+	outline: none;
+	appearance: none;
+	-webkit-appearance: none;
+
+}
+.header__search {
+	position: relative;
+}
+.header__search input {
+	height: 45px;
+    width: 250px;
+    border-radius: 3px;
+    border: 0;
+    padding: 0 10px;
+    margin-left: 5px;
+    font-size: 16px;
+    color: #888888;
+}
+.header__search .fa-search {
+	font-size: 22px;
+	color: #888888;
+	position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+}
+.header__address {
+	margin-left: -50px;
+	font-size: 18px;
+	color: #888888;
+}
+.header__address address {font-style: normal;}
+.header__address .fa-map-marker-alt,
+.header__phone .fa-phone-alt {
+	font-size: 25px;
+    margin-right: 10px;
+    color: #888888;
+}
+.header__phone .phone__descr {
+	font-size: 18px;
+	color: #888888;
+}
+.fa-shopping-cart {
+	height: 50px;
+	width: 50px;
+	font-size: 25px;
+	background-color: #fff;
+	border-radius: 100%;
+	color: #888888;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.header__shoping { position: relative; }
+.header__shoping:before {
+	content: "238";
+	display: block;
+	position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -22px;
+    text-align: center;
+    height: 15px;
+	text-align: center;
+	height: 15px;
+	width: 30px;
+	border-radius: 0 50px 50px 0;
+	background-color: #82C166;
+}
+header nav {
+	margin-top: 30px;
+}
+header nav a.nav__link {
+	font-size: 18px;
+	color: #888888;
+	text-align: center;
+}
+header nav a.nav__link:before {
+	content: "";
+	display: block;
+	height: 4px;
+	width: 230px;
+	margin-bottom: 10px;
+	background: #fff;
+}
+
+/*      Header       */
