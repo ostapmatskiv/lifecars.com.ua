@@ -34,11 +34,11 @@
         </div>
     </div>
     <nav class="flex v-center">
-        <a href="#">Каталог запчастин</a>
-        <a href="#">Виробники</a>
-        <a href="#" class="active">Повернення та гарантія</a>
-        <a href="#">Оплата та доставка</a>
-        <a href="#">Контакти</a>
-        <a href="#">Реєстрація</a>
+        <a href="#" target="_dlank">Каталог запчастин</a>
+        <a href="#" target="_dlank">Виробники</a>
+        <a href="#" target="_dlank" class="active">Повернення та гарантія</a>
+        <a href="#" target="_dlank">Оплата та доставка</a>
+        <a href="#" target="_dlank">Контакти</a>
+        <a href="#" target="_dlank">Реєстрація</a>
     </nav>
 </header>
