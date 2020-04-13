@@ -1,7 +1,7 @@
 <header>
     <div class="flex v-center">
         <a href="<?=SITE_URL?>" class="header__link">
-            <img src="style/images/carslogo.png" alt="">
+            <img src="style/images/logo.png" alt="">
         </a>
         <form>
             <select>
@@ -29,16 +29,16 @@
             </div>
          </div>
         <div class="header__shoping">
-            <i class="label">512</i>
+            <i class="label">238</i>
             <i class="fas fa-shopping-cart"></i>
         </div>
     </div>
     <nav class="flex v-center">
-        <a href="#" target="_dlank">Каталог запчастин</a>
-        <a href="#" target="_dlank">Виробники</a>
-        <a href="#" target="_dlank" class="active">Повернення та гарантія</a>
-        <a href="#" target="_dlank">Оплата та доставка</a>
-        <a href="#" target="_dlank">Контакти</a>
-        <a href="#" target="_dlank">Реєстрація</a>
+        <a href="#">Каталог запчастин</a>
+        <a href="#">Виробники</a>
+        <a href="#" class="active">Повернення та гарантія</a>
+        <a href="#">Оплата та доставка</a>
+        <a href="#">Контакти</a>
+        <a href="#">Реєстрація</a>
     </nav>
 </header>

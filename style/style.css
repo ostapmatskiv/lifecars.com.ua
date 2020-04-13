@@ -1,7 +1,8 @@
-@import url(fonts/miriadpro/font.css);
+/* @import url(fonts/miriadpro/font.css); */
+@import url(fonts/segoeui/font_s.css);
 
 body {
-	font-family: MyriadProRegular, Arial;
+	font-family: 'Segoe UI', Arial;
 	background-color: #F2F2F2;
 }
 
@@ -17,29 +18,29 @@ header form {
 	position: relative;
 }
 header form .fa-chevron-down {
-	font-size: 22px;
-	color: #888888;
+	font-size: 20px;
+	color: #d9d9d9;
 	position: absolute;
 	top: 50%;
     transform: translateY(-50%);
     left: 125px;
 }
 header form select {
-	height: 45px;
-	width: 150px;
+	height: 40px;
+	width: 146px;
 	border-radius: 3px;
 	border: 0;
 	padding: 0 15px;
 	font-size: 16px;
-	color: #888888;
+	color:#8c8c8c;
 	outline: none;
 	appearance: none;
 	-webkit-appearance: none;
 }
 
 header form input {
-	height: 45px;
-    width: 250px;
+	height: 40px;
+    width: 248px;
     border-radius: 3px;
     border: 0;
     padding: 0 10px;
@@ -51,35 +52,38 @@ header form input {
 header form button {
 	position: absolute;
 	top: 50%;
+	outline: none;
     background: transparent;
 	right: 10px;
 	border: none;
 }
+header form button .fa-search {color:#d9d9d9; }
 
 header form button i {
 	font-size: 22px;
-	color: #888888;
+	color:#8c8c8c;
 	top: 50%;
+
     transform: translateY(-50%); 
 }
 
 header .header__address {
 	margin-left: -50px;
-	font-size: 18px;
-	color: #888888;
+	font-size: 20px;
+	color: #8c8c8c;
 }
 
 header .header__address address {font-style: normal;}
 header .header__address .fa-map-marker-alt,
 header .header__phone .fa-phone-alt {
-	font-size: 25px;
+	font-size: 30px;
     margin-right: 10px;
-    color: #888888;
+    color: #8c8c8c;
 }
 
 header .header__phone div {
-	font-size: 18px;
-	color: #888888;
+	font-size: 20px;
+	color: #8c8c8c;
 }
 
 header .header__shoping i.fa-shopping-cart {
@@ -88,22 +92,26 @@ header .header__shoping i.fa-shopping-cart {
 	font-size: 25px;
 	background-color: #fff;
 	border-radius: 100%;
-	color: #888888;
+	color: #8c8c8c;
 	display: flex;
     justify-content: center;
     align-items: center;
 }
 header .header__shoping { position: relative; }
 header .header__shoping i.label {
-	content: "";
 	display: block;
 	position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: -22px;
+	left: -40px;
+	font-weight: 700;
+	color: #fff;
+	font-size: 14px;
+	line-height: 1.5;
+	font-style: normal;
 	text-align: center;
-	height: 15px;
-	width: 30px;
+	height: 20px;
+	width: 49px;
 	border-radius: 0 50px 50px 0;
 	background-color: #82C166;
 }
@@ -112,7 +120,8 @@ header nav {
 }
 header nav a {
 	font-size: 18px;
-	color: #888888;
+	font-weight: 600;
+	color: #8c8c8c;
 	text-align: center;
 }
 header nav a:before {
@@ -123,26 +132,40 @@ header nav a:before {
 	margin-bottom: 10px;
 	background: #fff;
 }
+header nav a:hover::before,
+header nav a:active::before  {
+	background: #82C166;
+}
 
 /*      Header       */
 
 /*      Main        */
 
 main h1 {
-	text-align: center;
+	font-size: 40px;
+	font-weight: 600;
 	text-transform: uppercase;
-	font-size: 52px;
-	color: #888888;
+	font-style: normal;
+	line-height: 1.33;
 	letter-spacing: 4px;
-	font-weight: 400;
+	text-align: center;
+	color: #666666;
 }
 
 main .main__logo {
-	margin-top: 20px;
+	margin: 40px auto 0;
+}
+main .logo__text {
+	margin-top: 10px;
+	text-align: center;
+	font-size: 20px;
+	font-weight: 600;
+	color: #666666;
+	text-transform: uppercase;
+	letter-spacing: 2px;
 }
 main .main__logo a {
 	position: relative;
-	margin: 0 10px;
 }
 
 main .main__logo a .fa-chevron-down {
@@ -151,5 +174,291 @@ main .main__logo a .fa-chevron-down {
     left: 50%;
     transform: translateX(-50%);
     font-size: 23px;
-    color: #888888;
+    color: #d9d9d9;
 }
+main .main__logo a:hover .fa-chevron-down,
+main .main__logo a:active .fa-chevron-down{
+	color: #82C166;
+}
+/*     Main_Carousel     */
+
+main .slick__main{ 
+	padding: 50px 0 14px 0; }
+
+main #main__slick .slick-dots {
+	position: absolute;
+	bottom: -20px;
+	left: 0;
+	width: 100%;
+	z-index: 10;
+	text-align: center;
+}
+main #main__slick .slick-dots li {
+	list-style: none;
+	cursor: pointer;
+	margin: 0 7px;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	background: #fff;
+	display: inline-block;
+}
+main #main__slick .slick-dots li.slick-active { background: #7cbe49; }
+main #main__slick .slick-dots li button { display: none; }
+
+main #main__slick .slick-prev {
+  background: url('icons/back-4.svg') center center / cover no-repeat;
+  font-size: 0px;
+  border: 0px;
+  position: absolute;
+  left: 17px;
+  z-index: 10;
+  top: 50%;
+  outline: none;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 52px;
+  cursor: pointer;
+}
+main #main__slick .slick-next {
+background: url('icons/back-26.svg') center center / cover no-repeat;
+  font-size: 0px;
+  border: 0px;
+  position: absolute;
+  right: 17px;
+  z-index: 10;
+  cursor: pointer;
+  top: 50%;
+  outline: none;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 52px;
+}
+
+
+/*     Main_Carousel     */
+/*      Sale     */
+
+main section.sale {
+	padding: 71px 0 109px 0;
+}
+main section.sale a {
+	font-size: 20px;
+	font-weight: 600;
+	text-align: center;
+	color: #8c8c8c;
+}
+
+main section.sale .sale__nav a:before {
+	content: "";
+	display: block;
+	height: 4px;
+	width: 230px;
+	margin-bottom: 10px;
+	background: #fff;
+}
+main section.sale .sale__nav a:hover,
+main section.sale .sale__nav a:active {
+	color: #82C166;
+}
+
+main section.sale .sale__nav a:hover::before,
+main section.sale .sale__nav a:active::before {
+	background: #82C166;
+}
+/*     Sale Card    */
+section.sale .sale__wrrap {
+	margin-top: 46px;
+}
+section.sale .sale__wrrap .sale__card:nth-child(2) {
+	border-radius: 10px;
+    border: 2px solid #fefefe;
+}
+section.sale .sale__wrrap .sale__card:nth-child(3) {
+	border-radius: 10px;
+    border: 2px solid #ffc505;
+}
+
+section.sale .sale__wrrap .sale__card {
+	position: relative;
+}
+section.sale .sale__wrrap .card-top {
+	margin-top: 120px;
+}
+section.sale .sale__wrrap .sale__card .card__img i.card__label {
+	position: absolute;
+	top: 26px;
+	left: -16px;
+	transform: translateY(50%);
+	font-weight: 600;
+	color: #fff;
+	font-size: 16px;
+	line-height: 1.5;
+	font-style: normal;
+	text-align: center;
+	height: 25px;
+	width: 60px;
+	border-radius: 0 50px 50px 0;
+	background-color: #7cbe49;
+}
+section.sale .sale__wrrap .sale__card .card__img i.new__label {
+	position: absolute;
+	top: 60px;
+	left: -16px;
+	transform: translateY(50%);
+	font-weight: 600;
+	color: #fff;
+	text-transform: uppercase;
+	font-size: 16px;
+	line-height: 1.5;
+	font-style: normal;
+	text-align: center;
+	height: 25px;
+	width: 60px;
+	border-radius: 0 50px 50px 0;
+	background-color: #ff5205;
+}
+section.sale .sale__wrrap .sale__card {
+	width: 290px;
+	padding: 11px;
+	min-height: 571px;
+}
+
+section.sale .sale__wrrap .sale__card .card__img {
+	width: 100%;
+	height: 268px;
+	background-color: #fff;
+	border-radius: 5px;
+
+}
+
+.card__rating .rating:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.card__rating .rating:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:25px;
+    color: #fff;
+}
+.card__rating .rating:not(:checked) > label:before {
+    content: '★ ';
+}
+.card__rating .rating > input:checked ~ label {
+    color: #ffc505;    
+}
+.card__rating .rating:not(:checked) > label:hover,
+.card__rating .rating:not(:checked) > label:hover ~ label {
+    color: #deb217;  
+}
+.card__rating .rating > input:checked + label:hover,
+.card__rating .rating > input:checked + label:hover ~ label,
+.card__rating .rating > input:checked ~ label:hover,
+.card__rating .rating > input:checked ~ label:hover ~ label,
+.card__rating .rating > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+section.sale .sale__wrrap .sale__card .rating__comment {
+	flex-grow: 1;
+	margin-left: 30px;
+	display: flex;
+    flex-grow: 1;
+    margin-left: 30px;
+    align-items: flex-end;
+    margin-top: 5px;
+}
+section.sale .sale__wrrap .sale__card .rating__comment i.rating__lebel {
+	font-size: 16px;
+  font-weight: normal;
+  letter-spacing: normal;
+  color: #8c8c8c;
+  margin-right: 11px;
+  font-style: normal;
+}
+
+section.sale .sale__wrrap .sale__card .card__text {
+	margin-top: 20px;
+	font-size: 22px;
+	font-weight: 600;
+	text-align: left;
+	color: #262626;
+}
+section.sale .sale__wrrap .sale__card .card__info {
+	margin-top: 15px;
+	display: flex;
+}
+section.sale .sale__wrrap .sale__card .card__info .info__article p {
+	font-size: 16px;
+	padding-top: 5px;
+	color: #a6a6a6;
+}
+section.sale .sale__wrrap .sale__card .card__info .info__name p {
+	font-size: 16px;
+	padding-top: 5px;
+	color: #262626;
+}
+section.sale .sale__wrrap .sale__card .card__check {
+	margin-top: 15px;
+}
+section.sale .sale__wrrap .sale__card .card__check .check__pieces .fa-check-circle {
+	font-size: 20px;
+  	color: #7cbe49;
+}
+section.sale .sale__wrrap .sale__card .card__check .check__pieces p {
+	font-size: 16px;
+	  color: #262626;
+	  margin-left: 6px;
+}
+section.sale .sale__wrrap .sale__card .check__number {
+	width: 88px;
+}
+section.sale .sale__wrrap .sale__card .check__number span.minus {
+	display: inline-block;
+	width: 25px;
+	height: 20px;
+	text-align: center;
+	color: #fff;
+	border-radius:50px 0 0 50px;
+	background-color: #d9d9d9;
+	cursor: pointer;
+}
+section.sale .sale__wrrap .sale__card .check__number input {
+	width: 33px;
+	text-align: center;
+	font-size: 16px;
+	color: #666666;
+	border: none;
+}
+section.sale .sale__wrrap .sale__card .check__number span.plus {
+	display: inline-block;
+	width: 25px;
+	height: 20px;
+	text-align: center;
+	color: #fff;
+	border-radius: 0 50px 50px 0;
+	background-color: #d9d9d9;
+	cursor: pointer;
+}
+section.sale .sale__wrrap .sale__card .card__price { margin-top: 18px;}
+section.sale .sale__wrrap .sale__card .card__price .price__text {
+	font-size: 45px;
+	font-weight: 400;
+	color: #262626;
+}
+section.sale .sale__wrrap .sale__card .card__price .fa-shopping-cart {
+	width: 101px;
+  	height: 45px;
+  	border-radius: 5px;
+	background-color: #7cbe49;
+	color: #fff;
+	text-align: center;
+	font-size: 25px;
+	line-height: 45px;
+}
+/*    Sale Card    */
+
+/*     Sale       */

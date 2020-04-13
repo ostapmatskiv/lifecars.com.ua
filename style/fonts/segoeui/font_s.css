@@ -1,0 +1,18 @@
+@font-face {
+    font-family: 'Segoe UI';
+    src: url('SEGOEUI.TTF') format("truetype");
+    src: url('SEGOEUIB.TTF') format("truetype");
+    src: url('SEGOEUII.TTF') format("truetype");
+    src: url('SEGOEUIL.TTF') format("truetype");
+    src: url('SEGOEUISL.TTF') format("truetype");
+    src: url('SEGOEUIZ.TTF') format("truetype");
+    src: url('SEGUIBL.TTF') format("truetype");
+    src: url('SEGUIBLI.TTF') format("truetype");
+    src: url('SEGUILI.TTF') format("truetype");
+    src: url('SEGUISB.TTF') format("truetype");
+    src: url('SEGUISBI.TTF') format("truetype");
+    src: url('SEGUISLI.TTF') format("truetype");
+    font-style: normal;
+    font-weight: bold;
+    font-weight: normal;
+}
