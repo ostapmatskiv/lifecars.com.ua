@@ -36,10 +36,11 @@
 
 		if(isset($view_file)) require_once($view_file.'.php');
 
-		// include "@commons/footer.php";
+		include "@commons/footer.php";
 
 		echo('</div>');
 	?>
+
 	<script type="text/javascript" src="<?=SERVER_URL?>assets/jquery/jquery-3.4.1.min.js"></script>
 	<script type="text/javascript" src="<?=SERVER_URL?>assets/slick/slick.min.js"></script>
 	<script type="text/javascript" src="js/user.js"></script>

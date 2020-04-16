@@ -86,9 +86,7 @@ header .header__phone div {
 	color: #8c8c8c;
 }
 
-header .header__shoping i.fa-shopping-cart {
-	height: 50px;
-	width: 50px;
+header .header__shoping .header__cart {
 	font-size: 25px;
 	background-color: #fff;
 	border-radius: 100%;
@@ -97,6 +95,56 @@ header .header__shoping i.fa-shopping-cart {
     justify-content: center;
     align-items: center;
 }
+header .header__shoping .header__cart img { padding: 10px; }
+
+header .header__shoping .header__user button {
+	outline: none;
+	font-size: 25px;
+	background-color: #fff;
+	border: none;
+	border-radius: 100%;
+	margin-left: 15px;
+	color: #8c8c8c;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+header .header__shoping .header__user button img { padding: 10px 12px;}
+
+header .header__shoping .header__user { position: relative;} 
+
+header .header__shoping .header__user .user__login {
+	position: absolute;
+	top: -7px;
+	right: 55px;
+	display: none;
+}
+header .header__shoping .header__user:hover > .user__login { display: block;}
+
+header .header__shoping .header__user .user__login button.user__in {
+	width: 137px;
+	height: 29px;
+	text-align: center;
+	background: #7CBE49;
+	font-size: 19px;
+	font-weight: 400;
+	color: #fff;
+	cursor: pointer;
+	border-radius: 5px;
+	margin-bottom: 3px;
+}
+header .header__shoping .header__user .user__login button.user__registration {
+	width: 137px;
+	height: 29px;
+	text-align: center;
+	background: #fff;
+	font-size: 19px;
+	font-weight: 400;
+	cursor: pointer;
+	color: #000;
+	border-radius: 5px;
+}
+
 header .header__shoping { position: relative; }
 header .header__shoping i.label {
 	display: block;
@@ -128,7 +176,7 @@ header nav a:before {
 	content: "";
 	display: block;
 	height: 4px;
-	width: 230px;
+	min-width: 230px;
 	margin-bottom: 10px;
 	background: #fff;
 }
@@ -137,9 +185,9 @@ header nav a:active::before  {
 	background: #82C166;
 }
 
-/*      Header       */
+                                                                       /*      Header       */
 
-/*      Main        */
+                                                                 /*      Main        */
 
 main h1 {
 	font-size: 40px;
@@ -166,6 +214,7 @@ main .logo__text {
 }
 main .main__logo a {
 	position: relative;
+	text-align: center;
 }
 
 main .main__logo a .fa-chevron-down {
@@ -180,10 +229,11 @@ main .main__logo a:hover .fa-chevron-down,
 main .main__logo a:active .fa-chevron-down{
 	color: #82C166;
 }
-/*     Main_Carousel     */
+                                                              /*     Main_Carousel     */
 
 main .slick__main{ 
 	padding: 50px 0 14px 0; }
+main .slick__main .draggable { border-radius: 5px;}
 
 main #main__slick .slick-dots {
 	position: absolute;
@@ -236,11 +286,12 @@ background: url('icons/back-26.svg') center center / cover no-repeat;
 }
 
 
-/*     Main_Carousel     */
-/*      Sale     */
+															   /*     Main_Carousel     */
+															   
+                                                                    /*      Sale     */
 
 main section.sale {
-	padding: 71px 0 109px 0;
+	padding: 71px 0 0 0;
 }
 main section.sale a {
 	font-size: 20px;
@@ -253,7 +304,7 @@ main section.sale .sale__nav a:before {
 	content: "";
 	display: block;
 	height: 4px;
-	width: 230px;
+	min-width: 230px;
 	margin-bottom: 10px;
 	background: #fff;
 }
@@ -266,24 +317,28 @@ main section.sale .sale__nav a:hover::before,
 main section.sale .sale__nav a:active::before {
 	background: #82C166;
 }
-/*     Sale Card    */
+
+                                                                     /*     Sale Card    */
 section.sale .sale__wrrap {
 	margin-top: 46px;
 }
-section.sale .sale__wrrap .sale__card:nth-child(2) {
-	border-radius: 10px;
-    border: 2px solid #fefefe;
-}
-section.sale .sale__wrrap .sale__card:nth-child(3) {
-	border-radius: 10px;
-    border: 2px solid #ffc505;
+section.sale .sale__wrrap .sale__card {
+	width: 290px;
+	padding: 11px;
+	min-height: 571px;
+	margin-bottom: 120px;
 }
 
 section.sale .sale__wrrap .sale__card {
+	border: 2px solid transparent;
+	border-radius: 10px;
 	position: relative;
 }
-section.sale .sale__wrrap .card-top {
-	margin-top: 120px;
+section.sale .sale__wrrap .sale__card:hover {
+    border-color: #fefefe;
+}
+section.sale .sale__wrrap .sale__card.no_availabilaty:hover {
+    border-color: #ffc505;
 }
 section.sale .sale__wrrap .sale__card .card__img i.card__label {
 	position: absolute;
@@ -318,18 +373,13 @@ section.sale .sale__wrrap .sale__card .card__img i.new__label {
 	border-radius: 0 50px 50px 0;
 	background-color: #ff5205;
 }
-section.sale .sale__wrrap .sale__card {
-	width: 290px;
-	padding: 11px;
-	min-height: 571px;
-}
+
 
 section.sale .sale__wrrap .sale__card .card__img {
 	width: 100%;
 	height: 268px;
 	background-color: #fff;
 	border-radius: 5px;
-
 }
 
 .card__rating .rating:not(:checked) > input {
@@ -381,14 +431,16 @@ section.sale .sale__wrrap .sale__card .rating__comment i.rating__lebel {
 }
 
 section.sale .sale__wrrap .sale__card .card__text {
-	margin-top: 20px;
+	height: 100px;
+	display: table-cell;
+	vertical-align: middle;
 	font-size: 22px;
 	font-weight: 600;
 	text-align: left;
 	color: #262626;
 }
 section.sale .sale__wrrap .sale__card .card__info {
-	margin-top: 15px;
+	/* margin-top: 15px; */
 	display: flex;
 }
 section.sale .sale__wrrap .sale__card .card__info .info__article p {
@@ -407,6 +459,10 @@ section.sale .sale__wrrap .sale__card .card__check {
 section.sale .sale__wrrap .sale__card .card__check .check__pieces .fa-check-circle {
 	font-size: 20px;
   	color: #7cbe49;
+}
+section.sale .sale__wrrap .sale__card .card__check .check__pieces .fa-times-circle{
+	font-size: 20px;
+	color: #FFC505;
 }
 section.sale .sale__wrrap .sale__card .card__check .check__pieces p {
 	font-size: 16px;
@@ -449,16 +505,142 @@ section.sale .sale__wrrap .sale__card .card__price .price__text {
 	font-weight: 400;
 	color: #262626;
 }
-section.sale .sale__wrrap .sale__card .card__price .fa-shopping-cart {
+section.sale .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {
+	font-size: 18px;
+    font-weight: 400;
+    color: #262626;
+}
+section.sale .sale__wrrap .sale__card .card__price button.cart__buy {
+	position: relative;
 	width: 101px;
-  	height: 45px;
+	height: 45px;
+	border: none;
   	border-radius: 5px;
 	background-color: #7cbe49;
 	color: #fff;
+	outline: none;
 	text-align: center;
-	font-size: 25px;
-	line-height: 45px;
 }
-/*    Sale Card    */
+section.sale .sale__wrrap .sale__card .card__price button.cart__buy:after {
+	content: "Додати до кошика";
+	position: absolute;
+	display: none;
+	width: 100%;
+    bottom: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    font-weight: normal;
+    text-align: center;
+    color: #a6a6a6;
+}
+section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order {
+	position: relative;
+	width: 101px;
+	height: 45px;
+	margin-top: 8px;
+	border: none;
+	outline: none;
+  	border-radius: 5px;
+	background-color: #FFC505;
+	text-align: center;
+}
+section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:after {
+	content: "Звязатися з нами" ;
+	position: absolute;
+	display: none;
+    width: 100%;
+    bottom: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    font-weight: normal;
+    text-align: center;
+    color: #a6a6a6;
+}
+section.sale .sale__wrrap .sale__card .card__price button.cart__buy:hover:after,
+section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:hover:after {
+	display: block;
+}
 
-/*     Sale       */
+                                                                        /*    Sale Card    */
+
+                                            /*     Sale       */
+
+				 /*    Footer     */
+				 
+footer {
+	background: #e8e8e8;
+}
+footer .footer__info{
+	padding: 48px 0;
+}
+footer .footer__info h5 {
+	font-size: 22px;
+	font-weight: bold;
+	line-height: 0.91;
+	text-align: left;
+	color: #666666;
+	margin-bottom: 20px;
+}
+
+footer .footer__info .footer__account a,
+footer .footer__info .footer__information a,
+footer .footer__info .footer__shop a {
+	display: block;
+	font-size: 16px;
+	font-weight: normal;
+	line-height: 1.25;
+	text-align: left;
+	color: #666666;
+	text-decoration: underline;
+	cursor: pointer;
+	padding-bottom: 10px;
+}
+
+footer .footer__info .footer__contacts .fa-map-marker-alt {
+	font-size: 28px;
+	color: #bfbfbf;
+}
+footer .footer__info .footer__contacts address {
+	font-size: 16px;
+	margin-left: 20px;
+	font-style: normal;
+  	font-weight: normal;
+  	color: #666666;
+}
+footer .footer__info .footer__contacts .contacts__address { margin-bottom: 20px;}
+footer .footer__info .footer__contacts .contacts__phone a {
+	margin-left: 20px;
+	font-size: 16px;
+  	font-weight: normal;
+  	color: #666666;
+ }
+footer .footer__info .footer__payments .payments__img img { padding: 0 4px;}
+
+footer .footer__subtitle {
+	min-height: 85px;
+	background: #b3b3b3;
+	padding: 30px 0;
+}
+footer .footer__subtitle .subtitle__text {
+	font-size: 16px;
+	font-weight: normal;
+	color: #ffffff;
+}
+footer .footer__subtitle .subtitle__text span {
+	margin-left: 20px;
+}
+
+footer .footer__subtitle .subtitle__link p {
+	margin-left: 11px;
+	font-size: 12px;
+  	font-weight: normal;
+  	color: #ffffff;
+}
+footer .footer__subtitle .subtitle__link p a {
+	text-decoration: underline;
+}
+footer .footer__subtitle .subtitle__link img.genetka {
+	margin-left: 30px;
+}

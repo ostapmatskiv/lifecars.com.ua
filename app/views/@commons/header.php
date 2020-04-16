@@ -28,9 +28,20 @@
                 <a href="tel:+380582359854">+38 058 235 98 54</a>
             </div>
          </div>
-        <div class="header__shoping">
-            <i class="label">238</i>
-            <i class="fas fa-shopping-cart"></i>
+        <div class="flex header__shoping">
+                <i class="label">238</i>
+            <div class="header__cart">
+                <img src="../style/icons/shopping-cart-16.png" alt="cart">
+            </div>
+            <div class="header__user">
+                <button>
+                    <img src="../style/icons/user.png" alt="user">
+                </button>
+                <div class="user__login">
+                    <button class="user__in">Увійти</button>
+                    <button class="user__registration">Реєстрація</button>
+                </div>
+            </div>
         </div>
     </div>
     <nav class="flex v-center">
