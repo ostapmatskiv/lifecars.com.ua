@@ -499,6 +499,104 @@ section.sale .sale__wrrap .sale__card .check__number span.plus {
 	background-color: #d9d9d9;
 	cursor: pointer;
 }
+/*        cart modal         */
+section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {
+	position: absolute;
+    top: 0;
+    left: -2px;
+    border-radius: 10px;
+    width: 290px;
+	height: 511px;
+	display: none;
+	padding: 31px;
+	background-color: #ffc505;
+}
+section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {
+	font-size: 40px;
+    font-weight: bold;
+    line-height: 0.93;
+    text-align: left;
+    color: #2d3b40;
+}
+section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal p {
+	font-size: 16px;
+	font-weight: 600;
+	text-align: left;
+	color: #ffffff;
+	margin-top: 15px;
+} 
+section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__name {
+	font-size: 16px;
+    font-weight: bold;
+    text-align: left;
+	color: #2d3b40;
+	margin-top: 15px;
+}
+
+section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__product {
+	font-size: 16px;
+	font-weight: normal;
+	text-align: left;
+	color: #2d3b40;
+	margin-top: 10px;
+	margin-bottom: 20px;
+
+}
+section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {
+	font-size: 27px;
+	font-weight: bold;
+	text-align: center;
+	color: #2d3b40;
+}
+
+section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal span {
+	display: block;
+	font-size: 20px;
+	font-weight: normal;
+	text-align: center;
+	color: #2d3b40;
+	margin-top: 10px;
+}
+section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {
+	width: 228px;
+	height: 40px;
+	border-radius: 5px;
+	background-color: #e0ad04;
+	border: none;
+	outline: none;
+	margin-top: 10px;
+	font-size: 20px;
+	font-weight: normal;
+	text-align: center;
+	color: #ffffff;
+}
+
+section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.cart__hiden {
+	width: 34px;
+	height: 34px;
+	position: absolute;
+    bottom: -17px;
+	left: 50%;
+    transform: translateX(-50%);
+	background-color: #ffc505;
+	border: none;
+	outline: none;
+	border-radius: 100%;
+}
+section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.cart__hiden .fa-chevron-circle-up {
+	font-size: 25px;
+    text-align: center;
+    opacity: 0.4;
+}
+
+.cart__modal-show {
+	display: block;
+}
+
+
+                                     /*        cart modal        */
+
+
 section.sale .sale__wrrap .sale__card .card__price { margin-top: 18px;}
 section.sale .sale__wrrap .sale__card .card__price .price__text {
 	font-size: 45px;

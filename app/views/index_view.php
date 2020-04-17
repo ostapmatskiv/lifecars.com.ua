@@ -51,9 +51,9 @@
     </div>
     <section class="sale">
         <div class="flex v-center sale__nav">
-            <a href="#">Новинки-5</a>
-            <a href="#">Хіт продажу-238</a>
-            <a href="#">Знижки-520</a>
+            <a href="#">Новинки &mdash; 5</a>
+            <a href="#">Хіт продажу &mdash; 238</a>
+            <a href="#">Знижки &mdash; 520</a>
             <a href="#">Обзори</a>
             <a href="#">Поради</a>
         </div>
@@ -218,6 +218,25 @@
                         <input type="text" value="1" size="5"/>
                         <span class="plus">+</span>
                     </div>
+                </div>
+                <div class="cart__modal">
+                    <h5>Зв'яжіться з нами</h5>
+                    <p>і ми проінформуємо Вас про можливість замовлення та оптимальну ціну на цей товар:</p>
+                    <div class="modal__name">
+                        Шланг гальмівний задній Chery Eastar
+                    </div>
+                    <div class="modal__product">
+                        B11-2915010
+                    </div>
+                    <div class="modal__phone">
+                        <a href="tel:+380930000943">+38 093 0000 943</a>
+                        <a href="tel:+380960000946">+38 096 0000 946</a>
+                    </div>
+                    <span>або</span>
+                    <button class="modal__request">Залишити заявку</button>
+                    <button class="cart__hiden">
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </button>
                 </div>
                 <div class="flex v-center card__price">
                     <div class="price__text">Під замовлення</div>
@@ -450,6 +469,25 @@
                             <input type="text" value="1" size="5"/>
                             <span class="plus">+</span>
                         </div>
+                    </div>
+                    <div class="cart__modal cart__modal-two">
+                        <h5>Зв'яжіться з нами</h5>
+                        <p>і ми проінформуємо Вас про можливість замовлення та оптимальну ціну на цей товар:</p>
+                        <div class="modal__name">
+                            Шланг гальмівний задній Chery Eastar
+                        </div>
+                        <div class="modal__product">
+                            B11-2915010
+                        </div>
+                        <div class="modal__phone">
+                            <a href="tel:+380930000943">+38 093 0000 943</a>
+                            <a href="tel:+380960000946">+38 096 0000 946</a>
+                        </div>
+                        <span>або</span>
+                        <button class="modal__request">Залишити заявку</button>
+                        <button class="cart__hiden cart__hiden-two">
+                            <i class="fas fa-chevron-circle-up"></i>
+                        </button>
                     </div>
                     <div class="flex v-center card__price">
                         <div class="price__text">Під замовлення</div>

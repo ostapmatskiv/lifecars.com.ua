@@ -24,6 +24,23 @@ $(document).ready(function(){
         });
 
 
+        $('.cart__order:eq(0)').click(function() {
+            $('.cart__modal:eq(0)').css("display", "block");
+            
+        });
+        $('.cart__order:eq(1)').click(function() {
+            $('.cart__modal:eq(1)').css("display", "block");
+            
+        });
+
+        $('.cart__hiden:eq(0)').click(function() {
+            $('.cart__modal:eq(0)').css("display", "none");
+        });
+
+        $('.cart__hiden:eq(1)').click(function() {
+            $('.cart__modal:eq(1)').css("display", "none");
+        });
+
   });
 
 $(function () {
