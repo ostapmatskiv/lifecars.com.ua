@@ -11,7 +11,7 @@
             <div class="logo__text">Chery</div>
             <i class="fas fa-chevron-down"></i>
         </a>
-        <a href="#">
+        <a class="great__link" href="#">
             <img src="style/images/carslogo/1.png" alt="GreatWall">
             <div class="logo__text">Great wall</div>
             <i class="fas fa-chevron-down"></i>
@@ -27,6 +27,85 @@
             <i class="fas fa-chevron-down"></i>
         </a>
     </div>
+    <section class="flex h-center wrap cars__base">
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">Amulet</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">Tiggo</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">Jaggi</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">QQ</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">Elara</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">Eastar</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">Kimo</div>
+        </div>
+     
+            <div class="base__detal">
+                <img src="style/images/carslogo/cars.png" alt="car">
+                <div class="detal__text">Cross Eastar</div>
+            </div>
+            <div class="base__detal">
+                <img src="style/images/carslogo/cars.png" alt="car">
+                <div class="detal__text">Arrizo 3</div>
+            </div>
+            <div class="base__detal">
+                <img src="style/images/carslogo/cars.png" alt="car">
+                <div class="detal__text">Arrizo 7</div>
+            </div>
+            <div class="base__detal">
+                <img src="style/images/carslogo/cars.png" alt="car">
+                <div class="detal__text">E 5</div>
+            </div>
+            <div class="base__detal">
+                <img src="style/images/carslogo/cars.png" alt="car">
+                <div class="detal__text">Karry</div>
+            </div>
+            <div class="base__detal">
+                <img src="style/images/carslogo/cars.png" alt="car">
+                <div class="detal__text">Tiggo 2</div>
+            </div>
+            <div class="base__detal">
+                <img src="style/images/carslogo/cars.png" alt="car">
+                <div class="detal__text">Tiggo 3</div>
+            </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">Tiggo 5</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">Tiggo 7</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">A 13 (ZAZ Forza)</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">M 11</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">Beat</div>
+        </div>
+    </section>
    
    <div class="slick__main" id="main__slick">
         <div>
@@ -234,6 +313,29 @@
                     </div>
                     <span>або</span>
                     <button class="modal__request">Залишити заявку</button>
+
+                    <div class="cart__form">
+                        <div class="form__name">
+                            Шланг гальмівний задній Chery Eastar
+                        </div>
+                        <div class="form__product">
+                            B11-2915010
+                        </div>
+                        <form action="#">
+                            <select name="#">
+                                <option value="city" selected disabled>Виберіть місто</option>
+                                <option value="city1">Львів</option>
+                                <option value="city2">Київ</option>
+                                <option value="city3">Харків</option>
+                                <option value="city4">Одеса</option>
+                            </select>
+                            <input required type="text" placeholder="Ім'я">
+                            <input required type="tel" placeholder="Телефон">
+                            <input required type="email" placeholder="Електронна адреса">
+                            <button class="form__btn">Надіслати запит</button>
+                        </form>
+                    </div>
+
                     <button class="cart__hiden">
                         <i class="fas fa-chevron-circle-up"></i>
                     </button>
@@ -485,6 +587,28 @@
                         </div>
                         <span>або</span>
                         <button class="modal__request">Залишити заявку</button>
+
+                        <div class="cart__form">
+                            <div class="form__name">
+                                Шланг гальмівний задній Chery Eastar
+                            </div>
+                            <div class="form__product">
+                                B11-2915010
+                            </div>
+                            <form action="#">
+                                <select name="#">
+                                    <option value="city" selected disabled>Виберіть місто</option>
+                                    <option value="city1">Львів</option>
+                                    <option value="city2">Київ</option>
+                                    <option value="city3">Харків</option>
+                                    <option value="city4">Одеса</option>
+                                </select>
+                                <input required type="text" placeholder="Ім'я">
+                                <input required type="tel" placeholder="Телефон">
+                                <input required type="email" placeholder="Електронна адреса">
+                                <button class="form__btn">Надіслати запит</button>
+                            </form>
+                        </div>
                         <button class="cart__hiden cart__hiden-two">
                             <i class="fas fa-chevron-circle-up"></i>
                         </button>

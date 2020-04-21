@@ -41,6 +41,21 @@ $(document).ready(function(){
             $('.cart__modal:eq(1)').css("display", "none");
         });
 
+
+
+        $('.modal__request:eq(0)').click(function() {
+            $('.cart__form:eq(0)').css("z-index", "10");
+        });
+
+        $('.modal__request:eq(1)').click(function() {
+            $('.cart__form:eq(1)').css("z-index", "10");
+        });
+
+
+        $('.great__link').click(function() {
+            event.preventDefault();
+            $('.cars__base').css("height", "100%");
+        })
   });
 
 $(function () {

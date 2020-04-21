@@ -229,6 +229,33 @@ main .main__logo a:hover .fa-chevron-down,
 main .main__logo a:active .fa-chevron-down{
 	color: #82C166;
 }
+/*        cars__detal         */
+main section.cars__base {
+	padding-top: 50px;
+	height: 0;
+}
+main section.cars__base .base__detal {
+	cursor: pointer;
+	width: 214px;
+}
+main section.cars__base .base__detal img {
+	display: block;
+	margin: 0 auto;
+}
+main section.cars__base .base__detal .detal__text{
+	font-size: 20px;
+	font-weight: 400;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	text-align: center;
+	color: #666666;
+	margin-bottom: 40px;
+}
+main section.cars__base .base__detal:hover .detal__text{
+	color: #82C166;
+}
+/*           cars__detal            */
+main
                                                               /*     Main_Carousel     */
 
 main .slick__main{ 
@@ -237,7 +264,7 @@ main .slick__main .draggable { border-radius: 5px;}
 
 main #main__slick .slick-dots {
 	position: absolute;
-	bottom: -20px;
+	bottom: -35px;
 	left: 0;
 	width: 100%;
 	z-index: 10;
@@ -569,6 +596,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal_
 	font-weight: normal;
 	text-align: center;
 	color: #ffffff;
+	cursor: pointer;
 }
 
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.cart__hiden {
@@ -592,8 +620,70 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.cart__
 .cart__modal-show {
 	display: block;
 }
-
-
+/*           cart form                */
+section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {
+	position: absolute;
+	bottom: 15px;
+	left: 0;
+	border-radius: 5px;
+	width: 290px;
+	padding: 5px 31px 31px 31px;
+	background-color: #ffc505;
+	z-index: -1;
+}
+section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__name{
+	font-size: 16px;
+	font-weight: bold;
+	text-align: left;
+	color: #2d3b40;
+}
+section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product {
+	font-size: 16px;
+  	font-weight: normal;
+  	text-align: left;
+  	color: #2d3b40;
+  	margin-top: 30px;
+}
+section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form select {
+	width: 228px;
+	height: 30px;
+	border: none;
+  	border-radius: 5px;
+	background-color: #ffffff;
+	margin-top: 20px;
+	padding-left: 10px;
+	font-size: 14px;
+	font-weight: 400;
+	color: #a6a6a6;
+}
+section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {
+	width: 228px;
+	height: 30px;
+	border: none;
+  	border-radius: 5px;
+	background-color: #ffffff;
+	margin-top: 15px;
+	padding-left: 15px;
+}
+section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input::placeholder {
+	font-size: 14px;
+	font-weight: 400;
+	color: #a6a6a6;
+}
+section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__btn {
+	width: 228px;
+	height: 40px;
+	border: none;
+	border-radius: 5px;
+	background-color: #2d3b40;
+	font-size: 20px;
+	font-weight: 400;
+	text-align: center;
+	color: #ffffff;
+	outline: none;
+	margin-top: 30px;
+}
+/*           cart form                */
                                      /*        cart modal        */
 
 
