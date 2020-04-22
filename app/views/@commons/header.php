@@ -17,8 +17,8 @@
         <div class="flex v-center header__address">
             <i class="fas fa-map-marker-alt"></i>
             <address>
-                Львів, вул.<br>
-                Виговського, 49
+                <a href="https://goo.gl/maps/ZVp3Y1JQkubKnLBR9">Львів, вул.<br>
+                Виговського, 49</a>
             </address>
         </div>
         <div class="flex v-center header__phone">
@@ -30,9 +30,9 @@
          </div>
         <div class="flex header__shoping">
                 <i class="label">238</i>
-            <div class="header__cart">
+            <a href="#" class="header__cart">
                 <img src="../style/icons/shopping-cart-16.png" alt="cart">
-            </div>
+            </a>
             <div class="header__user">
                 <button>
                     <img src="../style/icons/user.png" alt="user">

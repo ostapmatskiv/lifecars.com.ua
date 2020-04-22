@@ -36,9 +36,9 @@
 
 		if(isset($view_file)) require_once($view_file.'.php');
 
-		include "@commons/footer.php";
-
 		echo('</div>');
+		
+		include "@commons/footer.php";
 	?>
 
 	<script type="text/javascript" src="<?=SERVER_URL?>assets/jquery/jquery-3.4.1.min.js"></script>

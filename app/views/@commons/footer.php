@@ -1,5 +1,5 @@
 <footer>
-    <div class="flex footer__info">
+    <div class="flex footer__info container">
        <div class="w20 footer__account">
            <h5>Мій акаунт</h5>
            <a href="#">Мій кошик</a>
@@ -21,7 +21,7 @@
             <div class="flex h-start v-center contacts__address">
                 <i class="fas fa-map-marker-alt"></i>
                 <address>
-                    Львів, вул. Виговського, 49
+                    <a href="https://goo.gl/maps/ZVp3Y1JQkubKnLBR9">Львів, вул. Виговського, 49</a>
                 </address>
             </div>
             <div class="flex h-start v-center contacts__phone">
@@ -43,15 +43,17 @@
        </div>
        
     </div>
-    <div class="flex  footer__subtitle">
+    <div class="footer__subtitle">
+    <div class="flex  container">
         <div class="w50 subtitle__text">
          <p>&#169; Life Cars 2014 <span>Всі права захищені</span></p>
         </div>
         <div class="flex h-start v-center w50 subtitle__link">
-            <img src="../style/icons/web-spirit-logo-1.png" alt="webspirit">
-            <p>Розробка сайту: <a href="https://webspirit.com.ua/">webspirit</a> creative agensy</p>
+            <img class="webspirit__img" src="../style/icons/WebSpirit_logo_mini.png" alt="webspirit">
+            <p>Розробка сайту: <a href="https://webspirit.com.ua/">WebSpirit</a> creative agensy</p>
             <img class="genetka" src="../style/icons/genekta.png" alt="genekta">
-            <p>Дизайн сайту: <a href="#">genekta</a> visual communication studio</p>
+            <p>Дизайн сайту: <a href="#">Genekta</a> visual communication studio</p>
         </div>
     </div>
+</div>
 </footer>

@@ -322,13 +322,8 @@
                             B11-2915010
                         </div>
                         <form action="#">
-                            <select name="#">
-                                <option value="city" selected disabled>Виберіть місто</option>
-                                <option value="city1">Львів</option>
-                                <option value="city2">Київ</option>
-                                <option value="city3">Харків</option>
-                                <option value="city4">Одеса</option>
-                            </select>
+                            <input required name="city" list="city__select" type="text" placeholder="Виберіть мшісто">
+                            <datalist id="city__select"></datalist>
                             <input required type="text" placeholder="Ім'я">
                             <input required type="tel" placeholder="Телефон">
                             <input required type="email" placeholder="Електронна адреса">
@@ -596,16 +591,11 @@
                                 B11-2915010
                             </div>
                             <form action="#">
-                                <select name="#">
-                                    <option value="city" selected disabled>Виберіть місто</option>
-                                    <option value="city1">Львів</option>
-                                    <option value="city2">Київ</option>
-                                    <option value="city3">Харків</option>
-                                    <option value="city4">Одеса</option>
-                                </select>
-                                <input required type="text" placeholder="Ім'я">
-                                <input required type="tel" placeholder="Телефон">
-                                <input required type="email" placeholder="Електронна адреса">
+                                <input required name="city" list="city__select" type="text" placeholder="Виберіть мшісто">
+                                <datalist id="city__select"></datalist>
+                                <input required name="#" type="text" placeholder="Ім'я">
+                                <input required name="#" type="tel" placeholder="Телефон">
+                                <input required name="#" type="email" placeholder="Електронна адреса">
                                 <button class="form__btn">Надіслати запит</button>
                             </form>
                         </div>

@@ -54,7 +54,7 @@ $(document).ready(function(){
 
         $('.great__link').click(function() {
             event.preventDefault();
-            $('.cars__base').css("height", "100%");
+            $('.cars__base').css("height", "100%").slideToggle();
         })
   });
 

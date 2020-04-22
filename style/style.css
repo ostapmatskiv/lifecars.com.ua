@@ -23,7 +23,7 @@ header form .fa-chevron-down {
 	position: absolute;
 	top: 50%;
     transform: translateY(-50%);
-    left: 125px;
+    left: 115px;
 }
 header form select {
 	height: 40px;
@@ -86,11 +86,9 @@ header .header__phone div {
 	color: #8c8c8c;
 }
 
-header .header__shoping .header__cart {
-	font-size: 25px;
+header .header__shoping a.header__cart {
 	background-color: #fff;
 	border-radius: 100%;
-	color: #8c8c8c;
 	display: flex;
     justify-content: center;
     align-items: center;
@@ -107,7 +105,8 @@ header .header__shoping .header__user button {
 	color: #8c8c8c;
 	display: flex;
     justify-content: center;
-    align-items: center;
+	align-items: center;
+	cursor: pointer;
 }
 header .header__shoping .header__user button img { padding: 10px 12px;}
 
@@ -125,10 +124,10 @@ header .header__shoping .header__user .user__login button.user__in {
 	width: 137px;
 	height: 29px;
 	text-align: center;
-	background: #7CBE49;
+	background: #fff;
 	font-size: 19px;
 	font-weight: 400;
-	color: #fff;
+	color: #000;
 	cursor: pointer;
 	border-radius: 5px;
 	margin-bottom: 3px;
@@ -143,6 +142,11 @@ header .header__shoping .header__user .user__login button.user__registration {
 	cursor: pointer;
 	color: #000;
 	border-radius: 5px;
+}
+header .header__shoping .header__user .user__login button.user__in:hover,
+header .header__shoping .header__user .user__login button.user__registration:hover {
+	background: #82C166;
+	color: #fff;
 }
 
 header .header__shoping { position: relative; }
@@ -185,9 +189,9 @@ header nav a:active::before  {
 	background: #82C166;
 }
 
-                                                                       /*      Header       */
+/*                                      Header                                          */
 
-                                                                 /*      Main        */
+ /*                                    Main                                         */
 
 main h1 {
 	font-size: 40px;
@@ -229,10 +233,16 @@ main .main__logo a:hover .fa-chevron-down,
 main .main__logo a:active .fa-chevron-down{
 	color: #82C166;
 }
-/*        cars__detal         */
+
+
+
+/*                        cars__detal                           */
+
+
 main section.cars__base {
 	padding-top: 50px;
 	height: 0;
+	overflow: hidden;
 }
 main section.cars__base .base__detal {
 	cursor: pointer;
@@ -251,15 +261,17 @@ main section.cars__base .base__detal .detal__text{
 	color: #666666;
 	margin-bottom: 40px;
 }
-main section.cars__base .base__detal:hover .detal__text{
-	color: #82C166;
-}
-/*           cars__detal            */
-main
-                                                              /*     Main_Carousel     */
+main section.cars__base .base__detal:hover .detal__text{ color: #82C166; }
 
-main .slick__main{ 
-	padding: 50px 0 14px 0; }
+
+
+/*                         cars__detal                         */
+
+
+ /*                        Main_Carousel                               */
+
+main .slick__main{ margin-top: 45px;}
+
 main .slick__main .draggable { border-radius: 5px;}
 
 main #main__slick .slick-dots {
@@ -284,7 +296,7 @@ main #main__slick .slick-dots li.slick-active { background: #7cbe49; }
 main #main__slick .slick-dots li button { display: none; }
 
 main #main__slick .slick-prev {
-  background: url('icons/back-4.svg') center center / cover no-repeat;
+  background: url('icons/left-arrow.png') center center / cover no-repeat;
   font-size: 0px;
   border: 0px;
   position: absolute;
@@ -298,7 +310,7 @@ main #main__slick .slick-prev {
   cursor: pointer;
 }
 main #main__slick .slick-next {
-background: url('icons/back-26.svg') center center / cover no-repeat;
+background: url('icons/right-arrow.png') center center / cover no-repeat;
   font-size: 0px;
   border: 0px;
   position: absolute;
@@ -313,9 +325,11 @@ background: url('icons/back-26.svg') center center / cover no-repeat;
 }
 
 
-															   /*     Main_Carousel     */
+/*                                        Main_Carousel                                         */
+
+
 															   
-                                                                    /*      Sale     */
+/*                                       Sale                                              */
 
 main section.sale {
 	padding: 71px 0 0 0;
@@ -345,7 +359,12 @@ main section.sale .sale__nav a:active::before {
 	background: #82C166;
 }
 
-                                                                     /*     Sale Card    */
+
+
+/*                                                          Sale Card                                           */
+
+
+
 section.sale .sale__wrrap {
 	margin-top: 46px;
 }
@@ -526,7 +545,11 @@ section.sale .sale__wrrap .sale__card .check__number span.plus {
 	background-color: #d9d9d9;
 	cursor: pointer;
 }
-/*        cart modal         */
+
+
+
+/*                                                 cart modal                                                   */
+
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {
 	position: absolute;
     top: 0;
@@ -616,11 +639,14 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.cart__
     text-align: center;
     opacity: 0.4;
 }
-
 .cart__modal-show {
 	display: block;
 }
-/*           cart form                */
+
+
+/*                                                cart form                                           */
+
+
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {
 	position: absolute;
 	bottom: 15px;
@@ -644,18 +670,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .
   	color: #2d3b40;
   	margin-top: 30px;
 }
-section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form select {
-	width: 228px;
-	height: 30px;
-	border: none;
-  	border-radius: 5px;
-	background-color: #ffffff;
-	margin-top: 20px;
-	padding-left: 10px;
-	font-size: 14px;
-	font-weight: 400;
-	color: #a6a6a6;
-}
+
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {
 	width: 228px;
 	height: 30px;
@@ -683,8 +698,13 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .
 	outline: none;
 	margin-top: 30px;
 }
-/*           cart form                */
-                                     /*        cart modal        */
+
+
+/*                                           cart form                                            */
+
+
+
+/*                                 cart modal                                               */
 
 
 section.sale .sale__wrrap .sale__card .card__price { margin-top: 18px;}
@@ -744,18 +764,18 @@ section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:after {
     font-size: 11px;
     font-weight: normal;
     text-align: center;
-    color: #a6a6a6;
+	color: #a6a6a6;
 }
 section.sale .sale__wrrap .sale__card .card__price button.cart__buy:hover:after,
 section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:hover:after {
 	display: block;
 }
 
-                                                                        /*    Sale Card    */
+ /*                                                                   Sale Card                              */
 
-                                            /*     Sale       */
+/*                                                         Sale                                    */
 
-				 /*    Footer     */
+/*                                  Footer     */
 				 
 footer {
 	background: #e8e8e8;
@@ -819,6 +839,7 @@ footer .footer__subtitle .subtitle__text {
 footer .footer__subtitle .subtitle__text span {
 	margin-left: 20px;
 }
+footer .footer__subtitle .subtitle__link img.webspirit__img { width: 39px; }
 
 footer .footer__subtitle .subtitle__link p {
 	margin-left: 11px;
