@@ -69,7 +69,8 @@ header form button i {
 
 header .header__address {
 	margin-left: -50px;
-	font-size: 20px;
+	font-size: 16px;
+	font-weight: 500;
 	color: #8c8c8c;
 }
 
@@ -82,7 +83,8 @@ header .header__phone .fa-phone-alt {
 }
 
 header .header__phone div {
-	font-size: 20px;
+	font-size: 16px;
+	font-weight: 500;
 	color: #8c8c8c;
 }
 
@@ -125,7 +127,7 @@ header .header__shoping .header__user .user__login button.user__in {
 	height: 29px;
 	text-align: center;
 	background: #fff;
-	font-size: 19px;
+	font-size: 16px;
 	font-weight: 400;
 	color: #000;
 	cursor: pointer;
@@ -137,7 +139,7 @@ header .header__shoping .header__user .user__login button.user__registration {
 	height: 29px;
 	text-align: center;
 	background: #fff;
-	font-size: 19px;
+	font-size: 16px;
 	font-weight: 400;
 	cursor: pointer;
 	color: #000;
@@ -171,7 +173,7 @@ header nav {
 	margin-top: 30px;
 }
 header nav a {
-	font-size: 18px;
+	font-size: 17px;
 	font-weight: 600;
 	color: #8c8c8c;
 	text-align: center;
@@ -180,7 +182,7 @@ header nav a:before {
 	content: "";
 	display: block;
 	height: 4px;
-	min-width: 230px;
+	min-width: 220px;
 	margin-bottom: 10px;
 	background: #fff;
 }
@@ -194,23 +196,23 @@ header nav a:active::before  {
  /*                                    Main                                         */
 
 main h1 {
-	font-size: 40px;
+	font-size: 38px;
 	font-weight: 600;
 	text-transform: uppercase;
 	font-style: normal;
-	line-height: 1.33;
-	letter-spacing: 4px;
+	letter-spacing: 3px;
 	text-align: center;
 	color: #666666;
 }
 
 main .main__logo {
-	margin: 40px auto 0;
+	margin: 35px auto 45px;
 }
+
 main .logo__text {
 	margin-top: 10px;
 	text-align: center;
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: 600;
 	color: #666666;
 	text-transform: uppercase;
@@ -240,7 +242,6 @@ main .main__logo a:active .fa-chevron-down{
 
 
 main section.cars__base {
-	padding-top: 50px;
 	height: 0;
 	overflow: hidden;
 }
@@ -253,8 +254,8 @@ main section.cars__base .base__detal img {
 	margin: 0 auto;
 }
 main section.cars__base .base__detal .detal__text{
-	font-size: 20px;
-	font-weight: 400;
+	font-size: 17px;
+	font-weight: 500;
 	text-transform: uppercase;
 	letter-spacing: 2px;
 	text-align: center;
@@ -269,8 +270,6 @@ main section.cars__base .base__detal:hover .detal__text{ color: #82C166; }
 
 
  /*                        Main_Carousel                               */
-
-main .slick__main{ margin-top: 45px;}
 
 main .slick__main .draggable { border-radius: 5px;}
 
@@ -335,7 +334,7 @@ main section.sale {
 	padding: 71px 0 0 0;
 }
 main section.sale a {
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: 600;
 	text-align: center;
 	color: #8c8c8c;
@@ -345,7 +344,7 @@ main section.sale .sale__nav a:before {
 	content: "";
 	display: block;
 	height: 4px;
-	min-width: 230px;
+	min-width: 220px;
 	margin-bottom: 10px;
 	background: #fff;
 }
@@ -366,13 +365,13 @@ main section.sale .sale__nav a:active::before {
 
 
 section.sale .sale__wrrap {
-	margin-top: 46px;
+	margin-top: 35px;
 }
 section.sale .sale__wrrap .sale__card {
 	width: 290px;
 	padding: 11px;
 	min-height: 571px;
-	margin-bottom: 120px;
+	margin-bottom: 80px;
 }
 
 section.sale .sale__wrrap .sale__card {
@@ -393,7 +392,7 @@ section.sale .sale__wrrap .sale__card .card__img i.card__label {
 	transform: translateY(50%);
 	font-weight: 600;
 	color: #fff;
-	font-size: 16px;
+	font-size: 15px;
 	line-height: 1.5;
 	font-style: normal;
 	text-align: center;
@@ -410,7 +409,7 @@ section.sale .sale__wrrap .sale__card .card__img i.new__label {
 	font-weight: 600;
 	color: #fff;
 	text-transform: uppercase;
-	font-size: 16px;
+	font-size: 15px;
 	line-height: 1.5;
 	font-style: normal;
 	text-align: center;
@@ -480,7 +479,7 @@ section.sale .sale__wrrap .sale__card .card__text {
 	height: 100px;
 	display: table-cell;
 	vertical-align: middle;
-	font-size: 22px;
+	font-size: 18px;
 	font-weight: 600;
 	text-align: left;
 	color: #262626;
@@ -728,6 +727,7 @@ section.sale .sale__wrrap .sale__card .card__price button.cart__buy {
 	color: #fff;
 	outline: none;
 	text-align: center;
+	cursor: pointer;
 }
 section.sale .sale__wrrap .sale__card .card__price button.cart__buy:after {
 	content: "Додати до кошика";
@@ -752,6 +752,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order {
   	border-radius: 5px;
 	background-color: #FFC505;
 	text-align: center;
+	cursor: pointer;
 }
 section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:after {
 	content: "Звязатися з нами" ;
@@ -784,7 +785,7 @@ footer .footer__info{
 	padding: 48px 0;
 }
 footer .footer__info h5 {
-	font-size: 22px;
+	font-size: 20px;
 	font-weight: bold;
 	line-height: 0.91;
 	text-align: left;
@@ -796,7 +797,7 @@ footer .footer__info .footer__account a,
 footer .footer__info .footer__information a,
 footer .footer__info .footer__shop a {
 	display: block;
-	font-size: 16px;
+	font-size: 15px;
 	font-weight: normal;
 	line-height: 1.25;
 	text-align: left;
