@@ -5,6 +5,10 @@ body {
 	font-family: 'Segoe UI', Arial;
 	background-color: #F2F2F2;
 }
+.container {
+	width: 100%;
+	padding: 0 30px;
+}
 
 a {text-decoration: none;}
 
@@ -33,6 +37,7 @@ header form select {
 	padding: 0 15px;
 	font-size: 16px;
 	color:#8c8c8c;
+	background: #fff;
 	outline: none;
 	appearance: none;
 	-webkit-appearance: none;
@@ -68,7 +73,6 @@ header form button i {
 }
 
 header .header__address {
-	margin-left: -50px;
 	font-size: 16px;
 	font-weight: 500;
 	color: #8c8c8c;
@@ -81,6 +85,8 @@ header .header__phone .fa-phone-alt {
     margin-right: 10px;
     color: #8c8c8c;
 }
+
+header .header__phone{ margin-right: 40px;}
 
 header .header__phone div {
 	font-size: 16px;
@@ -182,7 +188,7 @@ header nav a:before {
 	content: "";
 	display: block;
 	height: 4px;
-	min-width: 220px;
+	min-width: 200px;
 	margin-bottom: 10px;
 	background: #fff;
 }
@@ -247,7 +253,7 @@ main section.cars__base {
 }
 main section.cars__base .base__detal {
 	cursor: pointer;
-	width: 214px;
+	width: 180px;
 }
 main section.cars__base .base__detal img {
 	display: block;
@@ -368,7 +374,7 @@ section.sale .sale__wrrap {
 	margin-top: 35px;
 }
 section.sale .sale__wrrap .sale__card {
-	width: 290px;
+	width: 270px;
 	padding: 11px;
 	min-height: 571px;
 	margin-bottom: 80px;
@@ -384,6 +390,9 @@ section.sale .sale__wrrap .sale__card:hover {
 }
 section.sale .sale__wrrap .sale__card.no_availabilaty:hover {
     border-color: #ffc505;
+}
+section.sale .sale__wrrap .sale__card .card__img img {
+	width: 100%;
 }
 section.sale .sale__wrrap .sale__card .card__img i.card__label {
 	position: absolute;
@@ -510,7 +519,7 @@ section.sale .sale__wrrap .sale__card .card__check .check__pieces .fa-times-circ
 	color: #FFC505;
 }
 section.sale .sale__wrrap .sale__card .card__check .check__pieces p {
-	font-size: 16px;
+	font-size: 14px;
 	  color: #262626;
 	  margin-left: 6px;
 }
@@ -554,14 +563,15 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {
     top: 0;
     left: -2px;
     border-radius: 10px;
-    width: 290px;
+    width: 270px;
 	height: 511px;
 	display: none;
-	padding: 31px;
+	padding: 21px;
 	background-color: #ffc505;
 }
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {
 	font-size: 40px;
+	margin-top: 5px;
     font-weight: bold;
     line-height: 0.93;
     text-align: left;
@@ -651,8 +661,8 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {
 	bottom: 15px;
 	left: 0;
 	border-radius: 5px;
-	width: 290px;
-	padding: 5px 31px 31px 31px;
+	width: 270px;
+	padding: 5px 21px 31px 21px;
 	background-color: #ffc505;
 	z-index: -1;
 }
@@ -708,7 +718,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .
 
 section.sale .sale__wrrap .sale__card .card__price { margin-top: 18px;}
 section.sale .sale__wrrap .sale__card .card__price .price__text {
-	font-size: 45px;
+	font-size: 40px;
 	font-weight: 400;
 	color: #262626;
 }
@@ -734,7 +744,7 @@ section.sale .sale__wrrap .sale__card .card__price button.cart__buy:after {
 	position: absolute;
 	display: none;
 	width: 100%;
-    bottom: -16px;
+    bottom: -13px;
     left: 50%;
     transform: translateX(-50%);
     font-size: 11px;
@@ -746,7 +756,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order {
 	position: relative;
 	width: 101px;
 	height: 45px;
-	margin-top: 8px;
+	margin-top: 5px;
 	border: none;
 	outline: none;
   	border-radius: 5px;
@@ -759,7 +769,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:after {
 	position: absolute;
 	display: none;
     width: 100%;
-    bottom: -16px;
+    bottom: -13px;
     left: 50%;
     transform: translateX(-50%);
     font-size: 11px;
@@ -783,6 +793,7 @@ footer {
 }
 footer .footer__info{
 	padding: 48px 0;
+	padding-left: 40px;
 }
 footer .footer__info h5 {
 	font-size: 20px;
@@ -853,4 +864,58 @@ footer .footer__subtitle .subtitle__link p a {
 }
 footer .footer__subtitle .subtitle__link img.genetka {
 	margin-left: 30px;
+}
+#login-container input {
+    background-color: #eee;
+    padding: 12px 15px;
+    margin: 8px 0;
+    border-radius: 2px;
+    height: 40px;
+    width: 100%;
+    border: 0 solid #fff;
+}
+
+@media (max-width: 1300px) {
+	header form select {
+		width: 130px;
+		margin-left: 5px;
+		padding: 0px 5px;
+		font-size: 14px;
+	}
+	header form input {
+		width: 170px;
+		padding: 0 8px;
+		font-size: 14px;
+	}
+	header form .fa-chevron-down {
+		left: 110px;
+	}
+	header .header__address .fa-map-marker-alt, header .header__phone .fa-phone-alt {
+		font-size: 25px;
+		margin-right: 5px;
+	}
+	header .header__address {
+		font-size: 14px;
+	}
+	header nav a {
+		font-size: 14px;
+	}
+	header .header__shoping i.label {
+		left: -30px;
+		font-size: 13px;
+		line-height: 1.1;
+		height: 15px;
+		width: 40px;
+	}
+	header nav a:before {
+		min-width: 170px;
+	}
+	main h1 {
+		font-size: 35px;
+		letter-spacing: 2px;
+	}
+	main section.sale .sale__nav a:before {
+		min-width: 190px;
+	}
+
 }
