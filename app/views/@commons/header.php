@@ -1,7 +1,7 @@
 <header>
     <div class="flex v-center">
         <a href="<?=SITE_URL?>" class="header__link">
-            <img src="style/images/logo.png" alt="">
+            <img class="header__logo" src="style/images/logo.png" alt="logo">
         </a>
         <form>
             <select>

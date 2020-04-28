@@ -5,37 +5,33 @@ body {
 	font-family: 'Segoe UI', Arial;
 	background-color: #F2F2F2;
 }
-.container {
-	width: 100%;
-	padding: 0 30px;
-}
 
 a {text-decoration: none;}
 
 
 /*      Header        */
 header {
-	padding: 20px 0 40px 0;
+	padding: 20px 0 30px 0;
 }
-
+header img.header__logo { width: 250px;}
 header form {
 	position: relative;
 }
 header form .fa-chevron-down {
-	font-size: 20px;
+	font-size: 19px;
 	color: #d9d9d9;
 	position: absolute;
 	top: 50%;
     transform: translateY(-50%);
-    left: 115px;
+    left: 97px;
 }
 header form select {
 	height: 40px;
-	width: 146px;
+	width: 120px;
 	border-radius: 3px;
 	border: 0;
-	padding: 0 15px;
-	font-size: 16px;
+	padding: 0 7px;
+	font-size: 15px;
 	color:#8c8c8c;
 	background: #fff;
 	outline: none;
@@ -45,12 +41,12 @@ header form select {
 
 header form input {
 	height: 40px;
-    width: 248px;
+    width: 210px;
     border-radius: 3px;
     border: 0;
     padding: 0 10px;
     margin-left: 5px;
-    font-size: 16px;
+    font-size: 15px;
     color: #888888;
 }
 
@@ -73,7 +69,7 @@ header form button i {
 }
 
 header .header__address {
-	font-size: 16px;
+	font-size: 15px;
 	font-weight: 500;
 	color: #8c8c8c;
 }
@@ -81,7 +77,7 @@ header .header__address {
 header .header__address address {font-style: normal;}
 header .header__address .fa-map-marker-alt,
 header .header__phone .fa-phone-alt {
-	font-size: 30px;
+	font-size: 28px;
     margin-right: 10px;
     color: #8c8c8c;
 }
@@ -89,7 +85,7 @@ header .header__phone .fa-phone-alt {
 header .header__phone{ margin-right: 40px;}
 
 header .header__phone div {
-	font-size: 16px;
+	font-size: 15px;
 	font-weight: 500;
 	color: #8c8c8c;
 }
@@ -163,15 +159,15 @@ header .header__shoping i.label {
 	position: absolute;
     top: 50%;
     transform: translateY(-50%);
-	left: -40px;
-	font-weight: 700;
+	left: -29px;
+	font-weight: 600;
 	color: #fff;
 	font-size: 14px;
-	line-height: 1.5;
+	line-height: 1.4;
 	font-style: normal;
 	text-align: center;
 	height: 20px;
-	width: 49px;
+	width: 40px;
 	border-radius: 0 50px 50px 0;
 	background-color: #82C166;
 }
@@ -179,7 +175,7 @@ header nav {
 	margin-top: 30px;
 }
 header nav a {
-	font-size: 17px;
+	font-size: 16px;
 	font-weight: 600;
 	color: #8c8c8c;
 	text-align: center;
@@ -188,7 +184,7 @@ header nav a:before {
 	content: "";
 	display: block;
 	height: 4px;
-	min-width: 200px;
+	min-width: 170px;
 	margin-bottom: 10px;
 	background: #fff;
 }
@@ -202,11 +198,11 @@ header nav a:active::before  {
  /*                                    Main                                         */
 
 main h1 {
-	font-size: 38px;
+	font-size: 36px;
 	font-weight: 600;
 	text-transform: uppercase;
 	font-style: normal;
-	letter-spacing: 3px;
+	letter-spacing: 2px;
 	text-align: center;
 	color: #666666;
 }
@@ -218,7 +214,7 @@ main .main__logo {
 main .logo__text {
 	margin-top: 10px;
 	text-align: center;
-	font-size: 18px;
+	font-size: 17px;
 	font-weight: 600;
 	color: #666666;
 	text-transform: uppercase;
@@ -253,7 +249,7 @@ main section.cars__base {
 }
 main section.cars__base .base__detal {
 	cursor: pointer;
-	width: 180px;
+	width: 160px;
 }
 main section.cars__base .base__detal img {
 	display: block;
@@ -340,7 +336,7 @@ main section.sale {
 	padding: 71px 0 0 0;
 }
 main section.sale a {
-	font-size: 18px;
+	font-size: 17px;
 	font-weight: 600;
 	text-align: center;
 	color: #8c8c8c;
@@ -350,7 +346,7 @@ main section.sale .sale__nav a:before {
 	content: "";
 	display: block;
 	height: 4px;
-	min-width: 220px;
+	min-width: 200px;
 	margin-bottom: 10px;
 	background: #fff;
 }
@@ -792,11 +788,11 @@ footer {
 	background: #e8e8e8;
 }
 footer .footer__info{
-	padding: 48px 0;
+	padding: 35px 0;
 	padding-left: 40px;
 }
 footer .footer__info h5 {
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: bold;
 	line-height: 0.91;
 	text-align: left;
@@ -823,7 +819,7 @@ footer .footer__info .footer__contacts .fa-map-marker-alt {
 	color: #bfbfbf;
 }
 footer .footer__info .footer__contacts address {
-	font-size: 16px;
+	font-size: 15px;
 	margin-left: 20px;
 	font-style: normal;
   	font-weight: normal;
@@ -832,7 +828,7 @@ footer .footer__info .footer__contacts address {
 footer .footer__info .footer__contacts .contacts__address { margin-bottom: 20px;}
 footer .footer__info .footer__contacts .contacts__phone a {
 	margin-left: 20px;
-	font-size: 16px;
+	font-size: 15px;
   	font-weight: normal;
   	color: #666666;
  }
@@ -875,6 +871,58 @@ footer .footer__subtitle .subtitle__link img.genetka {
     border: 0 solid #fff;
 }
 
+
+/*                   card sale              */
+@media (max-width: 1410px) {
+    
+	section.sale .sale__wrrap .sale__card {
+    	width: 220px;
+		padding: 8px;
+		min-height: auto;
+	}
+	section.sale .sale__wrrap .sale__card .card__img { height: 230px;}
+	.card__rating .rating:not(:checked) > label { font-size: 22px; }
+	section.sale .sale__wrrap .sale__card .card__text { font-size: 16px; }
+	section.sale .sale__wrrap .sale__card .card__info .info__article p { font-size: 14px; }
+	section.sale .sale__wrrap .sale__card .card__info .info__name p { font-size: 14px; }
+	section.sale .sale__wrrap .sale__card .card__check .check__pieces p {font-size: 11px;}
+	section.sale .sale__wrrap .sale__card .card__check .check__pieces .fa-check-circle { font-size: 18px; }
+	section.sale .sale__wrrap .sale__card .check__number { width: 70px; }
+	section.sale .sale__wrrap .sale__card .card__price .price__text { font-size: 34px; }
+	section.sale .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {font-size: 16px;}
+	section.sale .sale__wrrap .sale__card .card__price button.cart__buy {
+		width: 85px;
+		height: 35px;
+	}
+	section.sale .sale__wrrap .sale__card .card__price button.cart__buy img { width: 23px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order {
+		width: 85px;
+		height: 35px;
+	}
+	section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order img { width: 23px;}
+	section.sale .sale__wrrap .sale__card .card__price button.cart__buy:after {
+		bottom: -11px;
+		font-size: 10px;
+	}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {width: 220px; height: 465px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {font-size: 30px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {font-size: 21px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {
+		width: 180px;
+		height: 35px;
+		font-size: 17px;
+	}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {width: 220px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {width: 178px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__btn {
+		width: 178px;
+		font-size: 17px;
+	}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product { margin-top: 15px;}
+	
+
+
+/*                   card sale             */
 @media (max-width: 1300px) {
 	header form select {
 		width: 130px;
