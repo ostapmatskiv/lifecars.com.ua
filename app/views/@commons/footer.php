@@ -1,5 +1,5 @@
 <footer>
-    <div class="flex footer__info container">
+    <div class="flex wrap footer__info container">
        <div class="w20 footer__account">
            <h5>Мій акаунт</h5>
            <a href="#">Мій кошик</a>
@@ -44,7 +44,7 @@
        
     </div>
     <div class="footer__subtitle">
-    <div class="flex  container">
+    <div class="flex wrap container">
         <div class="w50 subtitle__text">
          <p>&#169; Life Cars 2014 <span>Всі права захищені</span></p>
         </div>

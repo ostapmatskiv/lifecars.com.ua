@@ -13,6 +13,8 @@ a {text-decoration: none;}
 header {
 	padding: 20px 0 30px 0;
 }
+header div.flex .fa-bars { display: none;}
+header .mobile__shoping { display: none;}
 header img.header__logo { width: 250px;}
 header form {
 	position: relative;
@@ -23,11 +25,11 @@ header form .fa-chevron-down {
 	position: absolute;
 	top: 50%;
     transform: translateY(-50%);
-    left: 97px;
+    left: 145px;
 }
 header form select {
 	height: 40px;
-	width: 120px;
+	width: 170px;
 	border-radius: 3px;
 	border: 0;
 	padding: 0 7px;
@@ -82,7 +84,8 @@ header .header__phone .fa-phone-alt {
     color: #8c8c8c;
 }
 
-header .header__phone{ margin-right: 40px;}
+header .header__phone{ margin-right: 20px;}
+header .header__phone .header__login { display: none;}
 
 header .header__phone div {
 	font-size: 15px;
@@ -184,7 +187,7 @@ header nav a:before {
 	content: "";
 	display: block;
 	height: 4px;
-	min-width: 170px;
+	    width: 180px;
 	margin-bottom: 10px;
 	background: #fff;
 }
@@ -219,12 +222,13 @@ main .logo__text {
 	color: #666666;
 	text-transform: uppercase;
 	letter-spacing: 2px;
+	white-space: nowrap;
 }
 main .main__logo a {
 	position: relative;
 	text-align: center;
 }
-
+main .main__logo a img { height: 50px;}
 main .main__logo a .fa-chevron-down {
 	position: absolute;
 	bottom: -25px;
@@ -370,9 +374,9 @@ section.sale .sale__wrrap {
 	margin-top: 35px;
 }
 section.sale .sale__wrrap .sale__card {
-	width: 270px;
-	padding: 11px;
-	min-height: 571px;
+	width: 20%;
+	padding: 8px;
+	min-height: 541px;
 	margin-bottom: 80px;
 }
 
@@ -397,29 +401,29 @@ section.sale .sale__wrrap .sale__card .card__img i.card__label {
 	transform: translateY(50%);
 	font-weight: 600;
 	color: #fff;
-	font-size: 15px;
-	line-height: 1.5;
+	font-size: 14px;
+	line-height: 1.4;
 	font-style: normal;
 	text-align: center;
-	height: 25px;
-	width: 60px;
+	height: 20px;
+	width: 45px;
 	border-radius: 0 50px 50px 0;
 	background-color: #7cbe49;
 }
 section.sale .sale__wrrap .sale__card .card__img i.new__label {
 	position: absolute;
-	top: 60px;
+	top: 50px;
 	left: -16px;
 	transform: translateY(50%);
 	font-weight: 600;
 	color: #fff;
 	text-transform: uppercase;
 	font-size: 15px;
-	line-height: 1.5;
+	line-height: 1.4;
 	font-style: normal;
 	text-align: center;
-	height: 25px;
-	width: 60px;
+	height: 20px;
+	width: 45px;
 	border-radius: 0 50px 50px 0;
 	background-color: #ff5205;
 }
@@ -427,7 +431,7 @@ section.sale .sale__wrrap .sale__card .card__img i.new__label {
 
 section.sale .sale__wrrap .sale__card .card__img {
 	width: 100%;
-	height: 268px;
+	height: 240px;
 	background-color: #fff;
 	border-radius: 5px;
 }
@@ -442,7 +446,7 @@ section.sale .sale__wrrap .sale__card .card__img {
     overflow:hidden;
     white-space:nowrap;
     cursor:pointer;
-    font-size:25px;
+    font-size:20px;
     color: #fff;
 }
 .card__rating .rating:not(:checked) > label:before {
@@ -493,13 +497,14 @@ section.sale .sale__wrrap .sale__card .card__info {
 	/* margin-top: 15px; */
 	display: flex;
 }
+section.sale .sale__wrrap .sale__card .card__info .info__article { margin-right: 5px;} 
 section.sale .sale__wrrap .sale__card .card__info .info__article p {
-	font-size: 16px;
+	font-size: 15px;
 	padding-top: 5px;
 	color: #a6a6a6;
 }
 section.sale .sale__wrrap .sale__card .card__info .info__name p {
-	font-size: 16px;
+	font-size: 15px;
 	padding-top: 5px;
 	color: #262626;
 }
@@ -507,11 +512,11 @@ section.sale .sale__wrrap .sale__card .card__check {
 	margin-top: 15px;
 }
 section.sale .sale__wrrap .sale__card .card__check .check__pieces .fa-check-circle {
-	font-size: 20px;
+	font-size: 16px;
   	color: #7cbe49;
 }
 section.sale .sale__wrrap .sale__card .card__check .check__pieces .fa-times-circle{
-	font-size: 20px;
+	font-size: 16px;
 	color: #FFC505;
 }
 section.sale .sale__wrrap .sale__card .card__check .check__pieces p {
@@ -520,7 +525,7 @@ section.sale .sale__wrrap .sale__card .card__check .check__pieces p {
 	  margin-left: 6px;
 }
 section.sale .sale__wrrap .sale__card .check__number {
-	width: 88px;
+	width: 60px;
 }
 section.sale .sale__wrrap .sale__card .check__number span.minus {
 	display: inline-block;
@@ -533,7 +538,7 @@ section.sale .sale__wrrap .sale__card .check__number span.minus {
 	cursor: pointer;
 }
 section.sale .sale__wrrap .sale__card .check__number input {
-	width: 33px;
+	width: 30px;
 	text-align: center;
 	font-size: 16px;
 	color: #666666;
@@ -559,14 +564,14 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {
     top: 0;
     left: -2px;
     border-radius: 10px;
-    width: 270px;
-	height: 511px;
+    width: calc(100% + 4px);
+	height: 465px;
 	display: none;
-	padding: 21px;
+	padding: 15px;
 	background-color: #ffc505;
 }
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {
-	font-size: 40px;
+	font-size: 30px;
 	margin-top: 5px;
     font-weight: bold;
     line-height: 0.93;
@@ -574,7 +579,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {
     color: #2d3b40;
 }
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal p {
-	font-size: 16px;
+	font-size: 15px;
 	font-weight: 600;
 	text-align: left;
 	color: #ffffff;
@@ -598,7 +603,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__produ
 
 }
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {
-	font-size: 27px;
+	font-size: 22px;
 	font-weight: bold;
 	text-align: center;
 	color: #2d3b40;
@@ -606,14 +611,14 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone
 
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal span {
 	display: block;
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: normal;
 	text-align: center;
 	color: #2d3b40;
-	margin-top: 10px;
+	margin-top: 8px;
 }
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {
-	width: 228px;
+	width: 100%;
 	height: 40px;
 	border-radius: 5px;
 	background-color: #e0ad04;
@@ -657,7 +662,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {
 	bottom: 15px;
 	left: 0;
 	border-radius: 5px;
-	width: 270px;
+	width: 100%;
 	padding: 5px 21px 31px 21px;
 	background-color: #ffc505;
 	z-index: -1;
@@ -673,11 +678,11 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .
   	font-weight: normal;
   	text-align: left;
   	color: #2d3b40;
-  	margin-top: 30px;
+  	margin-top: 15px;
 }
 
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {
-	width: 228px;
+	width: 100%;
 	height: 30px;
 	border: none;
   	border-radius: 5px;
@@ -691,7 +696,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form i
 	color: #a6a6a6;
 }
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__btn {
-	width: 228px;
+	width: 100%;
 	height: 40px;
 	border: none;
 	border-radius: 5px;
@@ -714,7 +719,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .
 
 section.sale .sale__wrrap .sale__card .card__price { margin-top: 18px;}
 section.sale .sale__wrrap .sale__card .card__price .price__text {
-	font-size: 40px;
+	font-size: 32px;
 	font-weight: 400;
 	color: #262626;
 }
@@ -725,8 +730,8 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .card__price .price__text 
 }
 section.sale .sale__wrrap .sale__card .card__price button.cart__buy {
 	position: relative;
-	width: 101px;
-	height: 45px;
+	width: 85px;
+	height: 40px;
 	border: none;
   	border-radius: 5px;
 	background-color: #7cbe49;
@@ -743,15 +748,15 @@ section.sale .sale__wrrap .sale__card .card__price button.cart__buy:after {
     bottom: -13px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 11px;
+    font-size: 10px;
     font-weight: normal;
     text-align: center;
     color: #a6a6a6;
 }
 section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order {
 	position: relative;
-	width: 101px;
-	height: 45px;
+	width: 85px;
+	height: 40px;
 	margin-top: 5px;
 	border: none;
 	outline: none;
@@ -768,7 +773,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:after {
     bottom: -13px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 11px;
+    font-size: 10px;
     font-weight: normal;
     text-align: center;
 	color: #a6a6a6;
@@ -904,18 +909,18 @@ footer .footer__subtitle .subtitle__link img.genetka {
 		bottom: -11px;
 		font-size: 10px;
 	}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {width: 220px; height: 465px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {width: calc(100% + 4px); height: 465px;}
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {font-size: 30px;}
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {font-size: 21px;}
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {
-		width: 180px;
+		width: 100%;
 		height: 35px;
 		font-size: 17px;
 	}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {width: 220px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {width: 178px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {width: 100%;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {width: 100%;}
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__btn {
-		width: 178px;
+		width: 100%;
 		font-size: 17px;
 	}
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product { margin-top: 15px;}
@@ -956,7 +961,7 @@ footer .footer__subtitle .subtitle__link img.genetka {
 		width: 40px;
 	}
 	header nav a:before {
-		min-width: 170px;
+		width: 155px;
 	}
 	main h1 {
 		font-size: 35px;
@@ -966,4 +971,236 @@ footer .footer__subtitle .subtitle__link img.genetka {
 		min-width: 190px;
 	}
 
+}
+@media screen and (max-width: 1025px) {
+	header .header__address {display: none; }
+	/* header nav a:before { min-width: 155px; } */
+	main section.cars__base .base__detal { width: 141px; }
+	main section.cars__base .base__detal img { width: 90%; }
+	footer .footer__info { padding-left: 15px; padding-right: 15px;}
+}
+@media screen and (max-width: 769px) {
+	header form select,
+	header form .fa-chevron-down,
+	header .header__shoping .header__user { display: none;}
+	header nav a:before { width: 100%; }
+	main h1 {
+		font-size: 32px;
+		letter-spacing: 1px;
+	}
+	main section.sale .sale__nav a:before { min-width: 135px; }
+	main .main__logo a:nth-child(1) { margin-right: 25px; }
+	main .main__logo a:nth-child(4) { margin-right: 20px; }
+	section.sale .sale__wrrap .sale__card { width:25%; }
+	section.sale .sale__wrrap .sale__card .card__img { height: 200px; }
+	.card__rating .rating:not(:checked) > label {font-size: 17px;}
+	section.sale .sale__wrrap .sale__card .card__info .info__article { margin-right: 15px; }
+	section.sale .sale__wrrap .sale__card .card__price .price__text {font-size: 25px;}
+	section.sale .sale__wrrap .sale__card .card__price button.cart__buy {
+		width: 70px;
+		height: 30px;
+	}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {font-size: 14px; }
+	section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order {
+		width: 70px;
+		height: 30px;
+		margin-top: -3px;
+	}
+	section.sale .sale__wrrap .sale__card .card__price button.cart__buy:hover:after,
+	section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:hover:after {display: none;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {font-size: 25px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal p { margin-top: 10px; }
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__name {margin-top: 10px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__product {margin-bottom: 10px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {font-size: 17px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal span {font-size: 16px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {font-size: 16px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {height: 425px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {padding: 5px 10px 31px 10px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product {margin-top: 10px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {margin-top: 10px;}
+
+	footer .footer__info .footer__contacts address {margin-left: 7px;}
+	footer .footer__info .footer__contacts .contacts__phone a { margin-left: 7px;}
+	footer .footer__info div.w20 { width: 25%; }
+	footer .footer__info .footer__account { display: none;}
+	footer .footer__subtitle div.w50 {width: 100%;}
+	footer .footer__subtitle .subtitle__text { text-align: center;}
+	footer .footer__subtitle .subtitle__link { justify-content: center;}
+}
+
+@media screen and (max-width: 426px) {
+	header  { padding: 0 0 30px 0;}
+	header > div { flex-direction: column;}
+	header .header__shoping { display: none;}
+	header .nav__mobile {
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	header img.header__logo {
+		width: 230px;
+		margin-right: 22px;
+	}
+	header .header__phone div {font-size: 13px;}
+	header form button { top: 30px;}
+	header .mobile__shoping a.header__cart {
+		background-color: #fff;
+		border-radius: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	header .mobile__shoping {
+		position: relative;
+		display: flex;
+			}
+	header .mobile__shoping i.label {
+		display: block;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		left: -19px;
+		font-weight: 600;
+		color: #fff;
+		font-size: 12px;
+		line-height: 1.2;
+		font-style: normal;
+		text-align: center;
+		height: 15px;
+		width: 30px;
+		border-radius: 0 50px 50px 0;
+		background-color: #82C166;
+	}
+	header .mobile__shoping .header__cart img { padding: 10px; }
+
+	header div.flex .fa-bars { 
+		display: block;
+		width: 35px;
+		height: 35px;
+		font-size: 30px;
+		float: left;
+		color: #8c8c8c;
+	}
+
+	header .header__address .fa-map-marker-alt, header .header__phone .fa-phone-alt { display: none;}
+
+	header nav.flex { display: none;}
+
+	header form input { 
+		width: 270px;
+		margin-top: 10px;
+	}
+
+	header .header__phone { order: -1;}
+	header .header__phone {
+		width: calc(100% + 30px);
+		padding: 10px 15px 0 15px;
+		margin: 0px;
+		margin-bottom: 10px;
+		background: #8c8c8c;
+		}
+	header .header__phone .header__login .header__user-in {
+		background: transparent;
+		border: none;
+		font-size: 13px;
+		font-weight: 600;
+		text-align: left;
+	}
+
+	header .header__phone div {
+		color: #F2F2F2;
+		display: flex;
+	}
+
+	header .header__phone div a { margin-right: 15px;}
+
+	header .header__phone .header__login {
+		 display: flex;
+		 flex-direction: column;
+		}
+
+	main section.sale .sale__nav { display: none;}
+
+	section.sale .sale__wrrap .sale__card { width: 50%; }
+
+	main .main__logo a img {height: 35px;}
+
+	main h1 {
+		font-size: 23px;
+		letter-spacing: 1px;
+	}
+	main section.sale {padding: 30px 0 0 0;}
+	main section.cars__base .base__detal {width: 95px;}
+	main section.cars__base .base__detal .detal__text {font-size: 15px;}
+	main .main__logo a:nth-child(1) {margin-right: 10px;}
+	main .main__logo a:nth-child(4) {margin-right: 10px;}
+	main .logo__text {font-size: 13px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order { margin-top: 11px; }
+
+
+	footer .footer__info {padding: 10px 15px;}
+	footer .footer__info div.w20 { width: 50%; }
+	footer .footer__info h5 { 
+		margin-top: 10px;
+    	margin-bottom: 5px;
+		text-align: center; 
+	}
+	footer .footer__info .footer__account a,
+	footer .footer__info .footer__information a,
+	footer .footer__info .footer__shop a { text-align: center; }
+	footer .footer__info .footer__contacts .contacts__address { margin-bottom: 7px;}
+	footer .footer__info .footer__payments .payments__img { 
+		text-align: center;
+		margin-top: 10px;
+	}
+	footer .footer__subtitle .subtitle__link { display: none; }
+	footer .footer__subtitle {
+		min-height: 40px;
+		padding: 10px 0;
+	}
+}
+
+@media screen and (max-width: 370px) {
+	header .header__phone div {font-size: 12px;}
+	header .header__phone .header__login .header__user-in {font-size: 12px;}
+	header img.header__logo {
+		width: 185px;
+		margin-right: 20px;
+	}
+	header div.flex .fa-bars {
+		width: 30px;
+		height: 30px;
+	}
+
+	header .mobile__shoping .header__cart img {padding: 8px;}
+	main h1 {
+		font-size: 21px;
+		letter-spacing: 0px;
+	}
+	main .main__logo a img {height: 30px;}
+	main div.flex.w66.main__logo { align-items: flex-start;}
+	main .logo__text { white-space: pre-wrap;}
+	main section.cars__base .base__detal .detal__text {
+		font-size: 13px;
+		margin-bottom: 20px;
+	}
+	main #main__slick .slick-dots li {
+		width: 13px;
+		height: 13px;
+	}
+	section.sale .sale__wrrap .sale__card {width: 90%;}
+	section.sale .sale__wrrap {
+		margin-top: 15px;
+		justify-content: center;
+	}
+	footer .footer__info .footer__shop,
+	footer .footer__info .footer__information { display: none;}
+	footer .footer__info .footer__contacts .contacts__address,
+	footer .footer__info .footer__contacts .contacts__phone { justify-content: center;}
+	footer .footer__info div.w20 {
+		width: 100%;
+	}
 }

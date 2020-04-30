@@ -1,8 +1,17 @@
 <header>
     <div class="flex v-center">
-        <a href="<?=SITE_URL?>" class="header__link">
-            <img class="header__logo" src="style/images/logo.png" alt="logo">
-        </a>
+        <div class="nav__mobile">
+            <i class="fas fa-bars"></i>
+            <a href="<?=SITE_URL?>" class="header__link">
+                <img class="header__logo" src="style/images/logo.png" alt="logo">
+            </a>
+            <div class="mobile__shoping">
+                <i class="label">238</i>
+                <a href="#" class="header__cart">
+                    <img src="../style/icons/shopping-cart-16.png" alt="cart">
+                </a>
+            </div>
+        </div>
         <form>
             <select>
                 <option value="t1">Категорії</option>
@@ -26,6 +35,9 @@
             <div>
                 <a href="tel:+380965836762">+38 096 583 67 62</a><br>
                 <a href="tel:+380582359854">+38 058 235 98 54</a>
+            </div>
+            <div class="header__login">
+                <button class="header__user-in">Увійти</button>
             </div>
          </div>
         <div class="flex header__shoping">

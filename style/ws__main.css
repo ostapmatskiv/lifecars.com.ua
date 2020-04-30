@@ -28,7 +28,6 @@
 .flex.v-center {align-items: center }
 .flex.v-start { align-items: flex-start }
 .flex.v-end { align-items: flex-end }
-.flex > * { width: auto }
 
 .w75 { width: 75% }
 .w66 { width: 66% }
@@ -63,8 +62,12 @@ nav li { list-style: none }
 table { border-collapse: collapse }
 input:focus { outline: none }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1025px) {
 	.t100 { width: 100% }
+	.container {
+		width: 100%;
+		padding: 0 15px;
+	}
 }
 @media screen and (max-width: 576px) {
 	.m100 { width: 100% }
