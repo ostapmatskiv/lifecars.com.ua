@@ -55,7 +55,30 @@ $(document).ready(function(){
         $('.great__link').click(function() {
             event.preventDefault();
             $('.cars__base').css("height", "100%").slideToggle();
-        })
+        });
+
+        $('.fa-bars').click(function() {
+            $('.close__menu').css("display", "block");
+            $('.mob__nav').css("left", "0");
+         });
+
+         $('.fa-times').click(function() {
+            $('.mob__nav').css("left", "-281px");
+            $('.close__menu').css("display", "none");
+         })
+
+         $('.nav__mobile').removeClass("default");
+         $(window).scroll(function() {
+             if ($(this).scrollTop() > 85) {
+                 $('.nav__mobile').addClass("default").fadeIn('slow');
+                 $('.fa-bars').css("color", "#F2F2F2");
+             } else {
+                 $('.nav__mobile').removeClass("default").fadeIn('slow');
+                 $('.fa-bars').css("color", "#777");
+             };
+         });
+
+         
   });
 
 $(function () {

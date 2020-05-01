@@ -64,4 +64,29 @@
         <a href="#">Контакти</a>
         <a href="#">Реєстрація</a>
     </nav>
+    <div class="mob__menu">
+        <div class="close__menu">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="mob__nav">
+            <a href="<?=SITE_URL?>">
+                <img class="mob__logo" src="style/images/logo.png" alt="logo">
+            </a>
+            <a href="">Увійти</a>
+            <a href="">Реєстрація</a>
+            <div class="mob__border"></div>
+            <a href="#">Каталог запчастин</a>
+            <a href="#">Виробники</a>
+            <a href="#">Повернення тагарантія</a>
+            <a href="#">Оплата та доставка</a>
+            <a href="#">Контакти</a>
+            <div class="mob__border"></div>
+            <a href="#">Мій кошик</a>
+            <a href="#">Оформлення замовлення</a>
+            <a href="#">Про нас</a>
+            <a href="#">Інформація для покупця</a>
+            <a href="#">Про оплату</a>
+            <a href="#">Про покупця</a>
+        </div>
+    </div>
 </header>
