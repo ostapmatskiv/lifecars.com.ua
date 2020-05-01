@@ -1,142 +1,143 @@
 <main>
-    <h1>Запчастини для китайських автомобілів</h1>
-    <div class="flex w66 h-evenly v-end main__logo">
-        <a href="#">
-            <img src="style/images/carslogo/12.png" alt="Geely">
-            <div class="logo__text">Geely</div>
-            <i class="fas fa-chevron-down"></i>
-        </a>
-        <a href="#">
-            <img src="style/images/carslogo/2.png" alt="Chery">
-            <div class="logo__text">Chery</div>
-            <i class="fas fa-chevron-down"></i>
-        </a>
+    <div class="flex w50 auto__detal">
         <a class="great__link" href="#">
             <img src="style/images/carslogo/1.png" alt="GreatWall">
-            <div class="logo__text">Great wall</div>
+            <div class="detal__text">Great wall</div>
             <i class="fas fa-chevron-down"></i>
         </a>
         <a href="#">
-            <img src="style/images/carslogo/3.png" alt="Lifan">
-            <div class="logo__text">Lifan</div>
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">Cross Eastar</div>
             <i class="fas fa-chevron-down"></i>
+        </a>
+    </div>
+    <div class="flex catalog__detal">
+        <a href="#">
+            <img src="style/icons/catalog/engine.svg" alt="body">
+            <div>
+                Двигун
+            </div>
         </a>
         <a href="#">
-            <img src="style/images/carslogo/4.png" alt="BYD">
-            <div class="logo__text">Byd</div>
-            <i class="fas fa-chevron-down"></i>
+            <img src="style/icons/catalog/component.svg" alt="components">
+            <div>
+                Складові<br>двигуна
+            </div>
+        </a>
+        <a href="#">
+            <img class="img__svg" src="style/icons/catalog/transmission.svg" alt="transmission">
+            <div>
+                Трансмісія
+            </div>
+        </a>
+        <a href="#">
+            <img src="style/icons/catalog/brakes.svg" alt="brakes">
+            <div>
+                Тормозна<br>
+                система
+            </div>
+        </a>
+        <a href=#">
+            <img src="style/icons/catalog/pendant.svg" alt="pendant">
+            <div>
+                Підвіска
+            </div>
+        </a>
+        <a href="#">
+            <img src="style/icons/catalog/filter.svg" alt="filter">
+            <div>
+                Фільтра
+            </div>
+        </a>
+        <a href="#">
+            <img src="style/icons/catalog/electricity.svg" alt="electricity">
+            <div>
+                Електрика
+            </div>
+        </a>
+        <a href="#">
+            <img src="style/icons/catalog/optics.svg" alt="optics">
+            <div>
+                Оптика
+            </div>
+        </a>
+        <a href="#">
+            <img src="style/icons/catalog/body.svg" alt="body">
+            <div>
+                Кузов
+            </div>
+        </a>
+        <a href="#">
+            <img src="style/icons/catalog/salon.svg" alt="salon">
+            <div>
+                Салон
+            </div>
         </a>
     </div>
-    <section class="flex h-center wrap cars__base">
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">Amulet</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">Tiggo</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">Jaggi</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">QQ</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">Elara</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">Eastar</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">Kimo</div>
-        </div>
-     
-            <div class="base__detal">
-                <img src="style/images/carslogo/cars.png" alt="car">
-                <div class="detal__text">Cross Eastar</div>
-            </div>
-            <div class="base__detal">
-                <img src="style/images/carslogo/cars.png" alt="car">
-                <div class="detal__text">Arrizo 3</div>
-            </div>
-            <div class="base__detal">
-                <img src="style/images/carslogo/cars.png" alt="car">
-                <div class="detal__text">Arrizo 7</div>
-            </div>
-            <div class="base__detal">
-                <img src="style/images/carslogo/cars.png" alt="car">
-                <div class="detal__text">E 5</div>
-            </div>
-            <div class="base__detal">
-                <img src="style/images/carslogo/cars.png" alt="car">
-                <div class="detal__text">Karry</div>
-            </div>
-            <div class="base__detal">
-                <img src="style/images/carslogo/cars.png" alt="car">
-                <div class="detal__text">Tiggo 2</div>
-            </div>
-            <div class="base__detal">
-                <img src="style/images/carslogo/cars.png" alt="car">
-                <div class="detal__text">Tiggo 3</div>
-            </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">Tiggo 5</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">Tiggo 7</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">A 13 (ZAZ Forza)</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">M 11</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">Beat</div>
-        </div>
-    </section>
-   
-   <div class="slick__main" id="main__slick">
-        <div>
-            <img src="style/images/main_owl/auto1.png" alt="auto">
-        </div>
-        <div>
-            <img src="style/images/main_owl/auto2.png" alt="auto">
-        </div>
-        <div>
-            <img src="style/images/main_owl/auto3.png" alt="auto">
-        </div>
-        <div>
-            <img src="style/images/main_owl/auto4.png" alt="auto">
-        </div>
-        <div>
-            <img src="style/images/main_owl/auto5.png" alt="auto">
-        </div>
-        <div>
-            <img src="style/images/main_owl/auto6.png" alt="auto">
-        </div>
-
+    <div class="flex h-evenly catalog__info">
+        <a href="#">Блок цилиндров</a>
+        <a href="#">Головка блока цилиндров</a>
+        <a href="#">Подушки и кронштейны двинателя</a>
+        <a href="#">Ремни и ролики двигателя</a>
+        <a href="#">Сальники и прокладки</a>
     </div>
-    <section class="sale">
-        <div class="flex v-center sale__nav">
-            <a href="#">Новинки &mdash; 5</a>
-            <a href="#">Хіт продажу &mdash; 238</a>
-            <a href="#">Знижки &mdash; 520</a>
-            <a href="#">Обзори</a>
-            <a href="#">Поради</a>
+    <div class="flex h-evenly catalog__sorted">
+        <div>
+            <a href="#">Дешеві</a>
+            <a href="#">Дорожчі</a>
+            <a href="#">А &mdash; Я</a>
+            <a href="#">Я &mdash; А</a>
+            </div>
+        <div class="quantity__goods">
+            Кількість товарів&mdash;<span>5 678</span>
         </div>
-        <div class="flex wrap sale__wrrap">
+    </div>
+    
+    <section class="flex sale__catalog">
+        <aside class="w25">
+            <div class="product__type">
+                <div class="flex v-center">
+                    <p>Тип товару</p>
+                    <i class="fas fa-chevron-circle-up"></i>
+                </div>
+                <form action="#">
+                   
+                    <label for="type__id-1">
+                        <input type="checkbox" name="type" id="type__id-1">
+                        <span>Знижка</span>
+                        </label>
+                   
+                    <label for="type__id-2">
+                        <input type="checkbox" name="type" id="type__id-2">
+                        <span> Новинка</span>
+                       </label>
+                    
+                    <label for="type__id-3">
+                        <input type="checkbox" name="type" id="type__id-3">
+                        <span>Хіт продажу</span>
+                        </label>
+                </form>
+            </div>
+            <div class="quality">
+                    <div class="flex v-center">
+                        <p>Якість</p>
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </div>
+            </div>
+            <div class="manufacturers">
+                    <div class="flex v-center">
+                        <p>Виробники</p>
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </div>
+            </div>
+            <div class="availability">
+                    <div class="flex v-center">
+                        <p>Наявність</p>
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </div>
+            </div>
+        </aside>
+        <div class="flex w75 wrap sale__wrrap">
             <div class="sale__card ">
                 <div class="flex h-center v-center card__img">
                     <img src="../../style/images/card_img/amortizator.png" alt="amortizator">
@@ -670,125 +671,9 @@
                         </div>
                     </div>
             </div>
-            <div class="sale__card">
-                    <div class="flex h-center v-center card__img">
-                        <img src="../../style/images/card_img/amortizator.png" alt="amortizator">
-                        <i class="card__label">-50%</i>
-                        <i class="new__label">new</i>
-                    </div>
-                    <div class="flex v-center card__rating">
-                       <div class="rating">
-                        <input type="radio" id="star5" name="rate" value="5" />
-                        <label for="star5" title="text">5 stars</label>
-                        <input type="radio" id="star4" name="rate" value="4" />
-                        <label for="star4" title="text">4 stars</label>
-                        <input type="radio" id="star3" name="rate" value="3" />
-                        <label for="star3" title="text">3 stars</label>
-                        <input type="radio" id="star2" name="rate" value="2" />
-                        <label for="star2" title="text">2 stars</label>
-                        <input type="radio" id="star1" name="rate" value="1" />
-                        <label for="star1" title="text">1 star</label>
-                       </div>
-                     <div class="rating__comment">
-                        <i class="rating__lebel">25</i>
-                        <img src="../../style/icons/comment.png" alt="comment">
-                     </div>
-                    </div>
-                    <div class="card__text">
-                        Амортизатор кришки 
-                        багажника Cery Eastra
-                    </div>
-                    <div class="card__info">
-                        <div class="w33 info__article">
-                            <p>Виробник</p>
-                            <p>Артикул</p>
-                        </div>
-                        <div class="w66 info__name">
-                            <p>Fetish</p>
-                            <p>B11-2915010</p>
-                        </div>
-                    </div>
-                    <div class="flex v-center card__check">
-                        <div class="flex v-center check__pieces">
-                            <i class="fas fa-check-circle"></i>
-                            <p>В наявності <span class="pieces">586</span> шт.</p>
-                        </div>
-                        <div class="flex check__number">
-                            <span class="minus">-</span>
-                            <input type="text" value="1" size="5"/>
-                            <span class="plus">+</span>
-                        </div>
-                    </div>
-                    <div class="flex v-center card__price">
-                        <div class="price__text">2 500 ₴</div>
-                        <div class="price__cart">
-                            <button class="cart__buy">
-                                <img src="../style/icons/shopping-cart.png" alt="shopping">
-                            </button>
-                        </div>
-                    </div>
-            </div>
-            <div class="sale__card">
-                    <div class="flex h-center v-center card__img">
-                        <img src="../../style/images/card_img/amortizator.png" alt="amortizator">
-                        <i class="card__label">-50%</i>
-                        <i class="new__label">new</i>
-                    </div>
-                    <div class="flex v-center card__rating">
-                       <div class="rating">
-                        <input type="radio" id="star5" name="rate" value="5" />
-                        <label for="star5" title="text">5 stars</label>
-                        <input type="radio" id="star4" name="rate" value="4" />
-                        <label for="star4" title="text">4 stars</label>
-                        <input type="radio" id="star3" name="rate" value="3" />
-                        <label for="star3" title="text">3 stars</label>
-                        <input type="radio" id="star2" name="rate" value="2" />
-                        <label for="star2" title="text">2 stars</label>
-                        <input type="radio" id="star1" name="rate" value="1" />
-                        <label for="star1" title="text">1 star</label>
-                       </div>
-                     <div class="rating__comment">
-                        <i class="rating__lebel">25</i>
-                        <img src="../../style/icons/comment.png" alt="comment">
-                     </div>
-                    </div>
-                    <div class="card__text">
-                        Амортизатор кришки 
-                        багажника Cery Eastra
-                    </div>
-                    <div class="card__info">
-                        <div class="w33 info__article">
-                            <p>Виробник</p>
-                            <p>Артикул</p>
-                        </div>
-                        <div class="w66 info__name">
-                            <p>Fetish</p>
-                            <p>B11-2915010</p>
-                        </div>
-                    </div>
-                    <div class="flex v-center card__check">
-                        <div class="flex v-center check__pieces">
-                            <i class="fas fa-check-circle"></i>
-                            <p>В наявності <span class="pieces">586</span> шт.</p>
-                        </div>
-                        <div class="flex check__number">
-                            <span class="minus">-</span>
-                            <input type="text" value="1" size="5"/>
-                            <span class="plus">+</span>
-                        </div>
-                    </div>
-                    <div class="flex v-center card__price">
-                        <div class="price__text">2 500 ₴</div>
-                        <div class="price__cart">
-                            <button class="cart__buy">
-                                <img src="../style/icons/shopping-cart.png" alt="shopping">
-                            </button>
-                        </div>
-                    </div>
-            </div>
-
-
         </div>
     </section>
-    
+
+
+
 </main>
