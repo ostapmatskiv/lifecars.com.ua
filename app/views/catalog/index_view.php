@@ -101,21 +101,12 @@
                     <i class="fas fa-chevron-circle-up"></i>
                 </div>
                 <form action="#">
-                   
-                    <label for="type__id-1">
-                        <input type="checkbox" name="type" id="type__id-1">
-                        <span>Знижка</span>
-                        </label>
-                   
-                    <label for="type__id-2">
-                        <input type="checkbox" name="type" id="type__id-2">
-                        <span> Новинка</span>
-                       </label>
-                    
-                    <label for="type__id-3">
-                        <input type="checkbox" name="type" id="type__id-3">
-                        <span>Хіт продажу</span>
-                        </label>
+                    <input type="checkbox" name="type" id="type__id-1">
+                    <label for="type__id-1">Знижка<span>2 345</span></label>
+                    <input type="checkbox" name="type" id="type__id-2">
+                    <label for="type__id-2">Новинка <span>346</span></label>
+                    <input type="checkbox" name="type" id="type__id-3">
+                    <label for="type__id-3">Хіт продажу<span>5 687</span></label>
                 </form>
             </div>
             <div class="quality">
@@ -123,18 +114,106 @@
                         <p>Якість</p>
                         <i class="fas fa-chevron-circle-up"></i>
                     </div>
+                    <form action="#">
+                        <input type="checkbox" name="type" id="quality__id-1">
+                        <label for="quality__id-1">Аналог<span>2 345</span></label>
+                        <input type="checkbox" name="type" id="quality__id-2">
+                        <label for="quality__id-2">Ліцензія<span>2 347</span></label>
+                        <input type="checkbox" name="type" id="quality__id-3">
+                        <label for="quality__id-3">Оригінал<span>5 687</span></label>
+                    </form>
             </div>
             <div class="manufacturers">
                     <div class="flex v-center">
                         <p>Виробники</p>
                         <i class="fas fa-chevron-circle-up"></i>
                     </div>
+                    <form action="#">
+                        <input type="checkbox" name="type" id="manufacturers__id-1">
+                        <label for="manufacturers__id-1">ABE<span>5</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-2">
+                        <label for="manufacturers__id-2">Aftermark<span>1</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-3">
+                        <label for="manufacturers__id-3">Ajusa<span>120</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-4">
+                        <label for="manufacturers__id-4">Autofren<span>2</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-5">
+                        <label for="manufacturers__id-5">BTA <span>1</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-6">
+                        <label for="manufacturers__id-6">Caffaro<span>1</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-7">
+                        <label for="manufacturers__id-7">Chery<span>25</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-8">
+                        <label for="manufacturers__id-8">CTR<span>7</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-9">
+                        <label for="manufacturers__id-9">Dayco<span>87</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-10">
+                        <label for="manufacturers__id-10">Denso<span>5</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-11">
+                        <label for="manufacturers__id-11">Fitshi<span>1</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-12">
+                        <label for="manufacturers__id-12">Gates<span>17</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-13">
+                        <label for="manufacturers__id-13">GMB<span>22</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-14">
+                        <label for="manufacturers__id-14">Iljin<span>21</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-15">
+                        <label for="manufacturers__id-15">INA Germany<span>1</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-16">
+                        <label for="manufacturers__id-16">Intelli<span>1</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-17">
+                        <label for="manufacturers__id-17">Könner<span>1</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-18">
+                        <label for="manufacturers__id-18">Mitsubishi<span>1</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-19">
+                        <label for="manufacturers__id-19">Musashi<span>4</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-20">
+                        <label for="manufacturers__id-20">NTN<span>2</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-21">
+                        <label for="manufacturers__id-21">Parts-Mall<span>7</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-22">
+                        <label for="manufacturers__id-22">Pascal<span>45</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-23">
+                        <label for="manufacturers__id-23">Payen<span>7</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-24">
+                        <label for="manufacturers__id-24">Profit<span>1</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-25">
+                        <label for="manufacturers__id-25">Q-FIX<span>1</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-26">
+                        <label for="manufacturers__id-26">RBI<span>1</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-27">
+                        <label for="manufacturers__id-27">Rider<span>517</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-28">
+                        <label for="manufacturers__id-28">Sachs<span>2</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-29">
+                        <label for="manufacturers__id-29">SNR<span>1</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-30">
+                        <label for="manufacturers__id-30">Taiho<span>1</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-31">
+                        <label for="manufacturers__id-31">Teikin<span>1</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-32">
+                        <label for="manufacturers__id-32">Tesla<span>1</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-33">
+                        <label for="manufacturers__id-33">Valeo<span>1</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-34">
+                        <label for="manufacturers__id-34">Victor Reinz<span>1</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-35">
+                        <label for="manufacturers__id-35">Yamato<span>1</span></label>
+                        <input type="checkbox" name="type" id="manufacturers__id-36">
+                        <label for="manufacturers__id-36">Autlog <span>7</span></label>
+                    </form>
             </div>
-            <div class="availability">
-                    <div class="flex v-center">
-                        <p>Наявність</p>
-                        <i class="fas fa-chevron-circle-up"></i>
-                    </div>
+            <div class="storag">
+                <div class="flex v-center">
+                    <p>Наявність</p>
+                    <i class="fas fa-chevron-circle-up"></i>
+                </div>
+                <form action="#">
+                    <input type="checkbox" name="type" id="storag__id-1">
+                    <label for="storag__id-1">Аналог<span>2 345</span></label>
+                    <input type="checkbox" name="type" id="storag__id-2">
+                    <label for="storag__id-2">Ліцензія<span>2 347</span></label>
+                </form>
             </div>
         </aside>
         <div class="flex w75 wrap sale__wrrap">
@@ -671,9 +750,289 @@
                         </div>
                     </div>
             </div>
-        </div>
-    </section>
+            <div class="sale__card">
+                <div class="flex h-center v-center card__img">
+                    <img src="../../style/images/card_img/amortizator.png" alt="amortizator">
+                    <i class="new__label">new</i>
+                </div>
+                <div class="flex v-center card__rating">
+                   <div class="rating">
+                    <input type="radio" id="star5" name="rate" value="5" />
+                    <label for="star5" title="text">5 stars</label>
+                    <input type="radio" id="star4" name="rate" value="4" />
+                    <label for="star4" title="text">4 stars</label>
+                    <input type="radio" id="star3" name="rate" value="3" />
+                    <label for="star3" title="text">3 stars</label>
+                    <input type="radio" id="star2" name="rate" value="2" />
+                    <label for="star2" title="text">2 stars</label>
+                    <input type="radio" id="star1" name="rate" value="1" />
+                    <label for="star1" title="text">1 star</label>
+                   </div>
+                 <div class="rating__comment">
+                    <i class="rating__lebel">25</i>
+                    <img src="../../style/icons/comment.png" alt="comment">
+                 </div>
+                </div>
+                <div class="card__text">
+                    Амортизатор кришки 
+                    багажника Cery Eastra
+                </div>
+                <div class="card__info">
+                    <div class="w33 info__article">
+                        <p>Виробник</p>
+                        <p>Артикул</p>
+                    </div>
+                    <div class="w66 info__name">
+                        <p>Fetish</p>
+                        <p>B11-2915010</p>
+                    </div>
+                </div>
+                <div class="flex v-center card__check">
+                    <div class="flex v-center check__pieces">
+                        <i class="fas fa-check-circle"></i>
+                        <p>В наявності <span class="pieces">586</span> шт.</p>
+                    </div>
+                    <div class="flex check__number">
+                        <span class="minus">-</span>
+                        <input type="text" value="1" size="5"/>
+                        <span class="plus">+</span>
+                    </div>
+                </div>
+                <div class="flex v-center card__price">
+                    <div class="price__text">2 500 ₴</div>
+                    <div class="price__cart">
+                        <button class="cart__buy">
+                            <img src="../style/icons/shopping-cart.png" alt="shopping">
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="sale__card">
+                    <div class="flex h-center v-center card__img">
+                        <img src="../../style/images/card_img/amortizator.png" alt="amortizator">
+                        <i class="card__label">-50%</i>
+                        <i class="new__label">new</i>
+                    </div>
+                    <div class="flex v-center card__rating">
+                       <div class="rating">
+                        <input type="radio" id="star5" name="rate" value="5" />
+                        <label for="star5" title="text">5 stars</label>
+                        <input type="radio" id="star4" name="rate" value="4" />
+                        <label for="star4" title="text">4 stars</label>
+                        <input type="radio" id="star3" name="rate" value="3" />
+                        <label for="star3" title="text">3 stars</label>
+                        <input type="radio" id="star2" name="rate" value="2" />
+                        <label for="star2" title="text">2 stars</label>
+                        <input type="radio" id="star1" name="rate" value="1" />
+                        <label for="star1" title="text">1 star</label>
+                       </div>
+                     <div class="rating__comment">
+                        <i class="rating__lebel">25</i>
+                        <img src="../../style/icons/comment.png" alt="comment">
+                     </div>
+                    </div>
+                    <div class="card__text">
+                        Амортизатор кришки 
+                        багажника Cery Eastra
+                    </div>
+                    <div class="card__info">
+                        <div class="w33 info__article">
+                            <p>Виробник</p>
+                            <p>Артикул</p>
+                        </div>
+                        <div class="w66 info__name">
+                            <p>Fetish</p>
+                            <p>B11-2915010</p>
+                        </div>
+                    </div>
+                    <div class="flex v-center card__check">
+                        <div class="flex v-center check__pieces">
+                            <i class="fas fa-check-circle"></i>
+                            <p>В наявності <span class="pieces">586</span> шт.</p>
+                        </div>
+                        <div class="flex check__number">
+                            <span class="minus">-</span>
+                            <input type="text" value="1" size="5"/>
+                            <span class="plus">+</span>
+                        </div>
+                    </div>
+                    <div class="flex v-center card__price">
+                        <div class="price__text">2 500 ₴</div>
+                        <div class="price__cart">
+                            <button class="cart__buy">
+                                <img src="../style/icons/shopping-cart.png" alt="shopping">
+                            </button>
+                        </div>
+                    </div>
+            </div>
+            <div class="sale__card no_availabilaty">
+                    <div class="flex h-center v-center card__img">
+                        <img src="../../style/images/card_img/amortizator.png" alt="amortizator">
+                        <i class="card__label">-50%</i>
+                        <i class="new__label">new</i>
+                    </div>
+                    <div class="flex v-center card__rating">
+                       <div class="rating">
+                        <input type="radio" id="star5" name="rate" value="5" />
+                        <label for="star5" title="text">5 stars</label>
+                        <input type="radio" id="star4" name="rate" value="4" />
+                        <label for="star4" title="text">4 stars</label>
+                        <input type="radio" id="star3" name="rate" value="3" />
+                        <label for="star3" title="text">3 stars</label>
+                        <input type="radio" id="star2" name="rate" value="2" />
+                        <label for="star2" title="text">2 stars</label>
+                        <input type="radio" id="star1" name="rate" value="1" />
+                        <label for="star1" title="text">1 star</label>
+                       </div>
+                     <div class="rating__comment">
+                        <i class="rating__lebel">25</i>
+                        <img src="../../style/icons/comment.png" alt="comment">
+                     </div>
+                    </div>
+                    <div class="card__text">
+                        Амортизатор кришки 
+                        багажника Cery Eastra
+                    </div>
+                    <div class="card__info">
+                        <div class="w33 info__article">
+                            <p>Виробник</p>
+                            <p>Артикул</p>
+                        </div>
+                        <div class="w66 info__name">
+                            <p>Fetish</p>
+                            <p>B11-2915010</p>
+                        </div>
+                    </div>
+                    <div class="flex v-center card__check">
+                        <div class="flex v-center check__pieces">
+                            <i class="fas fa-times-circle"></i>
+                            <p>В наявності <span class="pieces">0</span> шт.</p>
+                        </div>
+                        <div class="flex check__number">
+                            <span class="minus">-</span>
+                            <input type="text" value="1" size="5"/>
+                            <span class="plus">+</span>
+                        </div>
+                    </div>
+                    <div class="cart__modal cart__modal-two">
+                        <h5>Зв'яжіться з нами</h5>
+                        <p>і ми проінформуємо Вас про можливість замовлення та оптимальну ціну на цей товар:</p>
+                        <div class="modal__name">
+                            Шланг гальмівний задній Chery Eastar
+                        </div>
+                        <div class="modal__product">
+                            B11-2915010
+                        </div>
+                        <div class="modal__phone">
+                            <a href="tel:+380930000943">+38 093 0000 943</a>
+                            <a href="tel:+380960000946">+38 096 0000 946</a>
+                        </div>
+                        <span>або</span>
+                        <button class="modal__request">Залишити заявку</button>
 
+                        <div class="cart__form">
+                            <div class="form__name">
+                                Шланг гальмівний задній Chery Eastar
+                            </div>
+                            <div class="form__product">
+                                B11-2915010
+                            </div>
+                            <form action="#">
+                                <input required name="city" list="city__select" type="text" placeholder="Виберіть мшісто">
+                                <datalist id="city__select"></datalist>
+                                <input required name="#" type="text" placeholder="Ім'я">
+                                <input required name="#" type="tel" placeholder="Телефон">
+                                <input required name="#" type="email" placeholder="Електронна адреса">
+                                <button class="form__btn">Надіслати запит</button>
+                            </form>
+                        </div>
+                        <button class="cart__hiden cart__hiden-two">
+                            <i class="fas fa-chevron-circle-up"></i>
+                        </button>
+                    </div>
+                    <div class="flex v-center card__price">
+                        <div class="price__text">Під замовлення</div>
+                        <div class="price__cart">
+                            <button class="cart__order">
+                                <img src="../style/icons/telephone-2.svg" alt="telephone">
+                            </button>
+                        </div>
+                    </div>
+            </div>
+            <div class="sale__card">
+                    <div class="flex h-center v-center card__img">
+                        <img src="../../style/images/card_img/amortizator.png" alt="amortizator">
+                        <i class="card__label">-50%</i>
+                        <i class="new__label">new</i>
+                    </div>
+                    <div class="flex v-center card__rating">
+                       <div class="rating">
+                        <input type="radio" id="star5" name="rate" value="5" />
+                        <label for="star5" title="text">5 stars</label>
+                        <input type="radio" id="star4" name="rate" value="4" />
+                        <label for="star4" title="text">4 stars</label>
+                        <input type="radio" id="star3" name="rate" value="3" />
+                        <label for="star3" title="text">3 stars</label>
+                        <input type="radio" id="star2" name="rate" value="2" />
+                        <label for="star2" title="text">2 stars</label>
+                        <input type="radio" id="star1" name="rate" value="1" />
+                        <label for="star1" title="text">1 star</label>
+                       </div>
+                     <div class="rating__comment">
+                        <i class="rating__lebel">25</i>
+                        <img src="../../style/icons/comment.png" alt="comment">
+                     </div>
+                    </div>
+                    <div class="card__text">
+                        Амортизатор кришки 
+                        багажника Cery Eastra
+                    </div>
+                    <div class="card__info">
+                        <div class="w33 info__article">
+                            <p>Виробник</p>
+                            <p>Артикул</p>
+                        </div>
+                        <div class="w66 info__name">
+                            <p>Fetish</p>
+                            <p>B11-2915010</p>
+                        </div>
+                    </div>
+                    <div class="flex v-center card__check">
+                        <div class="flex v-center check__pieces">
+                            <i class="fas fa-check-circle"></i>
+                            <p>В наявності <span class="pieces">586</span> шт.</p>
+                        </div>
+                        <div class="flex check__number">
+                            <span class="minus">-</span>
+                            <input type="text" value="1" size="5"/>
+                            <span class="plus">+</span>
+                        </div>
+                    </div>
+                    <div class="flex v-center card__price">
+                        <div class="price__text">2 500 ₴</div>
+                        <div class="price__cart">
+                            <button class="cart__buy">
+                                <img src="../style/icons/shopping-cart.png" alt="shopping">
+                            </button>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        
+    </section>
+    <div class="flex h-center v-center w50 pagination">
+        <button>
+           <img src="style/icons/catalog/back-left.svg" alt="left">
+        </button>
+            <a href="">1</a>
+            <a href="">486</a>
+            <a href="">487</a>
+            <a href="">488</a>
+            <a href="">2546</a>
+        <button>
+           <img src="style/icons/catalog/back-right.svg" alt="right">
+        </button>
+    </div>
 
 
 </main>

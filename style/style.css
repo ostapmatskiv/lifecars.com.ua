@@ -867,7 +867,7 @@ main .catalog__detal {
 	align-items: baseline;
 }
 main .catalog__detal a div {
-	font-size: 20px;
+	font-size: 16px;
 	font-weight: 600;
 	text-align: center;
 	color: #666666;
@@ -876,7 +876,7 @@ main .catalog__detal a div {
 main .catalog__detal a:hover div { color: #82C166; }
 main .catalog__info { margin: 20px 0 40px 0;}
 main .catalog__info a {
-	font-size: 16px;
+	font-size: 15px;
   	font-weight: normal;
   	text-align: center;
 	color: #666666;
@@ -908,6 +908,60 @@ main .catalog__sorted .quantity__goods {
 	font-weight: normal;
 	color: #8c8c8c;
 }
+/*                         aside                       */
+
+
+main section.sale__catalog aside .product__type form,
+main section.sale__catalog aside .quality form,
+main section.sale__catalog aside .manufacturers form,
+main section.sale__catalog aside .storag form { margin-top: 10px;}
+
+main section.sale__catalog aside .product__type input[type=checkbox] + label,
+main section.sale__catalog aside .quality input[type=checkbox] + label, 
+main section.sale__catalog aside .manufacturers input[type=checkbox] + label,
+main section.sale__catalog aside .storag input[type=checkbox] + label  { display: block;}
+
+main section.sale__catalog aside .product__type input[type=checkbox],
+main section.sale__catalog aside .quality input[type=checkbox],
+main section.sale__catalog aside .manufacturers input[type=checkbox],
+main section.sale__catalog aside .storag input[type=checkbox] { display: none;}
+
+main section.sale__catalog aside .product__type input[type=checkbox] + label:before,
+main section.sale__catalog aside .quality input[type=checkbox] + label:before,
+main section.sale__catalog aside .manufacturers input[type=checkbox] + label:before,
+main section.sale__catalog aside .storag input[type=checkbox] + label:before {
+	content: "";
+	width: 14px;
+	height: 14px;
+	background-color: #f2f2f2;
+	border-radius: 100%;
+	display: inline-block;
+	margin: 0 10px 0 10px;
+}
+main section.sale__catalog aside .product__type input[type=checkbox]:checked + label,
+main section.sale__catalog aside .quality input[type=checkbox]:checked + label,
+main section.sale__catalog aside .manufacturers input[type=checkbox]:checked + label,
+main section.sale__catalog aside .storag input[type=checkbox]:checked + label {
+	width: 100%;
+	height: 30px;
+	margin-bottom: 2px;
+	border-radius: 15px;
+	background-color: #f2f2f2;
+}
+main section.sale__catalog aside .product__type input[type=checkbox]:checked + label::before {background-color: #ff5205;}
+
+main section.sale__catalog aside .manufacturers input[type=checkbox]:checked + label::before,
+main section.sale__catalog aside .quality input[type=checkbox]:checked + label::before,
+main section.sale__catalog aside .storag input[type=checkbox]:checked + label::before {background-color: #7cbe49;}
+
+main section.sale__catalog aside .product__type form label span,
+main section.sale__catalog aside .quality form label span,
+main section.sale__catalog aside .manufacturers form label span,
+main section.sale__catalog aside .storag form label span { float: right; margin-right: 10px;}
+
+/*                        aside                                 */
+
+
 /*               sale__catalog                 */
 section.sale__catalog .sale__wrrap {
 	margin-top: 25px;
@@ -915,7 +969,7 @@ section.sale__catalog .sale__wrrap {
 section.sale__catalog .sale__wrrap .sale__card {
 	width: 25%;
 	padding: 8px;
-	min-height: 541px;
+	min-height: auto;
 	margin-bottom: 80px;
 }
 section.sale__catalog .sale__wrrap .sale__card {
@@ -1054,7 +1108,7 @@ section.sale__catalog .sale__wrrap .sale__card .card__check .check__pieces .fa-t
 	color: #FFC505;
 }
 section.sale__catalog .sale__wrrap .sale__card .card__check .check__pieces p {
-	font-size: 14px;
+	font-size: 12px;
 	  color: #262626;
 	  margin-left: 6px;
 }
@@ -1090,7 +1144,7 @@ section.sale__catalog .sale__wrrap .sale__card .check__number span.plus {
 }
 
 
-/*                                                 cart modal                                                   */
+/*                                              catalog- cart modal                                                   */
 
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal {
 	position: absolute;
@@ -1184,7 +1238,7 @@ section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal butt
 	display: block;
 }
 
-/*                                                cart form                                           */
+/*                                            catalog---cart form                                           */
 
 
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {
@@ -1238,20 +1292,20 @@ section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .car
 	margin-top: 30px;
 }
 
-/*                                           cart form                                            */
+/*                                       catalo---    cart form                                            */
 
 
-/*                                 cart modal                                               */
+/*                               catalog----  cart modal                                               */
 
 
 section.sale__catalog .sale__wrrap .sale__card .card__price { margin-top: 18px;}
 section.sale__catalog .sale__wrrap .sale__card .card__price .price__text {
-	font-size: 32px;
+	font-size: 30px;
 	font-weight: 400;
 	color: #262626;
 }
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {
-	font-size: 18px;
+	font-size: 16px;
     font-weight: 400;
     color: #262626;
 }
@@ -1284,7 +1338,7 @@ section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__orde
 	position: relative;
 	width: 85px;
 	height: 40px;
-	margin-top: 5px;
+	margin-top: 3px;
 	border: none;
 	outline: none;
   	border-radius: 5px;
@@ -1309,34 +1363,36 @@ section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy:hov
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order:hover:after {
 	display: block;
 }
+
+/*                 aside checkbox               */
 section.sale__catalog aside {margin-top: 35px;}
 section.sale__catalog .product__type {
-	width: 268px;
-	height: 184px;
+	width: 85%;
+	height: auto;
 	padding: 20px;
 	margin-bottom: 5px;
 	border-radius: 5px;
 	background-color: #fefefe;
 }
 section.sale__catalog .quality {
-	width: 268px;
-	height: 184px;
+	width: 85%;
+	height: auto;
 	padding: 20px;
 	margin-bottom: 5px;
 	border-radius: 5px;
 	background-color: #fefefe;
 }
 section.sale__catalog .manufacturers {
-	width: 268px;
-	height: 1166px;
+	width: 85%;
+	height: auto;
 	padding: 20px;
 	margin-bottom: 5px;
 	border-radius: 5px;
 	background-color: #fefefe;
 }
-section.sale__catalog .availability {
-	width: 268px;
-	height: 154px;
+section.sale__catalog .storag {
+	width: 85%;
+	height: auto;
 	padding: 20px;
 	border-radius: 5px;
 	background-color: #fefefe;
@@ -1344,16 +1400,60 @@ section.sale__catalog .availability {
 section.sale__catalog .product__type,
 section.sale__catalog .quality,
 section.sale__catalog .manufacturers,
-section.sale__catalog .availability p {
-	font-size: 20px;
+section.sale__catalog .storag  {
+	font-size: 16px;
 	font-weight: 600;
 	color: #666666;
 }
 section.sale__catalog .product__type .fa-chevron-circle-up,
 section.sale__catalog .quality .fa-chevron-circle-up,
 section.sale__catalog .manufacturers .fa-chevron-circle-up,
-section.sale__catalog .availability .fa-chevron-circle-up { color: #d9d9d9; }
-
+section.sale__catalog .storag .fa-chevron-circle-up { color: #d9d9d9; }
+main .pagination {margin: 0 auto 20px;}
+main .pagination button {
+	cursor: pointer;
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	background-color: #d9d9d9;
+	border: none;
+	outline: none;
+	border-radius: 100%
+}
+main .pagination a {
+	font-size: 12px;
+	font-weight: normal;
+	line-height: 1.5;
+	text-align: center;
+	color: #262626;
+	margin: 0 5px;
+}
+main .pagination a:nth-child(2),
+main .pagination a:nth-child(6) {
+	width: 47px;
+  	height: 20px;
+  	border-radius: 2px;
+  	background-color: #d9d9d9;
+}
+main .pagination a:nth-child(3),
+main .pagination a:nth-child(5) {
+	width: 47px;
+	height: 20px;
+	border-radius: 2px;
+	background-color: #bfbfbf;
+}
+main .pagination a:nth-child(4) {
+	width: 47px;
+	height: 30px;
+	border-radius: 2px;
+	background-color: #7cbe49;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 1.8;
+	text-align: center;
+	color: #f2f2f2;
+}
+/*                         catalog             */
 
 
 /*                   card sale              */
@@ -1446,6 +1546,10 @@ section.sale__catalog .availability .fa-chevron-circle-up { color: #d9d9d9; }
 	main section.cars__base .base__detal img { width: 90%; }
 	footer .footer__info { padding-left: 15px; padding-right: 15px;}
 	section.sale .sale__wrrap .sale__card { width:20%; }
+	main section.sale__catalog aside .product__type input[type=checkbox]:checked + label,
+	main section.sale__catalog aside .quality input[type=checkbox]:checked + label,
+	main section.sale__catalog aside .manufacturers input[type=checkbox]:checked + label,
+	main section.sale__catalog aside .storag input[type=checkbox]:checked + label {height: 20px;}
 	section.sale .sale__wrrap .sale__card .card__img { height: 200px; }
 	.card__rating .rating:not(:checked) > label {font-size: 17px;}
 	section.sale .sale__wrrap .sale__card .card__info .info__article { margin-right: 15px; }
@@ -1474,8 +1578,57 @@ section.sale__catalog .availability .fa-chevron-circle-up { color: #d9d9d9; }
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product {margin-top: 10px;}
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {margin-top: 10px;}
 
+	/*                               catalog                      */
 
+	main .auto__detal a img {height: 50px;}
+	main .auto__detal a .detal__text {font-size: 15px;}
+	main .catalog__detal a img { height: 50px;}
+	main .catalog__detal a div {font-size: 14px;}
 
+	section.sale__catalog .product__type,
+	section.sale__catalog .quality,
+	section.sale__catalog .manufacturers,
+	section.sale__catalog .storag{width: 95%;}
+
+	section.sale__catalog .product__type,
+	section.sale__catalog .quality, 
+	section.sale__catalog .manufacturers, 
+	section.sale__catalog .storag {font-size: 15px;}
+
+	/*     catalog---sale---card         */
+	section.sale__catalog .sale__wrrap .sale__card .card__img {height: 200px;}
+	section.sale__catalog .sale__wrrap .sale__card .card__text {font-size: 16px;}
+	section.sale__catalog .sale__wrrap .sale__card .card__info .info__article p {font-size: 14px;}
+	section.sale__catalog .sale__wrrap .sale__card .card__info .info__name p {font-size: 14px;}
+	section.sale__catalog .sale__wrrap .sale__card .card__info .info__article {margin-right: 15px;}
+	section.sale__catalog .sale__wrrap .sale__card .card__price .price__text {font-size: 25px;}
+	section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy {
+		width: 70px;
+		height: 30px;
+	}
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order {
+		width: 70px;
+		height: 30px;
+		margin-top: 0px;
+	}
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal {height: 427px;}
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {font-size: 14px; line-height: 1;}
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order img {width: 23px;}
+	section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy img {width: 23px;}
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {font-size: 25px;}
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal p {margin-top: 10px;}
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__name {margin-top: 10px;}
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__product {margin: 10px 0;}
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {font-size: 17px;}
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal span {font-size: 16px;}
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {font-size: 16px;}
+	section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy:after,
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order:after {content: "";}
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form  {padding: 5px 10px 31px 10px;}
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product,
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input  {margin-top: 10px;}
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__btn {font-size: 17px;}
+	/*     catalog----sale ----card        */
 }
 @media screen and (max-width: 769px) {
 	header form select,
@@ -1524,6 +1677,51 @@ section.sale__catalog .availability .fa-chevron-circle-up { color: #d9d9d9; }
 	footer .footer__subtitle div.w50 {width: 100%;}
 	footer .footer__subtitle .subtitle__text { text-align: center;}
 	footer .footer__subtitle .subtitle__link { justify-content: center;}
+
+	/*                catalog               */
+	main .catalog__info a {font-size: 11px;}
+	main .catalog__info {margin: 15px 0 20px 0;}
+	section.sale__catalog .sale__wrrap .sale__card {width: 33%;}
+	section.sale__catalog .product__type,
+	section.sale__catalog .quality,
+	section.sale__catalog .manufacturers,
+	section.sale__catalog .storag {
+		padding: 15px 5px;
+		font-size: 13px;
+	}
+	main section.sale__catalog aside .product__type input[type=checkbox] + label:before,
+	main section.sale__catalog aside .quality input[type=checkbox] + label:before,
+	main section.sale__catalog aside .manufacturers input[type=checkbox] + label:before,
+	main section.sale__catalog aside .storag input[type=checkbox] + label:before {width: 11px; height: 11px;}
+
+	main section.sale__catalog aside .product__type input[type=checkbox]:checked + label,
+	main section.sale__catalog aside .quality input[type=checkbox]:checked + label,
+	main section.sale__catalog aside .manufacturers input[type=checkbox]:checked + label,
+	main section.sale__catalog aside .storag input[type=checkbox]:checked + label {height: 18px;}
+	section.sale__catalog .sale__wrrap .sale__card {padding: 6px;}
+	main .pagination button {
+		width: 30px;
+		height: 30px;
+	}
+	main .pagination button img { height: 14px;}
+	main .pagination a:nth-child(2),
+	main .pagination a:nth-child(6) {
+		width: 40px;
+		height: 18px;
+	}
+	main .pagination a:nth-child(3),
+	main .pagination a:nth-child(5) {
+		width: 40px;
+		height: 18px;
+	}
+	main .pagination a:nth-child(4) {
+		width: 40px;
+		height: 27px;
+		font-size: 14px;
+	}
+
+
+	/*                catalog                 */
 }
 
 @media screen and (max-width: 426px) {
