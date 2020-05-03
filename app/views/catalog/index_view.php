@@ -11,7 +11,7 @@
             <i class="fas fa-chevron-down"></i>
         </a>
     </div>
-    <div class="flex catalog__detal">
+    <div class="flex wrap catalog__detal">
         <a href="#">
             <img src="style/icons/catalog/engine.svg" alt="body">
             <div>

@@ -1817,6 +1817,7 @@ main .pagination a:nth-child(4) {
 		font-size: 23px;
 		letter-spacing: 1px;
 	}
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order {margin-top: 15px;}
 	main section.sale {padding: 30px 0 0 0;}
 	main section.cars__base .base__detal {width: 95px;}
 	main section.cars__base .base__detal .detal__text {font-size: 15px;}
@@ -1905,6 +1906,39 @@ main .pagination a:nth-child(4) {
 		background: #777;
 		z-index: 11;
 	}
+	/*               catalog               */
+	main .catalog__detal {margin: 10px 0;}
+	main .catalog__detal a img {height: 40px;}
+	main div.flex.wrap.catalog__detal a {
+		text-align: center;
+		width: 20%;
+		margin-bottom: 10px;
+	}
+	main .catalog__info {margin: 15px 0 15px 0;}
+	main .catalog__sorted div a {
+		width: 50px;
+		height: 20px;
+		margin-right: 5px;
+		padding: 2px 5px;
+		font-size: 10px;
+	}
+	main .catalog__sorted .quantity__goods { font-size: 13px;}
+	main section.sale__catalog {flex-wrap: wrap;}
+	section.sale__catalog aside.w25 {width: 100%;}
+	section.sale__catalog .product__type,
+	section.sale__catalog .quality,
+	section.sale__catalog .manufacturers,
+	section.sale__catalog .storag {width: 100%;}
+	main section.sale__catalog .sale__wrrap {
+		margin-top: 10px;
+		width: 100%;
+	}
+	section.sale__catalog .sale__wrrap .sale__card {width: 50%;}
+	main .pagination {width: 100%;}
+
+
+
+	/*               catalog                 */
 }
 
 @media screen and (max-width: 370px) {
@@ -1940,5 +1974,24 @@ main .pagination a:nth-child(4) {
 		margin-top: 15px;
 		justify-content: center;
 	}
+	/*       catalog           */
+	main .auto__detal a img {height: 40px;}
+	main .auto__detal a .detal__text {font-size: 13px;}
+	main .auto__detal a .fa-chevron-down {
+		font-size: 20px;
+		margin-top: 8px;
+	}
+	main .catalog__detal a div {font-size: 11px; margin-top: 10px;}
+	main .catalog__info a {font-size: 10px;}
+	section.sale__catalog aside {margin-top: 10px;}
+	main .catalog__sorted { flex-wrap: wrap;}
+	main .catalog__sorted .quantity__goods { margin: 10px 0 0 0;}
+	main section.sale__catalog .sale__wrrap {justify-content: center;}
+	section.sale__catalog .sale__wrrap .sale__card {width: 80%;}
+
+
+
+
+	/*       catalog          */
 	
 }
