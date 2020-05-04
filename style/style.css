@@ -350,26 +350,32 @@ main section.sale .sale__nav a:active::before {
 section.sale .sale__wrrap {
 	margin-top: 35px;
 }
+main.detal .detal__cart .sale__card,
 section.sale .sale__wrrap .sale__card {
 	width: 20%;
 	padding: 8px;
 	min-height: 541px;
 	margin-bottom: 80px;
 }
+main.detal .detal__cart .sale__card,
 section.sale .sale__wrrap .sale__card {
 	border: 2px solid transparent;
 	border-radius: 10px;
 	position: relative;
 }
+main.detal .detal__cart .sale__card:hover,
 section.sale .sale__wrrap .sale__card:hover {
     border-color: #fefefe;
 }
+main.detal .detal__cart .sale__card.no_availabilaty:hover ,
 section.sale .sale__wrrap .sale__card.no_availabilaty:hover {
     border-color: #ffc505;
 }
+main.detal .detal__cart .sale__card .card__img img,
 section.sale .sale__wrrap .sale__card .card__img img {
 	width: 100%;
 }
+main.detal .detal__cart .sale__card .card__img i.card__label,
 section.sale .sale__wrrap .sale__card .card__img i.card__label {
 	position: absolute;
 	top: 26px;
@@ -386,6 +392,7 @@ section.sale .sale__wrrap .sale__card .card__img i.card__label {
 	border-radius: 0 50px 50px 0;
 	background-color: #7cbe49;
 }
+main.detal .detal__cart .sale__card .card__img i.new__label,
 section.sale .sale__wrrap .sale__card .card__img i.new__label {
 	position: absolute;
 	top: 50px;
@@ -403,12 +410,14 @@ section.sale .sale__wrrap .sale__card .card__img i.new__label {
 	border-radius: 0 50px 50px 0;
 	background-color: #ff5205;
 }
+main.detal .detal__cart .sale__card .card__img,
 section.sale .sale__wrrap .sale__card .card__img {
 	width: 100%;
 	height: 240px;
 	background-color: #fff;
 	border-radius: 5px;
 }
+
 .card__rating .rating:not(:checked) > input {
     position:absolute;
     top:-9999px;
@@ -439,6 +448,7 @@ section.sale .sale__wrrap .sale__card .card__img {
 .card__rating .rating > label:hover ~ input:checked ~ label {
     color: #c59b08;
 }
+main.detal .detal__cart .sale__card .rating__comment,
 section.sale .sale__wrrap .sale__card .rating__comment {
 	flex-grow: 1;
 	margin-left: 30px;
@@ -448,6 +458,7 @@ section.sale .sale__wrrap .sale__card .rating__comment {
     align-items: flex-end;
     margin-top: 5px;
 }
+main.detal .detal__cart .sale__card .rating__comment i.rating__lebel,
 section.sale .sale__wrrap .sale__card .rating__comment i.rating__lebel {
 	font-size: 16px;
   font-weight: normal;
@@ -456,6 +467,7 @@ section.sale .sale__wrrap .sale__card .rating__comment i.rating__lebel {
   margin-right: 11px;
   font-style: normal;
 }
+main.detal .detal__cart .sale__card .card__text,
 section.sale .sale__wrrap .sale__card .card__text {
 	height: 100px;
 	display: table-cell;
@@ -465,40 +477,49 @@ section.sale .sale__wrrap .sale__card .card__text {
 	text-align: left;
 	color: #262626;
 }
+main.detal .detal__cart .sale__card .card__info,
 section.sale .sale__wrrap .sale__card .card__info {
 	/* margin-top: 15px; */
 	display: flex;
-}
+}main.detal .detal__cart .sale__card .card__info .info__article,
 section.sale .sale__wrrap .sale__card .card__info .info__article { margin-right: 5px;} 
+main.detal .detal__cart .sale__card .card__info .info__article p,
 section.sale .sale__wrrap .sale__card .card__info .info__article p {
 	font-size: 15px;
 	padding-top: 5px;
 	color: #a6a6a6;
 }
+main.detal .detal__cart .sale__card .card__info .info__name p,
 section.sale .sale__wrrap .sale__card .card__info .info__name p {
 	font-size: 15px;
 	padding-top: 5px;
 	color: #262626;
 }
+main.detal .detal__cart .sale__card .card__check,
 section.sale .sale__wrrap .sale__card .card__check {
 	margin-top: 15px;
 }
+main.detal .detal__cart .sale__card .card__check .check__pieces .fa-check-circle,
 section.sale .sale__wrrap .sale__card .card__check .check__pieces .fa-check-circle {
 	font-size: 16px;
   	color: #7cbe49;
 }
-section.sale .sale__wrrap .sale__card .card__check .check__pieces .fa-times-circle{
+main.detal .detal__cart .sale__card .card__check .check__pieces .fa-times-circle,
+section.sale .sale__wrrap .sale__card .card__check .check__pieces .fa-times-circle {
 	font-size: 16px;
 	color: #FFC505;
 }
+main.detal .detal__cart .sale__card .card__check .check__pieces p,
 section.sale .sale__wrrap .sale__card .card__check .check__pieces p {
 	font-size: 14px;
 	  color: #262626;
 	  margin-left: 6px;
 }
+main.detal .detal__cart .sale__card .check__number,
 section.sale .sale__wrrap .sale__card .check__number {
 	width: 60px;
 }
+main.detal .detal__cart .sale__card .check__number span.minus,
 section.sale .sale__wrrap .sale__card .check__number span.minus {
 	display: inline-block;
 	width: 25px;
@@ -509,6 +530,7 @@ section.sale .sale__wrrap .sale__card .check__number span.minus {
 	background-color: #d9d9d9;
 	cursor: pointer;
 }
+main.detal .detal__cart .sale__card .check__number input,
 section.sale .sale__wrrap .sale__card .check__number input {
 	width: 30px;
 	text-align: center;
@@ -516,6 +538,7 @@ section.sale .sale__wrrap .sale__card .check__number input {
 	color: #666666;
 	border: none;
 }
+main.detal .detal__cart .sale__card .check__number span.plus ,
 section.sale .sale__wrrap .sale__card .check__number span.plus {
 	display: inline-block;
 	width: 25px;
@@ -529,7 +552,7 @@ section.sale .sale__wrrap .sale__card .check__number span.plus {
 
 
 /*                                                 cart modal                                                   */
-
+main.detal .detal__cart .sale__card.no_availabilaty .cart__modal,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {
 	position: absolute;
     top: 0;
@@ -541,6 +564,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {
 	padding: 15px;
 	background-color: #ffc505;
 }
+main.detal .detal__cart .sale__card.no_availabilaty .cart__modal h5,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {
 	font-size: 30px;
 	margin-top: 5px;
@@ -549,6 +573,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {
     text-align: left;
     color: #2d3b40;
 }
+main.detal .detal__cart .sale__card.no_availabilaty .cart__modal p,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal p {
 	font-size: 15px;
 	font-weight: 600;
@@ -556,6 +581,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal p {
 	color: #ffffff;
 	margin-top: 15px;
 } 
+main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__name,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__name {
 	font-size: 16px;
     font-weight: bold;
@@ -563,7 +589,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__name 
 	color: #2d3b40;
 	margin-top: 15px;
 }
-
+main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__product,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__product {
 	font-size: 16px;
 	font-weight: normal;
@@ -573,12 +599,14 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__produ
 	margin-bottom: 20px;
 
 }
+main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {
 	font-size: 22px;
 	font-weight: bold;
 	text-align: center;
 	color: #2d3b40;
 }
+main.detal .detal__cart .sale__card.no_availabilaty .cart__modal span ,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal span {
 	display: block;
 	font-size: 18px;
@@ -587,6 +615,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal span {
 	color: #2d3b40;
 	margin-top: 8px;
 }
+main.detal .detal__cart .sale__card.no_availabilaty .cart__modal button.modal__request,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {
 	width: 100%;
 	height: 40px;
@@ -601,6 +630,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal_
 	color: #ffffff;
 	cursor: pointer;
 }
+main.detal .detal__cart .sale__card.no_availabilaty .cart__modal button.cart__hiden,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.cart__hiden {
 	width: 34px;
 	height: 34px;
@@ -613,6 +643,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.cart__
 	outline: none;
 	border-radius: 100%;
 }
+main.detal .detal__cart .sale__card.no_availabilaty .cart__modal button.cart__hiden .fa-chevron-circle-up,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.cart__hiden .fa-chevron-circle-up {
 	font-size: 25px;
     text-align: center;
@@ -624,7 +655,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.cart__
 
 /*                                                cart form                                           */
 
-
+main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {
 	position: absolute;
 	bottom: 15px;
@@ -635,12 +666,14 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {
 	background-color: #ffc505;
 	z-index: -1;
 }
-section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__name{
+main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__name,
+section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__name {
 	font-size: 16px;
 	font-weight: bold;
 	text-align: left;
 	color: #2d3b40;
 }
+main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__product,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product {
 	font-size: 16px;
   	font-weight: normal;
@@ -648,6 +681,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .
   	color: #2d3b40;
   	margin-top: 15px;
 }
+main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form input ,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {
 	width: 100%;
 	height: 30px;
@@ -657,11 +691,13 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form i
 	margin-top: 15px;
 	padding-left: 15px;
 }
+main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form input::placeholder,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input::placeholder {
 	font-size: 14px;
 	font-weight: 400;
 	color: #a6a6a6;
 }
+main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__btn,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__btn {
 	width: 100%;
 	height: 40px;
@@ -681,18 +717,21 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .
 
 /*                                 cart modal                                               */
 
-
+main.detal .detal__cart .sale__card .card__price,
 section.sale .sale__wrrap .sale__card .card__price { margin-top: 18px;}
+main.detal .detal__cart .sale__card .card__price .price__text,
 section.sale .sale__wrrap .sale__card .card__price .price__text {
 	font-size: 32px;
 	font-weight: 400;
 	color: #262626;
 }
+main.detal .detal__cart .sale__card.no_availabilaty .card__price .price__text,
 section.sale .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {
 	font-size: 18px;
     font-weight: 400;
     color: #262626;
 }
+main.detal .detal__cart .sale__card .card__price button.cart__buy,
 section.sale .sale__wrrap .sale__card .card__price button.cart__buy {
 	position: relative;
 	width: 85px;
@@ -705,6 +744,7 @@ section.sale .sale__wrrap .sale__card .card__price button.cart__buy {
 	text-align: center;
 	cursor: pointer;
 }
+main.detal .detal__cart .sale__card .card__price button.cart__buy:after,
 section.sale .sale__wrrap .sale__card .card__price button.cart__buy:after {
 	content: "Додати до кошика";
 	position: absolute;
@@ -718,6 +758,7 @@ section.sale .sale__wrrap .sale__card .card__price button.cart__buy:after {
     text-align: center;
     color: #a6a6a6;
 }
+main.detal .detal__cart .sale__card.no_availabilaty button.cart__order,
 section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order {
 	position: relative;
 	width: 85px;
@@ -730,6 +771,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order {
 	text-align: center;
 	cursor: pointer;
 }
+main.detal .detal__cart .sale__card.no_availabilaty button.cart__order:after,
 section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:after {
 	content: "Звязатися з нами" ;
 	position: absolute;
@@ -743,6 +785,8 @@ section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:after {
     text-align: center;
 	color: #a6a6a6;
 }
+main.detal .detal__cart .sale__card .card__price button.cart__buy:hover:after,
+main.detal .detal__cart .sale__card.no_availabilaty button.cart__order:hover:after,
 section.sale .sale__wrrap .sale__card .card__price button.cart__buy:hover:after,
 section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:hover:after {
 	display: block;
@@ -943,7 +987,7 @@ main section.sale__catalog aside .quality input[type=checkbox]:checked + label,
 main section.sale__catalog aside .manufacturers input[type=checkbox]:checked + label,
 main section.sale__catalog aside .storag input[type=checkbox]:checked + label {
 	width: 100%;
-	height: 30px;
+	height: 22px;
 	margin-bottom: 2px;
 	border-radius: 15px;
 	background-color: #f2f2f2;
@@ -1456,8 +1500,264 @@ main .pagination a:nth-child(4) {
 /*                         catalog             */
 
 
-/*                   card sale              */
-@media (max-width: 1410px) {
+/*                          detal            */
+main.detal h2.detal__heading {
+	font-size: 35px;
+  	font-weight: normal;
+  	line-height: 1.33;
+  	text-align: left;
+  	color: #262626;
+}
+main.detal section.detal__info { padding: 30px 0;}
+main.detal section.detal__info .info__img {width: 40%;}
+main.detal section.detal__info .img__big {
+	position: relative;
+	width: 410px;
+	height: 410px;
+	border-radius: 5px;
+	background-color: #fefefe;
+}
+main.detal section.detal__info .img__big i.img__discount {
+	position: absolute;
+	top: 20px;
+	left: -30px;
+	width: 60px;
+	height: 25px;
+	background-color: #7cbe49;
+	border-radius: 0 50px 50px 0;
+	font-size: 16px;
+	font-style: normal;
+  	font-weight: 600;
+  	text-align: center;
+  	color: #fefefe;
+}
+main.detal section.detal__info .img__big i.img__new {
+	position: absolute;
+	top: 55px;
+	left: -30px;
+	width: 60px;
+	height: 25px;
+	background-color: #ff5205;
+	border-radius: 0 50px 50px 0;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 600;
+	text-align: center;
+	color: #fefefe;
+}
+main.detal section.detal__info .img__big i.img__hit {
+	position: absolute;
+	top: 90px;
+	left: -30px;
+	width: 60px;
+	height: 25px;
+	background-color: #ffc505;
+	border-radius: 0 50px 50px 0;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 600;
+	text-align: center;
+	color: #fefefe;
+}
+main.detal section.detal__info .img__big img {width: 100%;}
+main.detal section.detal__info div.flex.h-evenly.v-center.card__rating.detal__rating {max-width: 350px}
+main.detal section.detal__info .card__rating.detal__rating .rating:not(:checked) > label {font-size: 24px;}
+main.detal section.detal__info .info__img div.m__right {margin-right: 10px;}
+main.detal section.detal__info .info__img .rating__comment .rating__lebel {
+	font-size: 16px;
+  	font-weight: normal;
+ 	 font-style: normal;
+  	line-height: 1.31;
+  	color: #8c8c8c;
+}
+main.detal section.detal__info .info__img .img__small .small__img img {padding: 16px 6px; background-color: #fefefe; border-radius: 5px;}
+main.detal section.detal__info .info__img .img__small .small__img {
+	width: 104px;
+	height: 104px;
+	border-radius: 5px;
+	border: 1px solid transparent;
+	margin-bottom: 5px;
+}
+main.detal section.detal__info .info__img .img__small .small__img:hover {border-color: #7cbe49;}
+main.detal section.detal__info .info__bonus { width: 30%;}
+main.detal section.detal__info .info__bonus .bonus__send .send__img,
+main.detal section.detal__info .info__bonus .bonus__guarantee .guarantee__img,
+main.detal section.detal__info .info__bonus .bonus__return .return__img,
+main.detal section.detal__info .info__bonus .bonus__extra .extra__img {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 94px;
+	height: 94px;
+	border-radius: 47px;
+	background-color: #fefefe;
+	margin-right: 15px;
+	margin-bottom: 15px;
+}
+main.detal section.detal__info .info__bonus .bonus__send p,
+main.detal section.detal__info .info__bonus .bonus__guarantee p,
+main.detal section.detal__info .info__bonus .bonus__return p,
+main.detal section.detal__info .info__bonus .bonus__extra p {
+	font-size: 16px;
+  	font-weight: 400;
+  	color: #666666;
+}
+main.detal section.detal__info .info__bonus .bonus__extra p {width: 80%;}
+
+main.detal section.detal__info .info__price{width: 30%;}
+main.detal section.detal__info .info__price .old__price p {
+	font-size: 36px;
+	font-weight: 500;
+	color: #a6a6a6;
+}
+main.detal section.detal__info .info__price .new__price {
+	font-size: 90px;
+	font-weight: 500;
+	color: #262626;
+}
+main.detal section.detal__info .info__price .discount .discount__procent {
+	margin-right: 10px;
+	width: 60px;
+  	height: 25px;
+	font-size: 16px;
+	text-align: center;
+	color: #fefefe;
+	border-radius: 0 50px 50px 0;
+	background-color: #7cbe49;
+}
+main.detal section.detal__info .info__price .discount p {
+	text-align: left;
+	font-size: 13px;
+	font-weight: 400;
+	color: #8c8c8c;
+}
+main.detal section.detal__info .info__price .discount .discount__price {
+	margin-left: 20px;
+	font-size: 36px;
+	font-weight: 500;
+	color: #7cbe49;
+}
+main.detal section.detal__info .info__price .card__check.detal__check {margin-top: 30px;}
+main.detal section.detal__info .info__price .card__check.detal__check .fa-check-circle {
+	margin-right: 13px;
+	font-size: 36px;
+	color: #7cbe49;
+	border-radius: 100%;
+}
+main.detal section.detal__info .info__price .card__check.detal__check p {
+	font-size: 20px;
+	font-weight: normal;
+	color: #666666;
+}
+
+main.detal section.detal__info .info__price .card__check.detal__check span.minus {
+display: inline-block;
+	width: 50px;
+	height: 30px;
+	font-size: 30px;
+	line-height: 0.7;
+	margin: 0 4px 0 10px;
+	text-align: center;
+	color: #fff;
+	border-radius:50px 0 0 50px;
+	background-color: #d9d9d9;
+	cursor: pointer;
+}
+main.detal section.detal__info .info__price .card__check.detal__check input {
+	width: 50px;
+	height: 30px;
+	text-align: center;
+	font-size: 16px;
+	color: #666666;
+	border: none;
+}
+main.detal section.detal__info .info__price .card__check.detal__check span.plus {
+	display: inline-block;
+	width: 50px;
+	height: 30px;
+	font-size: 30px;
+	line-height: 0.7;
+	margin-left: 4px;
+	text-align: center;
+	color: #fff;
+	border-radius: 0 50px 50px 0;
+	background-color: #d9d9d9;
+	cursor: pointer;
+}
+main.detal section.detal__info .info__price button.detal__cart {
+	margin-top: 15px;
+	width: 400px;
+	height: 75px;
+	border: none;
+	border-radius: 5px;
+	background-color: #7cbe49;
+	font-size: 30px;
+  	font-weight: 500;
+	color: #fefefe;
+	outline: none;
+	cursor: pointer;
+}
+main.detal section.detal__info .info__price button.detal__cart img {vertical-align: middle; margin-right: 10px;}
+main.detal section.detal__info .info__price button.detal__bay {
+	margin-top: 15px;
+	width: 400px;
+	height: 45px;
+	border: none;
+	border-radius: 5px;
+	background-color: #ffc505;
+	font-size: 25px;
+	font-weight: normal;
+	color: #fefefe;
+	outline: none;
+	cursor: pointer;
+}
+main.detal section.detal__info .info__price button.detal__bay img {vertical-align: middle; margin-right: 10px;}
+main.detal .detal__menu nav a {
+	font-size: 20px;
+	font-weight: 600;
+	text-align: center;
+	color: #8c8c8c;
+}
+main.detal .detal__menu nav a::before {
+	content: "";
+    display: block;
+    height: 5px;
+    width: 280px;
+    margin-bottom: 10px;
+	background: #fff;
+}
+main.detal .detal__menu nav a:hover::before,
+main.detal .detal__menu nav a:active::before {background: #82C166;}
+main.detal .detal__menu nav a:hover,
+main.detal .detal__menu nav a:active {color: #82C166; }
+main.detal .detal__menu .menu__info {margin: 40px 0 60px 0;}
+main.detal .detal__menu .menu__info ul li {
+	list-style: none;
+	font-size: 16px;
+	font-weight: 400;
+	text-align: left;
+	color: #262626;
+	margin-bottom: 10px;
+}
+main.detal .detal__menu .menu__info ul li span { letter-spacing: 3px;}
+main.detal .detal__menu .detal__line {
+	width: 100%;
+	height: 3px;
+	border-radius: 5px;
+	background-color: #fefefe;
+	margin-bottom: 5px;
+}
+main.detal .detal__menu p {
+	font-size: 20px;
+	font-weight: 400;
+	text-align: center;
+	color: #8c8c8c;
+	margin-bottom: 25px;
+}
+/*                          detal            */
+
+
+@media (max-width: 1441px) {
     
 	section.sale .sale__wrrap .sale__card {
     	width: 220px;

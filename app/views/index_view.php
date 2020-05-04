@@ -154,11 +154,12 @@
                     <input type="radio" id="star1" name="rate" value="1" />
                     <label for="star1" title="text">1 star</label>
                    </div>
-                 <div class="rating__comment">
-                    <i class="rating__lebel">25</i>
-                    <img src="../../style/icons/comment.png" alt="comment">
-                 </div>
+                    <div class="rating__comment">
+                        <i class="rating__lebel">25</i>
+                        <img src="../../style/icons/comment.png" alt="comment">
+                    </div>
                 </div>
+
                 <div class="card__text">
                     Амортизатор кришки 
                     багажника Cery Eastra

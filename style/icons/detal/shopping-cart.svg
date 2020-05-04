@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__shopping-cart" width="27.645" height="27.645" viewBox="0 0 27.645 27.645">
+    <defs>
+        <style>
+            .prefix__cls-1{fill:#fefefe}
+        </style>
+    </defs>
+    <g id="prefix__Group_197" data-name="Group 197">
+        <g id="prefix__Group_196" data-name="Group 196">
+            <path id="prefix__Path_40" d="M25.621 2.513H5.026a.616.616 0 0 0-.177.041L4.343.891A1.256 1.256 0 0 0 3.141 0H.628A.628.628 0 0 0 0 .628v1.257a.628.628 0 0 0 .628.628h1.583l3.926 12.9-1.467 1.711a2.619 2.619 0 0 0-.57 2.457 2.5 2.5 0 0 0 2.4 1.781h18a.628.628 0 0 0 .628-.628v-1.257a.628.628 0 0 0-.628-.628h-18l1.992-2.324a1.247 1.247 0 0 0 .125-.19h12.177a2.514 2.514 0 0 0 2.275-1.444l4.384-9.317a2.04 2.04 0 0 0 .192-.861v-.176a2.024 2.024 0 0 0-2.024-2.024z" class="prefix__cls-1" data-name="Path 40"/>
+            <circle id="prefix__Ellipse_54" cx="2.513" cy="2.513" r="2.513" class="prefix__cls-1" data-name="Ellipse 54" transform="translate(5.026 22.618)"/>
+            <circle id="prefix__Ellipse_55" cx="2.513" cy="2.513" r="2.513" class="prefix__cls-1" data-name="Ellipse 55" transform="translate(20.105 22.618)"/>
+        </g>
+    </g>
+</svg>
