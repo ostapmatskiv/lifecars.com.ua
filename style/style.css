@@ -1570,7 +1570,7 @@ main.detal section.detal__info .info__img .rating__comment .rating__lebel {
   	line-height: 1.31;
   	color: #8c8c8c;
 }
-main.detal section.detal__info .info__img .img__small .small__img img {padding: 16px 6px; background-color: #fefefe; border-radius: 5px;}
+main.detal section.detal__info .info__img .img__small .small__img  a img {padding: 16px 6px; background-color: #fefefe; border-radius: 5px;}
 main.detal section.detal__info .info__img .img__small .small__img {
 	width: 104px;
 	height: 104px;
@@ -1814,7 +1814,7 @@ main.detal .detal__menu p {
 		width: 87px;
 		height: 72px;
 	}
-	main.detal section.detal__info .info__img .img__small .small__img img {padding: 0;}
+	main.detal section.detal__info .info__img .img__small .small__img a img {padding: 0;}
 	main.detal section.detal__info .img__big i.img__discount {
 		width: 45px;
 		height: 20px;

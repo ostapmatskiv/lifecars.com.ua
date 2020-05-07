@@ -32,13 +32,13 @@
             </div>
             <div class="img__small">
                 <div class="flex h-center v-center small__img">
-                    <img src="style/images/detal/amortizator-small.png" alt="amortizator">
+                    <a href="style/images/detal/amortizator-big.png" class="small__item"><img src="style/images/detal/amortizator-small.png" alt="amortizator"></a> 
                 </div>
                 <div class="flex h-center v-center small__img">
-                    <img src="style/images/detal/amortizator-small.png" alt="amortizator">
+                    <a href="style/images/detal/Image 1.png" class="small__item"><img src="style/images/detal/amortizator-small.png" alt="amortizator"></a> 
                 </div>
                 <div class="flex h-center v-center small__img">
-                    <img src="style/images/detal/amortizator-small.png" alt="amortizator">
+                    <a href="style/images/detal/tuning.png" class="small__item"><img src="style/images/detal/amortizator-small.png" alt="amortizator"></a> 
                 </div>
             </div>
         </div>

@@ -24,6 +24,7 @@ $(document).ready(function(){
         });
 
 
+       
         $('.cart__order:eq(0)').click(function() {
             $('.cart__modal:eq(0)').css("display", "block");
             
@@ -89,6 +90,12 @@ $(document).ready(function(){
              };
          });
 
+         $('.small__item').magnificPopup({
+            type : 'image',
+            gallery : {
+                enabled : true
+            }
+         });
          
   });
 
