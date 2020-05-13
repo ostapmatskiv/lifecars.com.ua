@@ -744,6 +744,13 @@ section.sale .sale__wrrap .sale__card .card__price button.cart__buy {
 	text-align: center;
 	cursor: pointer;
 }
+
+main.detal .detal__cart .sale__card .card__price button.cart__buy:hover,
+section.sale .sale__wrrap .sale__card .card__price button.cart__buy:hover,
+section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy:hover {
+	background-color: rgb(63, 121, 21);
+}
+
 main.detal .detal__cart .sale__card .card__price button.cart__buy:after,
 section.sale .sale__wrrap .sale__card .card__price button.cart__buy:after {
 	content: "Додати до кошика";
@@ -770,6 +777,11 @@ section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order {
 	background-color: #FFC505;
 	text-align: center;
 	cursor: pointer;
+}
+main.detal .detal__cart .sale__card.no_availabilaty button.cart__order:hover,
+section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:hover,
+section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order:hover {
+	background-color: rgb(216, 166, 3);
 }
 main.detal .detal__cart .sale__card.no_availabilaty button.cart__order:after,
 section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:after {
@@ -942,6 +954,7 @@ main .catalog__sorted div a {
 	font-weight: normal;
 	color: #8c8c8c;
 	}
+main .catalog__sorted {padding-left: 55px;}
 main .catalog__sorted div a:hover {
 	background-color: #82C166;
 	color: #fff;
@@ -1234,7 +1247,7 @@ section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .mod
 
 }
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {
-	font-size: 22px;
+	font-size: 27px;
 	font-weight: bold;
 	text-align: center;
 	color: #2d3b40;
@@ -1797,6 +1810,7 @@ main.detal .detal__menu p {
 		height: 35px;
 		font-size: 17px;
 	}
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {font-size: 22px;}
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {width: 100%;}
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {width: 100%;}
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__btn {
@@ -1832,6 +1846,7 @@ main.detal .detal__menu p {
 		height: 20px;
 		font-size: 14px;
 	}
+	main .catalog__sorted {padding-left: 98px;}
 	main.detal section.detal__info .info__bonus .bonus__send .send__img,
 	main.detal section.detal__info .info__bonus .bonus__guarantee .guarantee__img,
 	main.detal section.detal__info .info__bonus .bonus__return .return__img,
@@ -1846,7 +1861,7 @@ main.detal .detal__menu p {
 	main.detal section.detal__info .info__bonus .bonus__send p,
 	main.detal section.detal__info .info__bonus .bonus__guarantee p,
 	main.detal section.detal__info .info__bonus .bonus__return p,
-	main.detal section.detal__info .info__bonus .bonus__extra p {font-size: 14px;}
+	main.detal section.detal__info .info__bonus .bonus__extra p {font-size: 14px; padding-bottom: 15px;}
 	main.detal section.detal__info .info__price .old__price p {font-size: 30px;}
 	main.detal section.detal__info .info__price .new__price {font-size: 70px;}
 	main.detal section.detal__info .info__price .discount .discount__procent {
@@ -1930,6 +1945,7 @@ main.detal .detal__menu p {
 	main section.cars__base .base__detal img { width: 90%; }
 	footer .footer__info { padding-left: 15px; padding-right: 15px;}
 	section.sale .sale__wrrap .sale__card { width:20%; }
+	main .catalog__sorted {padding-left: 120px;}
 	main section.sale__catalog aside .product__type input[type=checkbox]:checked + label,
 	main section.sale__catalog aside .quality input[type=checkbox]:checked + label,
 	main section.sale__catalog aside .manufacturers input[type=checkbox]:checked + label,
@@ -2036,7 +2052,7 @@ main.detal section.detal__info .info__bonus .bonus__extra .extra__img {
 main.detal section.detal__info .info__bonus .bonus__send p,
 main.detal section.detal__info .info__bonus .bonus__guarantee p,
 main.detal section.detal__info .info__bonus .bonus__return p,
-main.detal section.detal__info .info__bonus .bonus__extra p {font-size: 12px;}
+main.detal section.detal__info .info__bonus .bonus__extra p {font-size: 12px; padding-bottom: 5px;}
 main.detal section.detal__info .info__price .old__price p { font-size: 20px;}
 main.detal section.detal__info .info__price .new__price { 
 	font-size: 35px;
@@ -2118,6 +2134,7 @@ main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .fo
 		font-size: 32px;
 		letter-spacing: 1px;
 	}
+	main .catalog__sorted {padding-left: 148px;}
 	main section.sale .sale__nav a:before { min-width: 135px; }
 	main .main__logo a:nth-child(1) { margin-right: 25px; }
 	main .main__logo a:nth-child(4) { margin-right: 20px; }
@@ -2145,7 +2162,7 @@ main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .fo
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {font-size: 17px;}
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal span {font-size: 16px;}
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {font-size: 16px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {height: 425px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {height: 427px;}
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {padding: 5px 10px 31px 10px;}
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product {margin-top: 10px;}
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {margin-top: 10px;}
@@ -2227,17 +2244,7 @@ main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .fo
 		width: 60px;
 		height: 50px;
 	}
-	main.detal section.detal__info .info__bonus .bonus__send .send__img,
-	main.detal section.detal__info .info__bonus .bonus__guarantee .guarantee__img
-	main.detal section.detal__info .info__bonus .bonus__return .return__img,
-	main.detal section.detal__info .info__bonus .bonus__extra .extra__img {
-		width: 45px;
-		height: 45px;
-	   }
-	main.detal section.detal__info .info__bonus .bonus__send .send__img img,
-	main.detal section.detal__info .info__bonus .bonus__guarantee .guarantee__img img,
-	main.detal section.detal__info .info__bonus .bonus__return .return__img img,
-	main.detal section.detal__info .info__bonus .bonus__extra .extra__img img {width: 60%;}
+	
 	main.detal section.detal__info .info__bonus .bonus__send p,
 	main.detal section.detal__info .info__bonus .bonus__guarantee p,
 	main.detal section.detal__info .info__bonus .bonus__return p,
@@ -2348,6 +2355,7 @@ main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .fo
 		 display: flex;
 		 flex-direction: column;
 	}
+	main .catalog__sorted {padding-left: 0px;}
 	main section.sale .sale__nav { display: none;}
 	section.sale .sale__wrrap .sale__card { width: 50%; }
 	main .main__logo a img {height: 35px;}
@@ -2509,7 +2517,33 @@ main.detal .detal__cart .sale__card .card__price button.cart__buy:hover:after,
 
 	/*                 detal                 */
 }
+@media screen and (max-width: 376px) {
+	section.sale__catalog .sale__wrrap .sale__card .card__check .check__pieces p,
+	section.sale .sale__wrrap .sale__card .card__check .check__pieces p {font-size: 10px;}
 
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal,
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {height: 440px;}
+
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal h5,
+	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal h5,
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {font-size: 28px;}
+
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal p,
+	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal p,
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal p {font-size: 13px;}
+
+	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a,
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a,
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {font-size: 15px;}
+
+	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__name,
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__name {font-size: 16px;}
+	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__name {font-size: 15px;}
+	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__product {margin-top: 5px;}
+	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal {height: 480px;}
+	main.detal .detal__cart .sale__card .card__price .price__text {font-size: 22px;}
+	main.detal .detal__cart .sale__card.no_availabilaty button.cart__order {margin-top: 0px;}
+}
 @media screen and (max-width: 370px) {
 	header .header__phone div {font-size: 12px;}
 	header .header__phone .header__login .header__user-in {font-size: 12px;}
@@ -2538,6 +2572,9 @@ main.detal .detal__cart .sale__card .card__price button.cart__buy:hover:after,
 		width: 13px;
 		height: 13px;
 	}
+	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal {
+		height: 453px;
+	}
 	section.sale .sale__wrrap .sale__card {width: 90%;}
 	section.sale .sale__wrrap {
 		margin-top: 15px;
@@ -2557,7 +2594,9 @@ main.detal .detal__cart .sale__card .card__price button.cart__buy:hover:after,
 	main .catalog__sorted .quantity__goods { margin: 10px 0 0 0;}
 	main section.sale__catalog .sale__wrrap {justify-content: center;}
 	section.sale__catalog .sale__wrrap .sale__card {width: 80%;}
-
+	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a,
+	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a,
+	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a{font-size: 23px;}
 
 /*       catalog          */
 /*         detal             */
