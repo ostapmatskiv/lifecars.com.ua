@@ -28,6 +28,7 @@
 	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>style/ws__main.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
 	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>style/style.css">
+	
 </head>
 <body>
 	<?php

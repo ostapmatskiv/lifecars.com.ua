@@ -1,16 +1,115 @@
 <main>
     <div class="flex w50 auto__detal">
-        <a class="great__link" href="#">
+        <a class="great__link main__link" href="#">
             <img src="style/images/carslogo/1.png" alt="GreatWall">
             <div class="detal__text">Great wall</div>
             <i class="fas fa-chevron-down"></i>
         </a>
-        <a href="#">
+        <a class="cross__eastar" href="#">
             <img src="style/images/carslogo/cars.png" alt="car">
             <div class="detal__text">Cross Eastar</div>
             <i class="fas fa-chevron-down"></i>
         </a>
     </div>
+    <div class="flex w66 h-evenly v-end main__logo logo__catalog">
+        <a href="#">
+            <img src="style/images/carslogo/12.png" alt="Geely">
+            <div class="logo__text">Geely</div>
+            <i class="fas fa-chevron-down"></i>
+        </a>
+        <a href="#">
+            <img src="style/images/carslogo/2.png" alt="Chery">
+            <div class="logo__text">Chery</div>
+            <i class="fas fa-chevron-down"></i>
+        </a>
+        <a href="#">
+            <img src="style/images/carslogo/3.png" alt="Lifan">
+            <div class="logo__text">Lifan</div>
+            <i class="fas fa-chevron-down"></i>
+        </a>
+        <a href="#">
+            <img src="style/images/carslogo/4.png" alt="BYD">
+            <div class="logo__text">Byd</div>
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    </div>
+    <section class="flex h-center wrap cars__catalog">
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">Amulet</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">Tiggo</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">Jaggi</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">QQ</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">Elara</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">Eastar</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">Kimo</div>
+        </div>
+     
+            <div class="base__detal">
+                <img src="style/images/carslogo/cars.png" alt="car">
+                <div class="detal__text">Arrizo 3</div>
+            </div>
+            <div class="base__detal">
+                <img src="style/images/carslogo/cars.png" alt="car">
+                <div class="detal__text">Arrizo 7</div>
+            </div>
+            <div class="base__detal">
+                <img src="style/images/carslogo/cars.png" alt="car">
+                <div class="detal__text">E 5</div>
+            </div>
+            <div class="base__detal">
+                <img src="style/images/carslogo/cars.png" alt="car">
+                <div class="detal__text">Karry</div>
+            </div>
+            <div class="base__detal">
+                <img src="style/images/carslogo/cars.png" alt="car">
+                <div class="detal__text">Tiggo 2</div>
+            </div>
+            <div class="base__detal">
+                <img src="style/images/carslogo/cars.png" alt="car">
+                <div class="detal__text">Tiggo 3</div>
+            </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">Tiggo 5</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">Tiggo 7</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">A 13 (ZAZ Forza)</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">M 11</div>
+        </div>
+        <div class="base__detal">
+            <img src="style/images/carslogo/cars.png" alt="car">
+            <div class="detal__text">Beat</div>
+        </div>
+    </section>
+   
+
     <div class="flex wrap catalog__detal">
         <a href="#">
             <img src="style/icons/catalog/engine.svg" alt="body">

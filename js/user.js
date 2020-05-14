@@ -66,7 +66,7 @@ $(document).ready(function(){
 
         $('.great__link').click(function() {
             event.preventDefault();
-            $('.cars__base').css("height", "100%").slideToggle();
+            $('.cars__base').slideToggle().css("height", "100%");
         });
 
         $('.fa-bars').click(function() {
@@ -96,7 +96,35 @@ $(document).ready(function(){
                 enabled : true
             }
          });
+
+         $('.main__link').click(function() {
+            event.preventDefault();
+           if ($('div.logo__catalog').slideToggle().css("display", "flex")) {
+            $('section.cars__catalog').slideToggle().css("display", "none");
+           }
+        });
          
+        $('.cross__eastar').click(function() {
+            event.preventDefault();
+            if ($('section.cars__catalog').slideToggle().css("display", "flex")) {
+                $('div.logo__catalog').slideToggle().css("display", "none");
+            }
+        });
+        
+        $(function() {
+            var tab = $('#tabs > div.menu__info'); 
+            tab.hide().filter(':first').show(); 
+            
+            // Клики по вкладкам.
+            $('#tabs .tabs-nav a').click(function(){
+                tab.hide(); 
+                tab.filter(this.hash).show(); 
+               $('#tabs .tabs-nav a').removeClass('active').css("color", "#8c8c8c");
+                $(this).addClass('active').css("color", "#82C166");
+                return false;
+            }).filter(':first').click();
+         
+        });
   });
 
 $(function () {
