@@ -229,7 +229,7 @@ main .main__logo a:active .fa-chevron-down{
 
 main section.cars__catalog,
 main section.cars__base {
-	height: 0;
+	display: none;
 	overflow: hidden;
 }
 main section.cars__catalog .base__detal, 
@@ -1789,6 +1789,122 @@ main.detal .detal__menu p {
 }
 /*                          detal            */
 
+/*                         model                */
+main.cars__models{padding-bottom: 215px;}
+
+main.cars__models .models__geely,
+main.cars__models .models__chery,
+main.cars__models .models__wall,
+main.cars__models .models__lifan,
+main.cars__models .models__byd {
+	width: 100%;
+  	height: 81px;
+  	border-radius: 41px;
+	border: solid 2px #ffffff;
+	margin-bottom: 20px;
+	padding-left: 45px;
+	padding-right: 15px;
+}
+main.cars__models .models__geely:hover,
+main.cars__models .models__chery:hover,
+main.cars__models .models__wall:hover,
+main.cars__models .models__lifan:hover,
+main.cars__models .models__byd:hover {
+	border: solid 2px #82C166;
+}
+
+main.cars__models .models__geely span,
+main.cars__models .models__chery span,
+main.cars__models .models__wall span,
+main.cars__models .models__lifan span,
+main.cars__models .models__byd span {
+	font-size: 20px;
+	font-weight: 600;
+	line-height: 1.35;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	color: #666666;
+	margin-left: 20px;
+}
+main.cars__models .models__geely .geely__info > div,
+main.cars__models .models__chery .chery__info > div,
+main.cars__models .models__wall .wall__info > div,
+main.cars__models .models__lifan .lifan__info > div,
+main.cars__models .models__byd .byd__info > div {width: 135px;}
+
+main.cars__models .models__geely button,
+main.cars__models .models__chery button,
+main.cars__models .models__wall button,
+main.cars__models .models__lifan button,
+main.cars__models .models__byd button {
+	width: 54px;
+	height: 54px;
+	border-radius: 27px;
+	background-color: #fefefe;
+	border: none;
+	outline: none;
+	cursor: pointer;
+}
+main.cars__models .geely__cars .base__detal img ,
+main.cars__models .chery__cars .base__detal img ,
+main.cars__models .wall__cars .base__detal img, 
+main.cars__models .lifan__cars .base__detal img,
+main.cars__models .byd__cars .base__detal img {
+	display: block;
+	margin: 0 auto;
+}
+
+
+main.cars__models .geely__cars .base__detal,
+main.cars__models .chery__cars .base__detal,
+main.cars__models .wall__cars .base__detal,
+main.cars__models .lifan__cars .base__detal,
+main.cars__models .byd__cars .base__detal {
+	cursor: pointer;
+	width: 16%;
+}
+
+main.cars__models .geely__cars .base__detal .detal__text,
+main.cars__models .chery__cars .base__detal .detal__text,
+main.cars__models .wall__cars .base__detal .detal__text,
+main.cars__models .lifan__cars .base__detal .detal__text,
+main.cars__models .byd__cars .base__detal .detal__text {
+	font-size: 20px;
+	text-align: center;
+	color: #666666;
+	text-transform: uppercase;
+	margin-bottom: 40px;
+}
+main.cars__models .geely__cars .base__detal:hover .detal__text,
+main.cars__models .chery__cars .base__detal:hover .detal__text,
+main.cars__models .wall__cars .base__detal:hover .detal__text,
+main.cars__models .lifan__cars .base__detal:hover .detal__text,
+main.cars__models .byd__cars .base__detal:hover .detal__text {
+	color: #82C166;
+}
+main.cars__models .geely__cars {
+	display: none;
+	height: auto;
+}
+main.cars__models .chery__cars {
+	height: auto;
+	display: none;
+}
+main.cars__models .wall__cars {
+	height: auto;
+	display: none;
+}
+main.cars__models .lifan__cars {
+	height: auto;
+	display: none;
+}
+main.cars__models .byd__cars {
+	height: auto;
+	display: none;
+}
+
+/*                        model                    */
+
 
 @media (max-width: 1441px) {
     
@@ -2144,7 +2260,46 @@ main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__product {margin-bottom: 10px;}
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__name {font-size: 16px;}
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__product {margin-top: 10px;}
+/*         model             */
+main.cars__models .geely__cars .base__detal img,
+main.cars__models .chery__cars .base__detal img,
+main.cars__models .wall__cars .base__detal img,
+main.cars__models .lifan__cars .base__detal img,
+main.cars__models .byd__cars .base__detal img {width: 90%;}
 
+main.cars__models .geely__cars .base__detal .detal__text,
+main.cars__models .chery__cars .base__detal .detal__text,
+main.cars__models .wall__cars .base__detal .detal__text
+main.cars__models .lifan__cars .base__detal .detal__text,
+main.cars__models .byd__cars .base__detal .detal__text {font-size: 16px;}
+
+main.cars__models .models__geely,
+main.cars__models .models__chery,
+main.cars__models .models__wall,
+main.cars__models .models__lifan,
+main.cars__models .models__byd {height: 65px;}
+
+main.cars__models .models__geely .geely__info > div,
+main.cars__models .models__chery .chery__info > div,
+main.cars__models .models__wall .wall__info > div,
+main.cars__models .models__lifan .lifan__info > div,
+main.cars__models .models__byd .byd__info > div {width: 70px;}
+
+main.cars__models .models__geely .geely__info > div img,
+main.cars__models .models__chery .chery__info > div img,
+main.cars__models .models__wall .wall__info > div img,
+main.cars__models .models__lifan .lifan__info > div img,
+main.cars__models .models__byd .byd__info > div img{width: 100%;}
+
+main.cars__models .models__geely button,
+main.cars__models .models__chery button,
+main.cars__models .models__wall button,
+main.cars__models .models__lifan button,
+main.cars__models .models__byd button {
+    width: 40px;
+	height: 40px;
+}
+/*          model           */
 
    /*                   detal                          */
 }
@@ -2290,6 +2445,14 @@ main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .fo
 
 	main.detal .detal__menu nav a::before {width: 140px;}
 	/*                  detal                  */
+	/*             model                 */
+	main.cars__models .geely__cars .base__detal,
+	main.cars__models .chery__cars .base__detal,
+	main.cars__models .wall__cars .base__detal,
+	main.cars__models .lifan__cars .base__detal,
+	main.cars__models .byd__cars .base__detal {width: 20%;}
+
+	/*             model                  */
 }
 
 @media screen and (max-width: 426px) {
@@ -2544,7 +2707,20 @@ main.detal .detal__cart .sale__card .card__price button.cart__buy:hover:after,
 
 
 	/*                 detal                 */
-}
+	/*                 model                 */
+main.cars__models .models__geely,
+main.cars__models .models__chery,
+main.cars__models .models__wall,
+main.cars__models .models__lifan,
+main.cars__models .models__byd {padding-left: 15px;}
+
+main.cars__models .models__geely span,
+main.cars__models .models__chery span,
+main.cars__models .models__wall span,
+main.cars__models .models__lifan span,
+main.cars__models .models__byd span {font-size: 16px;}
+	/*                   model                       */
+
 @media screen and (max-width: 376px) {
 	section.sale__catalog .sale__wrrap .sale__card .card__check .check__pieces p,
 	section.sale .sale__wrrap .sale__card .card__check .check__pieces p {font-size: 10px;}
@@ -2571,6 +2747,14 @@ main.detal .detal__cart .sale__card .card__price button.cart__buy:hover:after,
 	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal {height: 480px;}
 	main.detal .detal__cart .sale__card .card__price .price__text {font-size: 22px;}
 	main.detal .detal__cart .sale__card.no_availabilaty button.cart__order {margin-top: 0px;}
+	/*         model          */
+	main.cars__models .geely__cars .base__detal,
+	main.cars__models .chery__cars .base__detal,
+	main.cars__models .wall__cars .base__detal,
+	main.cars__models .lifan__cars .base__detal,
+	main.cars__models .byd__cars .base__detal {width: 25%;}
+
+	/*         model          */
 }
 @media screen and (max-width: 370px) {
 	header .header__phone div {font-size: 12px;}

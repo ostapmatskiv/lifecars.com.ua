@@ -66,7 +66,7 @@ $(document).ready(function(){
 
         $('.great__link').click(function() {
             event.preventDefault();
-            $('.cars__base').slideToggle().css("height", "100%");
+            $('.cars__base').slideToggle().css("display", "flex");
         });
 
         $('.fa-bars').click(function() {
@@ -125,6 +125,58 @@ $(document).ready(function(){
             }).filter(':first').click();
          
         });
+
+        $('.models__geely-btn').click(function() {
+          if ($('.geely__cars').slideToggle().css("display", "flex")) {
+            $('.models__geely-btn > img').attr('src', 'style/icons/model/arrow-up.svg'); 
+
+        }else {
+            $('.geely__cars').slideToggle().css("display", "none");
+            $('.models__geely-btn > img').attr('src', 'style/icons/model/arrow-down.svg');
+             }
+        });
+
+        $('.models__chery-btn').click(function() {
+            if ($('.chery__cars').slideToggle().css("display", "flex")) {
+              $('.models__chery-btn > img').attr('src', 'style/icons/model/arrow-up.svg'); 
+  
+          }else {
+              $('.chery__cars').slideToggle().css("display", "none");
+              $('.models__wall-btn > img').attr('src', 'style/icons/model/arrow-down.svg');
+               }
+          });
+
+          $('.models__wall-btn').click(function() {
+            if ($('.wall__cars').slideToggle().css("display", "flex")) {
+              $('.models__wall-btn > img').attr('src', 'style/icons/model/arrow-up.svg'); 
+  
+          }else {
+              $('.wall__cars').slideToggle().css("display", "none");
+              $('.models__wall-btn > img').attr('src', 'style/icons/model/arrow-down.svg');
+               }
+          });
+
+          $('.models__lifan-btn').click(function() {
+            if ($('.lifan__cars').slideToggle().css("display", "flex")) {
+              $('.models__lifan-btn > img').attr('src', 'style/icons/model/arrow-up.svg'); 
+  
+          }else {
+              $('.lifan__cars').slideToggle().css("display", "none");
+              $('.models__lifan-btn > img').attr('src', 'style/icons/model/arrow-down.svg');
+               }
+          });
+
+          $('.models__byd-btn').click(function() {
+            if ($('.byd__cars').slideToggle().css("display", "flex")) {
+              $('.models__byd-btn > img').attr('src', 'style/icons/model/arrow-up.svg'); 
+  
+          }else {
+              $('.byd__cars').slideToggle().css("display", "none");
+              $('.models__byd-btn > img').attr('src', 'style/icons/model/arrow-down.svg');
+               }
+          });
+
+        
   });
 
 $(function () {
