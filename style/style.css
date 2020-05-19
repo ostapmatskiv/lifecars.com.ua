@@ -1929,6 +1929,49 @@ main.cars__models .byd__cars {
 
 /*                        model                    */
 
+/*                        accessories                   */
+main.cars__accessories .model__menu {margin-bottom: 40px;}
+
+main.cars__accessories .model__menu a {
+	opacity: 0.8;
+	font-size: 16px;
+  	font-weight: 300;
+  	text-align: center;
+  	color: #666666;
+}
+main.cars__accessories .model__menu a:before {
+	content: "";
+    display: block;
+    height: 2px;
+    width: 180px;
+    margin-bottom: 10px;
+    background: #fff;
+}
+main.cars__accessories .model__menu a:hover::before{background: #7cbe49;}
+main.cars__accessories .model__menu a:hover {color: #7cbe49;}
+
+
+main.cars__accessories .accessories__list{justify-content: stretch;}
+main.cars__accessories .accessories__list a {
+	border: 1px solid transparent;
+    border-radius: 5px;
+	width: 14%;
+	padding-top: 10px;
+	margin-bottom: 60px;
+}
+main.cars__accessories .accessories__list a:hover {
+	border: 1px solid #7cbe49;
+}
+main.cars__accessories .accessories__list a figure {width: calc(100% - 30px); margin: 0 auto;}
+main.cars__accessories .accessories__list a figure img {width: 100%;}
+main.cars__accessories .accessories__list a figure figcaption {
+	font-size: 17px;
+	font-weight: 300;
+	text-align: left;
+	color: #666666;
+}
+/*                        accessories                   */
+
 
 @media (max-width: 1441px) {
     
@@ -2470,6 +2513,7 @@ main.cars__models .models__byd button {
 	main.detal .detal__menu nav a::before {width: 140px;}
 	/*                  detal                  */
 	/*             model                 */
+	main.cars__accessories .model__menu a:before,
 	main.cars__models .model__menu a:before {width: 130px;}
 	main.cars__models .geely__cars .base__detal,
 	main.cars__models .chery__cars .base__detal,
@@ -2478,6 +2522,13 @@ main.cars__models .models__byd button {
 	main.cars__models .byd__cars .base__detal {width: 20%;}
 
 	/*             model                  */
+	/*             accessories           */
+	main.cars__accessories .accessories__list a {
+		width: 16%;
+		margin-bottom: 50px;
+	}
+	main.cars__accessories .accessories__list a figure figcaption {font-size: 14px;}
+	/*             accessories          */
 }
 
 @media screen and (max-width: 426px) {
@@ -2733,12 +2784,15 @@ main.detal .detal__cart .sale__card .card__price button.cart__buy:hover:after,
 
 	/*                 detal                 */
 	/*                 model                 */
+main.cars__accessories .model__menu,
 main.cars__models .model__menu {flex-direction: column;}
+main.cars__accessories .model__menu a:before,
 main.cars__models .model__menu a:before {
 	width: 100%;
 	margin-top: 5px;
     margin-bottom: 5px;
 }
+main.cars__accessories .model__menu a,
 main.cars__models .model__menu a {
     display: block;
 	width: 90%;
@@ -2756,7 +2810,12 @@ main.cars__models .models__wall span,
 main.cars__models .models__lifan span,
 main.cars__models .models__byd span {font-size: 16px;}
 	/*                   model                       */
-
+	/*                   accessories         */
+	main.cars__accessories .accessories__list a {
+		width: 25%;
+		margin-bottom: 35px;
+	}
+/*                       accessories        */
 @media screen and (max-width: 376px) {
 	section.sale__catalog .sale__wrrap .sale__card .card__check .check__pieces p,
 	section.sale .sale__wrrap .sale__card .card__check .check__pieces p {font-size: 10px;}
@@ -2862,5 +2921,10 @@ main.detal .detal__cart {justify-content: center;}
 main.detal .detal__cart .sale__card, section.sale .sale__wrrap .sale__card { width: 90%;}
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a {font-size: 23px;}
 /*         detal             */
-	
+	/*            accessories       */
+	main.cars__accessories .accessories__list a {
+		width: 33%;
+		margin-bottom: 35px;
+	}
+	/*             accessories      */
 }
