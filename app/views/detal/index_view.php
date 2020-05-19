@@ -1,4 +1,11 @@
 <main class="cars__models">
+    <div class="flex v-center model__menu">
+        <a href="#">Маркі та моделі</a>
+        <a href="#">Аксесуари</a>
+        <a href="#">Масло та рідина</a>
+        <a href="#">Лампочкі</a>
+        <a href="#">Акумулятори</a>
+    </div>
   <div class="flex v-center models__geely">
       <div class="flex v-center geely__info">
          <div>

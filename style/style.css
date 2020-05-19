@@ -235,7 +235,7 @@ main section.cars__base {
 main section.cars__catalog .base__detal, 
 main section.cars__base .base__detal {
 	cursor: pointer;
-	width: 160px;
+	width: 200px;
 }
 main section.cars__catalog .base__detal img,
 main section.cars__base .base__detal img {
@@ -1790,7 +1790,31 @@ main.detal .detal__menu p {
 /*                          detal            */
 
 /*                         model                */
-main.cars__models{padding-bottom: 215px;}
+main.cars__models{padding-bottom: 140px;}
+
+main.cars__models .model__menu {margin-bottom: 40px;}
+
+main.cars__models .model__menu a {
+	opacity: 0.8;
+	font-size: 16px;
+  	font-weight: 300;
+  	text-align: center;
+  	color: #666666;
+}
+main.cars__models .model__menu a:before {
+	content: "";
+    display: block;
+    height: 2px;
+    width: 180px;
+    margin-bottom: 10px;
+    background: #fff;
+}
+main.cars__models .model__menu a:hover::before{
+	background: #7cbe49;
+}
+main.cars__models .model__menu a:hover {
+	color: #7cbe49;
+}
 
 main.cars__models .models__geely,
 main.cars__models .models__chery,
@@ -2446,6 +2470,7 @@ main.cars__models .models__byd button {
 	main.detal .detal__menu nav a::before {width: 140px;}
 	/*                  detal                  */
 	/*             model                 */
+	main.cars__models .model__menu a:before {width: 130px;}
 	main.cars__models .geely__cars .base__detal,
 	main.cars__models .chery__cars .base__detal,
 	main.cars__models .wall__cars .base__detal,
@@ -2708,6 +2733,17 @@ main.detal .detal__cart .sale__card .card__price button.cart__buy:hover:after,
 
 	/*                 detal                 */
 	/*                 model                 */
+main.cars__models .model__menu {flex-direction: column;}
+main.cars__models .model__menu a:before {
+	width: 100%;
+	margin-top: 5px;
+    margin-bottom: 5px;
+}
+main.cars__models .model__menu a {
+    display: block;
+	width: 90%;
+}
+
 main.cars__models .models__geely,
 main.cars__models .models__chery,
 main.cars__models .models__wall,
