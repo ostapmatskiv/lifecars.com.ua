@@ -1972,6 +1972,50 @@ main.cars__accessories .accessories__list a figure figcaption {
 }
 /*                        accessories                   */
 
+/*                        liquids                       */
+main.cars__liquids .model__menu {margin-bottom: 40px;}
+
+main.cars__liquids .model__menu a {
+	opacity: 0.8;
+	font-size: 16px;
+  	font-weight: 300;
+  	text-align: center;
+  	color: #666666;
+}
+main.cars__liquids .model__menu a:before {
+	content: "";
+    display: block;
+    height: 2px;
+    width: 180px;
+    margin-bottom: 10px;
+    background: #fff;
+}
+main.cars__liquids .model__menu a:hover::before{background: #7cbe49;}
+main.cars__liquids .model__menu a:hover {color: #7cbe49;}
+
+
+main.cars__liquids .liquids__list{justify-content: stretch;}
+main.cars__liquids .liquids__list a {
+	width: 14%;
+	padding-top: 10px;
+	margin-bottom: 60px;
+}
+main.cars__liquids .liquids__list a figure {width: calc(100% - 30px); margin: 0 auto;}
+main.cars__liquids .liquids__list a figure img {
+	width: 100px;
+    height: 100px;
+    background: white;
+	padding: 24px 20px;
+	border-radius: 4px;
+}
+main.cars__liquids .liquids__list a figure figcaption {
+	font-size: 17px;
+	font-weight: 300;
+	text-align: left;
+	color: #666666;
+}
+/*                        liquids                       */
+
 
 @media (max-width: 1441px) {
     
@@ -2514,6 +2558,7 @@ main.cars__models .models__byd button {
 	/*                  detal                  */
 	/*             model                 */
 	main.cars__accessories .model__menu a:before,
+	main.cars__liquids .model__menu a:before,
 	main.cars__models .model__menu a:before {width: 130px;}
 	main.cars__models .geely__cars .base__detal,
 	main.cars__models .chery__cars .base__detal,
@@ -2529,6 +2574,9 @@ main.cars__models .models__byd button {
 	}
 	main.cars__accessories .accessories__list a figure figcaption {font-size: 14px;}
 	/*             accessories          */
+	/*              liquids            */
+	main.cars__liquids .liquids__list a {width: 20%;}
+	/*              liquids           */
 }
 
 @media screen and (max-width: 426px) {
@@ -2785,14 +2833,18 @@ main.detal .detal__cart .sale__card .card__price button.cart__buy:hover:after,
 	/*                 detal                 */
 	/*                 model                 */
 main.cars__accessories .model__menu,
+main.cars__liquids .model__menu,
 main.cars__models .model__menu {flex-direction: column;}
+
 main.cars__accessories .model__menu a:before,
+main.cars__liquids .model__menu a:before,
 main.cars__models .model__menu a:before {
 	width: 100%;
 	margin-top: 5px;
     margin-bottom: 5px;
 }
 main.cars__accessories .model__menu a,
+main.cars__liquids .model__menu a,
 main.cars__models .model__menu a {
     display: block;
 	width: 90%;
@@ -2815,7 +2867,14 @@ main.cars__models .models__byd span {font-size: 16px;}
 		width: 25%;
 		margin-bottom: 35px;
 	}
-/*                       accessories        */
+	/*                   accessories           */
+/*                       liquids              */
+main.cars__liquids .liquids__list a figure img {
+    width: 80px;
+    height: 80px;
+	padding: 20px 16px;
+}
+/*                       liquids              */
 @media screen and (max-width: 376px) {
 	section.sale__catalog .sale__wrrap .sale__card .card__check .check__pieces p,
 	section.sale .sale__wrrap .sale__card .card__check .check__pieces p {font-size: 10px;}
