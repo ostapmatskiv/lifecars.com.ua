@@ -2025,6 +2025,40 @@ main.cars__liquids .liquids__list a figure figcaption {
 }
 /*                        liquids, light                      */
 
+/*                       cars__manufacturers                 */
+main.cars__manufacturers .manufacturers__name {margin-bottom: 50px;}
+main.cars__manufacturers .manufacturers__name a {
+	width: 28px;
+	height: 28px;
+	background-color: #fff;
+	border-radius: 50px;
+	font-size: 12px;
+    text-align: center;
+    display: inline-block;
+	line-height: 28px;
+	margin-right: 10px;
+}
+main.cars__manufacturers .manufacturers__name a:last-child{margin-right: 0px;}
+main.cars__manufacturers .manufacturers__name a:hover {
+	background-color: #7cbe49;
+	color: #fff;
+}
+main.cars__manufacturers section.catalog__name div { align-items: end;}
+main.cars__manufacturers section.catalog__name div label{
+	font-size: 60px;
+	color: #666666;
+	text-transform: uppercase;
+}
+main.cars__manufacturers section.catalog__name div a figure img {
+	width: 100px;
+    height: 100px;
+    background: white;
+	padding: 24px 20px;
+	border-radius: 4px;
+}
+
+/*                        cars__manufacturers                */
+
 
 @media (max-width: 1441px) {
     
