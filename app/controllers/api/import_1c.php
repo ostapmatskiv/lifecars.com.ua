@@ -1,7 +1,7 @@
 <?php
 
 /**
- * for adatrade.com.ua
+ * for lifecars.com.ua
  */
 class import_1c extends Controller
 {
@@ -30,8 +30,8 @@ class import_1c extends Controller
 						$this->parse_VygruzkaNomenklatury($file, $all);
 					else if($file_name[0] == 'VygruzkaKategorij')
 						$this->parse_VygruzkaKategorij($file);
-					else if($file_name[0] == 'VygruzkaZalyshkiv')
-						$this->parse_VygruzkaZalyshkiv($file);
+					// else if($file_name[0] == 'VygruzkaZalyshkiv')
+					// 	$this->parse_VygruzkaZalyshkiv($file);
 				}
 			}
 			else
@@ -74,7 +74,8 @@ class import_1c extends Controller
 		if(!empty($searchKeys))
 		{
 			$my_manufactures = $this->db->select('s_shopshowcase_options as o', 'id, alias', ['group' => -$this->manufacturer_option_id, 'alias' => $searchKeys])
-										->join('s_shopshowcase_options_name', 'id as name_id, name', ['option' => '#o.id'])
+										->join('s_shopshowcase_options_name as uk', 'id as name_id_uk, name as name_uk', ['option' => '#o.id', 'language' => 'uk'])
+										->join('s_shopshowcase_options_name as ru', 'id as name_id_ru, name as name_ru', ['option' => '#o.id', 'language' => 'ru'])
 										->get('array');
 
 			$last_position = 0;
@@ -86,8 +87,10 @@ class import_1c extends Controller
 						{
 							if(empty($this->site_manufactures[$key]))
 								$this->site_manufactures[$key] = $my_manufacturer->id;
-							if($my_manufacturer->name != $xml_manufacturers[$key]['uk'])
-								$this->db->updateRow('s_shopshowcase_options_name', ['name' => $xml_manufacturers[$key]['uk']], $my_manufacturer->name_id);
+							if($my_manufacturer->name_uk != $xml_manufacturers[$key]['uk'])
+								$this->db->updateRow('s_shopshowcase_options_name', ['name' => $xml_manufacturers[$key]['uk']], $my_manufacturer->name_id_uk);
+							if($my_manufacturer->name_ru != $xml_manufacturers[$key]['ru'])
+								$this->db->updateRow('s_shopshowcase_options_name', ['name' => $xml_manufacturers[$key]['ru']], $my_manufacturer->name_id_ru);
 							$find = true;
 							break;
 						}
@@ -100,7 +103,8 @@ class import_1c extends Controller
 					$insert = ['wl_alias' => $this->shop_wl_alias, 'group' => -$this->manufacturer_option_id, 'alias' => $key, 'position' => $last_position, 'active' => 1];
 					$id = $this->db->insertRow('s_shopshowcase_options', $insert);
 					$this->site_manufactures[$key] = $id;
-					$this->db->insertRow('s_shopshowcase_options_name', ['option' => $id, 'name' => $xml_manufacturers[$key]['uk']]);
+					$this->db->insertRow('s_shopshowcase_options_name', ['option' => $id, 'language' => 'uk', 'name' => $xml_manufacturers[$key]['uk']]);
+					$this->db->insertRow('s_shopshowcase_options_name', ['option' => $id, 'language' => 'ru', 'name' => $xml_manufacturers[$key]['ru']]);
 				}
 			}
 		}
@@ -122,7 +126,8 @@ class import_1c extends Controller
 		if(!empty($searchKeys))
 		{
 			$my_manufactures = $this->db->select('s_shopshowcase_groups as g', 'id, id_1c', ['wl_alias' => $this->shop_wl_alias, 'id_1c' => $searchKeys, 'parent' => 0])
-										->join('wl_ntkd', 'id as name_id, name', ['alias' => $this->shop_wl_alias, 'content' => '#-g.id'])
+										->join('wl_ntkd as uk', 'id as name_id_uk, name as name_uk', ['alias' => $this->shop_wl_alias, 'content' => '#-g.id', 'language' => 'uk'])
+										->join('wl_ntkd as ru', 'id as name_id_ru, name as name_ru', ['alias' => $this->shop_wl_alias, 'content' => '#-g.id', 'language' => 'ru'])
 										->get('array');
 
 			$last_position = 0;
@@ -135,8 +140,10 @@ class import_1c extends Controller
 						if($my_manufacturer->id_1c == $key)
 						{
 							$xml_manufacturers[$key]['id'] = $my_manufacturer->id;
-							if($my_manufacturer->name != $xml_manufacturers[$key]['uk'])
-								$this->db->updateRow('wl_ntkd', ['name' => $xml_manufacturers[$key]['uk']], $my_manufacturer->name_id);
+							if($my_manufacturer->name_uk != $xml_manufacturers[$key]['uk'])
+								$this->db->updateRow('wl_ntkd', ['name' => $xml_manufacturers[$key]['uk']], $my_manufacturer->name_id_uk);
+							if($my_manufacturer->name_ru != $xml_manufacturers[$key]['ru'])
+								$this->db->updateRow('wl_ntkd', ['name' => $xml_manufacturers[$key]['ru']], $my_manufacturer->name_id_ru);
 							$find = true;
 							break;
 						}
@@ -151,7 +158,8 @@ class import_1c extends Controller
 					$insert['position'] = $last_position;
 					$id = $this->db->insertRow('s_shopshowcase_groups', $insert);
 					$xml_manufacturers[$key]['id'] = $id;
-					$this->db->insertRow('wl_ntkd', ['alias' => $this->shop_wl_alias, 'content' => -$id, 'name' => $xml_manufacturers[$key]['uk']]);
+					$this->db->insertRow('wl_ntkd', ['alias' => $this->shop_wl_alias, 'content' => -$id, 'language' => 'uk', 'name' => $xml_manufacturers[$key]['uk']]);
+					$this->db->insertRow('wl_ntkd', ['alias' => $this->shop_wl_alias, 'content' => -$id, 'language' => 'ru', 'name' => $xml_manufacturers[$key]['ru']]);
 				}
 			}
 		}
@@ -171,10 +179,11 @@ class import_1c extends Controller
 		if(!empty($searchKeys))
 		{
 			$my_cars = $this->db->select('s_shopshowcase_groups as g', 'id, id_1c, parent', ['wl_alias' => $this->shop_wl_alias, 'id_1c' => $searchKeys])
-										->join('wl_ntkd', 'id as name_id, name', ['alias' => $this->shop_wl_alias, 'content' => '#-g.id'])
+										->join('wl_ntkd as uk', 'id as name_id_uk, name as name_uk', ['alias' => $this->shop_wl_alias, 'content' => '#-g.id', 'language' => 'uk'])
+										->join('wl_ntkd as ru', 'id as name_id_ru, name as name_ru', ['alias' => $this->shop_wl_alias, 'content' => '#-g.id', 'language' => 'ru'])
 										->get('array');
 
-			$last_position = 0;
+			$last_position = $last_position_parent = 0;
 			$insert = ['wl_alias' => $this->shop_wl_alias, 'active' => 1, 'hide' => 0, 'author_add' => 0, 'author_edit' => 0];
 			$insert['date_add'] = $insert['date_edit'] = time();
 			foreach ($searchKeys as $key) {
@@ -190,24 +199,28 @@ class import_1c extends Controller
 						{
 							if($my_car->parent != $parent)
 								$this->db->updateRow('s_shopshowcase_groups', ['parent' => $xml_cars[$key]['parent']], $my_car->id);
-							if($my_car->name != $xml_cars[$key]['uk'])
-								$this->db->updateRow('wl_ntkd', ['name' => $xml_cars[$key]['uk']], $my_car->name_id);
+							if($my_car->name_uk != $xml_cars[$key]['uk'])
+								$this->db->updateRow('wl_ntkd', ['name' => $xml_cars[$key]['uk']], $my_car->name_id_uk);
+							if($my_car->name_ru != $xml_cars[$key]['ru'])
+								$this->db->updateRow('wl_ntkd', ['name' => $xml_cars[$key]['ru']], $my_car->name_id_ru);
 							$find = true;
 							break;
 						}
 					}
 				if(!$find)
 				{
-					if($last_position == 0)
+					if($last_position == 0 || $last_position_parent != $parent)
 						$last_position = $this->db->getCount('s_shopshowcase_groups', ['wl_alias' => $this->shop_wl_alias, 'parent' => $parent]);
 					$last_position++;
+					$last_position_parent = $parent;
 					$insert['id_1c'] = $key;
 					$insert['alias'] = $this->data->latterUAtoEN($xml_cars[$key]['uk']);
 					$insert['parent'] = $parent;
 					$insert['position'] = $last_position;
 					$id = $this->db->insertRow('s_shopshowcase_groups', $insert);
 					$this->site_cars[$key] = $id;
-					$this->db->insertRow('wl_ntkd', ['alias' => $this->shop_wl_alias, 'content' => -$id, 'name' => $xml_cars[$key]['uk']]);
+					$this->db->insertRow('wl_ntkd', ['alias' => $this->shop_wl_alias, 'content' => -$id, 'language' => 'uk', 'name' => $xml_cars[$key]['uk']]);
+					$this->db->insertRow('wl_ntkd', ['alias' => $this->shop_wl_alias, 'content' => -$id, 'language' => 'ru', 'name' => $xml_cars[$key]['ru']]);
 				}
 			}
 		}
@@ -231,7 +244,8 @@ class import_1c extends Controller
 			if(!$all)
 				$where['id_1c'] = $searchKeys;
 			$my_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c, article_show, group', $where)
-										->join('wl_ntkd', 'id as name_id, name, text', ['alias' => $this->shop_wl_alias, 'content' => '#p.id'])
+										->join('wl_ntkd as uk', 'id as name_id_uk, name as name_uk, text as text_uk', ['alias' => $this->shop_wl_alias, 'content' => '#p.id', 'language' => 'uk'])
+										->join('wl_ntkd as ru', 'id as name_id_ru, name as name_ru, text as text_ru', ['alias' => $this->shop_wl_alias, 'content' => '#p.id', 'language' => 'ru'])
 										->join('s_shopshowcase_product_options', 'id as row_manufacturer_id, value as manufacturer_id', ['option' => $this->manufacturer_option_id, 'product' => '#p.id'])
 										->get('array');
 			if(!empty($my_products))
@@ -315,8 +329,10 @@ class import_1c extends Controller
 						{
 							if($my_product->article_show != $xml_product->Артикул)
 								$this->db->updateRow('s_shopshowcase_products', ['article_show' => $xml_product->Артикул, 'article' => $this->prepareArticleKey($xml_product->Артикул)], $my_product->id);
-							if($my_product->name != $xml_product->ЗаголовокТайтл || $my_product->text != $xml_product->Описание)
-								$this->db->updateRow('wl_ntkd', ['name' => $xml_product->ЗаголовокТайтл, 'text' => $xml_product->Описание], $my_product->name_id);
+							if($my_product->name_uk != $xml_product->ЗаголовокТайтл || $my_product->text_uk != $xml_product->Описание)
+								$this->db->updateRow('wl_ntkd', ['name' => $xml_product->ЗаголовокТайтл, 'text' => $xml_product->Описание], $my_product->name_id_uk);
+							if($my_product->name_ru != $xml_product->ЗаголовокТайтлРос || $my_product->text_ru != $xml_product->ОписаниеРос)
+								$this->db->updateRow('wl_ntkd', ['name' => $xml_product->ЗаголовокТайтлРос, 'text' => $xml_product->ОписаниеРос], $my_product->name_id_ru);
 							if(!empty($xml_product->Авто))
 							{
 								$xml_cars = [];
@@ -511,10 +527,7 @@ class import_1c extends Controller
 							break;
 						}
 					}
-// echo "<pre>";
-// print_r($my_analog_groups);
-// print_r($my_product_analogs);
-// exit;
+
 				if(!$find)
 				{
 					$insert['article_show'] = (string) $xml_product->Артикул;
@@ -654,7 +667,8 @@ class import_1c extends Controller
 		if(!empty($searchKeys))
 		{
 			$my_category = $this->db->select('s_shopshowcase_options as o', 'id, alias', ['group' => -$this->category_option_id, 'alias' => $searchKeys])
-										->join('s_shopshowcase_options_name', 'id as name_id, name', ['option' => '#o.id'])
+										->join('s_shopshowcase_options_name as uk', 'id as name_id_uk, name as name_uk', ['option' => '#o.id', 'language' => 'uk'])
+										->join('s_shopshowcase_options_name as ru', 'id as name_id_ru, name as name_ru', ['option' => '#o.id', 'language' => 'ru'])
 										->get('array');
 
 			$last_position = 0;
@@ -664,8 +678,10 @@ class import_1c extends Controller
 					foreach ($my_category as $category) {
 						if($category->alias == $key)
 						{
-							if($category->name != $xml_category[$key]['uk'])
-								$this->db->updateRow('s_shopshowcase_options_name', ['name' => $xml_category[$key]['uk']], $category->name_id);
+							if($category->name_uk != $xml_category[$key]['uk'])
+								$this->db->updateRow('s_shopshowcase_options_name', ['name' => $xml_category[$key]['uk']], $category->name_id_uk);
+							if($category->name_ru != $xml_category[$key]['ru'])
+								$this->db->updateRow('s_shopshowcase_options_name', ['name' => $xml_category[$key]['ru']], $category->name_id_ru);
 							$find = true;
 							break;
 						}
@@ -677,7 +693,8 @@ class import_1c extends Controller
 					$last_position++;
 					$insert = ['wl_alias' => $this->shop_wl_alias, 'group' => -$this->category_option_id, 'alias' => $key, 'position' => $last_position, 'active' => 1];
 					$id = $this->db->insertRow('s_shopshowcase_options', $insert);
-					$this->db->insertRow('s_shopshowcase_options_name', ['option' => $id, 'name' => $xml_category[$key]['uk']]);
+					$this->db->insertRow('s_shopshowcase_options_name', ['option' => $id, 'language' => 'uk', 'name' => $xml_category[$key]['uk']]);
+					$this->db->insertRow('s_shopshowcase_options_name', ['option' => $id, 'language' => 'ru', 'name' => $xml_category[$key]['ru']]);
 				}
 			}
 		}
