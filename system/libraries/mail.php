@@ -3,10 +3,12 @@
 /*
  * Версія 2.0 (05.03.2019) підключено smtp через Swift_Mailer
  * Версія 2.1 (22.10.2019) додано fromName(, addAttach() для Swift_Mailer
+ * Версія 2.2 (10.05.2020) додано addToSchedule() - відкладену відправку листів
  */
 
-class Mail {
+class Mail extends Controller {
 
+    private $template = 0; // for wl_forms
     private $to;
     private $from;
     private $fromName = '';
@@ -38,19 +40,10 @@ class Mail {
         }
     }
 
-    public function subject($title)
+    public function template($template)
     {
-        $this->subject = $title;
-    }
-
-    public function to($send_to)
-    {
-        $this->to = $send_to;
-    }
-
-    public function fromName($fromName)
-    {
-        $this->fromName = $fromName;
+        if(is_numeric($template))
+            $this->template = $template;
     }
 
     public function from($send_from)
@@ -62,9 +55,29 @@ class Mail {
         }
     }
 
-    public function message($msg)
+    public function fromName($fromName)
     {
-        $this->message = $msg;
+        $this->fromName = $fromName;
+    }
+
+    public function to($send_to)
+    {
+        $this->to = $send_to;
+    }
+
+    public function replyTo($replyTo)
+    {
+        $this->replyTo = $replyTo;
+    }
+
+    public function subject($subject)
+    {
+        $this->subject = $subject;
+    }
+
+    public function message($message)
+    {
+        $this->message = $message;
     }
 
     public function params($pms)
@@ -84,7 +97,13 @@ class Mail {
             $this->attach[] = $file_path;
     }
 
-    public function send()
+    public function attachArray($attach)
+    {
+        if(!empty($attach) && is_array($attach))
+            $this->attach = array_merge($this->attach, $attach);
+    }
+
+    public function send($force = false, $saveToHistory = false)
     {
         if(is_array($this->params))
             foreach($this->params as $key => $value) {
@@ -108,41 +127,50 @@ class Mail {
         $sent_mail->message = $this->message;
         $sent_mail->headers = $headers;
 
-        if($this->smtp)
+        if($_SESSION['option']->sendEmailForce || $force)
         {
-            $from = $this->from;
-            if($this->fromName)
-                $from = [$this->from => $this->fromName];
-            $message = (new Swift_Message($this->subject))
-                      ->setFrom($from)
-                      ->setTo($this->to)
-                      ->setBody($this->message, 'text/html');
-            if($this->replyTo)
-                $message->setReplyTo($this->replyTo);
+            if($this->smtp)
+            {
+                $from = $this->from;
+                if($this->fromName)
+                    $from = [$this->from => $this->fromName];
+                $message = (new Swift_Message($this->subject))
+                          ->setFrom($from)
+                          ->setTo(explode(', ', $this->to))
+                          ->setBody($this->message, 'text/html');
+                if($this->replyTo)
+                    $message->setReplyTo($this->replyTo);
 
-            if($this->attach)
-                foreach ($this->attach as $file_path => $file_name) {
-                    if(is_numeric($file_path))
-                        $message->attach( Swift_Attachment::fromPath($file_name) );
-                    else
-                        $message->attach( Swift_Attachment::fromPath($file_path)->setFilename($file_name) );
+                if($this->attach)
+                    foreach ($this->attach as $file_path => $file_name) {
+                        if(is_numeric($file_path))
+                            $message->attach( Swift_Attachment::fromPath($file_name) );
+                        else
+                            $message->attach( Swift_Attachment::fromPath($file_path)->setFilename($file_name) );
+                    }
+
+                if($this->smtp->send($message))
+                {
+                    if($saveToHistory)
+                        $this->addToSchedule(true);
+                    return $sent_mail;
                 }
-            
-
-            if($this->smtp->send($message))
-                return $sent_mail;
+            }
+            else
+            {
+                if($saveToHistory)
+                    $this->addToSchedule(true);
+                if($_SERVER["SERVER_NAME"] == 'localhost')
+                    return $sent_mail;
+                mail($this->to, $this->subject, $this->message, $headers);
+            }
         }
         else
-        {
-            if($_SERVER["SERVER_NAME"] == 'localhost')
-                return $sent_mail;
-            if(mail($this->to, $this->subject, $this->message, $headers))
-                return $sent_mail;
-        }
-        return false;
+            $this->addToSchedule();
+        return $sent_mail;
     }
 
-	public function sendTemplate($template, $to, $data = array())
+	public function sendTemplate($template, $to, $data = array(), $force = false, $saveToHistory = false)
     {
 		$path = APP_PATH.'mails'.DIRSEP.$template.'.php';
         if($_SESSION['language'])
@@ -185,13 +213,13 @@ class Mail {
 				$this->to($to);
 				$this->from($from_mail);
 
-				return $this->send();
+				return $this->send($force, $saveToHistory);
 			}
 		}
 		return false;
 	}
 
-    public function sendMailTemplate($template, $data = array())
+    public function sendMailTemplate($template, $data = array(), $force = false, $saveToHistory = false)
     {
         $from = $this->checkMail($template->from, $data);
         $to = $this->checkMail($template->to, $data);
@@ -199,12 +227,16 @@ class Mail {
         if($from && $to)
         {
             $this->params($data);
-            $this->message(html_entity_decode($template->text));
-            $this->subject($template->title);
+            $this->message(html_entity_decode($template->message));
+            $this->subject($template->subject);
             $this->to($to);
             $this->from($from);
+            if(!empty($template->template))
+                $this->template($template->template);
+            if(!empty($template->attach))
+                $this->attachArray($template->attach);
 
-            return $this->send();
+            return $this->send($force, $saveToHistory);
         }
         return false;
     }
@@ -231,6 +263,23 @@ class Mail {
                 break;
         }
         return false;
+    }
+
+    public function addToSchedule($send = false)
+    {
+        $this->library('db');
+        $mail = [];
+        $mail['template'] = $this->template;
+        $mail['date'] = time();
+        $mail['from'] = $this->from;
+        $mail['fromName'] = $this->fromName;
+        $mail['to'] = $this->to;
+        $mail['replyTo'] = $this->replyTo;
+        $mail['subject'] = $this->subject;
+        $mail['message'] = $this->message;
+        $mail['attach'] = serialize($this->attach);
+        $mail['send_email'] = ($send) ? 1 : 0;
+        $this->db->insertRow('wl_mail_history', $mail);
     }
 
 }

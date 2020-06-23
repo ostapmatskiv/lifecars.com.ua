@@ -108,7 +108,7 @@ class wl_photos extends Controller {
                                         $this->db->updateRow('wl_ntkd', ['get_ivafc' => $row->get_ivafc.'i'], $row->id);
                                 }
                             }
-                        $this->db->sitemap_cache_clear($data['content'], false, $data['alias']);
+                        $this->db->html_cache_clear($data['content'], $data['alias']);
                     }
                     else
                     {
@@ -174,7 +174,7 @@ class wl_photos extends Controller {
                         {
                             $res['result'] = true;
                             $res['error'] = '';
-                            $this->db->sitemap_cache_clear($photo->content, false, $photo->alias);
+                            $this->db->html_cache_clear($photo->content, $photo->alias);
                         }
                         $this->updateAdditionall($photo->alias, $photo->content);
                         break;
@@ -188,7 +188,7 @@ class wl_photos extends Controller {
                         {
                             $res['result'] = true;
                             $res['error'] = '';
-                            $this->db->sitemap_cache_clear($photo->content, false, $photo->alias);
+                            $this->db->html_cache_clear($photo->content, $photo->alias);
                         }
                         $this->updateAdditionall($photo->alias, $photo->content);
                         break;
@@ -212,7 +212,7 @@ class wl_photos extends Controller {
                                 }
                                 $res['result'] = true;
                                 $res['error'] = '';
-                                $this->db->sitemap_cache_clear($photo->content, false, $photo->alias);
+                                $this->db->html_cache_clear($photo->content, $photo->alias);
                                 $this->updateAdditionall($photo->alias, $photo->content);
                             }
                         }
@@ -249,7 +249,7 @@ class wl_photos extends Controller {
                     if($_SESSION['language'])
                         $this->db->deleteRow('wl_media_text', array('type' => 'photo', 'content' => $photo->id));
                     $this->db->executeQuery("UPDATE `wl_images` SET `position` = `position` - 1 WHERE `alias` = '{$photo->alias}' AND `content` = '{$photo->content}' AND `position` > '{$photo->position}'");
-                    $this->db->sitemap_cache_clear($photo->content, false, $photo->alias);
+                    $this->db->html_cache_clear($photo->content, $photo->alias);
                     $this->updateAdditionall($photo->alias, $photo->content);
 
                     $res['result'] = true;
@@ -278,7 +278,7 @@ class wl_photos extends Controller {
                     if($sizes = $this->db->getAliasImageSizes($this->data->post('ALIAS_ID')))
                     {
                         foreach ($sizes as $resize) {
-                            if($resize->prefix == '')
+                            if($resize->prefix == '' || $resize->prefix == 'admin')
                             {
                                 if($this->image->loadImage($path, $name, $extension))
                                 {
@@ -357,7 +357,7 @@ class wl_photos extends Controller {
                     $res['result'] = true;
                     $res['error'] = '';
 
-                    $this->db->sitemap_cache_clear($_POST['content'], false, $_POST['alias']);
+                    $this->db->html_cache_clear($_POST['content'], $_POST['alias']);
                     $this->load->function_in_alias($_POST['alias'], '__after_edit', $_POST['content'], true);
                 }
             }

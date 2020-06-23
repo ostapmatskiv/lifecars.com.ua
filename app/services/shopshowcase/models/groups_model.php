@@ -205,10 +205,10 @@ class groups_model {
 	            }
 	            $link = $this->getLink($list, $data['parent'], $data['alias']);
 	            $this->db->sitemap_update(-$id, 'link', $_SESSION['alias']->alias.'/'.$link);
-	            $this->db->sitemap_cache_clear(0);
+	            $this->db->html_cache_clear(0);
 			}
 
-			$this->db->sitemap_cache_clear(-$id);
+			$this->db->html_cache_clear(-$id);
 			if($this->db->updateRow($this->table(), $data, $id))
 			{
 				if($group->active != $data['active'] || $group->alias != $data['alias'] || $group->parent != $data['parent'])
@@ -218,7 +218,7 @@ class groups_model {
 						$this->db->sitemap_index(-$id, $data['active']);
 						if($groups = $this->db->getAllDataByFieldInArray($this->table('_product_group'), $id, 'group'))
 							foreach ($groups as $pg) {
-								$this->db->sitemap_cache_clear($pg->product);
+								$this->db->html_cache_clear($pg->product);
 							}
 					}
 					else
@@ -241,10 +241,10 @@ class groups_model {
 									if($group->active != $data['active'])
 										$this->db->sitemap_index($product->id, $data['active']);
 									if($group->alias != $data['alias'] || $group->parent != $data['parent'])
-										$this->db->sitemap_cache_clear($product->id);
+										$this->db->html_cache_clear($product->id);
 								}
 							}
-							$this->db->sitemap_cache_clear(-$up);
+							$this->db->html_cache_clear(-$up);
 							$up = $list[$up]->parent;
 						}
 					}

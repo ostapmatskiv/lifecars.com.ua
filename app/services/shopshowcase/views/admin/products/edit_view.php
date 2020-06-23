@@ -132,11 +132,7 @@ if($cooperation = $this->db->getAllDataByFieldInArray('wl_aliases_cooperation', 
 
       <div class="panel-body">
         <ul class="nav nav-tabs">
-          <?php if(!empty($storages)) { ?>
-            <li class="active"><a href="#tab-storages" data-toggle="tab" aria-expanded="true">Склад</a></li>
-            <li>
-          <?php } else echo '<li class="active">'; ?>
-            <a href="#tab-main" data-toggle="tab" aria-expanded="true">Загальні дані</a></li>
+          <li class="active"><a href="#tab-main" data-toggle="tab" aria-expanded="true">Загальні дані</a></li>
           <?php if($changePriceTab) { ?>
             <li><a href="#tab-changePrice" data-toggle="tab" aria-expanded="true">Керування ціною</a></li>
           <?php } if(!empty($marketing)) foreach($marketing as $tab) { ?>
@@ -154,14 +150,8 @@ if($cooperation = $this->db->getAllDataByFieldInArray('wl_aliases_cooperation', 
           <li><a href="#tab-similar" data-toggle="tab" aria-expanded="true">Подібні</a></li>
         </ul>
         <div class="tab-content">
-          <?php if(!empty($storages) && false) { ?>
-            <div class="tab-pane fade active in" id="tab-storages">
-              <?php require 'edit_tabs/tab-storages.php'; ?>
-            </div>
-            <div class="tab-pane fade" id="tab-main">
-          <?php } else { ?>
-            <div class="tab-pane fade active in" id="tab-main">
-            <?php } require_once 'edit_tabs/tab-main.php'; ?>
+          <div class="tab-pane fade active in" id="tab-main">
+            <?php require_once 'edit_tabs/tab-main.php'; ?>
           </div>
           <?php if($changePriceTab) { ?>
             <div class="tab-pane fade" id="tab-changePrice">

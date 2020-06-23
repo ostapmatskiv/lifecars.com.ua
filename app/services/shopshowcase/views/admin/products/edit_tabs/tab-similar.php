@@ -25,7 +25,7 @@
             <tbody>
             <?php if(!empty($product->similarProducts)) foreach($product->similarProducts as $similarProduct) { ?>
                 <tr>
-                    <td><a href="<?=SITE_URL.'admin/'.$similarProduct->link?>"><?=($_SESSION['option']->ProductUseArticle) ? $similarProduct->article : $similarProduct->id?></a></td>
+                    <td><a href="<?=SITE_URL.'admin/'.$similarProduct->link?>"><?=($_SESSION['option']->ProductUseArticle) ? $similarProduct->article_show : $similarProduct->id?></a></td>
                     <td><a href="<?=SITE_URL.'admin/'.$similarProduct->link?>"><?= $similarProduct->name ?></a></td>
                     <td><?= $similarProduct->price.' '.$similarProduct->currency ?></td>
                     <td class="text-center"><button type="button" class="btn btn-sm btn-danger" onclick="deleteSimilarProduct(<?= $similarProduct->id?>, this);" >X</button></td>

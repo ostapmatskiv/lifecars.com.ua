@@ -16,7 +16,25 @@ class images extends Controller {
     {
     	if(count($this->data->url()) == 4)
     	{
-            if($folder = $this->db->getAllDataById('wl_options', array('value' => $this->data->uri(1), 'name' => 'folder', 'alias' => '>0')))
+            $folder = false;
+            $alias = $this->data->uri(1);
+            if($cache = $this->db->cache_get($alias, 'wl_aliases'))
+            {
+                if(isset($cache->alias) && !empty($cache->options))
+                {
+                    if(!empty($cache->options['folder']))
+                    {
+                        $folder = new stdClass();
+                        $folder->alias = $cache->alias->id;
+                        $folder->value = $cache->options['folder'];
+                    }
+                }
+            }
+            else
+            {
+                $folder = $this->db->getAllDataById('wl_options', array('value' => $alias, 'name' => 'folder', 'alias' => '>0'));
+            }
+            if(is_object($folder))
     		{
     			if(is_numeric($this->data->uri(2)))
     			{
@@ -62,7 +80,7 @@ class images extends Controller {
     			}
     		}
     	}
-    	$this->load->page_404();
+    	$this->load->page_404(false);
     }
 
 }

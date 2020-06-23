@@ -91,15 +91,32 @@ class currency_model
 
     public function get($code = false)
     {
+    	$currency = $this->db->cache_get($code);
+        if($currency !== NULL)
+        {
+        	if($_SESSION['option']->autoUpdate)
+    		{
+	    		$today = strtotime('today');
+	    		if($currency->day != $today)
+	    		{
+	    			$currency->currency = $this->updatePrivat24($code);
+	    			$currency->day = $today;
+	    			$this->db->cache_add($code, $currency);
+	    		}
+	    	}
+            return $currency->currency;
+        }
     	if($currency = $this->db->getAllDataById($this->table(), $code, 'code'))
     	{
     		if($_SESSION['option']->autoUpdate)
     		{
 	    		$today = strtotime('today');
 	    		if($currency->day != $today)
-	    			return $this->updatePrivat24($code);
-	    		else
-	    			return $currency->currency;
+	    		{
+	    			$currency->currency = $this->updatePrivat24($code);
+	    			$currency->day = $today;
+	    			$this->db->cache_add($code, $currency);
+	    		}
 	    	}
     		return $currency->currency;
     	}
@@ -108,17 +125,30 @@ class currency_model
 
     public function getAll()
     {
+    	$update = false;
+    	$list = $this->db->cache_get('all');
+        if($list === NULL)
+        {
+        	$update = true;
+        	$list = $this->db->getAllData($this->table());
+        }
     	$currencies = [];
     	$today = strtotime('today');
-    	if($list = $this->db->getAllData($this->table()))
+    	if($list)
     		foreach ($list as $currency) {
 	    		if($_SESSION['option']->autoUpdate && $currency->day != $today)
 	    		{
 		    		$currencies = $this->updatePrivat24('*', $list);
+		    		$update = true;
 		    		break;
 	    		}
 		    	$currencies[$currency->code] = $currency->currency;
 		    }
+		if($update)
+		{
+			$this->db->cache_delete_all();
+			$this->db->cache_add('all', $list);
+		}
     	return $currencies;
 	}
 

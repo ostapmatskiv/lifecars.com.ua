@@ -7,26 +7,15 @@ class wl_cache_model extends Loader
 	
 	public function init($link)
 	{
-		$where['link'] = $link;
-		if($_SESSION['language'])
-			$where['language'] = $_SESSION['language'];
-		$pages = $this->db->select('wl_sitemap as s', '*', $where)
+		if($page = $this->db->select('wl_sitemap as s', '*', sha1($link), 'link_sha1')
 							->join('wl_aliases as a', 'alias as alias_link, service, table as alias_table', '#s.alias')
 							->join('wl_services', 'name as service_name, table as service_table', '#a.service')
-							->get('array');
-		if($pages && count($pages) > 1)
+							->get())
 		{
-			for ($i=1; $i < count($pages); $i++) {
-				$this->db->deleteRow('wl_sitemap', $pages[$i]->id);
-				$this->db->deleteRow('wl_sitemap_from', $pages[$i]->id, 'sitemap');
-				$this->db->deleteRow('wl_statistic_pages', array('alias' => 0, 'content' => $pages[$i]->id));
-			}
-		}
-		if(isset($pages[0]))
-		{
-			$this->page = $pages[0];
+			$this->page = $page;
 			$this->page->uniq_link = $link;
-			if($_SESSION['language']) $this->page->uniq_link .= '/'.$_SESSION['language'];
+			if($_SESSION['language'])
+				$this->page->uniq_link = $_SESSION['language'].'/'.$link;
 			return true;
 		}
 		return false;
@@ -36,17 +25,28 @@ class wl_cache_model extends Loader
 	{
 		switch ($this->page->code) {
 			case 200:
-				if($this->page->data != '' && $this->page->data != NULL)
+				$key = $this->db->getHTMLCacheKey($this->page->content, $this->page->alias_link);
+				if($page = $this->db->cache_get($key, 'html', false))
 				{
-					if(extension_loaded('zlib'))
-						echo ( gzdecode ($this->page->data) );
-					else
-						echo ( $this->page->data );
+					echo $page;
+                    if($_SESSION['option']->showTimeSiteGenerate)
+                        $this->showTime('load from cache');
+                    exit();
+                }
+				break;
 
-					if($_SESSION['option']->showTimeSiteGenerate)
-						$this->showTime('load from cache');
-					exit();
-				}
+			case 201:
+				if(empty($_SESSION['user']->id))
+				{
+					$key = $this->db->getHTMLCacheKey($this->page->content, $this->page->alias_link);
+					if($page = $this->db->cache_get($key, 'html', false))
+					{
+						echo $page;
+	                    if($_SESSION['option']->showTimeSiteGenerate)
+	                        $this->showTime('load from cache');
+	                    exit();
+	                }
+	            }
 				break;
 			
 			case 301:
@@ -71,7 +71,7 @@ class wl_cache_model extends Loader
 				new Page404(false);
 				break;
 		}
-		if($_SESSION['cache'])
+		if($_SESSION['cache'] && ($this->page->code == 200 || ($this->page->code == 201 && empty($_SESSION['user']->id))))
 			ob_start();
 	}
 
@@ -88,13 +88,12 @@ class wl_cache_model extends Loader
 		if($_SESSION['alias']->code != $this->page->code)
 			$cache['code'] = $_SESSION['alias']->code;
 
-		if($_SESSION['cache'] && $this->page->data == '')
+		if($_SESSION['cache'] && ($_SESSION['alias']->code == 200 || ($_SESSION['alias']->code == 201 && empty($_SESSION['user']->id))))
 		{
-			$content = ob_get_contents();
-			if(extension_loaded('zlib') && $data = gzencode ($content, 2))
-				$cache['data'] = (string) $data;
-			else
-				$cache['data'] = (string) $content;
+			$content = (string) ob_get_contents();
+
+			$key = $this->db->getHTMLCacheKey($this->page->content, $this->page->alias_link);
+			$this->db->cache_add($key, $content, 'html', false);
 
 			ob_end_flush();
 		}
@@ -149,7 +148,7 @@ class wl_cache_model extends Loader
 			$where['code'] = '!301';
 			$where['+code'] = '!404';
 			$where['priority'] = '>=0';
-			$this->db->select('wl_sitemap', 'language, link, time, changefreq, priority', $where);
+			$this->db->select('wl_sitemap', 'link, time, changefreq, priority', $where);
 			return $this->db->get();
 		}
 		return false;

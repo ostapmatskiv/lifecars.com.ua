@@ -26,7 +26,7 @@ class export_model
 
         $where_ntkd['content'] = "#-g.id";
         if($_SESSION['language']) $where_ntkd['language'] = $_SESSION['language'];
-        $this->db->join('wl_ntkd', "name", $where_ntkd);
+        $this->db->join('wl_ntkd', "name, text", $where_ntkd);
         if($groups = $this->db->get('array'))
             foreach ($groups as $g) {
                 $this->allGroups[$g->id] = clone $g;
@@ -154,6 +154,7 @@ class export_model
     public function getProducts($Group = -1, $lastUpdated = false)
     {
         $all = true;
+        $sign_groups = $sign_products = false;
         $where = array('wl_alias' => $_SESSION['alias']->id);
         if($lastUpdated)
         {
@@ -204,6 +205,10 @@ class export_model
             {
                 $all = false;
                 $where['group'] = $Group;
+                if(is_array($Group))
+                	$sign_groups = md5(implode(',', $Group));
+                else
+                	$sign_groups = $Group;
             }
             $where['active'] = 1;
         }
@@ -215,6 +220,7 @@ class export_model
 
         if($_SESSION['option']->useMarkUp)
             $this->db->join('s_shopshowcase_markup', 'value as markup', array('from' => '<p.price', 'to' => '>=p.price'));
+        $this->db->join($this->table('_promo'), 'percent as promo_percent, from as promo_from, to as promo_to', ['id' => '#p.promo', 'status' => 1]);
 
         $where_ntkd['alias'] = $_SESSION['alias']->id;
         $where_ntkd['content'] = "#p.id";
@@ -225,7 +231,7 @@ class export_model
 
         if($products)
         {
-            $imagesAll = $where_img = array();
+            $imagesAll = $where_img = $product_ids = $content_ids = array();
             $where_img['alias'] = $products[0]->wl_alias;
             if($_SESSION['option']->ProductMultiGroup)
             {
@@ -258,52 +264,7 @@ class export_model
                     $imagesAll[$id][] = IMG_PATH.$_SESSION['option']->folder.'/'.$id.'/'.$image->file_name;
                 }
             unset($images);
-
-            $where = $main_options = array();
-            if(!empty($where_img['content']) && is_array($where_img['content']))
-            {
-                $where['product'] = $where_img['content'];
-                $_product_options = $this->db->getAllDataByFieldInArray($this->table('_product_options'), $where, 'product ASC');
-            }
-            else
-                $_product_options = $this->db->getAllData($this->table('_product_options'), 'product ASC');
-            if($_product_options)
-            {
-                $where = array('wl_alias' => $_SESSION['alias']->id, 'group' => '>=0', 'active' => 1);
-                $where_name = array('option' => '#o.id');
-                if($_SESSION['language']) $where_name['language'] = $_SESSION['language'];
-                $main_options_list = $this->db->select($this->table('_options').' as o', 'id, group, type', $where)
-                                        ->join($this->table('_options_name'), 'name, sufix', $where_name)
-                                        ->get('array');
-                if($main_options_list)
-                {
-                    $typesWithOptions = array();
-                    if($wl_input_types = $this->db->getAllDataByFieldInArray('wl_input_types', 1, 'options'))
-                        foreach ($wl_input_types as $type) {
-                            $typesWithOptions[] = $type->id;
-                        }
-
-                    $where = array('wl_alias' => $_SESSION['alias']->id, 'group' => '<0', 'active' => 1);
-                    $childrens = $this->db->select($this->table('_options').' as o', 'id, group', $where)
-                                        ->join($this->table('_options_name'), 'name', $where_name)
-                                        ->get('array');
-                    
-                    foreach ($main_options_list as $option) {
-                        if(in_array($option->type, $typesWithOptions))
-                        {
-                            $option->values = array();
-                            if($childrens)
-                                foreach ($childrens as $child) {
-                                    if(-$child->group == $option->id)
-                                        $option->values[$child->id] = $child->name;
-                                }
-                        }
-                        $main_options[$option->id] = clone $option;
-                    }
-                }
-                unset($main_options_list, $typesWithOptions, $childrens, $where, $where_img, $where_name, $wl_input_types);
-            }
-
+            
             $wl_video = [];
             $where_img['active'] = 1;
             $this->db->select('wl_video', 'content, site, link', $where_img);
@@ -318,8 +279,71 @@ class export_model
                 }
             unset($videos);
 
+            $where = $main_options = array();
+
+            if($cache = $this->db->cache_get('export/product_options-'.$sign_products))
+            {
+                $_product_options = $cache['_product_options'];
+                $main_options = $cache['main_options'];
+                unset($cache);
+            }
+            else
+            {
+                $where = $main_options = array();
+    			if(!empty($product_ids))
+                {
+                	$_product_options = [];
+                	foreach (array_chunk($product_ids, 200) as $p_ids) {
+                		$_product_options = array_merge ($_product_options, $this->db->getQuery('SELECT `product`, `option`, `language`, `value` FROM '.$this->table('_product_options').' WHERE `product` IN ('.implode(',', $p_ids).') ORDER BY `product` ASC', 'array'));
+                	}
+                }
+                else
+                    $_product_options = $this->db->getAllData($this->table('_product_options'), 'product ASC');
+                if($_product_options)
+                {
+                    $where = array('wl_alias' => $_SESSION['alias']->id, 'group' => '>=0', 'active' => 1);
+                    $where_name = array('option' => '#o.id');
+                    if($_SESSION['language']) $where_name['language'] = $_SESSION['language'];
+                    $main_options_list = $this->db->select($this->table('_options').' as o', 'id, group, type', $where)
+                                            ->join($this->table('_options_name'), 'name, sufix', $where_name)
+                                            ->get('array');
+                    if($main_options_list)
+                    {
+                        $typesWithOptions = array();
+                        if($wl_input_types = $this->db->getAllDataByFieldInArray('wl_input_types', 1, 'options'))
+                            foreach ($wl_input_types as $type) {
+                                $typesWithOptions[] = $type->id;
+                            }
+
+                        $where = array('wl_alias' => $_SESSION['alias']->id, 'group' => '<0', 'active' => 1);
+                        $childrens = $this->db->select($this->table('_options').' as o', 'id, group', $where)
+                                            ->join($this->table('_options_name'), 'name', $where_name)
+                                            ->get('array');
+                        
+                        foreach ($main_options_list as $option) {
+                            if(in_array($option->type, $typesWithOptions))
+                            {
+                                $option->values = array();
+                                if($childrens)
+                                    foreach ($childrens as $child) {
+                                        if(-$child->group == $option->id)
+                                            $option->values[$child->id] = $child->name;
+                                    }
+                            }
+                            $main_options[$option->id] = clone $option;
+                        }
+                    }
+                    unset($main_options_list, $typesWithOptions, $childrens, $where, $where_img, $where_name, $wl_input_types);
+                }
+
+                $this->db->cache_add('export/product_options-'.$sign_products, ['_product_options' => $_product_options, 'main_options' => $main_options]);
+                // header("Refresh:0");
+            }
+
+            $time = time();
             foreach ($products as $i => $product)
             {
+                $id = $product->id;
                 if($_SESSION['option']->ProductUseArticle && mb_strlen($product->name) > mb_strlen($product->article))
                 {
                     $name = explode(' ', $product->name);
@@ -328,9 +352,22 @@ class export_model
                         $product->name = implode(' ', $name);
                 }
 
+                if($product->promo &&
+                    $product->promo_percent > 0 &&
+                    $product->old_price < $product->price &&
+                    $product->promo_from < $time &&
+                    $product->promo_to > $time)
+                {
+                    $product->old_price = $product->price;
+                    $product->price *= (100 - $product->promo_percent) / 100;
+                }
+
                 $product->images = array();
                 if(isset($imagesAll[$id]))
+                {
                     $product->images = $imagesAll[$id];
+                    unset($imagesAll[$id]);
+                }
 
                 // do not export products without image
                 if($this->skipProductsWithoutImage && empty($product->images))
@@ -345,7 +382,7 @@ class export_model
                 $product->vendor = false;
                 $product->options = array();
                 if($_product_options)
-                    foreach ($_product_options as $po) {
+                    foreach ($_product_options as $_po_i => $po) {
                         if($po->product == $product->id)
                         {
                             $find = true;
@@ -401,6 +438,7 @@ class export_model
                                         $product->options[$option->name] = $po->value;
                                 }
                             }
+                            unset($_product_options[$_po_i]);
                         }
                         elseif($find)
                             break;
@@ -437,7 +475,7 @@ class export_model
                 }
             }
 
-            unset($imagesAll, $_product_group);
+            unset($imagesAll, $_product_group, $_product_options, $wl_files, $wl_video);
             return $products;
         }
 

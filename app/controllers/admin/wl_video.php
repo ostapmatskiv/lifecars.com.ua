@@ -64,7 +64,7 @@ class wl_Video extends Controller {
 									$this->db->updateRow('wl_ntkd', ['get_ivafc' => $row->get_ivafc.'v'], $row->id);
 							}
 						}
-					$this->db->sitemap_cache_clear($_POST['content'], false, $_POST['alias']);
+					$this->db->html_cache_clear($_POST['content'], $_POST['alias']);
 					$this->load->function_in_alias($_POST['alias'], '__after_edit', $_POST['content'], true);
 
 					$this->redirect('#tab-video');
@@ -89,7 +89,7 @@ class wl_Video extends Controller {
 			{
 				$this->db->deleteRow('wl_video', $_GET['id']);
 
-				$this->db->sitemap_cache_clear($video->content, false, $video->alias);
+				$this->db->html_cache_clear($video->content, $video->alias);
 				$this->load->function_in_alias($video->alias, '__after_edit', $video->content, true);
 			}
 			$this->redirect('#tab-video');

@@ -2,8 +2,8 @@
 
 /*
 
- 	Service "Currency 2.2"
-	for WhiteLion 1.1
+ 	Service "Currency 2.3"
+	for WhiteLion 1.3
 
 */
 
@@ -79,6 +79,7 @@ class currency_admin extends Controller {
         if(isset($_SESSION['__page_before_init'][$_SESSION['alias']->id]))
             $_SESSION['__page_before_init'][$_SESSION['alias']->id] = 0;
         $this->db->cache_delete($_SESSION['alias']->alias, 'wl_aliases');
+        $this->db->cache_delete_all();
 
         if(!$not_redirect)
         {

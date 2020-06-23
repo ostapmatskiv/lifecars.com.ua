@@ -5,7 +5,8 @@ class shop_model {
 	public $getBreadcrumbs = false;
 	public $breadcrumbs = array();
 	public $allGroups = false;
-	private $productsIdInGroup = false;
+	public $allOptions = false;
+	public $productsIdInGroup = false;
 
     public function init()
     {
@@ -625,11 +626,24 @@ class shop_model {
 
 	public function getProduct($alias, $key = 'alias', $all_info = true)
 	{
-		$cache_key = 'product/product-'.$alias;
+		$cache_key = 'product/'.$this->db->getCacheContentKey('product_', $alias, 2);
 		$cache_key .= ($all_info) ? '-all_info' : '';
 		if(!isset($_GET['edit']) && $key == 'id' && $product = $this->db->cache_get($cache_key))
 			if($product !== NULL)
+			{
+				$row = $this->db->select($this->table('_products').' as p', 'price, old_price', $product->id)
+								->join($this->table('_markup'), 'value as markup', array('from' => '<p.price', 'to' => '>=p.price'))
+								->join($this->table('_promo'), 'percent as promo_percent, from as promo_from, to as promo_to', ['id' => '#p.promo', 'status' => 1])
+								->get();
+				$product->price = $row->price;
+				$product->old_price = $row->old_price;
+				$product->markup = $row->markup;
+				$product->promo_percent = $row->promo_percent;
+				$product->promo_from = $row->promo_from;
+				$product->promo_to = $row->promo_to;
+
 				return $product;
+			}
 
 		$this->db->select($this->table('_products').' as p', '*', array('wl_alias' => $_SESSION['alias']->id, $key => $alias));
 		$this->db->join($this->table('_promo'), 'percent as promo_percent, from as promo_from, to as promo_to', ['id' => '#p.promo', 'status' => 1]);
@@ -668,8 +682,25 @@ class shop_model {
 
         if(is_object($product))
         {
-        	$cache_key = 'product/product-'.$product->id;
+        	$cache_key = 'product/'.$this->db->getCacheContentKey('product_', $product->id, 2);
 			$cache_key .= ($all_info) ? '-all_info' : '';
+
+			$product_cache = $this->db->cache_get($cache_key);
+			if($product_cache !== NULL)
+			{
+				$row = $this->db->select($this->table('_products').' as p', 'price, old_price', $product->id)
+								->join($this->table('_markup'), 'value as markup', array('from' => '<p.price', 'to' => '>=p.price'))
+								->join($this->table('_promo'), 'percent as promo_percent, from as promo_from, to as promo_to', ['id' => '#p.promo', 'status' => 1])
+								->get();
+				$product_cache->price = $row->price;
+				$product_cache->old_price = $row->old_price;
+				$product_cache->markup = $row->markup;
+				$product_cache->promo_percent = $row->promo_percent;
+				$product_cache->promo_from = $row->promo_from;
+				$product_cache->promo_to = $row->promo_to;
+
+				return $product_cache;
+			}
 
 			$time = time();
 			if($product->promo &&
@@ -790,12 +821,36 @@ class shop_model {
 	            if($getSimilar = $this->db->getAllDataById($this->table('_products_similar'), array('product' => $product->id)))
 				{
 					$this->db->select($this->table('_products_similar').' as s', '', array('group' => $getSimilar->group, 'product' => '!'.$product->id));
-					$this->db->join($this->table('_products').' as p', 'id, alias, article, `group`, price, old_price, currency', '#s.product');
+					$this->db->join($this->table('_products').' as p', 'id, alias, article, article_show, `group`, price, old_price, currency', '#s.product');
 					$where_ntkd['content'] = '#p.id';
 					unset($where_ntkd['position']);
 					$this->db->join('wl_ntkd', 'name', $where_ntkd);
 					if($_SESSION['option']->useMarkUp > 0)
 						$this->db->join($this->table('_markup'), 'value as markup', array('from' => '<p.price', 'to' => '>=p.price'));
+					if(!empty($product->options))
+						foreach($product->options as $option)
+						{
+							if($option->main && !empty($option->alias))
+							{
+								$option_key = false;
+								$key = explode('-', $option->alias);
+								if(is_numeric($key[0]) && !empty($key[1]))
+									$option_key = $key[1];
+								if($option_key)
+								{
+									if($option->use_options)
+									{
+										$where = array('option' => '#po_'.$option_key.'.value');
+										if($_SESSION['language'])
+											$where['language'] = $_SESSION['language'];
+										$this->db->join($this->table('_product_options'). ' as po_'.$option_key, '', array('product' => '#p.id', 'option' => $option->id))
+													->join($this->table('_options_name'). ' as pon_'.$option_key, 'name as '.$option_key, $where);
+									}
+									else
+										$this->db->join($this->table('_product_options'). ' as po_'.$option_key, 'value as '.$option_key, array('product' => '#p.id', 'option' => $option->id));
+								}
+							}
+						}
 					if($similars = $this->db->get('array'))
 					{
 						$similars_ids = array();
@@ -865,7 +920,7 @@ class shop_model {
     		$where_language = "AND (po.language = '{$_SESSION['language']}' OR po.language = '')";
     		$where_gon_language = "AND gon.language = '{$_SESSION['language']}'";
     	}
-		$this->db->executeQuery("SELECT go.id, go.alias, go.filter, go.toCart, go.photo, go.changePrice, go.sort, po.value, it.name as type_name, it.options, gon.name, gon.sufix 
+		$this->db->executeQuery("SELECT go.id, go.alias, go.filter, go.toCart, go.main, go.photo, go.changePrice, go.sort, po.value, it.name as type_name, it.options, gon.name, gon.sufix 
 			FROM `{$this->table('_product_options')}` as po 
 			LEFT JOIN `{$this->table('_options')}` as go ON go.id = po.option 
 			LEFT JOIN `{$this->table('_options_name')}` as gon ON gon.option = go.id {$where_gon_language} 
@@ -883,6 +938,8 @@ class shop_model {
 					$product_options[$option->alias]->alias = $option->alias;
 					$product_options[$option->alias]->filter = $option->filter;
 					$product_options[$option->alias]->toCart = $option->toCart;
+					$product_options[$option->alias]->main = $option->main;
+					$product_options[$option->alias]->use_options = $option->options;
 					$product_options[$option->alias]->name = $option->name;
 					$product_options[$option->alias]->sufix = $option->sufix;
 					$product_options[$option->alias]->changePrice = $option->changePrice;
@@ -1381,6 +1438,36 @@ class shop_model {
 		return $group;
 	}
 
+	public function initAllOptions()
+	{
+		$allOptions = $this->db->cache_get('allOptions');
+		if($allOptions === NULL)
+		{
+			$where = array();
+			$where['wl_alias'] = $_SESSION['alias']->id;
+			$where['active'] = 1;
+
+			$this->db->select($this->table('_options').' as o', '*', $where);
+			$this->db->join('wl_input_types', 'name as type_name', '#o.type');
+			$where = array('option' => '#o.id');
+	        if($_SESSION['language'])
+	        	$where['language'] = $_SESSION['language'];
+	        $this->db->join($this->table('_options_name'), 'name, sufix', $where);
+	        $this->db->order('position ASC');
+
+			if($list = $this->db->get('array'))
+			{
+				foreach ($list as $g) {
+	            	$this->allOptions[$g->id] = clone $g;
+	            }
+	            unset($list);
+	        }
+	        $this->db->cache_add('allOptions', $this->allOptions);
+		}
+		else
+			$this->allOptions = $allOptions;
+	}
+
 	public function getOptionsToGroup($group = 0, $filter = true)
 	{
 		$products = false;
@@ -1402,7 +1489,7 @@ class shop_model {
 		}
 
 		$filterKey = $filter ? '+filter' : '-filter';
-		$cache_key = 'optionsToGroup/group-'.$group->id.$filterKey;
+		$cache_key = 'optionsToGroup/'.$this->db->getCacheContentKey('group-', $group->id).$filterKey;
 		$cache_options = $this->db->cache_get($cache_key);
 		if($cache_options !== NULL)
 			return $cache_options;
@@ -1434,6 +1521,10 @@ class shop_model {
 
     	if($filter && ($group->id > 0 && $products || $group->id == 0) || !$filter)
     	{
+    		$options = $where = [];
+    		if(empty($this->allOptions))
+    			$this->initAllOptions();
+
     		$where['group'] = array(0, $group->id);
 			if($group->parent > 0)
 				while ($group->parent > 0) {
@@ -1441,18 +1532,30 @@ class shop_model {
 						$group = $this->allGroups[$group->parent];
 					array_push($where['group'], $group->id);
 				}
-			$where['wl_alias'] = $_SESSION['alias']->id;
-			$where['filter'] = 1;
-			$where['active'] = 1;
-			$this->db->select($this->table('_options').' as o', '*', $where);
-			$this->db->join('wl_input_types', 'name as type_name', '#o.type');
-			$where = array('option' => '#o.id');
-	        if($_SESSION['language']) $where['language'] = $_SESSION['language'];
-	        $this->db->join($this->table('_options_name'), 'name, sufix', $where);
-	        $this->db->order('position');
-			$options = $this->db->get('array');
 
-			if($options)
+    		if(empty($this->allOptions))
+    		{
+				$where['wl_alias'] = $_SESSION['alias']->id;
+				$where['filter'] = 1;
+				$where['active'] = 1;
+				$this->db->select($this->table('_options').' as o', '*', $where);
+				$this->db->join('wl_input_types', 'name as type_name', '#o.type');
+				$where = array('option' => '#o.id');
+		        if($_SESSION['language']) $where['language'] = $_SESSION['language'];
+		        $this->db->join($this->table('_options_name'), 'name, sufix', $where);
+		        $this->db->order('position');
+				$options = $this->db->get('array');
+			}
+			else
+			{
+				foreach ($this->allOptions as $option) {
+					if($option->filter)
+						if(in_array($option->group, $where['group']))
+							$options[] = clone $option;
+				}
+			}
+
+			if(!empty($options))
 			{
 				$to_delete_options = $opt_ids = array();
 				if($products)
@@ -1470,67 +1573,120 @@ class shop_model {
 	    		}
 
 	    		$group_option_ids = $option_values = [];
-	    		$group_option_ids['sort-0'] = [];
-	    		$group_option_ids['sort-1-3'] = [];
-	    		$group_option_ids['sort-2-4'] = [];
-		        foreach ($options as $i => $option) {
-		        	$option->continue = false;
-		        	if(!empty($list_product_options))
-		        	{
-			        	$next = true;
-			        	foreach ($list_product_options as $row) {
-			        		if($row->option == $option->id)
-			        		{
-			        			$next = false;
-			        			break;
-			        		}
-			        	}
-			        	if($next)
+	    		if(empty($this->allOptions))
+	    		{
+		    		$group_option_ids['sort-0'] = [];
+		    		$group_option_ids['sort-1-3'] = [];
+		    		$group_option_ids['sort-2-4'] = [];
+			        foreach ($options as $i => $option) {
+			        	$option->continue = false;
+			        	if(!empty($list_product_options))
 			        	{
-			        		if($filter)
-			        			$to_delete_options[] = $i;
-			        		$option->continue = true;
-			        		continue;
-			        	}
-			        }
-			        if($option->sort == 0)
-						$group_option_ids['sort-0'][] = -$option->id;
-					if($option->sort == 1 || $option->sort == 3)
-						$group_option_ids['sort-1-3'][] = -$option->id;
-					if($option->sort == 2 || $option->sort == 4)
-						$group_option_ids['sort-2-4'][] = -$option->id;
+				        	$next = true;
+				        	foreach ($list_product_options as $row) {
+				        		if($row->option == $option->id)
+				        		{
+				        			$next = false;
+				        			break;
+				        		}
+				        	}
+				        	if($next)
+				        	{
+				        		if($filter)
+				        			$to_delete_options[] = $i;
+				        		$option->continue = true;
+				        		continue;
+				        	}
+				        }
+				        if($option->sort == 0)
+							$group_option_ids['sort-0'][] = -$option->id;
+						if($option->sort == 1 || $option->sort == 3)
+							$group_option_ids['sort-1-3'][] = -$option->id;
+						if($option->sort == 2 || $option->sort == 4)
+							$group_option_ids['sort-2-4'][] = -$option->id;
+				    }
+
+			    	$where = array('option' => '#o.id');
+		        	if($_SESSION['language'])
+		        		$where['language'] = $_SESSION['language'];
+			    	foreach ($group_option_ids as $sort_key => $ids) {
+			    		if(empty($ids))
+			    			continue;
+			    		$this->db->select($this->table('_options').' as o', 'id, group, photo', ['group' => $ids, 'active' => 1]);
+			        	$this->db->join($this->table('_options_name') .' as n', 'name', $where);
+						if($sort_key == 'sort-0')
+							$this->db->order('position ASC');
+						if($sort_key == 'sort-1-3')
+							$this->db->order('name ASC', 'n');
+						if($sort_key == 'sort-2-4')
+							$this->db->order('name DESC', 'n');
+						if($values = $this->db->get('array'))
+							foreach ($values as $value) {
+								if(empty($option_values[$value->group]))
+									$option_values[$value->group] = [$value];
+								else
+									$option_values[$value->group][] = $value;
+							}
+			    	}
+			    }
+			    else
+			    {
+			    	$group_ids = [];
+			    	foreach ($options as $i => $option) {
+			        	$option->continue = false;
+			        	if(!empty($list_product_options))
+			        	{
+				        	$next = true;
+				        	foreach ($list_product_options as $row) {
+				        		if($row->option == $option->id)
+				        		{
+				        			$next = false;
+				        			break;
+				        		}
+				        	}
+				        	if($next)
+				        	{
+				        		if($filter)
+				        			$to_delete_options[] = $i;
+				        		$option->continue = true;
+				        		continue;
+				        	}
+				        }
+				        $group_ids[] = -$option->id;
+				    }
+				    if(!empty($group_ids))
+				    	foreach ($group_ids as $group_id) {
+				    		foreach ($this->allOptions as $value) {
+				    			if($value->group == $group_id)
+				    			{
+				    				if(!isset($option_values[$value->group]))
+										$option_values[$value->group] = [];
+									$option_values[$value->group][] = clone $value;
+				    			}
+				    		}
+				    	}
 			    }
 
-		    	$where = array('option' => '#o.id');
-	        	if($_SESSION['language'])
-	        		$where['language'] = $_SESSION['language'];
-		    	foreach ($group_option_ids as $sort_key => $ids) {
-		    		if(empty($ids))
-		    			continue;
-		    		$this->db->select($this->table('_options').' as o', 'id, group, photo', ['group' => $ids, 'active' => 1]);
-		        	$this->db->join($this->table('_options_name') .' as n', 'name', $where);
-					if($sort_key == 'sort-0')
-						$this->db->order('position ASC');
-					if($sort_key == 'sort-1-3')
-						$this->db->order('name ASC', 'n');
-					if($sort_key == 'sort-2-4')
-						$this->db->order('name DESC', 'n');
-					if($values = $this->db->get('array'))
-						foreach ($values as $value) {
-							if(empty($option_values[$value->group]))
-								$option_values[$value->group] = [$value];
-							else
-								$option_values[$value->group][] = $value;
-						}
-		    	}
-
-		        foreach ($options as $i => $option) {
+		        foreach ($options as $opt_i => $option) {
 		        	if($option->continue)
 		        		continue;
 		        	$option->values = $option_values[-$option->id] ?? false;
 
 					if(!empty($option->values))
 		    		{
+		    			if(!empty($this->allOptions))
+		    			{
+		    				if($option->sort == 1 || $option->sort == 2)
+							{
+								$for_sort = [];
+								foreach ($option->values as $el) {
+									$for_sort[] = $el->name;
+								}
+								$sort_type = $option->sort == 1 ? SORT_ASC : SORT_DESC;
+								array_multisort($for_sort, $sort_type, $option->values);
+								unset($for_sort);
+							}
+		    			}
 		    			if($option->sort == 3 || $option->sort == 4)
 						{
 							$for_sort = [];
@@ -1544,9 +1700,10 @@ class shop_model {
 
 		    			if(!empty($list_product_options))
 		    			{
+		    				$to_delete_values = [];
 		    				foreach ($option->values as $i => $value) {
 		    					if($value->photo)
-									$option->values[$i]->photo = IMG_PATH.$_SESSION['option']->folder.'/options/'.$option->alias.'/'.$value->photo;
+									$value->photo = IMG_PATH.$_SESSION['option']->folder.'/options/'.$option->alias.'/'.$value->photo;
 			    				$count = 0;
 			    				if($option->type_name == 'checkbox' || $option->type_name == 'checkbox-select2' )
 			    				{
@@ -1569,7 +1726,19 @@ class shop_model {
 			    				}
 			    				$option->values[$i]->count = $count;
 			    				if(!$count && $filter)
+			    					$to_delete_values[] = $i;
+			        		}
+
+			        		if(!empty($to_delete_values))
+			        		{
+			        			rsort($to_delete_values);
+			        			foreach ($to_delete_values as $i) {
 			        				unset($option->values[$i]);
+			        			}
+			        		}
+
+			        		if ($filter && count($option->values) < 2) {
+			        			$to_delete_options[] = $opt_i;
 			        		}
 		    			}
 		    			else
@@ -1577,9 +1746,10 @@ class shop_model {
 		    				$where = array();
 			    			if($products)
 			    				$where['product'] = $products;
+			    			$to_delete_values = [];
 			    			foreach ($option->values as $i => $value) {
 			    				if($value->photo)
-									$option->values[$i]->photo = IMG_PATH.$_SESSION['option']->folder.'/options/'.$option->alias.'/'.$value->photo;
+									$value->photo = IMG_PATH.$_SESSION['option']->folder.'/options/'.$option->alias.'/'.$value->photo;
 			    				$where['option'] = $option->id;
 			    				if($option->type_name == 'checkbox' || $option->type_name == 'checkbox-select2' )
 			    				{
@@ -1599,14 +1769,21 @@ class shop_model {
 			    				}
 								$option->values[$i]->count = $count;
 			        			if(!$count && $filter)
+			        				$to_delete_values[] = $i;
+			        		}
+			        		if(!empty($to_delete_values))
+			        		{
+			        			rsort($to_delete_values);
+			        			foreach ($to_delete_values as $i) {
 			        				unset($option->values[$i]);
+			        			}
 			        		}
 			        	}
 		    		}
 		    		elseif($filter)
-		    			$to_delete_options[] = $i;
+		    			$to_delete_options[] = $opt_i;
 		        }
-		        				
+		        			
 		        if(!empty($to_delete_options))
         		{
         			rsort($to_delete_options);
@@ -1682,6 +1859,22 @@ class shop_model {
 		$data['count_per_day'] = 1;
 		$this->db->insertRow($this->table('_search_history'), $data);
 		return true;
+	}
+
+	public function rePositionProductsInGroup($group_id)
+	{
+		$table = '_products';
+		if($_SESSION['option']->ProductMultiGroup)
+			$table = '_product_group';
+		if($products = $this->db->getAllDataByFieldInArray($this->table($table), $group_id, 'group', 'position ASC'))
+		{
+			$good_position = 1;
+			foreach ($products as $product) {
+				if($product->position != $good_position)
+					$this->db->updateRow($this->table($table), ['position' => $good_position], $product->id);
+				$good_position++;
+			}
+		}
 	}
 
 	public function formatPrice($price)

@@ -98,7 +98,7 @@ class wl_files extends Controller {
 									$this->db->updateRow('wl_ntkd', ['get_ivafc' => $row->get_ivafc.'f'], $row->id);
 							}
 						}
-					$this->db->sitemap_cache_clear($content);
+					$this->db->html_cache_clear($content, $alias);
 					$this->load->function_in_alias($alias, '__after_edit', $content, true);
 				}
 			}
@@ -134,7 +134,7 @@ class wl_files extends Controller {
 						unlink($filePath);
 				}
 
-				$this->db->sitemap_cache_clear($file->content);
+				$this->db->html_cache_clear($file->content, $file->alias);
 				$this->load->function_in_alias($file->alias, '__after_edit', $file->content, true);
 			}
 			
@@ -158,7 +158,7 @@ class wl_files extends Controller {
                 if($this->wl_position_model->change($id, $position)){
                     $res['result'] = true;
                     $res['error'] = '';
-                    $this->db->sitemap_cache_clear($_POST['content'], false, $_POST['alias']);
+                    $this->db->html_cache_clear($_POST['content'], $_POST['alias']);
                     $this->load->function_in_alias($_POST['alias'], '__after_edit', $_POST['content'], true);
                 }
             }
@@ -180,7 +180,7 @@ class wl_files extends Controller {
 				$res['error'] = '';
 				if(isset($_POST['alias']) && is_numeric($_POST['alias']) && isset($_POST['content']) && is_numeric($_POST['content']) && $_POST['alias'] > 0)
 				{
-					$this->db->sitemap_cache_clear($_POST['content'], false, $_POST['alias']);
+					$this->db->html_cache_clear($_POST['content'], $_POST['alias']);
                     $this->load->function_in_alias($_POST['alias'], '__after_edit', $_POST['content'], true);
 				}
 			}

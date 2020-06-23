@@ -66,14 +66,14 @@ class Loader {
 	 * @params $view назва подання
 	 * @params $data параметри
 	 */	
-	function view($view, $data = null)
+	function view($view, $data = null, $setContentRobot = true)
 	{
 		unset($_SESSION['alias-cache'][$_SESSION['alias']->id]);
 		if($data)
 			foreach($data as $key => $value) {
 				$$key = $value;
 			}
-		if(isset($_SESSION['alias']->content))
+		if(isset($_SESSION['alias']->content) && $setContentRobot)
 			$this->wl_alias_model->setContentRobot($data);
 		$view_path = APP_PATH.'views'.DIRSEP;
 		if($_SESSION['amp'])
@@ -180,6 +180,7 @@ class Loader {
 
 	function page_404($update_SiteMap = true)
 	{
+		$_SESSION['alias']->code = 404;
 		if($update_SiteMap)
 		{
 			$this->library('db');
@@ -304,13 +305,26 @@ class Loader {
 			$alias = $this->wl_aliases[$alias];
 		else
 		{
+			$fromDB = true;
 			$this->wl_aliases[$alias] = false;
 			$key = 'alias';
 			if(is_numeric($alias))
 				$key = 'id';
-			$alias = $this->db->select('wl_aliases as a', '*', $alias, $key)
-								->join('wl_services as s', 'name as service_name, table as service_table', '#a.service')
-								->get('single');
+			else
+			{
+				if($cache = $this->db->cache_get($alias, 'wl_aliases'))
+					if(isset($cache->alias))
+					{
+						$fromDB = false;
+	                    $alias = $cache->alias;
+					}
+			}
+			if($fromDB)
+			{
+				$alias = $this->db->select('wl_aliases as a', '*', $alias, $key)
+									->join('wl_services as s', 'name as service_name, table as service_table', '#a.service')
+									->get('single');
+			}
 		}
 
 		if(is_object($alias))
@@ -394,30 +408,23 @@ class Loader {
 
 			if($rezult === NULL)
 			{
+				$this->model('wl_alias_model');
+				$this->wl_alias_model->init($alias->alias);
+				$service = $alias->alias;
+				$model_path = APP_PATH.'controllers'.DIRSEP.$service.'.php';
+				if($admin)
+					$model_path = APP_PATH.'controllers'.DIRSEP.'admin'.DIRSEP.$service.'.php';
 				if($alias->service > 0)
 				{
-					$this->model('wl_services_model');
-					if($this->wl_services_model->loadService($alias))
+					$service = $_SESSION['alias']->service;
+					$model_path = APP_PATH.'services'.DIRSEP.$service.DIRSEP.$service.'.php';
+					if($admin)
 					{
-						$service = $_SESSION['alias']->service;
-						$model_path = APP_PATH.'services'.DIRSEP.$service.DIRSEP.$service.'.php';
-						if($admin)
-						{
-							$model_path = APP_PATH.'services'.DIRSEP.$service.DIRSEP.$service.'_admin.php';
-							$service .= '_admin';
-						}
+						$model_path = APP_PATH.'services'.DIRSEP.$service.DIRSEP.$service.'_admin.php';
+						$service .= '_admin';
 					}
 				}
-				else
-				{
-					$this->model('wl_alias_model');
-					$this->wl_alias_model->init($alias->alias);
-					$service = $alias->alias;
-					$model_path = APP_PATH.'controllers'.DIRSEP.$service.'.php';
-					if($admin)
-						$model_path = APP_PATH.'controllers'.DIRSEP.'admin'.DIRSEP.$service.'.php';
-				}
-
+				
 				$_SESSION['alias-cache'][$alias->id]->alias = clone $_SESSION['alias'];
 				if(isset($_SESSION['option']))
 					$_SESSION['alias-cache'][$alias->id]->options = clone $_SESSION['option'];

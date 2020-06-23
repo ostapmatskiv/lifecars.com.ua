@@ -49,23 +49,6 @@
                         <li <?=($this->data->get('code') == 404) ? 'class="active"':''?>><a href="<?=$this->data->get_link('code', 404)?>">404 Адреса недоступна</a></li>
                     </ul>
                 </div>
-                <?php if($_SESSION['language']) { ?>
-                <div class="dropdown pull-left">
-                    <a href="javascript:;" class="btn btn-white btn-white-without-border dropdown-toggle" data-toggle="dropdown">
-                        Мова <span class="caret m-l-5"></span>
-                    </a>
-                    <ul class="dropdown-menu" role="menu-alias">
-                        <li <?=($this->data->get('language') == '*') ? 'class="active"':''?>><a href="<?=$this->data->get_link('language', '*')?>">Всі</a></li>
-                        <?php foreach ($_SESSION['all_languages'] as $language) {
-                            if($_SESSION['language'] == $language) {
-                            ?>
-                            <li <?=(!$this->data->get('language')) ? 'class="active"':''?>><a href="<?=$this->data->get_link('language')?>"><?=$language?></a></li>
-                            <?php } else { ?>
-                            <li <?=($this->data->get('language') == $language) ? 'class="active"':''?>><a href="<?=$this->data->get_link('language', $language)?>"><?=$language?></a></li>
-                        <?php } } ?>
-                    </ul>
-                </div>
-                <?php } ?>
                 <div class="pull-right" style="width: 400px">
                     <form>
                         <div class="input-group">
@@ -83,9 +66,6 @@
                             <tr>
                                 <th><input type="checkbox" id="all" onchange="selectAll(this)"></th>
                                 <th width="100px"></th>
-                                <?php if($_SESSION['language']) { ?>
-                                    <th>Мова</th>
-                                <?php } ?>
                                 <th>Адреса</th>
                                 <th>Код відповіді</th>
                                 <th>Частота</th>
@@ -99,9 +79,6 @@
                                 <tr>
                                     <td><input type="checkbox" id="<?=$map->id?>" class="sitemap-multiedit" onChange="setEditPoint('<?=$map->id?>')"></td>
                                     <td><a href="<?=SITE_URL?>admin/wl_sitemap/<?=$map->id?>" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i> Редагувіти <i class="fa fa-signal"></i> Статистика</a></td>
-                                    <?php if($_SESSION['language']) { ?>
-                                        <td><?=$map->language?></td>
-                                    <?php } ?>
                                     <td>
                                         <i class="fa fa-<?=($map->alias > 0)?'check':'times'?>"></i> 
                                         <?=$map->link?>
@@ -202,16 +179,6 @@
                             </div>
                         </div>
                     </div>
-                    <?php if($_SESSION['language']) { ?>
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label class="col-md-6 control-label">Застосувати до всіх мов</label>
-                                <div class="col-md-6">
-                                    <input type="checkbox" data-render="switchery" checked value="1" name="all_languages" />
-                                </div>
-                            </div>
-                        </div>
-                    <?php } ?>
                     <div>
                         <div class="col-md-12">
                             <button name="do" value="save" type="submit" class="btn btn-sm btn-success">Зберегти</button>
@@ -281,21 +248,7 @@
                             </div>
                         </div>
                     </div>
-                    <?php if($_SESSION['language']) { ?>
-                        <div class="row m-t-5">
-                            <div class="form-group">
-                                <label class="col-md-6 control-label">Мова</label>
-                                <div class="col-md-6">
-                                    <select name="language" class="form-control">
-                                        <option value="0">Всі</option>
-                                        <?php foreach ($_SESSION['all_languages'] as $language) { ?>
-                                            <option value="<?=$language?>" <?=($this->data->get('language') == $language) ? 'selected':''?>><?=$language?></option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    <?php } $Cache = rand(0, 999); ?>
+                    <?php $Cache = rand(0, 999); ?>
                     <div class="row m-t-5">
                         <input type="hidden" name="code_hidden" value="<?=$Cache?>">
                         <div class="form-group">
@@ -337,8 +290,5 @@
 <link rel="stylesheet" href="<?=SITE_URL?>assets/DataTables/css/data-table.css" />
 <link rel="stylesheet" href="<?=SITE_URL?>assets/switchery/switchery.min.css" />
 <style type="text/css">
-    ul.pagination
-    {
-        margin: 0;
-    }
+    ul.pagination { margin: 0 }
 </style>

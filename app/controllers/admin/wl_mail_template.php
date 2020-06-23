@@ -137,7 +137,10 @@ class wl_mail_template extends Controller {
                 $join['language'] = $_SESSION['language'];
             $this->db->join('wl_mail_templats_data', 'title as template_name', $join);
             if($history = $this->db->get('single'))
+            {
+                $_SESSION['alias']->name = 'Лист "'.$history->subject.'" '.date('d.m.Y H:i', $history->date);
                 $this->load->admin_view('wl_mail_template/history_view', array('history' => $history));
+            }
         }
         $this->load->page_404(false);
     }

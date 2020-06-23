@@ -19,9 +19,10 @@ class wl_user_model {
     function getInfo($id = 0, $additionall = '*', $field = 'id')
     {
     	if($id == 0 && isset($_SESSION['user']->id) && !is_string($id)) $id = $_SESSION['user']->id;
-        $this->db->select('wl_users as u', '*', $id, $field);
-        $this->db->join('wl_user_types', 'name as type_name, title as type_title', '#u.type');
-    	$user = $this->db->get('single');
+        $user = $this->db->select('wl_users as u', '*', $id, $field)
+                        ->join('wl_user_types', 'name as type_name, title as type_title', '#u.type')
+                        ->join('wl_user_status', 'name as status_name, title as status_title, color as status_color', '#u.status')
+                        ->get('single');
         if($user && $additionall)
         {
         	$info = false;
@@ -37,6 +38,9 @@ class wl_user_model {
         	if($info)
         		foreach ($info as $i) {
         			$user->info[$i->field] = $i->value;
+
+                    if($i->field == 'phone')
+                        $user->phone = $i->value;
         		}
         }
         return $user;

@@ -70,7 +70,7 @@
 		                        <input class="form-control" onChange="save('description', this, '<?=$lang?>')" value="<?=$ntkd[$lang]->description?>" maxlength="230">
 		                    </div>
 		                </div>
-		                <?php $where = array('alias' => $alias->id, 'content' => $content, 'language' => $lang);
+		                <?php $where = array('alias' => $alias->id, 'content' => $content);
 			    		$this->db->select('wl_sitemap', 'time, changefreq, priority', $where);
 						$siteMap = $this->db->get(); 
 						if(empty($siteMap))

@@ -1,6 +1,6 @@
 White Lion 1.1    16.12.2019
 	Додано файли wl_files
-	Додано/оновлно бібліотеки:
+	Додано/оновлено бібліотеки:
 		data 1.4.2
 		db 2.4.5 До getAliasImageSizes() додано кешування у сесії
 		images 1.3.1
@@ -102,3 +102,88 @@ White Lion 1.1    16.12.2019
 	Cart. Add __dashboard_subview
 	ShopShowcase 3.0 - Додано Акції, оновлено/розширено керування експортом (індивідуальне керування під різни канали вигрузки)
 	Currency 2.2 - Add __clear_cache(), admin ui optimize
+
+5.04.2020
+	WL. save. Форми. Додано можливість зберігати файли.
+
+23.04.2020
+	WL. admin_view. Додано вивід власного тайтлу для адмінки за наявності (до цього <title><?=$_SESSION['alias']->name?></title>)
+	WL. wl_photos. При заливці фото зразу створюється мініатюра admin
+	Shop Showcase 3.0.1
+		Розширено інформаційне вікно товару детально щодо аналогів та складів
+		Для аналогів виводяться основні властивості
+		Виправлено зберігання властивостей товару
+
+White Lion 1.2		10.05.2020
+	Всі оновлення WL від 01.2020 - 05.2020
+	Відкладена відправка листів:
+		save - додано можливість приймати файли. Оптимізовано до mail 2.2
+		mail 2.2 (10.05.2020) додано addToSchedule() - відкладену відправку листів
+		cron / mail - відправка листів за запитом/розкладом cron
+		$_SESSION['option']->sendEmailForce
+		$_SESSION['option']->sendEmailSaveHistory
+
+12.05.2020
+	Shop Showcase 3.1 - Додано групове редагування товарів:
+		multi_changeGroup() - змінити групу (тільки коли опція ProductMultiGroup == 0)
+		multi_editProducts() - редагувати доступність (active), наявність (availability)
+		multi_deleteProducts() - групове видалення товарів
+
+17.05.2020
+	signup: fix for mail 2.2
+	mail 2.2: add force mode
+	style: add svg mode
+	Cart 2.2:
+		Оновлено підтримку складів
+		Додано підтримку роботи з meta-даними (для СЕО)
+		Виправлено автентифікацію клієнта
+		Запис телефону клієнта в профіль при оформленні замовлення (якщо відсутні дані)
+		Безпечні дані у відповідь ajax (тільки те, що треба, без надлишку службових)
+		Адмін. Пошук/фільтрація замовлень за: датою і періодом, статусум, клієнтом, менеджером, оплатою
+
+30.05.2020
+	Shop Showcase 3.1.1
+		Виправлено додачу товару до подібних
+		Виправлено пагінацію (оптимізовано кешування), фільтрацію (відключено кешування)
+
+05.06.2020
+	google_translate_free @copyright 2018 Yuri Darwin
+	bing_translator
+	admin. wl_aliases: add alias => clear in wl_sitemap
+	Shop Showcase 3.1.2
+		Адмін. Додано similarProductsInvoices() - видача наявності аналогів у інфо-карточці товару за запитом
+		Адмін пошук. Якщо в результаті пошуку один товар - переспрямувати на інфо-карточку товару
+		Адмін пошук. Оновлено результуючу сторінку
+
+11.06.2020
+	wl_users. add color label for user status
+	Cart 2.3:
+		Доопрацьовано склади, оплату
+		Додано підтримку повернення
+		Оновлено статуси замовлення
+		Додано внесення оплати замовлення через адмін
+		Оновлено друк, візуальні правки
+	Balance 1.0: Основу сервісу взято з opt.timeparts.com.ua (Позитивний баланс)/ Суттєво доопрацьовано, зредаговано
+	Returns 1.0: Основу сервісу взято з opt.timeparts.com.ua/ Суттєво доопрацьовано, зредаговано
+	ShopStorage 1.2: Оптимізовано під Cart 2.3+
+		Тип користувача по замовчуванню через $_SESSION['option']->new_user_type. 
+		Видалено застаріле
+		Додано __get_storage_info()
+
+12.06.2020
+	db 2.6	ініціалізація першого технічного запиту до БД 'SET NAMES utf8', тільки перед першим реальним запитом. Мінімізація пустих запитів.
+            додано public $this->saveDBlog. оновлено showTime()
+            до insertRows() доопрацьовано default значення у keys
+
+White Lion 1.3	19.06.2020
+	Суттєво оновлено маршрутизацію (роботу з `wl_sitemap`) та файлову систему кешування:
+		WL.Router	додано skip_alias_init, доопрацьовано 404
+		WL.Loader	керування setContentRobot, виправлено page_404(), function_in_alias()
+ 		db 2.7 	оновлено sitemap_*() - зміни системної таблиці wl_sitemap:link_sha1
+                оновлено getAliasImageSizes(), sitemap_cache_clear() => html_cache_clear() - робота з файловим кешем
+                додано getHTMLCacheKey(), getCacheContentKey(), $this->version
+		facebook_feed, google_feed xml generator - fix for nonEnd groups
+		images, js, style, app/controllers/admin/wl_*, app/models/wl_* - оновлення файлового кешу та зміни під `wl_sitemap`
+
+		Currency 2.3	Підтримка файлового кешу для WhiteLion 1.3+
+		Shop Showcase 3.2 Оптимізовано роботу кешів для WhiteLion 1.3+, оновлено роботу з властивостями товару

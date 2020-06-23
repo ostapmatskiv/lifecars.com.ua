@@ -12,7 +12,7 @@ class install
 	public $multi_alias = 0;
 	public $order_alias = 10;
 	public $admin_ico = 'fa-line-chart';
-	public $version = "2.1";
+	public $version = "2.3";
 
 	public $options = array('autoUpdate' => 1, 'saveToHistory' => 1);
 	public $options_type = array('autoUpdate' => 'bool', 'saveToHistory' => 'bool');

@@ -139,6 +139,13 @@ class wl_services extends Controller {
                                     $this->db->deleteRow('wl_video', $alias->id, 'alias');
                                     $this->db->deleteRow('wl_audio', $alias->id, 'alias');
                                     $this->db->deleteRow('wl_user_permissions', $alias->id, 'permission');
+
+                                    $this->db->cache_delete($alias->alias, 'wl_aliases');
+                                    $this->db->cache_delete_all(false, $alias->alias);
+                                    if(isset($_SESSION['alias-cache'][$_POST['id']]))
+                                        unset($_SESSION['alias-cache'][$_POST['id']]);
+                                    if(isset($_SESSION['alias-cache'][$alias->alias]))
+                                        unset($_SESSION['alias-cache'][$alias->alias]);
                                     
                                     $this->db->register('alias_delete', $additionally);
                                 }

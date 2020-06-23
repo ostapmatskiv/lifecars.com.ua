@@ -2,8 +2,8 @@
 
 /*
 
- 	Service "Shop Showcase 3.0"
-	for WhiteLion 1.1
+ 	Service "Shop Showcase 3.2"
+	for WhiteLion 1.3
 
 */
 
@@ -49,7 +49,12 @@ class shopshowcase_admin extends Controller {
 				$groups = $this->shop_model->getGroups($group->id, false);
 				$products = $this->shop_model->getProducts($group->id, 0, false);
 				if (empty($groups))
-					$this->load->admin_view('products/list_view', array('group' => $group, 'products' => $products));
+				{
+					$allGroups = false;
+					if(!$_SESSION['option']->ProductMultiGroup)
+						$allGroups = $this->shop_model->allGroups;
+					$this->load->admin_view('products/list_view', array('group' => $group, 'products' => $products, 'allGroups' => $allGroups));
+				}
 				else
 					$this->load->admin_view('index_view', array('group' => $group, 'groups' => $groups, 'products' => $products));
 			}
@@ -116,6 +121,8 @@ class shopshowcase_admin extends Controller {
 
 		if($products = $this->shop_model->getProducts($search, 0, false))
 		{
+			if(count($products) == 1)
+				$this->redirect('admin/'.$products[0]->link);
 			if($cooperation = $this->db->getAllDataByFieldInArray('wl_aliases_cooperation', array('alias1' => $_SESSION['alias']->id, 'type' => 'storage')))
 				$this->load->admin_view('products/search_view', array('products' => $products, 'cooperation' => $cooperation, 'group' => $group));
 			else
@@ -158,6 +165,11 @@ class shopshowcase_admin extends Controller {
 			$_SESSION['alias']->breadcrumb['Редагувати '.$_SESSION['alias']->name] = '';
 		else
 			$_SESSION['alias']->breadcrumb[$_SESSION['alias']->name] = '';
+		if(!empty($product->article_show))
+		{
+			$_SESSION['alias']->title = $product->article_show." ".$_SESSION['alias']->name;
+			$_SESSION['alias']->name = "<strong>{$product->article_show}</strong> ".$_SESSION['alias']->name;
+		}
 
 		$groups = null;
 		if($_SESSION['option']->useGroups)
@@ -201,7 +213,7 @@ class shopshowcase_admin extends Controller {
 					$this->__after_edit($id);
 					if(!empty($_FILES['photo']['name']))
 						$this->savephoto('photo', $id, $this->data->latterUAtoEN($name));
-					$this->redirect("admin/{$_SESSION['alias']->alias}/{$link}?edit");
+					$this->redirect("admin/{$_SESSION['alias']->alias}/{$link}");
 				}
 				$this->redirect();
 			}
@@ -270,6 +282,7 @@ class shopshowcase_admin extends Controller {
 			}
 			$this->db->cache_delete_all('product');
 			$this->db->cache_delete_all('products');
+			$this->db->cache_delete_all($_SESSION['alias']->alias, 'html');
 		}
 
 		$this->redirect();
@@ -287,6 +300,7 @@ class shopshowcase_admin extends Controller {
 
 			$this->db->cache_delete_all('product');
 			$this->db->cache_delete_all('products');
+			$this->db->cache_delete_all($_SESSION['alias']->alias, 'html');
 
 			$this->redirect('admin/'.$_SESSION['alias']->alias.'/markup');
 		}
@@ -301,6 +315,7 @@ class shopshowcase_admin extends Controller {
 		{
 			$this->db->cache_delete_all('product');
 			$this->db->cache_delete_all('products');
+			$this->db->cache_delete_all($_SESSION['alias']->alias, 'html');
 			$res['result'] = true;
 		}
 
@@ -490,6 +505,74 @@ class shopshowcase_admin extends Controller {
 		$this->load->json($res);
 	}
 
+    public function multi_changeGroup()
+    {
+    	$_SESSION['notify'] = new stdClass();
+    	if(!$_SESSION['option']->ProductMultiGroup)
+	    	if($group_id = $this->data->post('group'))
+	    		if(is_numeric($group_id))
+			    	if($old_group = $this->data->post('old_group'))
+			    		if(is_numeric($old_group))
+			    			if($group_id != $old_group)
+					    		if($products = $this->data->post('products'))
+					    		{
+					    			$products = explode(',', substr($products, 0, -1));
+					    			$this->load->smodel('shop_model');
+					    			$count = $this->db->getCount($this->shop_model->table('_products'), $group_id, 'group') + 1;
+					    			$this->db->updateRow($this->shop_model->table('_products'), ['group' => $group_id, 'position' => $count, 'date_edit' =>time(), 'author_edit' => $_SESSION['user']->id], ['id' => $products]);
+					    			$this->shop_model->rePositionProductsInGroup($old_group);
+					    			$this->shop_model->rePositionProductsInGroup($group_id);
+					    			foreach ($products as $product_id) {
+					    				$this->__after_edit($product_id);
+					    			}
+					    			$group = $this->shop_model->getGroupByAlias($group_id, 0, 'id');
+					    			$_SESSION['notify']->success = 'Товари переміщено у <strong>'.$group->name.'</strong>';
+					    			$this->redirect('/admin/'.$group->link);
+					    		}
+		$_SESSION['notify']->errors = 'Помилка переміщення!';
+		$this->redirect();
+    }
+
+    public function multi_editProducts()
+    {
+    	$_SESSION['notify'] = new stdClass();
+    	$field = $this->data->post('field');
+    	$value = $this->data->post('value');
+    	if(in_array($field, ['active', 'availability']) && is_numeric($value))
+    		if($products = $this->data->post('products'))
+    		{
+    			$products = explode(',', substr($products, 0, -1));
+    			$this->load->smodel('shop_model');
+    			$this->db->updateRow($this->shop_model->table('_products'), [$field => $value, 'date_edit' =>time(), 'author_edit' => $_SESSION['user']->id], ['id' => $products]);
+    			foreach ($products as $product_id) {
+    				$this->__after_edit($product_id);
+    			}
+    			$_SESSION['notify']->success = 'Товари <strong>оновлено</strong>';
+    		}
+		$this->redirect();
+    }
+
+    public function multi_deleteProducts()
+    {
+    	$_SESSION['notify'] = new stdClass();
+		if($products = $this->data->post('products'))
+		{
+			$products = explode(',', substr($products, 0, -1));
+			if(!empty($products))
+			{
+				$this->load->smodel('products_model');
+				foreach ($products as $product_id) {
+					$this->products_model->delete($product_id);
+					$this->__after_edit($product_id);
+				}
+				$_SESSION['notify']->success = 'Товари <strong>видалено</strong>';
+			}
+		}
+		else
+			$_SESSION['notify']->errors = 'Помилка видалення!';
+		$this->redirect();
+    }
+
 	public function groups()
 	{
 		$this->load->smodel('groups_model');
@@ -666,7 +749,7 @@ class shopshowcase_admin extends Controller {
 			            foreach ($groups as $Group) {
 			            	$list[$Group->id] = clone $Group;
 			            }
-						$group->parents = $this->groups_model->makeParents($list, $group->parent, $group->parents);
+						$group->parents = $this->groups_model->makeParents($group->parent, $group->parents);
 					}
 					$this->wl_alias_model->setContent(($group->id * -1));
 					$group->group_name = $_SESSION['alias']->name;
@@ -765,6 +848,7 @@ class shopshowcase_admin extends Controller {
 					}
 
 					$this->db->cache_delete_all();
+					$this->db->cache_delete_all($_SESSION['alias']->alias, 'html');
 				}
 			}
 		}
@@ -779,6 +863,7 @@ class shopshowcase_admin extends Controller {
 			if($this->options_model->deleteOption($_POST['id']))
 			{
 				$this->db->cache_delete_all();
+				$this->db->cache_delete_all($_SESSION['alias']->alias, 'html');
 				$_SESSION['notify'] = new stdClass();
 				$_SESSION['notify']->success = 'Властивість успішно видалено!';
 				$this->redirect('admin/'.$_SESSION['alias']->alias.'/options');
@@ -844,6 +929,7 @@ class shopshowcase_admin extends Controller {
 				if($this->db->updateRow($this->options_model->table(), ['active' => $active], $_POST['id']))
 				{
 					$this->db->cache_delete_all();
+					$this->db->cache_delete_all($_SESSION['alias']->alias, 'html');
 					if(isset($_POST['json']) && $_POST['json']){
 						$this->load->json(array('result' => true));
 					} else {
@@ -862,6 +948,7 @@ class shopshowcase_admin extends Controller {
 			if($this->db->deleteRow($this->options_model->table(), $_POST['id']) && $this->db->deleteRow($this->options_model->table('_options_name'), $_POST['id'], 'option'))
 			{
 				$this->db->cache_delete_all();
+				$this->db->cache_delete_all($_SESSION['alias']->alias, 'html');
 				if(isset($_POST['json']) && $_POST['json']){
 					$this->load->json(array('result' => true));
 				} else {
@@ -884,6 +971,7 @@ class shopshowcase_admin extends Controller {
 			@unlink($path);
 			$this->db->updateRow('s_shopshowcase_options', array('photo' => 0), $id);
 			$this->db->cache_delete_all();
+			$this->db->cache_delete_all($_SESSION['alias']->alias, 'html');
 		}
 	}
 
@@ -978,34 +1066,63 @@ class shopshowcase_admin extends Controller {
 
     public function addSimilarProduct()
     {
-        $articleId = $this->data->post('article');
-        $productId = $this->data->post('product');
-        $group = 0;
-
+    	$_SESSION['notify'] = new stdClass();
         $key = 'id';
-        if($_SESSION['option']->ProductUseArticle)
-        	$key = 'article';
-
-        $articleInfo =  $this->db->select('s_shopshowcase_products', 'id', array($key => $articleId))->get();
-
-        if($articleInfo && $productId != $articleInfo->id)
+        if($article_id_value = $this->data->post('article'))
         {
-        	if($similar = $this->db->getAllDataByFieldInArray('s_shopshowcase_products_similar', $articleInfo->id, 'product'))
-        		$this->db->insertRow('s_shopshowcase_products_similar', array('product' => $productId, 'group' => $similar[0]->group));
-        	else
-        	{
-        		$nextGroup = 1;
-        		if($next = $this->db->getQuery('SELECT MAX(`group`) as nextGroup FROM `s_shopshowcase_products_similar`'))
-        			$nextGroup = $next->nextGroup + 1;
+	        $product_1_id = $this->data->post('product');
 
-        		$this->db->insertRow('s_shopshowcase_products_similar', array('product' => $articleInfo->id, 'group' => $nextGroup));
-        		$this->db->insertRow('s_shopshowcase_products_similar', array('product' => $productId, 'group' => $nextGroup));
-        		$this->__after_edit($articleInfo->id);
-        	}
-        }
-        else
+	        if($_SESSION['option']->ProductUseArticle)
+	        {
+	        	$key = 'article';
+	        	$this->load->smodel('shop_model');
+	        	$article_id_value = $this->shop_model->prepareArticleKey($article_id_value);
+	        }
+
+	        $product_2 =  $this->db->select('s_shopshowcase_products', 'id', array($key => $article_id_value))->get();
+
+	        if($product_2 && $product_1_id != $product_2->id)
+	        {
+	        	$group = 0;
+		        if($similar_1 = $this->db->getAllDataById('s_shopshowcase_products_similar', $product_1_id, 'product'))
+		        	$group = $similar_1->group;
+
+	        	if($similar_2 = $this->db->getAllDataById('s_shopshowcase_products_similar', $product_2->id, 'product'))
+	        	{
+	        		if($group != $similar_2->group)
+	        		{
+		        		if($group)
+		        			$this->db->updateRow('s_shopshowcase_products_similar', ['group' => $group], $similar_2->id);
+		        		else
+		        			$this->db->insertRow('s_shopshowcase_products_similar', array('product' => $product_1_id, 'group' => $similar_2->group));
+		        	}
+	        	}
+	        	else
+	        	{
+	        		if($group == 0)
+	        		{
+		        		$group = 1;
+		        		if($next = $this->db->getQuery('SELECT MAX(`group`) as nextGroup FROM `s_shopshowcase_products_similar`'))
+		        			$group = $next->nextGroup + 1;
+
+	        			$this->db->insertRow('s_shopshowcase_products_similar', array('product' => $product_1_id, 'group' => $group));
+		        	}
+	        		$this->db->insertRow('s_shopshowcase_products_similar', array('product' => $product_2->id, 'group' => $group));
+
+	        		$this->__after_edit($product_1_id);
+	        		$this->__after_edit($product_2->id);
+	        	}
+	        }
+	        else
+	    	{
+	    		if($_SESSION['option']->ProductUseArticle)
+	    			$_SESSION['notify']->errors = 'Невірний артикул товару';
+	    		else
+	    			$_SESSION['notify']->errors = 'Невірний #ID товару';
+	    	}
+	    }
+	    else
     	{
-    		$_SESSION['notify'] = new stdClass();
     		if($_SESSION['option']->ProductUseArticle)
     			$_SESSION['notify']->errors = 'Невірний артикул товару';
     		else
@@ -1052,6 +1169,30 @@ class shopshowcase_admin extends Controller {
 		}
 		
 		$this->redirect();
+	}
+
+	public function similarProductsInvoices()
+	{
+		if($product_id = $this->data->post('product_id'))
+		{
+			$storages = array();
+			if($cooperation = $this->db->getAllDataByFieldInArray('wl_aliases_cooperation', $_SESSION['alias']->id, 'alias1'))
+			    foreach ($cooperation as $c) {
+			        if($c->type == 'storage') $storages[] = $c->alias2;
+			    }
+			if(!empty($storages)) {
+				$this->load->smodel('shop_model');
+				if($product = $this->shop_model->getProduct($product_id, 'id'))
+					if(!empty($product->similarProducts))
+					{
+						echo "<h3>Аналоги / подібні</h3>";
+						foreach($product->similarProducts as $similarProduct) {
+							echo "<h4><a href=\"/admin/{$similarProduct->link}\">{$similarProduct->manufacturer} <strong>{$similarProduct->article_show}</strong> {$similarProduct->name}</a></h4>";
+							$this->load->view('admin/products/edit_tabs/tab-storages', ['invoice_to_product' => $similarProduct, 'storages' => $storages]);
+						}
+					}
+			}
+		}
 	}
 
 	public function __getRobotKeyWords($content = 0)
@@ -1301,15 +1442,20 @@ class shopshowcase_admin extends Controller {
 
     public function __after_edit($content)
     {
+    	if($_SESSION['cache'])
+    		$this->db->cache_delete($this->db->getHTMLCacheKey($content));
+
     	$this->load->smodel('shop_model');
     	$parent_to = 0;
     	if($content > 0)
     	{
     		if($product = $this->shop_model->getProduct($content, 'id'))
     		{
-    			$this->db->cache_delete("product/product-{$product->id}-all_info");
-    			if($product->group)
+    			$this->db->cache_delete('product/'.$this->db->getCacheContentKey('product_', $product->id, 2)."-all_info");
+    			if(is_numeric($product->group))
     				$parent_to = $product->group;
+    			else if(is_object($product->group))
+    				$parent_to = $product->group->id;
     		}
     		else
 	    		return false;
@@ -1321,9 +1467,9 @@ class shopshowcase_admin extends Controller {
     		if(empty($this->shop_model->allGroups))
     			$this->shop_model->init();
     		while ($parent_to > 0) {
-	    		$this->db->cache_delete("subgroups/group-{$parent_to}");
-	    		$this->db->cache_delete("products_in_group/group-{$parent_to}");
-	    		$this->db->cache_delete("optionsToGroup/group-{$parent_to}+filter");
+	    		$this->db->cache_delete("subgroups/".$this->db->getCacheContentKey('group-', $parent_to));
+	    		$this->db->cache_delete("products/".$this->db->getCacheContentKey('group-', $parent_to));
+	    		$this->db->cache_delete("optionsToGroup/".$this->db->getCacheContentKey('group-', $parent_to)."+filter");
 	    		if(isset($this->shop_model->allGroups[$parent_to]))
 	    			$parent_to = $this->shop_model->allGroups[$parent_to]->parent;
 	    		else
@@ -1334,9 +1480,9 @@ class shopshowcase_admin extends Controller {
     		$this->shop_model->allGroups = false;
 			$this->shop_model->init();
     		while ($parent_to > 0) {
-	    		$this->db->cache_delete("subgroups/group-{$parent_to}");
-	    		$this->db->cache_delete("products/group-{$parent_to}");
-	    		$this->db->cache_delete("optionsToGroup/group-{$parent_to}+filter");
+	    		$this->db->cache_delete("subgroups/".$this->db->getCacheContentKey('group-', $parent_to));
+	    		$this->db->cache_delete("products/".$this->db->getCacheContentKey('group-', $parent_to));
+	    		$this->db->cache_delete("optionsToGroup/".$this->db->getCacheContentKey('group-', $parent_to)."+filter");
 	    		if(isset($this->shop_model->allGroups[$parent_to]))
 	    			$parent_to = $this->shop_model->allGroups[$parent_to]->parent;
 	    		else

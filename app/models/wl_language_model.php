@@ -28,6 +28,8 @@ class wl_language_model
 
 	public function add($word, $alias = -1)
 	{
+		if(empty(trim($word)))
+			return true;
 		$this->words[$word] = $word;
 		$data['word'] = $word;
 		$data['alias'] = $_SESSION['alias']->id;
@@ -63,9 +65,12 @@ class wl_language_model
 
 	private function getWords($alias = -1)
 	{
+		$cache_alias = false;
+		if(empty($_SESSION['alias']->alias))
+			$cache_alias = 'wl_aliases';
 		$this->words = array();
 		if($alias == -1 || empty($this->words))
-	        if($cache = $this->db->cache_get('textWords'))
+	        if($cache = $this->db->cache_get('textWords', $cache_alias))
 			{
 				$this->words = $cache['words'];
 				$this->words_aliases = $cache['words_aliases'];
@@ -97,8 +102,7 @@ class wl_language_model
 				else
 					$this->words[$word->word] = $word->value;
 			}
-		if($_SESSION['alias']->id > 0)
-			$this->db->cache_add('textWords', ['words_aliases' => $this->words_aliases, 'words' => $this->words]);
+		$this->db->cache_add('textWords', ['words_aliases' => $this->words_aliases, 'words' => $this->words], $cache_alias);
 		return true;
 	}
 

@@ -13,9 +13,7 @@ class Login extends Controller {
      */
     public function index()
     {
-    	$_SESSION['alias']->content = 0;
-    	$_SESSION['alias']->code = 201;
-    	$this->wl_alias_model->setContent();
+    	$this->wl_alias_model->setContent(0, 201);
     	
         if($this->userIs())
         	$this->redirect($this->after);

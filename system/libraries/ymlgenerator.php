@@ -67,6 +67,7 @@ class ymlgenerator extends Controller {
             }
 
         $offers = [];
+        if(!empty($products))
         foreach ($products as $product) 
         {
             if(!empty($product->group) && is_array($product->group))
@@ -101,6 +102,9 @@ class ymlgenerator extends Controller {
                     }
                     else
                         $offerSimple->setAvailable(true);
+
+                    if(isset($product->quantity_in_stock))
+                        $offerSimple->setQuantity_in_stock($product->quantity_in_stock);
 
                     if(!empty($product->options))
                         foreach ($product->options as $name => $value)
@@ -150,6 +154,9 @@ class ymlgenerator extends Controller {
                 }
                 else
                     $offerSimple->setAvailable(true);
+
+                if(isset($product->quantity_in_stock))
+                    $offerSimple->setQuantity_in_stock($product->quantity_in_stock);
 
                 if(!empty($product->options))
                     foreach ($product->options as $name => $value)

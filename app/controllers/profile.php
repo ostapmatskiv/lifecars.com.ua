@@ -19,7 +19,7 @@ class Profile extends Controller {
             $this->load->model('wl_user_model');
             if($user = $this->wl_user_model->getInfo($uri, false, 'alias'))
             {
-                $this->wl_alias_model->setContent($user->id, 201);
+                $this->wl_alias_model->setContent($user->id, 202);
                 $_SESSION['alias']->title = $user->name.'. Кабінет користувача';
                 $_SESSION['alias']->name = $user->name;
 
@@ -49,7 +49,7 @@ class Profile extends Controller {
             $_SESSION['alias']->title = $_SESSION['user']->name.'. Кабінет користувача';
             $_SESSION['alias']->name = 'Кабінет користувача';
             $_SESSION['alias']->content = $_SESSION['user']->id;
-            $_SESSION['alias']->code = 201;
+            $_SESSION['alias']->code = 202;
 
             $this->load->model('wl_user_model');
             $registerDo = $this->db->getQuery("SELECT r.*, d.name, d.title_public as title_public FROM wl_user_register as r LEFT JOIN wl_user_register_do as d ON d.id = r.do WHERE r.user = {$_SESSION['user']->id} AND d.public = 1", 'array');
@@ -92,7 +92,8 @@ class Profile extends Controller {
             {
                 $this->load->model('wl_user_model');
                 foreach ($_POST as $key => $value)
-                    $this->wl_user_model->setAdditional($_SESSION['user']->id, $key, $this->data->post($key));
+                    if($key != 'photos')
+                        $this->wl_user_model->setAdditional($_SESSION['user']->id, $key, $this->data->post($key));
             }
             if($error)
             {

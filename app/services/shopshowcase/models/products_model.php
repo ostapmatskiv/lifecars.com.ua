@@ -392,7 +392,7 @@ class products_model {
 						$activegroups_position[$ac->group]->position = $ac->position;
 						$activegroups_position[$ac->group]->active = $ac->active;
 						$activegroups_position[$ac->group]->id = $ac->id;
-						$this->db->sitemap_cache_clear(-$ac->group);
+						$this->db->html_cache_clear(-$ac->group);
 					}
 					$activegroups = $temp;
 					$temp = null;
@@ -448,7 +448,7 @@ class products_model {
 		            $link = $this->makeLink($list, $_POST['group'], $data['alias']);
 		            $up = $Group->id;
 		            while ($up > 0) {
-		            	$this->db->sitemap_cache_clear(-$up);
+		            	$this->db->html_cache_clear(-$up);
 		            	$up = $list[$up]->parent;
 		            }
 		        }
@@ -459,7 +459,7 @@ class products_model {
 					$data['group'] = $_POST['group'];
 					$data['position'] = 1 + $this->db->getCount($this->table('_products'), array('wl_alias' => $_SESSION['alias']->id, 'group' => $data['group']));
 					$this->db->sitemap_update($id, 'link', $_SESSION['alias']->alias.'/'.$link);
-					$this->db->sitemap_cache_clear(0);
+					$this->db->html_cache_clear(0);
 				}
 			}
 		}
@@ -467,7 +467,7 @@ class products_model {
 			$this->db->sitemap_update($id, 'link', $_SESSION['alias']->alias.'/'.$link);
 
 		$this->db->sitemap_index($id, $data['active']);
-		$this->db->sitemap_cache_clear($id);
+		$this->db->html_cache_clear($id);
 		$this->db->updateRow($this->table(), $data, $id);
 		return $link;
 	}
@@ -563,7 +563,7 @@ class products_model {
 				}
 				else
 				{
-					if(isset($list[$key]))
+					if(isset($list[$key]) && is_object($list[$key]))
 					{
 						if($list[$key]->value != $value)
 							$this->db->updateRow($this->table('_product_options'), array('value' => $value), $list[$key]->id);
@@ -582,11 +582,7 @@ class products_model {
 		if(!empty($list) && $chekAll)
 		{
 			foreach ($list as $option) {
-				if(is_array($option))
-					foreach ($option as $el) {
-						$this->db->deleteRow($this->table('_product_options'), $el->id);
-					}
-				else
+				if(is_object($option))
 					$this->db->deleteRow($this->table('_product_options'), $option->id);
 			}
 		}

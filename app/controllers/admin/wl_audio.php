@@ -76,7 +76,7 @@ class wl_Audio extends Controller {
 									$this->db->updateRow('wl_ntkd', ['get_ivafc' => $row->get_ivafc.'a'], $row->id);
 							}
 						}
-					$this->db->sitemap_cache_clear($_POST['content'], false, $_POST['alias']);
+					$this->db->html_cache_clear($_POST['content'], $_POST['alias']);
                     $this->load->function_in_alias($_POST['alias'], '__after_edit', $_POST['content'], true);
 
 					$_SESSION['option']->sitemap_lastedit = time();
@@ -120,7 +120,7 @@ class wl_Audio extends Controller {
 			$filePath = "audio/".$alias."/".$content."/".$name;
 			@unlink ($filePath);
 
-			$this->db->sitemap_cache_clear($_GET['content'], false, $_GET['alias']);
+			$this->db->html_cache_clear($_GET['content'], $_GET['alias']);
             $this->load->function_in_alias($_GET['alias'], '__after_edit', $_GET['content'], true);
 
 			$_SESSION['option']->sitemap_lastedit = time();
@@ -147,7 +147,7 @@ class wl_Audio extends Controller {
 
                 if($this->wl_position_model->change($id, $position))
                 {
-                	$this->db->sitemap_cache_clear($_POST['content'], false, $_POST['alias']);
+                	$this->db->html_cache_clear($_POST['content'], $_POST['alias']);
                     $this->load->function_in_alias($_POST['alias'], '__after_edit', $_POST['content'], true);
 
                     $res['result'] = true;
@@ -171,7 +171,7 @@ class wl_Audio extends Controller {
 				$res['result'] = true;
 				$res['error'] = '';
 
-				$this->db->sitemap_cache_clear($_POST['content'], false, $_POST['alias']);
+				$this->db->html_cache_clear($_POST['content'], $_POST['alias']);
                 $this->load->function_in_alias($_POST['alias'], '__after_edit', $_POST['content'], true);
 				
 				$_SESSION['option']->sitemap_lastedit = time();

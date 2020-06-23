@@ -1,0 +1,88 @@
+#cart > a.right {
+    background: #29abe2;
+    color: #fff;
+    padding: 5px 30px;
+    border-radius: 2px;
+    margin-bottom: 25px
+}
+#cart h4, #cart .price-box { margin-top: 30px }
+#cart_notify * { font-size: 16px; line-height: 20px }
+#percents {
+    background: #DCDCDC;
+    border-radius: 2px;
+    position: relative;
+    height: 27px
+}
+#percents .active, #percents .text {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 75%;
+    background: #74C186
+}
+#percents .text {
+    background: none;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    padding: 5px
+}
+#percents + .info {
+    font-size: 12px;
+    padding: 2px;
+    width: 200px;
+    background: #F5F5F5;
+    margin: auto;
+    text-align: center;
+    position: relative;
+}
+#percents + .info:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -12px;
+    height: 100%;
+    width: 13px;
+    background-image: url(before-triangle-info-up.svg);
+}
+#percents + .info:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -12px;
+    height: 100%;
+    width: 13px;
+    background-image: url(after-triangle-info-up.svg);
+    background-repeat: no-repeat;
+}
+
+#cart-signup { border: 2px solid #29ABE2; border-radius: 2px; margin-top: 20px }
+#cart-signup div { padding: 5px; text-align: center; cursor: pointer }
+#cart-signup div.active { background: #29ABE2; color: #fff }
+#cart-signup div:hover { text-decoration: underline }
+#buyer { margin: 15px 0 }
+
+#payments label, #cart #oferta {
+    display: block;
+    margin-top: 5px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 2px;
+    background: #eee
+}
+#payments label.active { color: #fff; background: #29ABE2 }
+#payments .payment-info { padding-bottom: 5px }
+#payments label input,
+#cart form#confirm input.hide,
+#cart #oferta input { display: none }
+
+#cart textarea, #cart select { width: 100% }
+#cart #oferta { padding-left: 0; background: none; text-align: left }
+#cart #oferta i { font-size: 25px; color: #29ABE2; margin-right: 10px; float: left }
+#cart #oferta div { margin-top: 5px }
+#cart #oferta a { display: inline; text-decoration: underline }
+@media(max-width: 1023px){#cart .price-box { position: inherit !important; margin-bottom: 15px }}
+@media(max-width: 767px){ #cart > a.right { width: 100%; text-align: center } }

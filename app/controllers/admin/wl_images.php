@@ -90,8 +90,8 @@ class wl_images extends Controller {
             $photo['quality'] = 100;
             $id = $this->db->insertRow('wl_images_sizes', $photo);
 
-            if(isset($_SESSION['alias-cache'][$photo['alias']]->imageReSizes))
-                unset($_SESSION['alias-cache'][$photo['alias']]->imageReSizes);
+            unset($this->db->imageReSizes[$photo['alias']]);
+            $this->db->cache_delete('imageReSizes', $this->data->post('alias_name'));
 
             $this->load->redirect('admin/wl_images/'.$this->data->post('alias_name').'/'.$id);
         }
@@ -112,8 +112,11 @@ class wl_images extends Controller {
 
             $alias = $this->data->post('alias');
             if(is_numeric($alias))
-                if(isset($_SESSION['alias-cache'][$alias]->imageReSizes))
-                    unset($_SESSION['alias-cache'][$alias]->imageReSizes);
+            {
+                unset($this->db->imageReSizes[$alias]);
+                if($a = $this->db->getAllDataById('wl_aliases', $alias))
+                    $this->db->cache_delete('imageReSizes', $a->alias);
+            }
 
             $_SESSION['notify'] = new stdClass();
             $_SESSION['notify']->success = 'Дані успішно оновлено';
@@ -143,6 +146,9 @@ class wl_images extends Controller {
                         $_SESSION['notify']->success = 'Всі зображення з префіксом <strong>'.$this->data->post('prefix').'</strong> успішно видалено. Зміну розміру зображення видалено.';
                     }
                 }
+                unset($this->db->imageReSizes[$this->data->post('alias')]);
+                $this->db->cache_delete('imageReSizes', $this->data->post('alias_name'));
+
                 $this->db->deleteRow('wl_images_sizes', $this->data->post('id'));
                 $this->load->redirect('admin/wl_images/'.$this->data->post('alias_name'));
             }

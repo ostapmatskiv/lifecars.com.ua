@@ -301,10 +301,12 @@ class wl_forms extends Controller {
         if($name = $this->data->uri(3))
         {
             if($this->userCan('form_'.$name)) {
-                if($form = $this->db->getQuery("SELECT `id`, `table`, `title` FROM `wl_forms` WHERE `name` = '{$name}'"))
+                if($form = $this->db->getQuery("SELECT * FROM `wl_forms` WHERE `name` = '{$name}'"))
                 {
                     $_SESSION['alias']->name = $form->title;
-                    $formInfo = $this->db->getQuery("SELECT name, title FROM `wl_fields` WHERE `form` = '{$form->id}'", 'array');
+                    $formInfo = $this->db->select('wl_fields as f', '*', $form->id, 'form')
+                                            ->join('wl_input_types', 'name as type_name', '#f.input_type')
+                                            ->get('array');
 
                     $this->db->executeQuery("UPDATE `{$form->table}` SET `new` = 0 WHERE `new` = 1");
                     $tableInfo = $this->db->getQuery("SELECT * FROM `{$form->table}` ORDER BY `id` DESC", 'array');

@@ -3,7 +3,7 @@
 class Signup extends Controller {
 
     private $errors = array();
-    private $name = 'first_name, last_name'; // 'name'||'first_name, last_name' ім'я в одній змінній чи 2-х
+    private $name = 'name'; // 'name'||'first_name, last_name' ім'я в одній змінній чи 2-х
     public $additionall = array('phone'); // false додаткові поля при реєстрації. Згодом можна використовувати у ідентифікації, тощо
     private $new_user_type = 4; // Ід типу новозареєстрованого користувача
 
@@ -46,7 +46,7 @@ class Signup extends Controller {
 		        	$this->load->page_view('profile/login_view');
     		}
     		else
-    			$this->load->page_404();
+    			$this->load->page_404(false);
     	}
         else
         	$this->redirect('profile');
@@ -111,13 +111,13 @@ class Signup extends Controller {
                 {
                 	$this->load->library('mail');
 					$info['auth_id'] = $user->auth_id;
-					if($this->mail->sendTemplate('signup/user_signup', $user->email, $info))
+					if($this->mail->sendTemplate('signup/user_signup', $user->email, $info, true))
 					{
 						$_SESSION['notify']->title = $this->text('Реєстрація пройшла успішно!');
 						$_SESSION['notify']->success = $this->text('На поштову скриньку відправлено лист з <b>кодом підтвердження</b> та подальшими інструкціями. <br><br> <b>УВАГА!</b> Лист може знаходитися у папці <b>СПАМ!</b>');
 					}
 					else 
-						$_SESSION['notify']->errors = $this->text('Виникла помилка при додаванні нового користувача');
+						$_SESSION['notify']->errors = $this->text('Виникла помилка при додаванні нового користувача (відправка емейл)');
                 }
                 else
                 	$_SESSION['notify']->errors = $this->wl_user_model->user_errors;

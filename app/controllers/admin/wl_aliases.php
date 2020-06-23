@@ -115,6 +115,7 @@ class wl_aliases extends Controller {
     {
         if($_SESSION['user']->admin == 1)
         {
+            $_SESSION['alias']->name = 'Загальні налаштування сайту';
             $options = $this->db->getAllDataByFieldInArray('wl_options', array('service' => 0, 'alias' => 0));
             $this->load->admin_view('wl_aliases/edit_0all_view', array('options' => $options));
         }
@@ -336,6 +337,8 @@ class wl_aliases extends Controller {
                         }
                     }
 
+                    $this->db->deleteRow('wl_sitemap', ['link' => '%'.$data['alias']]);
+
                     $this->load->redirect('admin/wl_aliases/'.$data['alias']);
                 }
                 elseif($_POST['id'] > 0 && $go == 0)
@@ -457,11 +460,6 @@ class wl_aliases extends Controller {
                 {
                     if($alias = $this->db->getAllDataById('wl_aliases', $_POST['id']))
                     {
-                        $this->db->deleteRow('wl_sitemap', $alias->id, 'alias');
-                        $this->db->cache_delete($alias->alias, 'wl_aliases');
-                        if(isset($_SESSION['alias-cache'][$_POST['id']]))
-                            unset($_SESSION['alias-cache'][$_POST['id']]);
-                        
                         $additionally = "{$alias->id}. {$alias->alias}. ";
                         $where = array('service' => $alias->service, 'alias' => $alias->id, 'name' => 'folder');
                         if($option = $this->db->getAllDataById('wl_options', $where))
@@ -510,6 +508,13 @@ class wl_aliases extends Controller {
                         $this->db->deleteRow('wl_audio', $alias->id, 'alias');
                         $this->db->deleteRow('wl_user_permissions', $alias->id, 'permission');
 
+                        $this->db->cache_delete($alias->alias, 'wl_aliases');
+                        $this->db->cache_delete_all(false, $alias->alias);
+                        if(isset($_SESSION['alias-cache'][$_POST['id']]))
+                            unset($_SESSION['alias-cache'][$_POST['id']]);
+                        if(isset($_SESSION['alias-cache'][$alias->alias]))
+                            unset($_SESSION['alias-cache'][$alias->alias]);
+
                         $this->db->register('alias_delete', $additionally);
                     }
                     else
@@ -538,7 +543,7 @@ class wl_aliases extends Controller {
     {
         if($_SESSION['user']->admin == 1)
         {
-            $bools = array('sitemap_active' => 0, 'sitemap_autosent' => 0, 'showTimeSiteGenerate' => 0, 'statictic_set_page' => 0, 'userSignUp' => 0, 'showInAdminWl_comments' => 0);
+            $bools = array('sitemap_active' => 0, 'sitemap_autosent' => 0, 'showTimeSiteGenerate' => 0, 'statictic_set_page' => 0, 'userSignUp' => 0, 'showInAdminWl_comments' => 0, 'sendEmailForce' => 0, 'sendEmailSaveHistory' => 0);
             foreach ($_POST as $key => $value) {
                 $key = explode('-', $key);
                 if(count($key) == 2 && $key[0] == 'option' && is_numeric($key[1]))

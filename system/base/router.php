@@ -11,6 +11,7 @@ class Router extends Loader {
 	private $request;
 	private $class;
 	private $method;
+	private $skip_alias_init = ['admin', 'app', 'assets', 'images', 'js', 'logout', 'save', 'style', 'css', 'assets', 'files', 'upload', 'api'];
 	
 	function __construct($req = null)
 	{
@@ -60,8 +61,12 @@ class Router extends Loader {
 				$userAdmin = true;
 		}
 
+		$flag__skip_alias_init = false;
+		if(in_array($parts[0], $this->skip_alias_init))
+			$flag__skip_alias_init = true;
+
 		if($this->request == 'wlLoadPage404')
-			new Page404();
+			new Page404(!$flag__skip_alias_init);
 		elseif($parts[0] == 'admin')
 		{
 			if(isset($_SESSION['user']->id) && $_SESSION['user']->id > 0 && ($_SESSION['user']->admin || $_SESSION['user']->manager))
@@ -92,7 +97,7 @@ class Router extends Loader {
 			else
 				parent::redirect('login?redirect='.$this->request);
 		}
-		else
+		elseif(!in_array($parts[0], $this->skip_alias_init))
 		{
 			parent::model('wl_alias_model');
 
@@ -126,6 +131,11 @@ class Router extends Loader {
 			}
 			else
 				$this->wl_alias_model->init($parts[0], $this->request);
+		}
+		else
+		{
+			parent::model('wl_alias_model');
+			$this->wl_alias_model->initEmptyAlias($parts[0], $this->request);
 		}
 
 		if($this->isService())
@@ -171,10 +181,10 @@ class Router extends Loader {
 			$this->callController();
 		}
 		else
-			new Page404();
+			new Page404(!$flag__skip_alias_init);
 
 		$_SESSION['_POST'] = $_SESSION['_GET'] = NULL;
-		if((empty($_POST) && (isset($parts[0]) && !in_array($parts[0], array('admin', 'app', 'assets', 'style', 'js', 'css', 'images', 'upload')) || $this->method == 'index')) && isset($this->wl_cache_model) && is_object($this->wl_cache_model))
+		if((empty($_POST) && (isset($parts[0]) && !in_array($parts[0], $this->skip_alias_init) || $this->method == 'index')) && isset($this->wl_cache_model) && is_object($this->wl_cache_model))
 		{
 			if($this->wl_cache_model->page == false)
 			{
@@ -234,7 +244,8 @@ class Router extends Loader {
 	 */	
 	function callController()
 	{
-		$controller = new $this->class(true);
+		$init_page = (!in_array($this->class, $this->skip_alias_init)) ? true : false;
+		$controller = new $this->class($init_page);
 
 		if(!empty($_SESSION['alias']->id))
 		{
@@ -258,7 +269,7 @@ class Router extends Loader {
 		} else if(is_callable(array($controller, $method)) && $method != 'library' && $method != 'db') {
 			$controller->$method();
 		} else {
-			$controller->load->page_404();
+			$controller->load->page_404(!$init_page);
 		}
 	}
 	

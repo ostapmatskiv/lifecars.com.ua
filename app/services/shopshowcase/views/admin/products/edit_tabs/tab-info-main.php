@@ -4,20 +4,20 @@
 			<div class="col-md-5 text-right">Id на сайті</div>
 		    <div class="col-md-7"> <strong><?=$product->id?></strong> </div>
 	    </div>
-	    <?php /*
-	    <div class="row m-b-10">
-			<div class="col-md-5 text-right">Id 1c</div>
-		    <div class="col-md-7"> <strong><?=$product->id_1c?></strong> </div>
-	    </div> */ ?>
+	    <?php if(isset($product->id_1c)) { ?>
+		    <div class="row m-b-10">
+				<div class="col-md-5 text-right">Id 1c</div>
+			    <div class="col-md-7"> <strong><?=$product->id_1c?></strong> </div>
+		    </div>
+		<?php } ?>
 	    <div class="row m-b-10">
 			<div class="col-md-5 text-right">Власна адреса посилання</div>
 		    <div class="col-md-7"> <a href="<?=SITE_URL.$product->link?>"><?=$url.'/'?><strong><?=$product->alias?></strong></a> </div>
 	    </div>
-
 		<?php if($_SESSION['option']->ProductUseArticle) { ?>
 			<div class="row m-b-10">
 				<div class="col-md-5 text-right">Артикул</div>
-			    <div class="col-md-7"> <strong><?=$product->article_show?></strong> </div>
+			    <div class="col-md-7"> <strong class="f-s-16"><?=$product->article_show?></strong> </div>
 		    </div>
 		<?php } if(!$changePriceTab && ($_SESSION['user']->admin || !empty($marketing))) { ?>
 			<div class="row m-b-10">
@@ -92,7 +92,7 @@
 	            	}
 	            	else
 	            		$g->link = SITE_URL.'admin/'.$_SESSION['alias']->alias .'/'. $g->alias;
-	            	echo "<strong><a href=\"{$g->link}\" target=\"_blank\"><strong>{$g->name}</strong></a></strong>";
+	            	echo "<strong><a href=\"{$g->link}\" target=\"_blank\"><strong>{$g->name}</strong></a></strong> <br>";
 	            }
 			}
 			else if(!empty($product->parents))
@@ -104,11 +104,24 @@
 							echo "<a href=\"{$link}\" target=\"_blank\"><strong>{$parent->name}</strong></a>";
 					}
 			echo "</div></div>"; 
-		} ?>
+		}
+		
+		if(!empty($product->similarProducts)) { ?>
 			<div class="row m-b-10">
-				<div class="col-md-5 text-right">Стан</div>
-			    <div class="col-md-7"> <strong> <?=($product->active == 1)?'Товар активний':'Товар тимчасово відключено'?> </strong> </div>
-		    </div>
+				<div class="col-md-5 text-right">Аналоги / подібні</div>
+				<div class="col-md-7">
+				<?php foreach($product->similarProducts as $similarProduct) {
+					echo "<a href=\"/admin/{$similarProduct->link}\">{$similarProduct->manufacturer} <strong>{$similarProduct->article_show}</strong> {$similarProduct->name}</a><br>";
+				} if(!empty($storages)) { ?>
+				<button class="btn btn-info btn-xs m-t-5" onclick="show_similarProductsInvoices()"><i class="fa fa-qrcode"></i> Показати наявність за аналогами</button>
+				<?php } ?>
+				</div>
+			</div>
+		<?php } ?>
+		<div class="row m-b-10">
+			<div class="col-md-5 text-right">Статус</div>
+		    <div class="col-md-7"> <strong> <?=($product->active == 1)?'Товар активний':'Товар тимчасово відключено'?> </strong> </div>
+	    </div>
 	</div>
 	<div class="col-md-6">
 		<?php if($product->options)
@@ -131,7 +144,27 @@
 		<?php } ?>
 	</div>
 </div>
-<?php if(!empty($marketing))
+<?php
+if(!empty($storages)) {
+	echo '<div class="row">';
+	echo "<h3>Склад / наявність</h3>";
+	$invoice_to_product = $product;
+	require 'tab-storages.php';
+	if(!empty($product->similarProducts))
+	{
+		echo '<button class="btn btn-info btn-xs m-t-5 m-b-20" onclick="show_similarProductsInvoices()"><i class="fa fa-qrcode"></i> Показати наявність за аналогами</button>';
+		echo "<div id='similarProductsInvoices'></div>";
+		// echo "<h3>Аналоги / подібні</h3>";
+		// foreach($product->similarProducts as $similarProduct) {
+		// 	echo "<h4><a href=\"/admin/{$similarProduct->link}\">{$similarProduct->manufacturer} <strong>{$similarProduct->article_show}</strong> {$similarProduct->name}</a></h4>";
+		// 	$invoice_to_product = $similarProduct;
+		// 	require 'tab-storages.php';
+		// }
+	}
+	echo "</div>";
+}
+
+if(!empty($marketing))
 		foreach($marketing as $tab) {
 			if($tab->key == 'price_per_type')
 				continue;
@@ -150,5 +183,27 @@
 		} else {
 			$('#uninstall-form').slideUp("fast");
 		}
+	}
+	function show_similarProductsInvoices() {
+		$('#saveing').css("display", "block");
+	    $.ajax({
+	        url: ALIAS_ADMIN_URL+"similarProductsInvoices",
+	        type: 'POST',
+	        data: {
+	            product_id:  <?=$product->id?>
+	        },
+	        success: function(html){
+	            $('#saveing').css("display", "none");
+	            $('#similarProductsInvoices').html(html);
+	        },
+	        error: function(){
+	            alert("Помилка! Спробуйте ще раз!");
+	            $('#saveing').css("display", "none");
+	        },
+	        timeout: function(){
+	            alert("Помилка: Вийшов час очікування! Спробуйте ще раз!");
+	            $('#saveing').css("display", "none");
+	        }
+	    });
 	}
 </script>

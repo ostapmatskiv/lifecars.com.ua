@@ -30,6 +30,12 @@
 	            	<tr class="divider">
                         <td colspan="2"></td>
                     </tr>
+                    <?php if(isset($user->balance)) { ?>
+	                    <tr>
+		                    <td class="field">Поточний баланс</td>
+		                    <td><strong>$<?=$user->balance?></strong></td>
+		                </tr>
+		            <?php } ?>
                     <tr>
 	                    <td class="field">Alias користувача</td>
 	                    <td><a href="<?=SITE_URL?>profile/<?=$user->alias?>" target="_blank"><?=$user->alias?></a></td>
@@ -44,11 +50,7 @@
 					</tr>
 		    		<tr>
 						<td class="field">Статус акаунта</td>
-						<td>
-							<?php foreach ($status as $s) {
-								if($s->id == $user->status) echo $s->title;
-							} ?>
-						</td>
+						<td><?='<label class="label label-'.$user->status_color.'">'.$user->status_title.'</label>' ?></td>
 					</tr>
 		    		<tr>
 						<td class="field">Дата останнього входу</td>

@@ -31,7 +31,7 @@ class wl_users extends Controller {
                     $status = $this->db->getAllData('wl_user_status');
                     $types = $this->db->getAllDataByFieldInArray('wl_user_types', 1, 'active');
 
-                    $_SESSION['alias']->name = 'Користувач '.$user->name;
+                    $_SESSION['alias']->name = 'Користувач #'.$user->id.' '.$user->name;
                     $_SESSION['alias']->breadcrumb = array('Користувачі' => 'admin/wl_users', $user->name => '');
                     $this->load->admin_view('wl_users/edit_view', array('user' => $user, 'status' => $status, 'types' => $types));
                 }
@@ -97,7 +97,7 @@ class wl_users extends Controller {
     {
         if($this->userCan('profile'))
         {
-            $wl_users = $this->db->getQuery('SELECT u.*, t.title as type_name, s.name as status_name, ui.value as user_phone FROM wl_users as u LEFT JOIN wl_user_types as t ON t.id = u.type LEFT JOIN wl_user_status as s ON s.id = u.status LEFT JOIN wl_user_info as ui ON ui.field = "phone" AND ui.user = u.id', 'array');
+            $wl_users = $this->db->getQuery('SELECT u.*, t.title as type_name, s.title as status_name, s.color as status_color, ui.value as user_phone FROM wl_users as u LEFT JOIN wl_user_types as t ON t.id = u.type LEFT JOIN wl_user_status as s ON s.id = u.status LEFT JOIN wl_user_info as ui ON ui.field = "phone" AND ui.user = u.id', 'array');
             if($wl_users)
                 foreach ($wl_users as $user) {
                     $user->email = '<a href="'.SITE_URL.'admin/wl_users/'.$user->email.'">'.$user->email.'</a> <br>'.$user->user_phone;
@@ -105,6 +105,7 @@ class wl_users extends Controller {
                         $user->last_login = (string) date('d.m.Y H:i', $user->last_login);
                     else
                         $user->last_login = 'Дані відсутні';
+                    $user->status_name = '<label class="label label-'.$user->status_color.'">'.$user->status_name.'</label>';
                 }
             $this->load->json(array('data' => $wl_users));
         }

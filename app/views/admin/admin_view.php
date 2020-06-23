@@ -5,7 +5,7 @@
 <!--<![endif]-->
 <head>
   <meta charset="utf-8" />
-  <title><?=$_SESSION['alias']->name?> | Панель керування <?=SITE_NAME?></title>
+  <title><?=!empty($_SESSION['alias']->title) ? $_SESSION['alias']->title : $_SESSION['alias']->name?> | Панель керування <?=SITE_NAME?></title>
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
   <meta content="White Lion Web Studio" name="author" />
   <link rel="shortcut icon" href="<?=SERVER_URL?>style/admin/images/WhiteLion-black.png">
@@ -88,8 +88,8 @@
     var ALIAS_URL = '<?=SITE_URL.$_SESSION['alias']->alias.'/'?>';
     var ALIAS_ADMIN_URL = '<?=SITE_URL.'admin/'.$_SESSION['alias']->alias.'/'?>';
   </script>
-  <script src="<?=SITE_URL?>assets/jquery/jquery-1.9.1.min.js"></script>
-  <script src="<?=SITE_URL?>assets/jquery/jquery-migrate-1.1.0.min.js"></script>
+  <script src="<?=SITE_URL?>assets/jquery/jquery-1.11.1.min.js"></script>
+  <script src="<?=SITE_URL?>assets/jquery/jquery-migrate-1.2.1.min.js"></script>
   <script src="<?=SITE_URL?>assets/jquery-ui/ui/minified/jquery-ui.min.js"></script>
   <script src="<?=SITE_URL?>assets/bootstrap/js/bootstrap.min.js"></script>
   <!--[if lt IE 9]>

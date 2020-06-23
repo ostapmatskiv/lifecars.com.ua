@@ -8,7 +8,7 @@ if($actions = $this->db->select('wl_aliases_cooperation', 'alias1, alias2', arra
     foreach ($actions as $action) {
         if($this->userCan($action->alias))
             if($subview = $this->load->function_in_alias($action->alias2, '__dashboard_subview', true, true))
-                $__dashboard_subview[-$action->alias1] = clone $subview;
+                $__dashboard_subview[-$action->alias1] = $subview;
     }
 
 if(!empty($__dashboard_subview))

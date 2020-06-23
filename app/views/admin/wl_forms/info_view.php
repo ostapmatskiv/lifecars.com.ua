@@ -15,13 +15,16 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <?php if($formInfo)
+                                <?php $files_field = [];
+                                if($formInfo)
                                 {
                                     if($tableInfo)
                                     {
                                         foreach ($tableInfo[0] as $key => $value) {
                                             if($key != 'new')
                                                 foreach ($formInfo as $info) {
+                                                    if($info->type_name == 'file')
+                                                        $files_field[] = $info->name;
                                                     if($info->name == $key)
                                                         echo '<th>'.$info->title.'</th>';
                                                 }
@@ -44,6 +47,14 @@
                                 foreach ($info as $key => $value)
                                     if($key == 'id' && $_SESSION['user']->type == 1)
                                         echo '<td><button class="btn btn-xs btn-danger" data-id="'.$value.'"><i class="fa fa-trash" aria-hidden="true"></i></button> '.$value.'</td>';
+                                    elseif(in_array($key, $files_field) && !empty($value))
+                                    {
+                                        $path = SERVER_URL."files/form_{$form->name}/{$value}";
+                                        $extension = explode('.', $value);
+                                        $extension = end($extension);
+                                        $download = in_array($extension, ['jpg', 'png', 'pdf']) ? 'target="_blank"' : 'download';
+                                        echo "<td><a href='{$path}' {$download}>Файл</td>";
+                                    }
                                     elseif($key == 'language')
                                     {
                                         if($_SESSION['language'])
@@ -60,7 +71,6 @@
         </div>
     </div>
 </div>
-
 
 <?php 
   $_SESSION['alias']->js_load[] = 'assets/DataTables/js/jquery.dataTables.js';  

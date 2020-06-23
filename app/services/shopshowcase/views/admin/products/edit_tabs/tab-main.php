@@ -6,13 +6,14 @@
 	    	<strong><?=$product->id?></strong>
 	    </div>
     </div>
-    <?php /*
-    <div class="form-group">
-		<label class="col-md-3 control-label">Id 1c</label>
-	    <div class="col-md-9">
-	    	<input type="text" name="id_1c" value="<?=$product->id_1c?>" class="form-control">
+    <?php if(isset($product->id_1c)) { ?>
+	    <div class="form-group">
+			<label class="col-md-3 control-label">Id 1c</label>
+		    <div class="col-md-9">
+		    	<input type="text" name="id_1c" value="<?=$product->id_1c?>" class="form-control">
+		    </div>
 	    </div>
-    </div> */ ?>
+	<?php } ?>
     <div class="form-group">
 		<label class="col-md-3 control-label">Власна адреса посилання</label>
 	    <div class="col-md-9">

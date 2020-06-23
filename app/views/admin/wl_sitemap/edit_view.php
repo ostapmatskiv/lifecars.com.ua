@@ -16,14 +16,6 @@
 	                    	<a href="<?=SITE_URL?><?=($sitemap->link == 'main') ? '' : $sitemap->link?>"><strong><?=SITE_URL?><?=($sitemap->link == 'main') ? '' : $sitemap->link?></strong></a>
 	                    </div>
 	                </div>
-	                <?php if($_SESSION['language']) { ?>
-		                <div class="form-group">
-		                	<label class="col-md-3 control-label">Мова</label>
-		                    <div class="col-md-9">
-		                    	<strong><?=$sitemap->language?></strong>
-		                    </div>
-		                </div>
-	                <?php } ?>
 	                <div class="form-group">
 	                	<label class="col-md-3 control-label">Адресу розпізнано</label>
 	                    <div class="col-md-9">
@@ -80,14 +72,6 @@
 		                	<input type="number" name="priority" value="<?=$sitemap->priority/10?>" placeholder="0.5" min="<?=($sitemap->priority < 0 || $sitemap->code > 300) ? '-1' : '0'?>" max="1" step="0.1" class="form-control priority">
 						</div>
 	                </div>
-	                <?php if($_SESSION['language'] && $sitemap->alias > 0) { ?>
-		                <div class="form-group">
-		                	<label class="col-md-3 control-label">Застосувати до всіх мов</label>
-	                        <div class="col-md-9">
-			                	<input type="checkbox" data-render="switchery" checked value="1" name="all_languages" />
-							</div>
-		                </div>
-	                <?php } ?>
 	                <div class="form-group">
                         <label class="col-md-3 control-label"></label>
                         <div class="col-md-9">
@@ -139,22 +123,13 @@
 	            	<input type="hidden" name="id" value="<?=$sitemap->id?>">
 	            	<input type="hidden" name="code_hidden" value="<?=$Cache?>">
 	                <div class="form-group">
-	                	<label class="col-md-3 control-label">Код перевірки <strong><?=$Cache?></strong></label>
-                        <div class="col-md-9">
+	                	<label class="col-md-5 control-label">Код перевірки <strong><?=$Cache?></strong></label>
+                        <div class="col-md-7">
 		                	<input type="number" name="code_open" placeholder="<?=$Cache?>" min="0" class="form-control" required>
 						</div>
 	                </div>
-	                <?php if($_SESSION['language'] && $sitemap->alias > 0) { ?>
-		                <div class="form-group">
-		                	<label class="col-md-3 control-label">Видалити до всіх мов</label>
-	                        <div class="col-md-9">
-			                	<input type="checkbox" data-render="switchery" checked value="1" name="all_languages" />
-							</div>
-		                </div>
-	                <?php } ?>
 	                <div class="form-group">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-9">
+                        <div class="col-md-12">
                             <button type="submit" class="btn btn-sm btn-danger">Видалити запис з каталогу SiteMap</button>
                         </div>
                     </div>

@@ -1,0 +1,41 @@
+h2 + p { margin-bottom: 15px }
+main article table {
+	width: 100%;
+	max-width: 100%;
+	border-collapse: collapse
+}
+main article table th,
+main article table td { border: 1px solid #eee !important; padding: 10px }
+table.products_list { margin-top: 40px }
+table.products_list img { max-width: 200px; padding-right: 15px }
+table.products_list a { display: block; width: auto }
+table.products_list a.name { font-weight: bold; margin-bottom: 5px }
+table.products_list tbody tr :nth-child(3),
+table.products_list tbody tr :nth-child(4),
+table.products_list tbody tr :nth-child(5),
+table.products_list tfoot tr :first-child { text-align: right }
+table.products_list tbody tr td div * { text-align: left !important; color: #000; margin: 0 }
+
+h4 { margin: 40px 0 10px }
+
+del { text-decoration: line-through; font-weight: normal }
+
+main table tfoot tr:last-child td { background: #eee; border-color: #fff !important }
+@media(max-width: 767px){
+	main article table th, main article table td{
+		max-width: 20%;
+		padding: 1px;
+	}
+	
+	table.products_list tbody tr :nth-child(3),
+	table.products_list tbody tr :nth-child(4),
+	table.products_list tbody tr :nth-child(5){
+		padding-right: 10px
+	}
+	table.products_list img{ display: none }
+}
+@media(max-width: 320px){
+	main article table th:last-child, main article table td:last-child{
+		display: none;
+	}
+}

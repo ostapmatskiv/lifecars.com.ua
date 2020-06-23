@@ -3,6 +3,8 @@
 class save extends Controller {
 
 	public $errors = array();
+    private $file_allowed_ext = ['jpg', 'png', 'pdf', 'doc', 'docx', 'xls', 'xlsx'];
+    private $attach = [];
 
     function _remap($method)
     {
@@ -39,11 +41,23 @@ class save extends Controller {
                 	foreach ($fields as $field) {
                 		$input_data = null;
 
-                		if($form->type == 1)
-                            $input_data = $this->data->get($field->name);
-                		elseif($form->type == 2)
-                            $input_data = $this->data->post($field->name);
-                		if($field->required && $input_data == null)
+                        if($field->type_name == 'file' && !empty($_FILES[$field->name]['name']))
+                        {
+                            $path_info = pathinfo($_FILES[$field->name]['name']);
+                            $extension = $path_info['extension'];
+                            if($extension == 'jpeg')
+                                $extension = 'jpg';
+                            if(in_array($extension, $this->file_allowed_ext))
+                                $input_data = sha1($form->name .' save ' . $field->name . time()) . '.'.$extension;
+                        }
+                        else
+                        {
+                    		if($form->type == 1)
+                                $input_data = $this->data->get($field->name);
+                    		elseif($form->type == 2)
+                                $input_data = $this->data->post($field->name);
+                        }
+                		if($field->required && $input_data === null)
                 			$this->errors[] = $this->text("Field '{$field->title}' is required!");
 
                 		if($input_data)
@@ -68,8 +82,39 @@ class save extends Controller {
                             $data['date_add'] = time();
                             $data['language'] = isset($_SESSION['language']) ? $_SESSION['language'] : null;
                             $data['new'] = 1;
-                            $this->db->insertRow($form->table, $data);
-                            $data['id'] = $this->db->getLastInsertedId();
+                            $data['id'] = $this->db->insertRow($form->table, $data);
+
+                            foreach ($fields as $field) {
+                                if($field->type_name == 'file' && !empty($_FILES[$field->name]['name']) && !empty($data[$field->name]))
+                                {
+                                    $file_name = $data['id'] .'-'. $field->name .'-'. $data[$field->name];
+
+                                    $path = 'files';
+                                    if(!is_dir($path))
+                                        mkdir($path, 0777);
+
+                                    $path .= "/form_" . $form->name;
+                                    if(!is_dir($path)) {
+                                        mkdir($path, 0777);
+                                    }
+
+                                    $uploaded = false;
+                                    $path .= "/" . $file_name;
+                                    $file = $_FILES[$field->name]["tmp_name"];
+                                    if(is_uploaded_file($file)) {
+                                        if(move_uploaded_file($file, $path)) {
+                                            $uploaded = true;
+                                        }
+                                    }
+                                    if($uploaded)
+                                    {
+                                        $this->attach[$path] = $field->name;
+                                        $this->db->updateRow($form->table, [$field->name => $file_name], $data['id']);
+                                    }
+                                    else
+                                        $this->db->updateRow($form->table, [$field->name => ''], $data['id']);
+                                }
+                            }
                         }
                 	}
                     else
@@ -108,26 +153,13 @@ class save extends Controller {
                                     $join['language'] = $_SESSION['language'];
 
                                 $message = $this->db->getAllDataById('wl_mail_templats_data', $join);
-                                $mail->title = $message->title;
-                                $mail->text = $message->text;
+                                $mail->subject = $message->title;
+                                $mail->message = $message->text;
+                                $mail->template = $mail->id;
+                                $mail->attach = $this->attach;
 
                                 $data['date_add'] = date('d.m.Y H:i', $data['date_add']);
-                                if($sendMail = $this->mail->sendMailTemplate($mail, $data))
-                                {
-                                    if($mail->savetohistory == 1)
-                                    {
-                                        $updateHistory = array();
-                                        $updateHistory['template'] = $mail->id;
-                                        $updateHistory['date'] = time();
-                                        $updateHistory['title'] = $sendMail->subject;
-                                        $updateHistory['text'] = $sendMail->message;
-                                        $updateHistory['from'] = $sendMail->from; 
-                                        $updateHistory['to'] = $sendMail->to;
-
-                                        $this->db->insertRow('wl_mail_history', $updateHistory);
-                                    }
-                                }
-                                else
+                                if(!$sendMail = $this->mail->sendMailTemplate($mail, $data))
                                     exit('Error sending mail! Data saved successfully.');
                             }    
                         }

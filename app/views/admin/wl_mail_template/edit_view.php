@@ -142,9 +142,8 @@
 					<table class="table table-striped table-bordered nowrap" width="100%">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th></th>
-                                <th>Дата відправки</th>
+                                <th>Дата</th>
                                 <th>Від</th>
                                 <th>До</th>
                                 <th>Тема</th>
@@ -154,12 +153,11 @@
                             <?php if($history = $this->db->getAllDataByFieldInArray('wl_mail_history', $mailTemplate->id, 'template', 'id DESC LIMIT 30')) 
                             foreach ($history as $row) { ?>
                             <tr>
-                                <td><a href="<?= SITE_URL.'admin/wl_mail_template/history/'. $row->id ?>"> <?= $row->id ?></a></td>
-                                <td><a href="<?= SITE_URL.'admin/wl_mail_template/history/'. $row->id ?>" class="btn btn-xs btn-info"> Детально</a></td>
-                                <td><?= date('d.m.Y H:i', $row->date) ?></td>
+                                <td><a href="<?= SITE_URL.'admin/wl_mail_template/history/'. $row->id ?>" class="btn btn-xs btn-info"> Детально (#<?= $row->id ?>)</a></td>
+                                <td><?= date('d.m.Y H:i', $row->date) ?> / <strong><?=$row->send_email ? 'Відправлено' : 'Очікує відправки'?></strong></td>
                                 <td><?= $row->from ?></td>
                                 <td><?= $row->to ?></td>
-                                <td><?= $row->title ?></td>
+                                <td><?= $row->subject ?></td>
                             </tr>
                             <?php } ?>
                         </tbody>

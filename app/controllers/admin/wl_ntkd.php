@@ -48,9 +48,9 @@ class wl_ntkd extends Controller {
                     else
                     {
                         $where['alias'] = $alias->id;
-                        if($_SESSION['language'])
-                            $where['language'] = $_SESSION['language'];
                         $where_ntkd = $where;
+                        if($_SESSION['language'])
+                            $where_ntkd['language'] = $_SESSION['language'];
                         if($name = $this->data->get('name'))
                             $where_ntkd['name'] = '%'.$name;
                         $this->db->select('wl_ntkd as n', 'name, content', $where_ntkd);
@@ -170,7 +170,7 @@ class wl_ntkd extends Controller {
                 {
                     $field = htmlentities($_POST['data'], ENT_QUOTES, 'utf-8');
                     $language = '';
-                    if($_SESSION['language'] && isset($_POST['language']))
+                    if($table == 'wl_ntkd' && $_SESSION['language'] && isset($_POST['language']))
                     {
                         $language = htmlentities($_POST['language'], ENT_QUOTES, 'utf-8');
                         $language = "AND `language` = '{$language}'";
@@ -205,9 +205,7 @@ class wl_ntkd extends Controller {
                         $res['result'] = true;
                         $res['error'] = '';
 
-                        $language = false;
-                        if($_SESSION['language'] && isset($_POST['language'])) $language = $_POST['language'];
-                        $this->db->sitemap_cache_clear($content, $language, $alias);
+                        $this->db->html_cache_clear($content, $alias);
                         $this->load->function_in_alias($_POST['alias'], '__after_edit', $_POST['content'], true);
                     }
                     else

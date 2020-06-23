@@ -3,6 +3,7 @@
     $where = array('alias' => '#a.id', 'content' => 0);
     if($_SESSION['language']) $where['language'] = $_SESSION['language'];
     $this->db->join('wl_ntkd', 'name', $where);
+    unset($where['language']);
     $this->db->join('wl_sitemap', 'id as sitemap_id, time, changefreq, priority', $where);
 	$wl_aliases = $this->db->get('array');
     $in_table = [];
@@ -39,14 +40,6 @@
                             if(in_array($alias->id, $in_table))
                             {
                                 $this->db->deleteRow('wl_sitemap', $alias->sitemap_id);
-                                if($_SESSION['language'])
-                                {
-                                    $where = array('alias' => $alias->id, 'content' => 0, 'id' => '>'.$alias->sitemap_id);
-                                    foreach ($_SESSION['all_languages'] as $lang) {
-                                        $where['language'] = $lang;
-                                        $this->db->deleteRow('wl_sitemap', $where);
-                                    }
-                                }
                                 continue;
                             }
                             $in_table[] = $alias->id;

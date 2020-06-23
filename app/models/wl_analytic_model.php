@@ -56,8 +56,6 @@ class wl_analytic_model {
 		else
 			$this->db->select('wl_statistic_pages as s', '*', $where);
 		$where = array('alias' => '#s.alias', 'content' => '#s.content');
-		if($_SESSION['language'])
-			$where['language'] = '#s.language';
 		$this->db->join('wl_sitemap', 'link', $where);
 		$this->db->order('id DESC');
 		if(isset($_SESSION['option']->paginator_per_page) && $_SESSION['option']->paginator_per_page > 0)

@@ -73,7 +73,7 @@ class validator {
     public function email($field, $data)
     {
         if(!preg_match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})^', $data)){
-            array_push($this->errors, $field.' no correct');
+            array_push($this->errors, '"'.$field.'" no correct');
             return false;
         }
         return true;
@@ -89,7 +89,7 @@ class validator {
     {
         if($data == '')
         {
-            array_push($this->errors, $field.' required');
+            array_push($this->errors, '"'.$field.'" обов\'зкове');
             return false;
         }
         return true;

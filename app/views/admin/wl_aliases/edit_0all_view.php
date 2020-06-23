@@ -3,7 +3,7 @@
 
 <div class="row">
     <div class="col-md-6">
-        <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+        <div class="panel panel-success">
             <div class="panel-heading">
         		<div class="panel-heading-btn">
                 	<a href="<?=SITE_URL?>admin/wl_aliases" class="btn btn-info btn-xs"><i class="fa fa-bank"></i> До всіх адрес</a>
@@ -13,13 +13,16 @@
             <div class="panel-body">
 	            <form action="<?=SITE_URL?>admin/wl_aliases/save_all" method="POST" class="form-horizontal">
 					<?php if(isset($options)) { 
-                        $bools = array('sitemap_active', 'sitemap_autosent', 'showTimeSiteGenerate', 'userSignUp', 'showInAdminWl_comments', 'statictic_set_page');
+                        $skip = ['global_MetaTags'];
+                        $bools = array('sitemap_active', 'sitemap_autosent', 'showTimeSiteGenerate', 'userSignUp', 'showInAdminWl_comments', 'statictic_set_page', 'sendEmailForce', 'sendEmailSaveHistory');
                         $dates = array('sitemap_lastgenerate', 'sitemap_lastsent', 'sitemap_lastedit');
                         $titles = array( 'sitemap_active' => 'Автоматично оновлювати SiteMap при зміні контенту на сайті',
                             'sitemap_autosent' => 'Автоматично відправляти SiteMap пошуковим роботам',
                             'sitemap_lastgenerate' => 'Остання генерація SiteMap на сайті',
                             'sitemap_lastsent' => 'Остання відправка SiteMap пошуковим роботам',
                             'sitemap_lastedit' => 'Остання зміна інформації на сайті',
+                            'sendEmailForce' => 'Відправляти листи моментально <br><small>(не рекомендується, краще за розкладом)</small>',
+                            'sendEmailSaveHistory' => 'Відправлений лист зберегти в архів',
                             'paginator_per_page' => 'Матеріалів на сторінці (per page)',
                             'showTimeSiteGenerate' => 'Виводити час генерації сторінки',
                             'statictic_set_page' => 'Зберігати внутрішню статистику',
@@ -27,11 +30,11 @@
                             'new_user_type' => 'Тип (категорія) новозареєстрованого користувача',
                             'showInAdminWl_comments' => 'Виводити в панелі керування вігуки');
 						foreach ($options as $option) {
-                            if($option->name == 'global_MetaTags' || $option->name == 'new_user_type' && empty($_SESSION['option']->userSignUp))
+                            if(in_array($option->name, $skip) || $option->name == 'new_user_type' && empty($_SESSION['option']->userSignUp))
                                 continue; ?>
 							<div class="form-group">
-		                        <label class="col-md-3 control-label"><?=(isset($titles[$option->name])) ? $titles[$option->name] : $option->name?></label>
-		                        <div class="col-md-9">
+		                        <label class="col-md-5 control-label"><?=(isset($titles[$option->name])) ? $titles[$option->name] : $option->name?></label>
+		                        <div class="col-md-7">
                                     <?php if(in_array($option->name, $dates)) {
                                         echo ($option->value > 0) ? date('d.m.Y H:i', $option->value) : 'Дані відсутні';
                                     } elseif(in_array($option->name, $bools)) { ?>
@@ -55,9 +58,9 @@
 		                    </div>
 		                <?php } ?>
 		                <div class="form-group">
-	                        <label class="col-md-3 control-label"></label>
-	                        <div class="col-md-9">
-	                            <button type="submit" class="btn btn-sm btn-success">Зберегти</button>
+	                        <label class="col-md-5 control-label"></label>
+	                        <div class="col-md-7">
+	                            <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-save"></i> Зберегти</button>
 	                        </div>
 	                    </div>
                     <?php } else { ?>
@@ -74,28 +77,28 @@
         </div>
     </div>
 	<div class="col-md-6">
-        <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+        <div class="panel panel-warning">
             <div class="panel-heading">
                 <h4 class="panel-title">Додати загальне налаштування сайту</h4>
             </div>
             <div class="panel-body">
 	            <form action="<?=SITE_URL?>admin/wl_aliases/add_all" method="POST" class="form-horizontal">
 					<div class="form-group">
-                        <label class="col-md-3 control-label">Назва налаштування</label>
+                        <label class="col-md-3 control-label">Назва властивості</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="name" placeholder="Назва (анг)" required>
+                            <input type="text" class="form-control" name="name" placeholder="Назва (анг), без пробілів" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 control-label">Дані властивості</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="value" placeholder="Властивість" required>
+                            <input type="text" class="form-control" name="value" placeholder="Значення" required>
                         </div>
                     </div>
 	                <div class="form-group">
                         <label class="col-md-3 control-label"></label>
                         <div class="col-md-9">
-                            <button type="submit" class="btn btn-sm btn-success">Додати</button>
+                            <button type="submit" class="btn btn-sm btn-warning"><i class="fa fa-plus"></i> Додати</button>
                         </div>
                     </div>
                 </form>

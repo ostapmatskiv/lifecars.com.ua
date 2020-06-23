@@ -2,6 +2,7 @@
 
 /**
  * google_feed xml generator
+ * 20.02.2020 Ostap Matskiv fix for nonEnd groups
  * 27.11.2019 Ostap Matskiv
  */
 class google_feed
@@ -45,12 +46,15 @@ class google_feed
 				{
 					$parents = [];
 					$parent = $product->group;
-					while ($parent > 0) {
+					$find = true;
+					while ($parent > 0 && $find) {
+						$find = false;
 						foreach ($groups as $group) {
 							if($group->id == $parent)
 							{
 								$parents[] = $group->name;
 								$parent = $group->parent;
+								$find = true;
 								break;
 							}
 						}

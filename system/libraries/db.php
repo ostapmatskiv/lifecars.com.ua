@@ -17,7 +17,7 @@
  * Версія 2.2 (19.12.2016) - додано sitemap_add(), sitemap_redirect(), sitemap_update(), sitemap_index(), sitemap_remove(), cache_clear()
  * Версія 2.2.1 (08.02.2017) - додано "chaining methods";
  * Версія 2.2.2 (05.09.2017) - у випадку успіху insertRow() повернає getLastInsertedId(); fix getRows('single')
- * Версія 2.2.3 (29.10.2017) - додано count_db_queries, shopDBdump, виправлено помилку у where() для пустого/нульового значення
+ * Версія 2.2.3 (29.10.2017) - додано count_db_queries, showDBdump, виправлено помилку у where() для пустого/нульового значення
  * Версія 2.2.4 (01.11.2017) - додано group(), оптимізовано роботу getAliasImageSizes()
  * Версія 2.2.5 (01.12.2017) - amp версію виключено з індексації
  * Версія 2.3 (17.03.2018) - додано insertRows() - мультивставка рядків
@@ -28,6 +28,12 @@
  * Версія 2.4.5 (16.12.2019) - до getAliasImageSizes() додано кешування у сесії
  * Версія 2.4.6 (20.02.2020) - до get('count') додано (виправлено) коректно роботу параметрів $debug, $get
  * Версія 2.5 (20.02.2020) - до makeWhere() додано keyValue & (&, &&, &&&, &&&&+) ['&' => 'p.old_price > p.price || p.promo > 0'] - дозволяє додати "складні" sql умови до запиту
+ * Версія 2.6 (12.06.2020) - ініціалізація першого технічного запиту до БД 'SET NAMES utf8', тільки перед першим реальним запитом. Мінімізація пустих запитів.
+                            додано public $this->saveDBlog. оновлено showTime()
+                            до insertRows() доопрацьовано default значення у keys
+ * Версія 2.7 (19.06.2020) - оновлено sitemap_*() - зміни системної таблиці wl_sitemap:link_sha1
+                            оновлено getAliasImageSizes(), sitemap_cache_clear() => html_cache_clear() - робота з файловим кешем
+                            додано getHTMLCacheKey(), getCacheContentKey(), $this->version
  */
 
 class Db {
@@ -35,9 +41,11 @@ class Db {
     private $connects = array();
     private $current = 0;
     private $result;
-    private $imageReSizes = array();
+    public $version = '2.7';
+    public $imageReSizes = array();
     public $count_db_queries = 0;
-    public $shopDBdump = false;
+    public $showDBdump = false;
+    public $saveDBlog = false; // to db.log
 
     /*
      * Отримуємо дані для з'єднання з конфігураційного файлу
@@ -59,7 +67,6 @@ class Db {
     {
         $this->connects[] = new mysqli($host, $user, $password, $database);
         $this->current = count($this->connects) - 1;
-        $this->executeQuery('SET NAMES utf8');
     }
 
     /**
@@ -69,10 +76,25 @@ class Db {
      */
     function executeQuery($query)
     {
-        if ($this->shopDBdump) {
+        if($this->count_db_queries === 0)
+        {
+            $this->connects[$this->current]->query('SET NAMES utf8');
+            
+            if ($this->saveDBlog)
+                file_put_contents('db.log', PHP_EOL.$this->count_db_queries.': SET NAMES utf8'.PHP_EOL, FILE_APPEND);
+            if ($this->showDBdump)
+                echo $this->count_db_queries.': SET NAMES utf8 <hr>';
+
+            $this->count_db_queries++;
+        }
+        if ($this->showDBdump || $this->saveDBlog) {
             $this->time_start = microtime(true);
             $this->mem_start = memory_get_usage();
-            echo $this->count_db_queries.': '.$query;
+            
+            if ($this->saveDBlog)
+                file_put_contents('db.log', $this->count_db_queries.': '.$query.PHP_EOL, FILE_APPEND);
+            if ($this->showDBdump)
+                echo $this->count_db_queries.': '.$query;
             // if($this->count_db_queries == 11)
             // {
             //     echo "<pre>";
@@ -80,13 +102,17 @@ class Db {
             //     echo "</pre>";
             // }
         }
+
         $result = $this->connects[$this->current]->query($query);
         if(!$result)
             echo $this->connects[$this->current]->error;
         else
             $this->result = $result;
         $this->count_db_queries++;
-        if($this->shopDBdump)
+
+        if ($this->saveDBlog)
+            file_put_contents('db.log', $this->showTime(true).PHP_EOL, FILE_APPEND);
+        if($this->showDBdump)
             $this->showTime();
     }
 
@@ -133,7 +159,11 @@ class Db {
             return false;
 
         $insert = "INSERT INTO `".$table."` ( ";
-        foreach ($keys as $key) {
+        foreach ($keys as $key => $default) {
+            if(is_numeric($key))
+                $key = $default;
+            if(is_numeric($key))
+                continue;
             $insert .= '`' . $key . '`, ';
         }
         $insert = substr($insert, 0, -2);
@@ -141,11 +171,20 @@ class Db {
         $inserted = $i = 0; $query = '';
         foreach ($data as $row) { 
             $values = '';
-            foreach ($keys as $key) {
+            foreach ($keys as $key => $default) {
                 $value = '';
+                if(is_numeric($key))
+                    $key = $default;
+                else
+                    $value = $default;
+                if(is_numeric($key))
+                    continue;
                 if(isset($row[$key]))
                     $value = $this->sanitizeString($row[$key]);
-                $values .= "'{$value}', ";
+                if(is_numeric($value))
+                    $values .= "{$value}, ";
+                else
+                    $values .= "'{$value}', ";
             }
             $values = substr($values, 0, -2);
             $query .= '( ' . $values . ' ), ';
@@ -688,12 +727,27 @@ class Db {
 
     public function getAliasImageSizes($alias = 0)
     {
-        if($alias == 0)
+        $alias_link = 'wl_aliases';
+        if($alias == 0 && isset($_SESSION['alias']->id))
+        {
             $alias = $_SESSION['alias']->id;
+            $alias_link = $_SESSION['alias']->alias;
+        }
         if(isset($this->imageReSizes[$alias]))
             return $this->imageReSizes[$alias];
-        else if(isset($_SESSION['alias-cache'][$alias]->imageReSizes))
-            return $_SESSION['alias-cache'][$alias]->imageReSizes;
+        if($alias != $_SESSION['alias']->id)
+        {
+            if($a = $this->getAllDataById('wl_aliases', $alias))
+                $alias_link = $a->alias;
+            else
+                return false;
+        }
+        $reSizes = $this->cache_get('imageReSizes', $alias_link);
+        if($reSizes !== NULL)
+        {
+            $this->imageReSizes[$alias] = $reSizes;
+            return $reSizes;
+        }
         $reSizes = array();
         if($sizes = $this->getAllDataByFieldInArray('wl_images_sizes', array('alias' => array(0, $alias), 'active' => 1, 'alias DESC')))
             foreach ($sizes as $size) {
@@ -703,8 +757,7 @@ class Db {
                 $reSizes[$key] = $size;
             }
         $this->imageReSizes[$alias] = $reSizes;
-        if(isset($_SESSION['alias-cache'][$alias]))
-            $_SESSION['alias-cache'][$alias]->imageReSizes = $reSizes;
+        $this->cache_add('imageReSizes', $reSizes, $alias_link);
         return $reSizes;
     }
 
@@ -712,49 +765,36 @@ class Db {
     {
         $sitemap = array();
         $page = new stdClass();
+        $sitemap['link_sha1'] = sha1($link);
         $sitemap['link'] = $page->uniq_link = $link;
         $sitemap['alias'] = $page->alias = ($alias > 0 || $content === NULL) ? $alias : $_SESSION['alias']->id;
         $sitemap['content'] = $page->content = ($content === NULL) ? 0 : $content;
         $sitemap['code'] = $page->code = ($code > 0) ? $code : $_SESSION['alias']->code;
-        $sitemap['data'] = $sitemap['language'] = NULL;
+        $sitemap['data'] = NULL;
         $sitemap['time'] = $_SESSION['option']->sitemap_lastedit = time();
         $sitemap['changefreq'] = (in_array($changefreq, array('always','hourly','daily','weekly','monthly','yearly','never'))) ? $changefreq : 'daily';
         if($priority < 1) $priority *= 10;
         if($_SESSION['amp'] && $priority > 0)
             $priority *= -1;
         $sitemap['priority'] = $priority;
+        $page->id = $this->insertRow('wl_sitemap', $sitemap);
         if($_SESSION['language'])
-        {
-            foreach ($_SESSION['all_languages'] as $lang) {
-                $sitemap['language'] = $lang;
-                $this->insertRow('wl_sitemap', $sitemap);
-                if($lang == $_SESSION['language'])
-                    $page->id = $this->getLastInsertedId();
-            }
-        }
-        else
-        {
-            $this->insertRow('wl_sitemap', $sitemap);
-            $page->id = $this->getLastInsertedId();
-        }
-        if($_SESSION['language'])
-            $page->uniq_link .= '/'.$_SESSION['language'];
+            $page->uniq_link = $_SESSION['language'].'/'.$link;
         return $page;
     }
 
     public function sitemap_redirect($to = '')
     {
         $sitemap = array();
+        $sitemap['link_sha1'] = sha1($_SESSION['alias']->link);
         $sitemap['link'] = $_SESSION['alias']->link;
         $sitemap['alias'] = $sitemap['content'] = 0;
         $sitemap['code'] = 301;
         $sitemap['data'] = $to;
-        $sitemap['language'] = NULL;
         $sitemap['time'] = time();
         $sitemap['changefreq'] = 'daily';
         $sitemap['priority'] = -5;
-        $this->insertRow('wl_sitemap', $sitemap);
-        return $this->getLastInsertedId();
+        return $this->insertRow('wl_sitemap', $sitemap);
     }
 
     public function sitemap_update($content = NULL, $key = 'link', $value = '', $alias = 0)
@@ -806,7 +846,8 @@ class Db {
             elseif ($key == 'link')
             {
                 $this->deleteRow('wl_sitemap', ['link' => $value, 'alias' => '!'.$where['alias'], 'content' => '!'.$where['content']]);
-                    $sitemap['link'] = $value;
+                $sitemap['link'] = $value;
+                $sitemap['link_sha1'] = sha1($value);
             }
             else
                 $sitemap[$key] = $value;
@@ -830,33 +871,16 @@ class Db {
     public function sitemap_remove($content = 0, $alias = 0)
     {
         if($alias == 0) $alias = $_SESSION['alias']->id;
-        $where = array('alias' => $alias, 'content' => $content);
-        $this->deleteRow('wl_sitemap', $where);
+        $this->deleteRow('wl_sitemap', ['alias' => $alias, 'content' => $content]);
         return true;
     }
 
-    public function sitemap_cache_clear($content = NULL, $language = false, $alias = 0)
-    {
-        if($content === NULL) return false;
-        $where = array('content' => $content, 'code' => '!301');
-        
-        if($_SESSION['language'] && is_string($language))
-            $where['language'] = $language;
-        elseif(is_numeric($language) && $language > 0)
-            $alias = $language;
-        
-        $where['alias'] = ($alias == 0) ? $_SESSION['alias']->id : $alias;
-        $this->updateRow('wl_sitemap', array('data' => NULL), $where);
-
-        $_SESSION['option']->sitemap_lastedit = time();
-        $this->updateRow('wl_options', array('value' => $_SESSION['option']->sitemap_lastedit), array('service' => 0, 'alias' => 0, 'name' => 'sitemap_lastedit'));
-        return true;
-    }
-
-    public function cache_add($key, $data, $alias = false)
+    public function cache_add($key, $data, $alias = false, $json = true)
     {
         if(!$alias)
             $alias = $_SESSION['alias']->alias;
+        if($_SESSION['alias']->code >= 300)
+            $alias = 'page_404';
         if($_SESSION['language'] && $_SESSION['language'] != $_SESSION['all_languages'][0])
             $alias .= '_'.$_SESSION['language'];
         $key = str_replace('/', DIRSEP, $key);
@@ -874,23 +898,42 @@ class Db {
             if(!is_dir($dirPath))
                 mkdir($dirPath, 0755);
         }
-        $path = CACHE_PATH . $alias . DIRSEP . $key . '.json';
-        file_put_contents($path, serialize($data));
+        if($json)
+        {
+            $path = CACHE_PATH . $alias . DIRSEP . $key . '.json';
+            file_put_contents($path, serialize($data));
+        }
+        else
+        {
+            $path = CACHE_PATH . $alias . DIRSEP . $key . '.html';
+            file_put_contents($path, $data);
+        }
     }
 
-    public function cache_get($key, $alias = false)
+    public function cache_get($key, $alias = false, $json = true)
     {
         if(!$alias)
             $alias = $_SESSION['alias']->alias;
+        if($_SESSION['alias']->code >= 300)
+            $alias = 'page_404';
         if($_SESSION['language'] && $_SESSION['language'] != $_SESSION['all_languages'][0])
             $alias .= '_'.$_SESSION['language'];
-        $path = CACHE_PATH . $alias . DIRSEP . $key . '.json';
-        if(file_exists($path))
-            return unserialize(file_get_contents($path));
+        if($json)
+        {
+            $path = CACHE_PATH . $alias . DIRSEP . $key . '.json';
+            if(file_exists($path))
+                return unserialize(file_get_contents($path));
+        }
+        else
+        {
+            $path = CACHE_PATH . $alias . DIRSEP . $key . '.html';
+            if(file_exists($path))
+                return file_get_contents($path);
+        }
         return NULL;
     }
 
-    public function cache_delete($key, $alias = false)
+    public function cache_delete($key, $alias = false, $json = true)
     {
         if($alias === false)
             $alias = $_SESSION['alias']->alias;
@@ -901,13 +944,18 @@ class Db {
                 if($language != $_SESSION['all_languages'][0])
                     $alias_lang = $alias .'_'.$language;
                 $path = CACHE_PATH . $alias_lang . DIRSEP . $key . '.json';
+                if(!$json)
+                    $path = CACHE_PATH . $alias_lang . DIRSEP . $key . '.html';
                 if(file_exists($path))
-                    return unlink($path);
+                    unlink($path);
             }
+            return true;
         }
         else
         {
             $path = CACHE_PATH . $alias . DIRSEP . $key . '.json';
+            if(!$json)
+                $path = CACHE_PATH . $alias_lang . DIRSEP . $key . '.html';
             if(file_exists($path))
                 return unlink($path);
         }
@@ -932,9 +980,9 @@ class Db {
                 {
                     $data = new data();
                     $data->removeDirectory($path);
-                    return true;
                 }
             }
+            return true;
         }
         else
         {
@@ -951,7 +999,60 @@ class Db {
         return false;
     }
 
-    private function showTime()
+    public function html_cache_clear($content = NULL, $alias = 0)
+    {
+        if($content === NULL)
+            return false;
+        
+        if($_SESSION['cache'])
+        {
+            $alias_link = $_SESSION['alias']->alias;
+            if($alias != $_SESSION['alias']->id)
+            {
+                if($a = $this->getAllDataById('wl_aliases', $alias))
+                    $alias_link = $a->alias;
+                else
+                    return false;
+            }
+
+            $this->cache_delete($this->getHTMLCacheKey($content, $alias_link), 'html', false);
+        }
+
+        $_SESSION['option']->sitemap_lastedit = time();
+        $this->updateRow('wl_options', array('value' => $_SESSION['option']->sitemap_lastedit), array('service' => 0, 'alias' => 0, 'name' => 'sitemap_lastedit'));
+        return true;
+    }
+
+    public function getHTMLCacheKey($content = 0, $alias_link = false)
+    {
+        if(!$alias_link)
+            $alias_link = $_SESSION['alias']->alias;
+        $depth = 2;
+        if($content < 0)
+            $depth = 1;
+        return $alias_link.DIRSEP.$this->getCacheContentKey($alias_link.'_', $content, $depth);
+    }
+
+    public function getCacheContentKey($pre = '', $content = 0, $depth = 1)
+    {
+        if($depth == 0 || $content == 0 || !is_numeric($content))
+            return $pre.$content;
+        if($content < 0)
+        {
+            $content *= -1;
+            $pre .= '-';
+        }
+        $p_100 = ceil($content / 100) * 100;
+        if($depth == 1)
+            return $p_100.DIRSEP.$pre.$content;
+        if($depth == 2)
+        {
+            $p_1000 = ceil($content / 1000) * 1000;
+            return $p_1000.DIRSEP.$p_100.DIRSEP.$pre.$content;
+        }
+    }
+
+    private function showTime($return = false)
     {
         $mem_end = memory_get_usage();
         $time_end = microtime(true);
@@ -975,11 +1076,22 @@ class Db {
         }
         else
             $memGlobe = (string) $memGlobe . ' Кб';
-        if(isset($this->result->num_rows))
-            echo "<br> Результатів: ".$this->result->num_rows;
+        if($return)
+        {
+            $text = '';
+            if(isset($this->result->num_rows))
+                $text = "Результатів: ".$this->result->num_rows;
+            $text .= ' Час виконання: '.round($time, 5).' сек. Використано памяті: '.$mem.'. Від старту: Час виконання: '.round($timeGlobe, 5).' сек. Використано памяті: '.$memGlobe;
+            return $text;
+        }
         else
-            echo '<br>';
-        echo ' Час виконання: '.round($time, 5).' сек. Використанок памяті: '.$mem.'. Від старту: Час виконання: '.round($timeGlobe, 5).' сек. Використанок памяті: '.$memGlobe.' <hr>';
+        {
+            if(isset($this->result->num_rows))
+                echo "<br> Результатів: ".$this->result->num_rows;
+            else
+                echo '<br>';
+            echo ' Час виконання: '.round($time, 5).' сек. Використано памяті: '.$mem.'. Від старту: Час виконання: '.round($timeGlobe, 5).' сек. Використано памяті: '.$memGlobe.' <hr>';
+        }
     }
 
 }

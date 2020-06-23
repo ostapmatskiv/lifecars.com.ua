@@ -57,42 +57,16 @@ class wl_sitemap extends Controller {
             $start = 0;
             $_SESSION['option']->paginator_per_page = 50;
             $where = array();
-            
-            if(count($_GET) == 1 || (count($_GET) == 2 && isset($_GET['page'])))
-            {
-                if($_SESSION['language'])
-                {
-                    if($language = $this->data->get('language'))
-                    {
-                        if(in_array($language, $_SESSION['all_languages']))
-                            $where['language'] = $language;
-                    }
-                    else
-                        $where['language'] = $_SESSION['language'];
-                }
-            }
-            else
-            {
-                if($this->data->get('alias') == 'yes')
-                    $where['alias'] = '>0';
-                if($this->data->get('alias') == 'no')
-                    $where['alias'] = '0';
-                if($code = $this->data->get('code'))
-                    $where['code'] = $code;
-                if($link = $this->data->get('link'))
-                    $where['link'] = '%'.$link;
-                if($_SESSION['language'])
-                {
-                    if($language = $this->data->get('language'))
-                    {
-                        if(in_array($language, $_SESSION['all_languages']))
-                            $where['language'] = $language;
-                    }
-                    else
-                        $where['language'] = $_SESSION['language'];
-                }
-            }
-            $this->db->select('wl_sitemap', 'id, link, alias, language, code, time, changefreq, priority', $where);
+            if($this->data->get('alias') == 'yes')
+                $where['alias'] = '>0';
+            if($this->data->get('alias') == 'no')
+                $where['alias'] = '0';
+            if($code = $this->data->get('code'))
+                $where['code'] = $code;
+            if($link = $this->data->get('link'))
+                $where['link'] = '%'.$link;
+
+            $this->db->select('wl_sitemap', 'id, link, alias, code, time, changefreq, priority', $where);
             if(isset($_GET['sort']) && $_GET['sort'] == 'down')
                 $this->db->order('id DESC');
             if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 1)
@@ -132,6 +106,7 @@ class wl_sitemap extends Controller {
             {
                 $data = array();
                 $data['link'] = $this->data->post('from');
+                $data['link_sha1'] = sha1($data['link']);
                 $data['data'] = $this->data->post('to');
                 $data['code'] = 301;
                 $data['time'] = time();
@@ -163,19 +138,7 @@ class wl_sitemap extends Controller {
                     $data['data'] = $this->data->post('redirect');
                     break;
             }
-            if($_SESSION['language'] && isset($_POST['all_languages']) && $_POST['all_languages'] == 1)
-            {
-                $this->db->select('wl_sitemap', 'alias, content', $_POST['id']);
-                $sitemap = $this->db->get();
-                $this->db->select('wl_sitemap', 'id', array('alias' => $sitemap->alias, 'content' => $sitemap->content));
-                $sitemaps = $this->db->get('array');
-                foreach ($sitemaps as $map) {
-                    $this->db->updateRow('wl_sitemap', $data, $map->id);
-                }
-                $_SESSION['notify'] = new stdClass();
-                $_SESSION['notify']->success = 'Дані оновлено!';
-            }
-            elseif($this->db->updateRow('wl_sitemap', $data, $_POST['id']))
+            if($this->db->updateRow('wl_sitemap', $data, $_POST['id']))
             {
                 $_SESSION['notify'] = new stdClass();
                 $_SESSION['notify']->success = 'Дані оновлено!';
@@ -196,10 +159,7 @@ class wl_sitemap extends Controller {
                     $this->db->deleteRow('wl_sitemap_from', $sitemap->id, 'sitemap');
                     if($sitemap->alias == 0)
                         $this->db->deleteRow('wl_statistic_pages', array('alias' => 0, 'content' => $sitemap->id));
-                    if($_SESSION['language'] && isset($_POST['all_languages']) && $_POST['all_languages'] == 1)
-                        $this->db->deleteRow('wl_sitemap', array('alias' => $sitemap->alias, 'content' => $sitemap->content));
-                    else
-                        $this->db->deleteRow('wl_sitemap', $sitemap->id);
+                    $this->db->deleteRow('wl_sitemap', $sitemap->id);
                     $_SESSION['notify'] = new stdClass();
                     $_SESSION['notify']->success = 'Дані <strong>'.SITE_URL.$sitemap->link.'</strong> успішно видалено!';
                     $this->redirect('admin/wl_sitemap?code='.$sitemap->code);
@@ -216,55 +176,54 @@ class wl_sitemap extends Controller {
 
     public function cache()
     {
-        $id = $this->data->uri(3);
-        if(is_numeric($id))
-        {
-            if($sitemap = $this->db->getAllDataById('wl_sitemap', $id))
-            {
-                if($sitemap->data)
-                {
-                    if(extension_loaded('zlib'))
-                        echo ( gzdecode ($sitemap->data) );
-                    else
-                        echo ( $sitemap->data );
-                }
-                else
-                    $this->load->notify_view(array('errors' => 'За адресою <strong>'.SITE_URL.$sitemap->link.'</strong> дані Cache-сторінки відсутні.'));
-            }
-            else
-                $this->load->page_404();
-        }
-        else
-            $this->load->page_404();
+        echo 'need update';
+        // $id = $this->data->uri(3);
+        // if(is_numeric($id))
+        // {
+        //     if($sitemap = $this->db->getAllDataById('wl_sitemap', $id))
+        //     {
+        //         if($sitemap->data)
+        //         {
+        //             if(extension_loaded('zlib'))
+        //                 echo ( gzdecode ($sitemap->data) );
+        //             else
+        //                 echo ( $sitemap->data );
+        //         }
+        //         else
+        //             $this->load->notify_view(array('errors' => 'За адресою <strong>'.SITE_URL.$sitemap->link.'</strong> дані Cache-сторінки відсутні.'));
+        //     }
+        //     else
+        //         $this->load->page_404();
+        // }
+        // else
+        //     $this->load->page_404();
     }
 
     public function cleanCache()
     {
-        if(isset($_POST['id']) && $_POST['id'] > 0)
-        {
-            if($_POST['code_hidden'] == $_POST['code_open'])
-            {
-                $this->db->updateRow('wl_sitemap', array('data' => NULL), $_POST['id']);
-                $_SESSION['notify'] = new stdClass();
-                $_SESSION['notify']->success = 'Cache сторінки успішно видалено!';
-            }
-            else
-            {
-                $_SESSION['notify'] = new stdClass();
-                $_SESSION['notify']->errors = 'Невірний код безпеки!';
-            }
-        }
-        $this->redirect();
+        echo 'need update';
+        // if(isset($_POST['id']) && $_POST['id'] > 0)
+        // {
+        //     if($_POST['code_hidden'] == $_POST['code_open'])
+        //     {
+        //         $this->db->updateRow('wl_sitemap', array('data' => NULL), $_POST['id']);
+        //         $_SESSION['notify'] = new stdClass();
+        //         $_SESSION['notify']->success = 'Cache сторінки успішно видалено!';
+        //     }
+        //     else
+        //     {
+        //         $_SESSION['notify'] = new stdClass();
+        //         $_SESSION['notify']->errors = 'Невірний код безпеки!';
+        //     }
+        // }
+        // $this->redirect();
     }
 
     public function deleteAllByRequire()
     {
         if($_POST['code_hidden'] == $_POST['code_open'])
         {
-            $language = ($_SESSION['language']) ? false : true;
-            if(isset($_POST['language']) && $_POST['language'] == '0')
-                $language = true;
-            if($_POST['alias'] == -1 && $_POST['code'] == 0 && $language)
+            if($_POST['alias'] == -1 && $_POST['code'] == 0)
             {
                 $this->db->executeQuery("TRUNCATE wl_sitemap");
                 $this->db->executeQuery("TRUNCATE wl_sitemap_from");
@@ -280,10 +239,6 @@ class wl_sitemap extends Controller {
 
                 if($code = $this->data->post('code'))
                     $where['code'] = $code;
-
-                if($_SESSION['language'])
-                    if($language = $this->data->post('language'))
-                        $where['language'] = $language;
 
                 if(empty($where))
                 {
@@ -315,9 +270,6 @@ class wl_sitemap extends Controller {
                         if($_POST['alias'] < 1)
                         {
                             $where = array('alias' => 0);
-                            if($_SESSION['language'])
-                                if($language = $this->data->post('language'))
-                                    $where['language'] = $language;
                             foreach ($data as $row) {
                                 if($row->alias == 0)
                                 {
@@ -325,7 +277,6 @@ class wl_sitemap extends Controller {
                                     $this->db->deleteRow('wl_statistic_pages', $where);
                                 }
                             }
-                            
                         }
                     }
                 }
@@ -350,22 +301,6 @@ class wl_sitemap extends Controller {
             foreach ($post_ids as $id) {
                 if(is_numeric($id) && $id > 0)
                     $ids[] = $id;
-            }
-            if($_SESSION['language'] && !empty($_POST['all_languages']) && $_POST['all_languages'] == 1)
-            {
-                $this->db->select('wl_sitemap', 'id, alias, content', array('id' => $ids));
-                $seleted_ids = $this->db->get('array');
-                foreach ($seleted_ids as $map) {
-                    if(!in_array($map->id, $ids))
-                    {
-                        $this->db->select('wl_sitemap', 'id', array('alias' => $map->alias, 'content' => $map->content));
-                        $ml_ids = $this->db->get('array');
-                        foreach ($ml_ids as $ml) {
-                            if(!in_array($ml->id, $ids))
-                                $ids[] = $ml->id;
-                        }
-                    }
-                }
             }
 
             if(!empty($ids))
@@ -442,10 +377,11 @@ class wl_sitemap extends Controller {
 
     public function clearSiteCache()
     {
-        $this->db->updateRow('wl_sitemap', array('data' => NULL), array('code' => '!301'));
-        $_SESSION['notify'] = new stdClass();
-        $_SESSION['notify']->success = 'Cache сайту видалено!';
-        $this->redirect();
+        echo 'need update';
+        // $this->db->updateRow('wl_sitemap', array('data' => NULL), array('code' => '!301'));
+        // $_SESSION['notify'] = new stdClass();
+        // $_SESSION['notify']->success = 'Cache сайту видалено!';
+        // $this->redirect();
     }
 
     public function generate()
@@ -506,7 +442,6 @@ class wl_sitemap extends Controller {
         $where = array();
         $where['alias'] = '#i.alias';
         $where['content'] = '#i.content';
-        if($_SESSION['language']) $where['language'] = $_SESSION['language'];
         $allImages = $this->db->select('wl_images as i', 'id, file_name as photo, content' )
                          ->join('wl_ntkd', 'name', array('alias' => '#i.alias', 'content' => 0))
                          ->join('wl_options', 'value, alias', array('alias' => '#i.alias', 'name' => 'folder' ))
@@ -617,7 +552,7 @@ class wl_sitemap extends Controller {
             }
 
             $data = array();
-            $keys = array('link', 'alias', 'content', 'language', 'code', 'data', 'time', 'changefreq', 'priority');
+            $keys = array('link', 'alias', 'content', 'code', 'data', 'time', 'changefreq', 'priority');
             if(!empty($_POST['aliases']) && is_array($_POST['aliases']))
                 foreach ($_POST['aliases'] as $alias_id) {
                     if(is_numeric($alias_id))
@@ -636,13 +571,7 @@ class wl_sitemap extends Controller {
                                     $row['priority'] = 5;
                                 if(empty($row['time']))
                                     $row['time'] = time();
-                                if($_SESSION['language'])
-                                    foreach ($_SESSION['all_languages'] as $language) {
-                                        $row['language'] = $language;
-                                        $data[] = $row;
-                                    }
-                                else
-                                    $data[] = $row;
+                                $data[] = $row;
 
                                 if(count($data) > 1000)
                                 {
@@ -681,17 +610,27 @@ class wl_sitemap extends Controller {
                         continue;
                     if($url->link[0] == '/')
                         $url->link = substr($url->link, 1);
-                    if($url->link == 'main'){
+                    if($url->link == 'main')
                         $url->link = '';
-                        if($_SESSION['language'] && $url->language != $_SESSION['all_languages'][0])
-                            $url->link = $url->language;
-                    }
-                    elseif($_SESSION['language'] && $url->language != $_SESSION['all_languages'][0])
-                        $url->link = $url->language.'/'.$url->link;
                     if(empty($links[$url->link]))
                     {
                         $this->sitemapgenerator->addUrl(SITE_URL.$url->link, date('c', $url->time), $url->changefreq, $url->priority/10);
                         $links[$url->link] = 1;
+                    }
+                    if($_SESSION['language'])
+                    {
+                        $link = $url->link;
+                        foreach ($_SESSION['all_languages'] as $language) {
+                            if($language != $_SESSION['all_languages'][0])
+                            {
+                                $url->link = $language.'/'.$link;
+                                if(empty($links[$url->link]))
+                                {
+                                    $this->sitemapgenerator->addUrl(SITE_URL.$url->link, date('c', $url->time), $url->changefreq, $url->priority/10);
+                                    $links[$url->link] = 1;
+                                }
+                            }
+                        }
                     }
                 }
                 if(!empty($links))

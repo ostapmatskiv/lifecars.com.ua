@@ -4,9 +4,8 @@ class wl_alias_model
 {
 	public $service = false;
 
-    public function init($alias, $link = '')
-    {
-		$alias = $this->db->sanitizeString($alias);
+	public function initEmptyAlias($alias, $link = '')
+	{
 		$_SESSION['alias'] = new stdClass();
 		$_SESSION['option'] = new stdClass();
 		$_SESSION['service'] = new stdClass();
@@ -15,12 +14,18 @@ class wl_alias_model
 		$_SESSION['alias']->link = $this->db->sanitizeString($link);
 		$_SESSION['alias']->id = 0;
 		$_SESSION['alias']->content = NULL;
-		$_SESSION['alias']->code = 200;
+		$_SESSION['alias']->code = 202;
 		$_SESSION['alias']->service = false;
 		$_SESSION['alias']->name = $_SESSION['alias']->title = $_SESSION['alias']->breadcrumb_name = $alias;
 		$_SESSION['alias']->description = $_SESSION['alias']->keywords = $_SESSION['alias']->text = $_SESSION['alias']->list = $_SESSION['alias']->meta = '';
 		$_SESSION['alias']->files = $_SESSION['alias']->audios = $_SESSION['alias']->image = $_SESSION['alias']->images = $_SESSION['alias']->videos = false;
 		$_SESSION['alias']->js_plugins = $_SESSION['alias']->js_load = $_SESSION['alias']->js_init = $_SESSION['alias']->breadcrumbs = array();
+	}
+
+    public function init($alias, $link = '')
+    {
+		$alias = $this->db->sanitizeString($alias);
+		$this->initEmptyAlias($alias, $link);
 
 		$options_where['service'] = $options_where['alias'] = array(0);
 
@@ -39,6 +44,7 @@ class wl_alias_model
 				$wl_alias->alias = $alias;
 				$_SESSION['alias']->id = $alias->id;
 				$_SESSION['alias']->table = $alias->table;
+				$_SESSION['alias']->code = 200;
 				if($alias->service > 0)
 				{
 					$options_where['service'][] = $alias->service;
@@ -69,6 +75,7 @@ class wl_alias_model
 			{
 				$_SESSION['alias']->id = $wl_alias->alias->id;
 				$_SESSION['alias']->table = $wl_alias->alias->table;
+				$_SESSION['alias']->code = 200;
 				if($wl_alias->alias->service > 0)
 				{
 					$_SESSION['alias']->service = $wl_alias->alias->service_name;

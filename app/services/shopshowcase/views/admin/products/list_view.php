@@ -54,14 +54,15 @@
 </div>
 
 <style type="text/css">
-	input[type="number"]{
-		min-width: 50px;
-	}
-	select {
-		max-width: 200px;
-	}
-	td.move {
+    input[type="number"]{
+        min-width: 50px;
+    }
+    td select {
+        max-width: 200px;
+    }
+    td.move {
         width: 30px;
         cursor: move;
+        text-align: center;
     }
 </style>

@@ -1,0 +1,10 @@
+exportConfig:
+	vendor
+	subArticleFromName
+
+admin:
+edit with notify client by email and save to history:
+	delivery
+add part of payment (by [option]->paymentParts)
+
+buy per one click: use phone to identify

@@ -14,7 +14,7 @@ if(isset($_SESSION['option']->productOrder) && empty($_GET['sort']))
     <table id="data-table" class="table table-striped table-bordered nowrap" width="100%">
         <thead>
             <tr>
-            	<?php if(!isset($search) && $productOrder) echo "<th></th>"; ?>
+            	<?php if(!isset($search) && $productOrder) echo "<th><input type=\"checkbox\" id=\"selectAllProducts\"></th>"; ?>
 				<th><?=($_SESSION['option']->ProductUseArticle) ? 'Артикул /' : ''?> Назва</th>
 				<th><div class="btn-group">
 					<?php $sort = array('' => 'Ціна авто', 'price_down' => 'Від дешевих до дорогих ↑', 'price_up' => 'Від дорогих до дешевих ↓'); ?>
@@ -58,13 +58,15 @@ if(isset($_SESSION['option']->productOrder) && empty($_GET['sort']))
         	<?php foreach($products as $a) { ?>
 				<tr id="<?=($_SESSION['option']->ProductMultiGroup && isset($a->position_id)) ? $a->position_id : $a->id?>">
 					<?php if(!isset($search) && $productOrder) { ?>
-						<td class="move sortablehandle"><i class="fa fa-sort"></i></td>
+						<td class="move sortablehandle"><i class="fa fa-sort"></i>
+							<input type="checkbox" name="selectedProducts[]" value="<?=$a->id?>">
+						</td>
 					<?php } ?>
 					<td>
 						<?php if(!empty($a->admin_photo)) {?>
 						<a href="<?=SITE_URL.'admin/'.$a->link?>"><img src="<?= IMG_PATH.$a->admin_photo?>" width="90" class="pull-left p-r-10" alt=""></a>
 						<?php } ?>
-						<a href="<?=SITE_URL.'admin/'.$a->link?>">
+						<a href="<?=SITE_URL.'admin/'.$a->link?>" class="product_name">
 							<?=($_SESSION['option']->ProductUseArticle) ? '<strong>'.mb_strtoupper($a->article_show).'</strong>' : ''?> 
 							<?=empty($a->name)?$a->id : $a->name?></a>
 
@@ -150,11 +152,132 @@ if(isset($_SESSION['option']->productOrder) && empty($_GET['sort']))
     </table>
 </div>
 <div class="pull-right">Товарів у групі: <strong><?=$_SESSION['option']->paginator_total?></strong>. <?php if(!isset($search)){?>Активних товарів: <strong><?=$_SESSION['option']->paginator_total_active?></strong><?php } ?></div>
-<?php
+<?php if(!isset($search) && $productOrder) { ?>
+<div class="dropdown">
+	<button class="btn btn-info btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+		Дія із відміченими <span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu">
+		<?php if(!empty($group) && !empty($allGroups)) { ?>
+		<li><a href="#multi-changeGroup" data-toggle="modal"><i class="fa fa-list"></i> Перемістити в іншу групу</a></li>
+		<?php } ?>
+		<li role="separator" class="divider"></li>
+		<li><a href=":javascript" class="text-success" onclick="return multi_editProducts('active', 1)"><i class="fa fa-eye"></i> <strong>Включити</strong> / активувати</a></li>
+		<li><a href=":javascript" class="text-warning" onclick="return multi_editProducts('active', 0)"><i class="fa fa-eye"></i> <strong>Відключити</strong> / не доступні</a></li>
+		<?php if($_SESSION['option']->useAvailability == 1 && !empty($availability)) foreach ($availability as $c) { ?>
+			<li><a href="::javascript" onclick="return multi_editProducts('availability', <?=$c->id?>)"><i class="fa fa-cubes"></i> Доступність: <strong><?=$c->name?></strong></a></li>
+		<?php } ?>
+		<li role="separator" class="divider"></li>
+		<li><a href="#multi-deleteProducts" class="text-danger" data-toggle="modal"><i class="fa fa-trash"></i> Видалити</a></li>
+	</ul>
+</div>
+<?php }
 $this->load->library('paginator');
 echo $this->paginator->get();
-?>
 
+if(!isset($search) && $productOrder) {
+	if(!empty($group) && !empty($allGroups)) { ?>
+	<div class="modal fade" tabindex="-1" role="dialog" id="multi-changeGroup">
+	  	<div class="modal-dialog" role="document">
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        		<h4 class="modal-title text-warning">Перемістити в іншу групу</h4>
+	      		</div>
+	      		<form action="<?=SITE_URL.'admin/'.$_SESSION['alias']->alias?>/multi_changeGroup" method="POST">
+		      		<div class="modal-body">
+			        	<div class="form-group row">
+			        		<label class="col-md-3 control-label">Оберіть групу</label>
+			        		<div class="col-md-9">
+								<select name="group" class="form-control">
+									<option value="0">Немає</option>
+									<?php
+									$list = $emptyChildsList = array();
+								    foreach ($allGroups as $g) {
+								        $g->parent = (int) $g->parent;
+								        $list[$g->id] = $g;
+								        $list[$g->id]->child = array();
+								        if(isset($emptyChildsList[$g->id]))
+								            foreach ($emptyChildsList[$g->id] as $c) {
+								                $list[$g->id]->child[] = $c;
+								            }
+								        if($g->parent > 0)
+								        {
+								            if(isset($list[$g->parent]->child))
+								                $list[$g->parent]->child[] = $g->id;
+								            else
+								            {
+								                if(isset($emptyChildsList[$g->parent])) $emptyChildsList[$g->parent][] = $g->id;
+								                else $emptyChildsList[$g->parent] = array($g->id);
+								            }
+								        }
+								    }
+									function showList($product_group, $all, $list, $parent = 0, $level = 0)
+									{
+										$prefix = '';
+										for ($i=0; $i < $level; $i++) {
+											$prefix .= '- ';
+										}
+										foreach ($list as $g) if($g->parent == $parent) {
+											if(empty($g->child)) {
+												$selected = '';
+												if($product_group == $g->id) $selected = 'selected';
+												echo('<option value="'.$g->id.'" '.$selected.'>'.$prefix.$g->name.'</option>');
+											} else {
+												echo('<optgroup label="'.$prefix.$g->name.'">');
+												$l = $level + 1;
+												$childs = array();
+												foreach ($g->child as $c) {
+													$childs[] = $all[$c];
+												}
+												showList ($product_group, $all, $childs, $g->id, $l);
+												echo('</optgroup>');
+											}
+										}
+										return true;
+									}
+									showList($group->id, $list, $list); ?>
+								</select>
+							</div>
+						</div>
+		      		</div>
+		      		<div class="modal-footer">
+		      			<input type="hidden" name="old_group" value="<?=$group->id?>">
+		      			<input type="hidden" name="products">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Скасувати</button>
+				        <button type="submit" class="btn btn-warning"><i class="fa fa-sign-in"></i> Перемістити</button>
+		      		</div>
+	      		</form>
+			</div>
+	  	</div>
+	</div>
+	<?php } ?>
+	<div class="modal fade" tabindex="-1" role="dialog" id="multi-deleteProducts">
+	  	<div class="modal-dialog" role="document">
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        		<h4 class="modal-title text-danger"><i class="fa fa-trash"></i> Видалити відмічені <?=$_SESSION['admin_options']['word:products']?>?</h4>
+	      		</div>
+	      		<div class="modal-body text-danger">
+		          	<ul></ul>
+	      		</div>
+	      		<div class="modal-footer">
+	      			<form action="<?=SITE_URL.'admin/'.$_SESSION['alias']->alias?>/multi_deleteProducts" method="POST">
+			      		<input type="hidden" name="products">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Скасувати</button>
+				        <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Видалити</button>
+	        		</form>
+	      		</div>
+			</div>
+	  	</div>
+	</div>
+	<form id="multi_editProducts" action="<?=SITE_URL.'admin/'.$_SESSION['alias']->alias?>/multi_editProducts" method="POST" class="hide">
+  		<input type="hidden" name="products">
+  		<input type="hidden" name="field">
+  		<input type="hidden" name="value">
+	</form>
+<?php } ?>
 <div class="modal fade" tabindex="-1" role="dialog" id="deleteProduct">
   	<div class="modal-dialog" role="document">
     	<div class="modal-content">

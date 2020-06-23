@@ -2,8 +2,8 @@
 
 /*
 
- 	Service "Currency 2.2"
-	for WhiteLion 1.1
+ 	Service "Currency 2.3"
+	for WhiteLion 1.3
 
 */
 

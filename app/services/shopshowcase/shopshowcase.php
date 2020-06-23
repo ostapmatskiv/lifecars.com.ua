@@ -2,8 +2,8 @@
 
 /*
 
- 	Service "Shop Showcase 3.0"
-	for WhiteLion 1.1
+ 	Service "Shop Showcase 3.2"
+	for WhiteLion 1.3
 
 */
 
@@ -104,11 +104,34 @@ class shopshowcase extends Controller {
 
 				if($_SESSION['option']->showProductsParentsPages || !$subgroups)
 				{
-					$products = $this->db->cache_get('products_in_group/group-'.$group->id);
-					if($products === NULL)
-					{
+					$filter = false;
+					if(count($_GET) > 1)
+						foreach ($_GET as $key => $value) {
+							if($key != 'request' && $key != 'page')
+							{
+								$filter = true;
+								break;
+							}
+						}
+					if($filter)
 						$products = $this->shop_model->getProducts($group->id);
-						$this->db->cache_add('products_in_group/group-'.$group->id, $products);
+					else
+					{
+						$cache_key = 'group-'.$group->id;
+						if(isset($_SESSION['option']->paginator_per_page) && $_SESSION['option']->paginator_per_page > 0)
+						{
+							$page = 1;
+							if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 1)
+								$page = $_GET['page'];
+							$cache_key .= '-page-'.$page;
+						}
+
+						$products = $this->db->cache_get('products_in_group/'.$cache_key);
+						if($products === NULL)
+						{
+							$products = $this->shop_model->getProducts($group->id);
+							$this->db->cache_add('products_in_group/'.$cache_key, $products);
+						}
 					}
 					if($products)
 					{
