@@ -107,6 +107,8 @@
         </div>
     </section>
    
+   <link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>assets/slick/slick.css">
+   <?php $this->load->js('assets/slick/slick.min.js'); ?>
    <div class="slick__main" id="main__slick">
         <div>
             <img src="style/images/main_owl/auto1.png" alt="auto">

@@ -23,12 +23,10 @@
 	<link rel="alternate" hreflang="uk-UA" href="<?=SITE_URL_UK?>">
 	<link rel="alternate" hreflang="ru-UA" href="<?=SITE_URL_RU?>">
 	<link rel="shortcut icon" type="image/x-icon" href="<?=SERVER_URL?>favicon.ico">
-	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>assets/slick/slick.css">
-	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>assets/magnific-popup/magnific-popup.css">
 	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>style/ws__main.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
+	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>assets/magnific-popup/magnific-popup.css">
 	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>style/style.css">
-	
 </head>
 <body>
 	<?php
@@ -45,12 +43,11 @@
 
 	<script type="text/javascript" src="<?=SERVER_URL?>assets/jquery/jquery-3.4.1.min.js"></script>
 	<script type="text/javascript" src="<?=SERVER_URL?>assets/magnific-popup/magnific-popup.min.js"></script>
-	<script type="text/javascript" src="<?=SERVER_URL?>assets/slick/slick.min.js"></script>
 	<script type="text/javascript" src="js/user.js"></script>
 	<?php
 		if(!empty($_SESSION['alias']->js_load)) {
 			foreach ($_SESSION['alias']->js_load as $js) {
-				echo '<script type="text/javascript" src="'.SITE_URL.$js.'"></script> ';
+				echo '<script type="text/javascript" src="'.SERVER_URL.$js.'"></script> ';
 			}
 		}
 	?>
