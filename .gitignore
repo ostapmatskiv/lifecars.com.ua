@@ -7,7 +7,6 @@ _install/
 /import/
 /cache/
 /index.php
-*.sql
 *.zip
 *.xml
 *.gz
