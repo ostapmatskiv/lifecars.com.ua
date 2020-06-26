@@ -57,12 +57,12 @@
         </div>
     </div>
     <nav class="flex v-center">
-        <a href="#">Каталог запчастин</a>
-        <a href="#">Виробники</a>
-        <a href="#" class="active">Повернення та гарантія</a>
-        <a href="#">Оплата та доставка</a>
-        <a href="#">Контакти</a>
-        <a href="#">Реєстрація</a>
+        <a href="<?=SITE_URL?>parts" <?=($_SESSION['alias']->alias == 'parts') ? 'class="active"' : ''?>>Каталог запчастин</a>
+        <a href="<?=SITE_URL?>manufacturers" <?=($_SESSION['alias']->alias == 'manufacturers') ? 'class="active"' : ''?>>Виробники</a>
+        <a href="<?=SITE_URL?>exchange-and-return" <?=($_SESSION['alias']->alias == 'exchange-and-return') ? 'class="active"' : ''?>>Повернення та гарантія</a>
+        <a href="<?=SITE_URL?>delivery-and-payments" <?=($_SESSION['alias']->alias == 'delivery-and-payments') ? 'class="active"' : ''?>>Оплата та доставка</a>
+        <a href="<?=SITE_URL?>contacts" <?=($_SESSION['alias']->alias == 'contacts') ? 'class="active"' : ''?>>Контакти</a>
+        <a href="<?=SITE_URL?>login" <?=(in_array($_SESSION['alias']->alias, ['login', 'signup'])) ? 'class="active"' : ''?>>Увійти / Реєстрація</a>
     </nav>
     <div class="mob__menu">
         <div class="close__menu">
@@ -72,21 +72,18 @@
             <a href="<?=SITE_URL?>">
                 <img class="mob__logo" src="style/images/logo.png" alt="logo">
             </a>
-            <a href="">Увійти</a>
-            <a href="">Реєстрація</a>
+            <a href="<?=SITE_URL?>login">Увійти</a>
+            <a href="<?=SITE_URL?>signup">Реєстрація</a>
             <div class="mob__border"></div>
-            <a href="#">Каталог запчастин</a>
-            <a href="#">Виробники</a>
-            <a href="#">Повернення тагарантія</a>
-            <a href="#">Оплата та доставка</a>
-            <a href="#">Контакти</a>
+            <a href="<?=SITE_URL?>parts" <?=($_SESSION['alias']->alias == 'parts') ? 'class="active"' : ''?>>Каталог запчастин</a>
+            <a href="<?=SITE_URL?>manufacturers" <?=($_SESSION['alias']->alias == 'manufacturers') ? 'class="active"' : ''?>>Виробники</a>
+            <a href="<?=SITE_URL?>exchange-and-return" <?=($_SESSION['alias']->alias == 'exchange-and-return') ? 'class="active"' : ''?>>Повернення та гарантія</a>
+            <a href="<?=SITE_URL?>delivery-and-payments" <?=($_SESSION['alias']->alias == 'delivery-and-payments') ? 'class="active"' : ''?>>Оплата та доставка</a>
+            <a href="<?=SITE_URL?>contacts" <?=($_SESSION['alias']->alias == 'contacts') ? 'class="active"' : ''?>>Контакти</a>
             <div class="mob__border"></div>
             <a href="#">Мій кошик</a>
             <a href="#">Оформлення замовлення</a>
             <a href="#">Про нас</a>
-            <a href="#">Інформація для покупця</a>
-            <a href="#">Про оплату</a>
-            <a href="#">Про покупця</a>
         </div>
     </div>
 </header>

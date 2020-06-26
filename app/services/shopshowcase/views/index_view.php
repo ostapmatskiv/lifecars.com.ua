@@ -1,34 +1,44 @@
-<link rel="stylesheet" type="text/css" href="<?=SERVER_URL.'style/'.$_SESSION['alias']->alias.'/shop.css'?>">
-
-<main class="container">
-	<div class="row">
-		<h1><?=$_SESSION['alias']->name?></h1>
-	</div>
-	<section class="groups">
-		<?php if(!empty($catalogAllGroups))
-			foreach ($catalogAllGroups as $group) { ?>
-				<figure>
-					<?php if($group->photo) { ?>
-						<img src="<?=IMG_PATH.$group->photo?>" alt="<?=$group->name?>">
-					<?php } ?>
-					<figcaption>
-						<h2><?=$group->name?></h2>
-						<?php if($group->list) { ?>
-							<p><?=$group->list?></p>
-						<?php } ?>
-						<a href="<?=SITE_URL.$group->link?>"><?=$group->name?></a>
-					</figcaption>			
-				</figure>
-			<?php }
-			$addDiv = count($catalogAllGroups) % 3;
-			while ($addDiv++ < 3) {
-				echo "<figure class='empty'></figure>";
-			} ?>
-	</section>
+<main class="cars__models">
 	<?php if(!empty($_SESSION['alias']->text)) { ?>
 	    <section class="row">
 	        <h4><?=$_SESSION['alias']->list?></h4>
 	        <p><?=html_entity_decode($_SESSION['alias']->text)?></p>
 	    </section>
-	<?php } ?>
+	<?php }
+	/* ?>
+    <div class="flex v-center model__menu">
+        <a href="#">Маркі та моделі</a>
+        <a href="#">Аксесуари</a>
+        <a href="#">Масло та рідина</a>
+        <a href="#">Лампочкі</a>
+        <a href="#">Акумулятори</a>
+    </div> */
+    if(!empty($catalogAllGroups))
+		foreach ($catalogAllGroups as $group) { ?>
+			<div class="flex v-center models__geely">
+				<div class="flex v-center geely__info">
+					<?php if($group->photo) { ?>
+					<div>
+						<img src="<?=IMG_PATH.$group->photo?>" alt="<?=$group->name?>">
+					</div>
+					<?php } ?>
+					<span><?=$group->name?></span>
+				</div>
+				<button class="flex h-center v-center models__geely-btn">
+					<img src="style/icons/model/arrow-down.svg" alt="arrow-down">
+				</button>
+			</div>
+			<div class="flex h-start wrap geely__cars">
+			<?php foreach ($catalogAllGroups as $model) 
+				if($model->parent == $group->id) { ?>
+				<div class="base__detal">
+					<?php if($models->photo) { ?>
+						<img src="<?=IMG_PATH.$model->photo?>" alt="<?=$model->name?>">
+					<?php } ?>
+			        <img src="style/images/carslogo/cars.png" alt="car">
+			        <div class="detal__text"><?=$model->name?></div>
+			    </div>
+			<?php } ?>
+			</div>
+		<?php } ?>
 </main>

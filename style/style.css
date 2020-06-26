@@ -175,7 +175,7 @@ header nav a:before {
 	background: #fff;
 }
 header nav a:hover::before,
-header nav a:active::before  {
+header nav a.active::before  {
 	background: #82C166;
 }
 

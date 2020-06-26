@@ -1,11 +1,11 @@
 $(document).ready(function(){
-    $('#main__slick').slick({
-        dots: true,
-        infinite: true,
-        speed: 300,
-        slidesToShow: 1,
-        adaptiveHeight: true
-    });
+    // $('#main__slick').slick({
+    //     dots: true,
+    //     infinite: true,
+    //     speed: 300,
+    //     slidesToShow: 1,
+    //     adaptiveHeight: true
+    // });
 
 
         $('.minus').click(function () {
@@ -179,21 +179,21 @@ $(document).ready(function(){
         
   });
 
-$(function () {
-    $( "#tabs" ).tabs();
+// $(function () {
+//     $( "#tabs" ).tabs();
 
-    $('#fileupload').fileupload({
-        url: SITE_URL+"profile/upload_avatar",
-        autoUpload: true,
-        acceptFileTypes: /(\.|\/)(jpe?g|png)$/i,
-        start:function () {
-            $("#photo-block #loading").show();
-        },
-        complete:function () {
-            $("#photo-block #loading").hide();
-        }
-    });
-});
+//     $('#fileupload').fileupload({
+//         url: SITE_URL+"profile/upload_avatar",
+//         autoUpload: true,
+//         acceptFileTypes: /(\.|\/)(jpe?g|png)$/i,
+//         start:function () {
+//             $("#photo-block #loading").show();
+//         },
+//         complete:function () {
+//             $("#photo-block #loading").hide();
+//         }
+//     });
+// });
 
 function show_image (file) {
     var files = file.files;
