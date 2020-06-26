@@ -230,7 +230,7 @@ class import_1c extends Controller
 	{
 		// $this->db->shopDBdump = true;
 		// print_r($file_products);
-		$searchKeys = $my_product_cars = $my_product_analogs = $my_analog_groups = [];
+		$searchKeys = $my_product_cars = $my_product_analogs = $my_product_images = $my_analog_groups = [];
 		if(isset($file_products->Номенклатура) && !$all)
 			foreach ($file_products->Номенклатура as $product) {
 				$key = $this->xml_attribute($product, 'Код');
@@ -260,6 +260,14 @@ class import_1c extends Controller
 								$my_product_cars[$pg->product] = [$pg->group];
 						}
 
+					if($wl_images = $this->db->select('wl_images', 'content, id_1c', ['alias' => $this->shop_wl_alias, 'content' => '>0'])->get('array'))
+						foreach ($wl_images as $image) {
+							if(isset($my_product_cars[$image->content]))
+								$my_product_images[$image->content][] = $image->id_1c;
+							else
+								$my_product_images[$image->content] = [$image->id_1c];
+						}
+
 					if($s_shopshowcase_products_similar = $this->db->select('s_shopshowcase_products_similar as s', '`group`')
 																	->join('s_shopshowcase_products as p', 'id, id_1c', '#s.product')
 																	->get('array'))
@@ -287,6 +295,13 @@ class import_1c extends Controller
 								$my_product_cars[$pg->product][] = $pg->group;
 							else
 								$my_product_cars[$pg->product] = [$pg->group];
+						}
+					if($wl_images = $this->db->select('wl_images', 'content, id_1c', ['alias' => $this->shop_wl_alias, 'content' => $ids])->get('array'))
+						foreach ($wl_images as $image) {
+							if(isset($my_product_cars[$image->content]))
+								$my_product_images[$image->content][] = $image->id_1c;
+							else
+								$my_product_images[$image->content] = [$image->id_1c];
 						}
 					if($s_shopshowcase_products_similar = $this->db->getAllDataByFieldInArray('s_shopshowcase_products_similar', ['product' => $ids]))
 					{
@@ -523,6 +538,41 @@ class import_1c extends Controller
 									}
 								}
 							}
+							if(!empty($xml_product->ВложеныеФайлы))
+							{
+								$ok_images = [];
+								foreach ($xml_product->ВложеныеФайлы->ФайлКартинка as $xml_image) {
+									$image_id_1c = $this->xml_attribute($xml_image, 'id');
+									if(empty($image_id_1c))
+										continue;
+									$image_path = (string) $xml_image;
+									if(empty($image_path))
+										continue;
+									if(empty($my_product_images[$my_product->id]) || !in_array($image_id_1c, $my_product_images[$my_product->id]))
+									{
+										if(file_exists('import/photos/'.$image_path))
+										{
+											if(isset($my_product_images[$my_product->id]))
+												$my_product_images[$my_product->id][] = $image_id_1c;
+											else
+												$my_product_images[$my_product->id] = [$image_id_1c];
+											$position = count($my_product_images[$my_product->id]);
+											$this->checkImagePath('images/parts/'.$my_product->id);
+											$path_to = 'images/parts/'.$my_product->id.'/'.$image_path;
+											if(rename('import/photos/'.$image_path, $path_to))
+												$this->db->insertRow('wl_images', ['alias' => $this->shop_wl_alias, 
+																					'content' => $my_product->id,
+																					'file_name' => $image_path,
+																					'title' => '',
+																					'author' => 0,
+																					'date_add' => time(),
+																					'position' => $position,
+																					'id_1c' => $image_id_1c
+																				]);
+										}
+									}
+								}
+							}
 							$find = true;
 							break;
 						}
@@ -642,6 +692,37 @@ class import_1c extends Controller
 										$my_product_analogs[$analog->id] = $analog_group;
 									}
 								}
+							}
+						}
+					}
+					if(!empty($xml_product->ВложеныеФайлы))
+					{
+						foreach ($xml_product->ВложеныеФайлы->ФайлКартинка as $xml_image) {
+							$image_id_1c = $this->xml_attribute($xml_image, 'id');
+							if(empty($image_id_1c))
+								continue;
+							$image_path = (string) $xml_image;
+							if(empty($image_path))
+								continue;
+							if(file_exists('import/photos/'.$image_path))
+							{
+								if(isset($my_product_images[$id]))
+									$my_product_images[$id][] = $image_id_1c;
+								else
+									$my_product_images[$id] = [$image_id_1c];
+								$position = count($my_product_images[$id]);
+								$this->checkImagePath('images/parts/'.$id);
+								$path_to = 'images/parts/'.$id.'/'.$image_path;
+								if(rename('import/photos/'.$image_path, $path_to))
+									$this->db->insertRow('wl_images', ['alias' => $this->shop_wl_alias, 
+																		'content' => $id,
+																		'file_name' => $image_path,
+																		'title' => '',
+																		'author' => 0,
+																		'date_add' => time(),
+																		'position' => $position,
+																		'id_1c' => $image_id_1c
+																	]);
 							}
 						}
 					}
@@ -885,6 +966,24 @@ class import_1c extends Controller
         }
         $text = mb_eregi_replace("[-]{2,}", '-', $text);
         return $text;
+	}
+
+	private function checkImagePath($path)
+	{
+		$folders = explode('/', $path);
+		$path = '';
+		foreach ($folders as $folder) {
+			$path .= $folder;
+			if(!is_dir($path))
+            {
+                if(mkdir($path, 0777) == false)
+                {
+                    $error++;
+                    $filejson->files['error'] = 'Error create dir ' . $path;
+                } 
+            }
+            $path .= '/';
+		}
 	}
 
 }
