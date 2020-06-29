@@ -27,15 +27,14 @@ if(isset($_SESSION['option']->productOrder) && empty($_GET['sort']))
 						<?php } ?>
 					</ul>
 				</div></th>
-				<?php if($_SESSION['option']->useAvailability == 1) { 
+				<th>Наявність <?=($_SESSION['option']->useAvailability) ? '( од.)' : ''?></th>
+				<?php if($_SESSION['option']->useAvailability == 0) { 
 					$this->db->select($this->shop_model->table('_availability').' as a');
 					$name = array('availability' => '#a.id');
 					if($_SESSION['language']) $name['language'] = $_SESSION['language'];
 					$this->db->join($this->shop_model->table('_availability_name'), 'name', $name);
 					$availability = $this->db->get();
-					?>
-					<th>Наявність</th>
-				<?php } if($_SESSION['option']->useGroups == 1 && $_SESSION['option']->ProductMultiGroup == 1) { ?>
+				} if($_SESSION['option']->useGroups == 1 && $_SESSION['option']->ProductMultiGroup == 1) { ?>
 					<th>Групи</th>
 				<?php } ?>
 				<th>Автор / Редаговано</th>
@@ -91,6 +90,8 @@ if(isset($_SESSION['option']->productOrder) && empty($_GET['sort']))
 						} ?>
 					</td>
 					<?php if($_SESSION['option']->useAvailability == 1) { ?>
+						<td><input type="number" min="0" onchange="changeAvailability(this, <?=$a->id?>)" class="form-control" value="<?=$a->availability?>"></td>
+					<?php } else { ?>
 						<td>
 							<select onchange="changeAvailability(this, <?=$a->id?>)" class="form-control">
 								<?php if(!empty($availability)) foreach ($availability as $c) {
@@ -164,7 +165,7 @@ if(isset($_SESSION['option']->productOrder) && empty($_GET['sort']))
 		<li role="separator" class="divider"></li>
 		<li><a href=":javascript" class="text-success" onclick="return multi_editProducts('active', 1)"><i class="fa fa-eye"></i> <strong>Включити</strong> / активувати</a></li>
 		<li><a href=":javascript" class="text-warning" onclick="return multi_editProducts('active', 0)"><i class="fa fa-eye"></i> <strong>Відключити</strong> / не доступні</a></li>
-		<?php if($_SESSION['option']->useAvailability == 1 && !empty($availability)) foreach ($availability as $c) { ?>
+		<?php if($_SESSION['option']->useAvailability == 0 && !empty($availability)) foreach ($availability as $c) { ?>
 			<li><a href="::javascript" onclick="return multi_editProducts('availability', <?=$c->id?>)"><i class="fa fa-cubes"></i> Доступність: <strong><?=$c->name?></strong></a></li>
 		<?php } ?>
 		<li role="separator" class="divider"></li>

@@ -13,7 +13,7 @@ class install
 	public $multi_alias = 1;
 	public $order_alias = 100;
 	public $admin_ico = 'fa-qrcode';
-	public $version = "3.2";
+	public $version = "3.2.1";
 
 	public $options = array('ProductUseArticle' => 0, 'useGroups' => 1, 'showProductsParentsPages' => 1, 'ProductMultiGroup' => 0, 'useAvailability' => 0, 'searchHistory' => 1, 'useMarkUp' => 0, 'folder' => 'shopshowcase', 'productOrder' => 'position DESC', 'groupOrder' => 'position ASC', 'prom' => 0, 'price_format' => '');
 	public $options_type = array('ProductUseArticle' => 'bool', 'useGroups' => 'bool', 'showProductsParentsPages' => 'bool', 'ProductMultiGroup' => 'bool', 'useAvailability' => 'bool', 'searchHistory' => 'bool', 'useMarkUp' => 'bool', 'folder' => 'text', 'productOrder' => 'text', 'groupOrder' => 'text', 'prom' => 'bool', 'price_format' => false);
@@ -79,7 +79,7 @@ class install
 			}
 		}
 
-		if($this->options['useAvailability'] > 0)
+		if($this->options['useAvailability'] == 0)
 		{
 			$query = "CREATE TABLE IF NOT EXISTS `{$this->table_service}_availability` (
 						  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -274,7 +274,7 @@ class install
 				}
 			}
 		}
-		if($option == 'useAvailability' AND $value > 0)
+		if($option == 'useAvailability' AND $value == 0)
 		{
 			$query = "CREATE TABLE IF NOT EXISTS `{$this->table_service}_availability` (
 						  `id` int(11) NOT NULL AUTO_INCREMENT,

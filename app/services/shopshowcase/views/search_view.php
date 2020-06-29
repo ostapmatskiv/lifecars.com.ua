@@ -37,14 +37,14 @@
                                 <th><?=($_SESSION['option']->ProductUseArticle) ? 'Артикул' : 'Id'?></th>
 								<th>Назва</th>
 								<th>Ціна (у.о.)</th>
-								<?php if($_SESSION['option']->useAvailability == 1) { 
+								<th>Наявність <?=($_SESSION['option']->useAvailability) ? '( од.)' : ''?></th>
+								<?php if($_SESSION['option']->useAvailability == 0) { 
 									$this->db->select($this->shop_model->table('_availability').' as a');
 									$name = array('availability' => '#a.id');
 									if($_SESSION['language']) $name['language'] = $_SESSION['language'];
 									$this->db->join($this->shop_model->table('_availability_name'), 'name', $name);
 									$availability = $this->db->get();
 									?>
-									<th>Наявність</th>
 								<?php } if($_SESSION['option']->useGroups == 1 && $_SESSION['option']->ProductMultiGroup == 1) { ?>
 									<th>Групи</th>
 								<?php } ?>
@@ -67,6 +67,8 @@
 										</td>
 										<td><?=$a->price?></td>
 										<?php if($_SESSION['option']->useAvailability == 1) { ?>
+											<td><input type="number" min="0" onchange="changeAvailability(this, <?=$a->id?>)" class="form-control" value="<?=$a->availability?>"></td>
+										<?php } else { ?>
 											<td>
 												<select onchange="changeAvailability(this, <?=$a->id?>)" class="form-control">
 													<?php if(!empty($availability)) foreach ($availability as $c) {

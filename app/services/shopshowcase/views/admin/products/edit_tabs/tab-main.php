@@ -87,23 +87,25 @@
 		        </div>
 		    </div>
 	    </div>
-	<?php } if($_SESSION['option']->useAvailability) { ?>
-		<div class="form-group">
-			<label class="col-md-3 control-label">Наявність</label>
-		    <div class="col-md-9">
-		    	<?php $where_language = '';
-            	if($_SESSION['language']) $where_language = "AND n.language = '{$_SESSION['language']}'";
-				$this->db->executeQuery("SELECT a.*, n.name FROM {$_SESSION['service']->table}_availability as a LEFT JOIN {$_SESSION['service']->table}_availability_name as n ON n.availability = a.id {$where_language} WHERE a.active = 1 ORDER BY a.position ASC");
-				if($this->db->numRows() > 0){
-            		$availabilities = $this->db->getRows('array');
-            		foreach ($availabilities as $availability) { ?>
-            			<input type="radio" name="availability" value="<?=$availability->id?>" <?=($product->availability == $availability->id)?'checked':''?> id="availability-<?=$availability->id?>"><label for="availability-<?=$availability->id?>"><?=$availability->name?></label>
-            		<?php }
-            	}
-            	?>
-		    </div>
+	<?php } ?>
+	<div class="form-group">
+		<label class="col-md-3 control-label">Наявність</label>
+	    <div class="col-md-9">
+	    	<?php if($_SESSION['option']->useAvailability) { ?>
+	    		<input type="number" name="availability" value="<?=$product->availability?>" min="0" step="1" class="form-control">
+	    	<?php } else { $where_language = '';
+        	if($_SESSION['language']) $where_language = "AND n.language = '{$_SESSION['language']}'";
+			$this->db->executeQuery("SELECT a.*, n.name FROM {$_SESSION['service']->table}_availability as a LEFT JOIN {$_SESSION['service']->table}_availability_name as n ON n.availability = a.id {$where_language} WHERE a.active = 1 ORDER BY a.position ASC");
+			if($this->db->numRows() > 0){
+        		$availabilities = $this->db->getRows('array');
+        		foreach ($availabilities as $availability) { ?>
+        			<input type="radio" name="availability" value="<?=$availability->id?>" <?=($product->availability == $availability->id)?'checked':''?> id="availability-<?=$availability->id?>"><label for="availability-<?=$availability->id?>"><?=$availability->name?></label>
+        		<?php }
+        	} }
+        	?>
 	    </div>
-	<?php }
+    </div>
+	<?php
 	if(file_exists(__DIR__ . DIRSEP .'__product_additionall_fields.php'))
 		require_once '__product_additionall_fields.php';
 	if($_SESSION['option']->useGroups && $groups)

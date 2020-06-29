@@ -34,12 +34,12 @@
 					<div class="col-md-5 text-right">Активна націнка</div>
 				    <div class="col-md-7"> <strong><?=$product->markup?></strong> </div>
 			    </div>
-		<?php } } if($_SESSION['option']->useAvailability) { ?>
+		<?php } } ?>
 			<div class="row m-b-10">
 				<div class="col-md-5 text-right">Наявність</div>
-			    <div class="col-md-7"> <strong> <?=$product->availability_name?></strong> </div>
+			    <div class="col-md-7"> <strong> <?=($_SESSION['option']->useAvailability) ? $product->availability .' од.' : $product->availability_name?></strong> </div>
 		    </div>
-		<?php }
+		<?php
 
 		if(file_exists(__DIR__ . DIRSEP .'__product_additionall_fields-info.php'))
 			require_once '__product_additionall_fields-info.php';

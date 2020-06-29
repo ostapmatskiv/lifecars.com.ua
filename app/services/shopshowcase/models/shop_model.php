@@ -373,7 +373,7 @@ class shop_model {
 		if(!$active)
 			$this->db->join('wl_users', 'name as user_name', '#p.author_edit');
 
-		if($_SESSION['option']->useAvailability > 0)
+		if($_SESSION['option']->useAvailability == 0)
 		{
 			$this->db->join($_SESSION['service']->table.'_availability', 'color as availability_color', '#p.availability');
 
@@ -631,13 +631,15 @@ class shop_model {
 		if(!isset($_GET['edit']) && $key == 'id' && $product = $this->db->cache_get($cache_key))
 			if($product !== NULL)
 			{
-				$row = $this->db->select($this->table('_products').' as p', 'price, old_price', $product->id)
-								->join($this->table('_markup'), 'value as markup', array('from' => '<p.price', 'to' => '>=p.price'))
-								->join($this->table('_promo'), 'percent as promo_percent, from as promo_from, to as promo_to', ['id' => '#p.promo', 'status' => 1])
-								->get();
-				$product->price = $row->price;
-				$product->old_price = $row->old_price;
-				$product->markup = $row->markup;
+				$this->db->select($this->table('_products').' as p', 'price, old_price', $product->id)
+							->join($this->table('_promo'), 'percent as promo_percent, from as promo_from, to as promo_to', ['id' => '#p.promo', 'status' => 1]);
+				if($_SESSION['option']->useMarkUp > 0)
+					$this->db->join($this->table('_markup'), 'value as markup', array('from' => '<p.price', 'to' => '>=p.price'));
+				$row = $this->db->get();
+				$product_cache->price = $row->price;
+				$product_cache->old_price = $row->old_price;
+				if($_SESSION['option']->useMarkUp > 0)
+					$product_cache->markup = $row->markup;
 				$product->promo_percent = $row->promo_percent;
 				$product->promo_from = $row->promo_from;
 				$product->promo_to = $row->promo_to;
@@ -653,7 +655,7 @@ class shop_model {
 			$this->db->join('wl_users as aa', 'name as author_add_name', '#p.author_add');
 			$this->db->join('wl_users as e', 'name as author_edit_name', '#p.author_edit');
 
-			if($_SESSION['option']->useAvailability)
+			if($_SESSION['option']->useAvailability == 0)
 			{
 				$this->db->join($_SESSION['service']->table.'_availability', 'color as availability_color', '#p.availability');
 
@@ -688,13 +690,15 @@ class shop_model {
 			$product_cache = $this->db->cache_get($cache_key);
 			if($product_cache !== NULL)
 			{
-				$row = $this->db->select($this->table('_products').' as p', 'price, old_price', $product->id)
-								->join($this->table('_markup'), 'value as markup', array('from' => '<p.price', 'to' => '>=p.price'))
-								->join($this->table('_promo'), 'percent as promo_percent, from as promo_from, to as promo_to', ['id' => '#p.promo', 'status' => 1])
-								->get();
+				$this->db->select($this->table('_products').' as p', 'price, old_price', $product->id)
+							->join($this->table('_promo'), 'percent as promo_percent, from as promo_from, to as promo_to', ['id' => '#p.promo', 'status' => 1]);
+				if($_SESSION['option']->useMarkUp > 0)
+					$this->db->join($this->table('_markup'), 'value as markup', array('from' => '<p.price', 'to' => '>=p.price'));
+				$row = $this->db->get();
 				$product_cache->price = $row->price;
 				$product_cache->old_price = $row->old_price;
-				$product_cache->markup = $row->markup;
+				if($_SESSION['option']->useMarkUp > 0)
+					$product_cache->markup = $row->markup;
 				$product_cache->promo_percent = $row->promo_percent;
 				$product_cache->promo_from = $row->promo_from;
 				$product_cache->promo_to = $row->promo_to;

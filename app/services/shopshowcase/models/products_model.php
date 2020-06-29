@@ -55,7 +55,7 @@ class products_model {
 		$this->db->join('wl_users as aa', 'name as author_add_name', '#p.author_add');
 		$this->db->join('wl_users as e', 'name as author_edit_name', '#p.author_edit');
 
-		if($_SESSION['option']->useAvailability > 0)
+		if($_SESSION['option']->useAvailability == 0)
 		{
 			$this->db->join($_SESSION['service']->table.'_availability', 'color as availability_color', '#p.availability');
 			
@@ -138,7 +138,7 @@ class products_model {
 		$this->db->join('wl_users as aa', 'name as author_add_name', '#p.author_add');
 		$this->db->join('wl_users as e', 'name as author_edit_name', '#p.author_edit');
 
-		if($_SESSION['option']->useAvailability)
+		if($_SESSION['option']->useAvailability == 0)
 		{
 			$this->db->join($_SESSION['service']->table.'_availability', 'color as availability_color', '#p.availability');
 			
