@@ -30,6 +30,7 @@
 </head>
 <body>
 	<?php
+		require_once '@commons/__all_groups.php';
 		echo('<div class="container">');
 
 		include "@commons/header.php";
@@ -43,27 +44,22 @@
 
 	<script type="text/javascript" src="<?=SERVER_URL?>assets/jquery/jquery-3.4.1.min.js"></script>
 	<script type="text/javascript" src="<?=SERVER_URL?>assets/magnific-popup/magnific-popup.min.js"></script>
-	<script type="text/javascript" src="js/user.js"></script>
-	<?php
-		if(!empty($_SESSION['alias']->js_load)) {
-			foreach ($_SESSION['alias']->js_load as $js) {
-				echo '<script type="text/javascript" src="'.SERVER_URL.$js.'"></script> ';
-			}
-		}
-	?>
-	<script>
+	<script type="text/javascript">
 		var SERVER_URL = '<?=SERVER_URL?>';
 		var SITE_URL = '<?=SITE_URL?>';
 		var ALIAS_URL = '<?=SITE_URL.$_SESSION['alias']->alias?>/';
-	    $(document).ready(function() {
-	        <?php
-			if(!empty($_SESSION['alias']->js_init)) {
-				foreach ($_SESSION['alias']->js_init as $js) {
-					echo $js.'; ';
-				}
+	</script>
+	<script type="text/javascript" src="<?=SERVER_URL?>js/site.js"></script>
+	<?php if(!empty($_SESSION['alias']->js_load))
+		foreach ($_SESSION['alias']->js_load as $js) {
+			echo '<script type="text/javascript" src="'.SERVER_URL.$js.'"></script> ';
+		}
+		if(!empty($_SESSION['alias']->js_init)) {
+			echo "<script> $(document).ready(function() {";
+			foreach ($_SESSION['alias']->js_init as $js) {
+				echo $js.'; ';
 			}
-			?>
-	    });
-	</script>	
+			echo "}) </script>";
+		} ?>
 </body>
 </html>

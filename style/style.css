@@ -110,8 +110,8 @@ header .header__shoping .header__user .user__login {
 	right: 55px;
 	display: none;
 }
-header .header__shoping .header__user:hover > .user__login { display: block;}
-header .header__shoping .header__user .user__login button.user__in {
+header .header__shoping .header__user:hover > .user__login { display: block }
+header .header__shoping .header__user .user__login a.user__in {
 	width: 137px;
 	height: 29px;
 	text-align: center;
@@ -122,8 +122,11 @@ header .header__shoping .header__user .user__login button.user__in {
 	cursor: pointer;
 	border-radius: 5px;
 	margin-bottom: 3px;
+	display: flex;
+    justify-content: center;
+	align-items: center;
 }
-header .header__shoping .header__user .user__login button.user__registration {
+header .header__shoping .header__user .user__login a.user__registration {
 	width: 137px;
 	height: 29px;
 	text-align: center;
@@ -133,9 +136,12 @@ header .header__shoping .header__user .user__login button.user__registration {
 	cursor: pointer;
 	color: #000;
 	border-radius: 5px;
+	display: flex;
+    justify-content: center;
+	align-items: center;
 }
-header .header__shoping .header__user .user__login button.user__in:hover,
-header .header__shoping .header__user .user__login button.user__registration:hover {
+header .header__shoping .header__user .user__login a.user__in:hover,
+header .header__shoping .header__user .user__login a.user__registration:hover {
 	background: #82C166;
 	color: #fff;
 }
@@ -217,7 +223,8 @@ main .main__logo a .fa-chevron-down {
     color: #d9d9d9;
 }
 main .main__logo a:hover .fa-chevron-down,
-main .main__logo a:active .fa-chevron-down{
+main .main__logo a.active .logo__text,
+main .main__logo a.active .fa-chevron-down{
 	color: #82C166;
 }
 
@@ -225,10 +232,7 @@ main .main__logo a:active .fa-chevron-down{
 /*                        cars__detal                           */
 
 main section.cars__catalog,
-main section.cars__base {
-	display: none;
-	overflow: hidden;
-}
+main section.cars__base { overflow: hidden }
 main section.cars__catalog .base__detal, 
 main section.cars__base .base__detal {
 	cursor: pointer;
@@ -1813,11 +1817,7 @@ main.cars__models .model__menu a:hover {
 	color: #7cbe49;
 }
 
-main.cars__models .models__geely,
-main.cars__models .models__chery,
-main.cars__models .models__wall,
-main.cars__models .models__lifan,
-main.cars__models .models__byd {
+main.cars__models .cars__model {
 	width: 100%;
   	height: 81px;
   	border-radius: 41px;
@@ -1825,20 +1825,10 @@ main.cars__models .models__byd {
 	margin-bottom: 20px;
 	padding-left: 45px;
 	padding-right: 15px;
+	cursor: pointer;
 }
-main.cars__models .models__geely:hover,
-main.cars__models .models__chery:hover,
-main.cars__models .models__wall:hover,
-main.cars__models .models__lifan:hover,
-main.cars__models .models__byd:hover {
-	border: solid 2px #82C166;
-}
-
-main.cars__models .models__geely span,
-main.cars__models .models__chery span,
-main.cars__models .models__wall span,
-main.cars__models .models__lifan span,
-main.cars__models .models__byd span {
+main.cars__models .cars__model:hover { border: solid 2px #82C166 }
+main.cars__models .cars__model span {
 	font-size: 20px;
 	font-weight: 600;
 	line-height: 1.35;
@@ -1847,81 +1837,39 @@ main.cars__models .models__byd span {
 	color: #666666;
 	margin-left: 20px;
 }
-main.cars__models .models__geely .geely__info > div,
-main.cars__models .models__chery .chery__info > div,
-main.cars__models .models__wall .wall__info > div,
-main.cars__models .models__lifan .lifan__info > div,
-main.cars__models .models__byd .byd__info > div {width: 135px;}
+main.cars__models .cars__model .model_info > div { width: 135px }
 
-main.cars__models .models__geely button,
-main.cars__models .models__chery button,
-main.cars__models .models__wall button,
-main.cars__models .models__lifan button,
-main.cars__models .models__byd button {
+main.cars__models .cars__model button {
 	width: 54px;
 	height: 54px;
 	border-radius: 27px;
 	background-color: #fefefe;
 	border: none;
 	outline: none;
-	cursor: pointer;
 }
-main.cars__models .geely__cars .base__detal img ,
-main.cars__models .chery__cars .base__detal img ,
-main.cars__models .wall__cars .base__detal img, 
-main.cars__models .lifan__cars .base__detal img,
-main.cars__models .byd__cars .base__detal img {
+main.cars__models .model_cars .base__detal img {
 	display: block;
 	margin: 0 auto;
 }
 
-
-main.cars__models .geely__cars .base__detal,
-main.cars__models .chery__cars .base__detal,
-main.cars__models .wall__cars .base__detal,
-main.cars__models .lifan__cars .base__detal,
-main.cars__models .byd__cars .base__detal {
+main.cars__models .model_cars .base__detal {
 	cursor: pointer;
 	width: 16%;
+	display: block;
 }
-
-main.cars__models .geely__cars .base__detal .detal__text,
-main.cars__models .chery__cars .base__detal .detal__text,
-main.cars__models .wall__cars .base__detal .detal__text,
-main.cars__models .lifan__cars .base__detal .detal__text,
-main.cars__models .byd__cars .base__detal .detal__text {
+main.cars__models .model_cars .base__detal .detal__text {
 	font-size: 20px;
 	text-align: center;
 	color: #666666;
 	text-transform: uppercase;
 	margin-bottom: 40px;
 }
-main.cars__models .geely__cars .base__detal:hover .detal__text,
-main.cars__models .chery__cars .base__detal:hover .detal__text,
-main.cars__models .wall__cars .base__detal:hover .detal__text,
-main.cars__models .lifan__cars .base__detal:hover .detal__text,
-main.cars__models .byd__cars .base__detal:hover .detal__text {
+main.cars__models .model_cars .base__detal:hover .detal__text {
 	color: #82C166;
 }
-main.cars__models .geely__cars {
+main.cars__models .model_cars {
 	display: none;
 	height: auto;
-}
-main.cars__models .chery__cars {
-	height: auto;
-	display: none;
-}
-main.cars__models .wall__cars {
-	height: auto;
-	display: none;
-}
-main.cars__models .lifan__cars {
-	height: auto;
-	display: none;
-}
-main.cars__models .byd__cars {
-	height: auto;
-	display: none;
 }
 
 /*                        model                    */

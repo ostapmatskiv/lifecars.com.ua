@@ -1,114 +1,39 @@
+<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>assets/slick/slick.css">
+<?php $this->load->js('assets/slick/slick.min.js'); 
+$this->load->js_init('init__main()'); ?>
+
 <main>
     <h1>Запчастини для китайських автомобілів</h1>
+    
+    <?php if(!empty($catalogAllGroups)) { ?>
     <div class="flex w66 h-evenly v-end main__logo">
-        <a href="#">
-            <img src="style/images/carslogo/12.png" alt="Geely">
-            <div class="logo__text">Geely</div>
-            <i class="fas fa-chevron-down"></i>
-        </a>
-        <a href="#">
-            <img src="style/images/carslogo/2.png" alt="Chery">
-            <div class="logo__text">Chery</div>
-            <i class="fas fa-chevron-down"></i>
-        </a>
-        <a class="great__link" href="#">
-            <img src="style/images/carslogo/1.png" alt="GreatWall">
-            <div class="logo__text">Great wall</div>
-            <i class="fas fa-chevron-down"></i>
-        </a>
-        <a href="#">
-            <img src="style/images/carslogo/3.png" alt="Lifan">
-            <div class="logo__text">Lifan</div>
-            <i class="fas fa-chevron-down"></i>
-        </a>
-        <a href="#">
-            <img src="style/images/carslogo/4.png" alt="BYD">
-            <div class="logo__text">Byd</div>
-            <i class="fas fa-chevron-down"></i>
-        </a>
+        <?php foreach ($catalogAllGroups as $group) {
+            if($group->parent == 0) { ?>
+                <a href="<?=SITE_URL.'parts/'.$group->alias?>" data-group="<?=$group->alias?>">
+                    <?php if($group->photo) { ?>
+                        <img src="<?=IMG_PATH.$group->photo?>" alt="<?=$group->name?>">
+                    <?php } ?>
+                    <div class="logo__text"><?=$group->name?></div>
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+        <?php } } ?>
     </div>
-    <section class="flex h-center wrap cars__base">
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">Amulet</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">Tiggo</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">Jaggi</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">QQ</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">Elara</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">Eastar</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">Kimo</div>
-        </div>
-     
-            <div class="base__detal">
-                <img src="style/images/carslogo/cars.png" alt="car">
-                <div class="detal__text">Cross Eastar</div>
-            </div>
-            <div class="base__detal">
-                <img src="style/images/carslogo/cars.png" alt="car">
-                <div class="detal__text">Arrizo 3</div>
-            </div>
-            <div class="base__detal">
-                <img src="style/images/carslogo/cars.png" alt="car">
-                <div class="detal__text">Arrizo 7</div>
-            </div>
-            <div class="base__detal">
-                <img src="style/images/carslogo/cars.png" alt="car">
-                <div class="detal__text">E 5</div>
-            </div>
-            <div class="base__detal">
-                <img src="style/images/carslogo/cars.png" alt="car">
-                <div class="detal__text">Karry</div>
-            </div>
-            <div class="base__detal">
-                <img src="style/images/carslogo/cars.png" alt="car">
-                <div class="detal__text">Tiggo 2</div>
-            </div>
-            <div class="base__detal">
-                <img src="style/images/carslogo/cars.png" alt="car">
-                <div class="detal__text">Tiggo 3</div>
-            </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">Tiggo 5</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">Tiggo 7</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">A 13 (ZAZ Forza)</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">M 11</div>
-        </div>
-        <div class="base__detal">
-            <img src="style/images/carslogo/cars.png" alt="car">
-            <div class="detal__text">Beat</div>
-        </div>
-    </section>
+    <?php foreach ($catalogAllGroups as $group) {
+            if($group->parent == 0) { ?>
+                <section class="flex h-center wrap cars__base models__<?=$group->alias?>">
+                    <?php foreach ($catalogAllGroups as $model) {
+                        if($model->parent == $group->id) { ?>
+                            <a href="<?=SITE_URL.'parts/'.$group->alias.'/'.$model->alias?>" class="base__detal">
+                                <?php if($model->photo) { ?>
+                                    <img src="<?=IMG_PATH.$model->photo?>" alt="<?=$model->name?>">
+                                <?php } ?>
+                                <div class="detal__text"><?=$model->name?></div>
+                            </a>
+                    <?php } } ?>
+                </section>
+        <?php } } ?>
+    <?php } ?>
    
-   <link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>assets/slick/slick.css">
-   <?php $this->load->js('assets/slick/slick.min.js'); ?>
    <div class="slick__main" id="main__slick">
         <div>
             <img src="style/images/main_owl/auto1.png" alt="auto">
@@ -128,7 +53,6 @@
         <div>
             <img src="style/images/main_owl/auto6.png" alt="auto">
         </div>
-
     </div>
     <section class="sale">
         <div class="flex v-center sale__nav">

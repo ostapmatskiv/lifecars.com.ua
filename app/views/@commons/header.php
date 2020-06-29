@@ -3,30 +3,39 @@
         <div class="nav__mobile">
             <i class="fas fa-bars"></i>
             <a href="<?=SITE_URL?>" class="header__link">
-                <img class="header__logo" src="style/images/logo.png" alt="logo">
+                <img class="header__logo" src="<?=SERVER_URL?>style/images/logo.png" alt="logo">
             </a>
             <div class="mobile__shoping">
                 <i class="label">238</i>
                 <a href="#" class="header__cart">
-                    <img src="../style/icons/shopping-cart-16.png" alt="cart">
+                    <img src="<?=SERVER_URL?>style/icons/shopping-cart-16.png" alt="cart">
                 </a>
             </div>
         </div>
-        <form>
-            <select>
-                <option value="t1">Категорії</option>
-                <option value="t2">Категорії</option>
-                <option value="t3">Категорії</option>
-                <option value="t4">Категорії</option>
-            </select>
-            <i class="fas fa-chevron-down"></i>
-            <input required="required" type="search" placeholder="Пошук">
+        <form action="<?=SITE_URL?>search">
+            <?php if(!empty($catalogAllGroups)) { ?>
+                <select name="group">
+                    <option value="0">Весь магазин</option>
+                    <?php foreach ($catalogAllGroups as $group) {
+                        if($group->parent == 0) {
+                            echo "<option value=\"{$group->id}\">{$group->name}</option>";
+                            foreach ($catalogAllGroups as $model) {
+                                if($model->parent == $group->id) {
+                                    echo "<option value=\"{$model->id}\">- {$model->name}</option>";
+                                }
+                            }
+                        }
+                    } ?>
+                </select>
+                <i class="fas fa-chevron-down"></i>
+            <?php } ?>
+            <input required="required" type="search" name="by" placeholder="Пошук">
             <button><i class="fas fa-search"></i></button>
         </form>
         <div class="flex v-center header__address">
             <i class="fas fa-map-marker-alt"></i>
             <address>
-                <a href="https://goo.gl/maps/ZVp3Y1JQkubKnLBR9">Львів, вул.<br>
+                <a href="https://goo.gl/maps/ZVp3Y1JQkubKnLBR9" target="_blank">Львів, вул.<br>
                 Виговського, 49</a>
             </address>
         </div>
@@ -41,17 +50,23 @@
             </div>
          </div>
         <div class="flex header__shoping">
-                <i class="label">238</i>
-            <a href="#" class="header__cart">
-                <img src="../style/icons/shopping-cart-16.png" alt="cart">
+            <i class="label">0</i>
+            <a href="<?=SITE_URL?>cart" class="header__cart">
+                <img src="<?=SERVER_URL?>style/icons/shopping-cart-16.png" alt="cart">
             </a>
             <div class="header__user">
                 <button>
-                    <img src="../style/icons/user.png" alt="user">
+                    <img src="<?=SERVER_URL?>style/icons/user.png" alt="user">
                 </button>
                 <div class="user__login">
-                    <button class="user__in">Увійти</button>
-                    <button class="user__registration">Реєстрація</button>
+                    <?php if($this->userIs()) { ?>
+                        <a href="<?=SITE_URL?>profile" class="user__in">Мій кабінет</a>
+                        <?php if($this->userCan()) { ?>
+                        <a href="<?=SITE_URL?>admin" class="user__registration">Панель керування</a>
+                    <?php } } else { ?>
+                        <a href="<?=SITE_URL?>login" class="user__in">Увійти</a>
+                        <a href="<?=SITE_URL?>signup" class="user__registration">Реєстрація</a>
+                    <?php } ?>
                 </div>
             </div>
         </div>
@@ -62,7 +77,11 @@
         <a href="<?=SITE_URL?>exchange-and-return" <?=($_SESSION['alias']->alias == 'exchange-and-return') ? 'class="active"' : ''?>>Повернення та гарантія</a>
         <a href="<?=SITE_URL?>delivery-and-payments" <?=($_SESSION['alias']->alias == 'delivery-and-payments') ? 'class="active"' : ''?>>Оплата та доставка</a>
         <a href="<?=SITE_URL?>contacts" <?=($_SESSION['alias']->alias == 'contacts') ? 'class="active"' : ''?>>Контакти</a>
-        <a href="<?=SITE_URL?>login" <?=(in_array($_SESSION['alias']->alias, ['login', 'signup'])) ? 'class="active"' : ''?>>Увійти / Реєстрація</a>
+        <?php if($this->userIs()) { ?>
+            <a href="<?=SITE_URL?>profile" <?=($_SESSION['alias']->alias == 'profile') ? 'class="active"' : ''?>>Мій кабінет</a>
+        <?php } else { ?>
+            <a href="<?=SITE_URL?>login" <?=(in_array($_SESSION['alias']->alias, ['login', 'signup'])) ? 'class="active"' : ''?>>Увійти / Реєстрація</a>
+        <?php } ?>
     </nav>
     <div class="mob__menu">
         <div class="close__menu">
@@ -70,7 +89,7 @@
         </div>
         <div class="mob__nav">
             <a href="<?=SITE_URL?>">
-                <img class="mob__logo" src="style/images/logo.png" alt="logo">
+                <img class="mob__logo" src="/style/images/logo.png" alt="logo">
             </a>
             <a href="<?=SITE_URL?>login">Увійти</a>
             <a href="<?=SITE_URL?>signup">Реєстрація</a>
@@ -81,9 +100,9 @@
             <a href="<?=SITE_URL?>delivery-and-payments" <?=($_SESSION['alias']->alias == 'delivery-and-payments') ? 'class="active"' : ''?>>Оплата та доставка</a>
             <a href="<?=SITE_URL?>contacts" <?=($_SESSION['alias']->alias == 'contacts') ? 'class="active"' : ''?>>Контакти</a>
             <div class="mob__border"></div>
-            <a href="#">Мій кошик</a>
+            <a href="<?=SITE_URL?>cart">Мій кошик</a>
             <a href="#">Оформлення замовлення</a>
-            <a href="#">Про нас</a>
+            <a href="<?=SITE_URL?>about">Про нас</a>
         </div>
     </div>
 </header>
