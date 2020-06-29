@@ -10,6 +10,7 @@ class import_1c extends Controller
 	private $shop_wl_alias = 8;
 	private $manufacturer_option_id = 1;
 	private $category_option_id = 2;
+	private $price_id_1c = '000000001';
 	private $site_manufactures = [];
 	private $site_cars = [];
 	private $site_categories = [];
@@ -30,8 +31,8 @@ class import_1c extends Controller
 						$this->parse_VygruzkaNomenklatury($file, $all);
 					else if($file_name[0] == 'VygruzkaKategorij')
 						$this->parse_VygruzkaKategorij($file);
-					// else if($file_name[0] == 'VygruzkaZalyshkiv')
-					// 	$this->parse_VygruzkaZalyshkiv($file);
+					else if($file_name[0] == 'VygruzkaZalyshkiv')
+						$this->parse_VygruzkaZalyshkiv($file, $all);
 				}
 			}
 			else
@@ -781,171 +782,68 @@ class import_1c extends Controller
 		}
 	}
 
-	private function parse_VygruzkaZalyshkiv($file)
-	{
-		// echo "<pre>";
-		
+	private function parse_VygruzkaZalyshkiv($file, $all_products = false)
+	{		
 		if(!isset($file->Склади->Склад))
 			return false;
 
-		$site_storage = [];
-		$s_shopstorage = $this->db->select('s_shopstorage', 'id, id_1c', ['active' => 1])->get('array');
-		if($s_shopstorage)
-			foreach ($s_shopstorage as $storage) {
-				if(!empty($storage->id_1c))
-					$site_storage[$storage->id_1c] = $storage->id;
-			}
-		unset($s_shopstorage);
-
-		foreach ($file->Склади->Склад as $storage) {
-			$key = $this->xml_attribute($storage, 'Код');
-			if(!empty($key))
-				if(!isset($site_storage[$key]))
-				{
-					$name = $this->xml_attribute($storage, 'Наименование');
-					if(empty($name))
-						continue;
-
-					$insert = [];
-					$insert['wl_aliases'] = $this->data->latterUAtoEN($name);
-					$insert['service'] = 3; // id service shopstorages
-					$insert['table'] = '';
-					$insert['seo_robot'] = $insert['admin_sidebar'] = 0;
-					$insert['admin_ico'] = 'fa-qrcode';
-					$insert['admin_order'] = 90;
-					$site_storage[$key] = $this->db->insertRow('wl_aliases', $insert);
-
-					$insert = [];
-					$insert['id'] = $site_storage[$key];
-					$insert['id_1c'] = $key;
-					$insert['name'] = $name;
-					$insert['currency'] = 'USD';
-					$insert['updateRows'] = $insert['updateCols'] = $insert['markup'] = NULL;
-					$insert['date_add'] = time();
-					$insert['user_add'] = $insert['active'] = 0;
-					$this->db->insertRow('s_shopstorage', $insert);
-				}
-		}
-
 		$time = time();
-		$all_products = false;
-		$insert_to_storage = [];
-		$update_in_storage = [];
-		foreach ($site_storage as $site_storage_id_1с => $site_storage_id) {
-			$s_shopstorage_products = $this->db->select('s_shopstorage_products as s', 'id as storage_row_id, price_in, amount', ['storage' => $site_storage_id])
-												->join('s_shopshowcase_products as p', 'id, id_1c', '#s.product')
-												->get('array');
-
-			if(!empty($s_shopstorage_products))
-			{
-				foreach ($file->ОстаткиНоменклатуры->Номенклатура as $xml_product) {
-					$id_1c = $this->xml_attribute($xml_product, 'Код');
-					if(empty($id_1c) || empty($xml_product->Склади) || empty($xml_product->ВидыЦен))
-						continue;
-					$price_in = $amount = 0;
-					foreach ($xml_product->Склади->Склад as $storage) {
-						$key = $this->xml_attribute($storage, 'Код');
-						if($key == $site_storage_id_1с)
-							$amount = $this->xml_attribute($storage, 'Остаток');
-					}
-					foreach ($xml_product->ВидыЦен->Цена as $price) {
-						$key = $this->xml_attribute($price, 'Код');
-						if($key == $site_storage_id_1с)
-						{
-							$price_in = $this->xml_attribute($price, 'Цена');
-							$price_in = str_replace(',', '.', $price_in);
-						}
-					}
-					$find = false;
-					foreach ($s_shopstorage_products as $site_product) {
-						if($site_product->id_1c == $id_1c)
-						{
-							$find = true;
-							$update = [];
-							if($site_product->price_in != $price_in)
-								$update['price_in'] = $price_in;
-							if($site_product->amount != $amount)
-								$update['amount'] = $amount;
-							if(!empty($update))
-							{
-								$update['date_in'] = $update['date_edit'] = $time;
-								$update['manager_edit'] = 0;
-								$this->db->updateRow('s_shopstorage_products', $update, $site_product->storage_row_id);
-								$update_in_storage++;
-							}
-
-							// find storage dublicates
-							foreach ($s_shopstorage_products as $sp) {
-								if($site_product->id == $sp->id && $site_product->storage_row_id != $sp->storage_row_id)
-									$this->db->deleteRow('s_shopstorage_products', $sp->storage_row_id);
-							}
-							break;
-						}
-					}
-					if(!$find && $amount > 0 && $price_in > 0)
-						if($site_product = $this->db->select('s_shopshowcase_products as p', 'id', ['id_1c' => $id_1c])->get())
-						{
-							$insert = [];
-							$insert['storage'] = $site_storage_id;
-							$insert['product'] = $site_product->id;
-							$insert['price_in'] = $price_in;
-							$insert['price_out'] = $insert['amount_reserved'] = $insert['date_out'] = $insert['manager_add'] = $insert['manager_edit'] = 0;
-							$insert['amount'] = $amount;
-							$insert['date_in'] = $insert['date_add'] = $insert['date_edit'] = $time;
-							$insert_to_storage[] = $insert;
-						}
-				}
-			}
-			else
-			{
-				if(!$all_products)
-					$all_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c')->get('array');
-				if(!empty($all_products))
-				{
-					foreach ($file->ОстаткиНоменклатуры->Номенклатура as $xml_product) {
-						$id_1c = $this->xml_attribute($xml_product, 'Код');
-						if(empty($id_1c) || empty($xml_product->Склади) || empty($xml_product->ВидыЦен))
-							continue;
-						$price_in = $amount = 0;
-						foreach ($xml_product->Склади->Склад as $storage) {
-							$key = $this->xml_attribute($storage, 'Код');
-							if($key == $site_storage_id_1с)
-								$amount = $this->xml_attribute($storage, 'Остаток');
-						}
-						if($amount > 0)
-							foreach ($xml_product->ВидыЦен->Цена as $price) {
-								$key = $this->xml_attribute($price, 'Код');
-								if($key == $site_storage_id_1с)
-								{
-									$price_in = $this->xml_attribute($price, 'Цена');
-									$price_in = str_replace(',', '.', $price_in);
-								}
-							}
-						if($amount > 0 && $price_in > 0)
-							foreach ($all_products as $site_product) {
-								if($site_product->id_1c == $id_1c)
-								{
-									$insert = [];
-									$insert['storage'] = $site_storage_id;
-									$insert['product'] = $site_product->id;
-									$insert['price_in'] = $price_in;
-									$insert['price_out'] = $insert['amount_reserved'] = $insert['date_out'] = $insert['manager_add'] = $insert['manager_edit'] = 0;
-									$insert['amount'] = $amount;
-									$insert['date_in'] = $insert['date_add'] = $insert['date_edit'] = $time;
-									$insert_to_storage[] = $insert;
-									break;
-								}
-							}
-					}
-				}
-			}
-		}
-		if(!empty($insert_to_storage))
+		
+		if($all_products)
+			$all_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c, price, currency, availability')->get('array');
+		else
 		{
-			$keys = ['storage', 'product', 'price_in', 'price_out', 'amount', 'amount_reserved', 'date_in', 'date_out', 'manager_add', 'date_add', 'manager_edit', 'date_edit'];
-			$this->db->insertRows('s_shopstorage_products', $keys, $insert_to_storage);
+			$id_1c_list = [];
+			foreach ($file->ОстаткиНоменклатуры->Номенклатура as $xml_product) {
+				$id_1c = $this->xml_attribute($xml_product, 'Код');
+				if(empty($id_1c) || empty($xml_product->Склади) || empty($xml_product->ВидыЦен))
+					continue;
+				$id_1c_list[] = $id_1c;
+			}
+			$all_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c, price, currency, availability', ['id_1c' => $id_1c_list])->get('array');
 		}
-		echo "inserted ".count($insert_to_storage).', updated: '.count($update_in_storage);
+
+		if(empty($all_products))
+			return false;
+
+		foreach ($file->ОстаткиНоменклатуры->Номенклатура as $xml_product) {
+			$id_1c = $this->xml_attribute($xml_product, 'Код');
+			if(empty($id_1c) || empty($xml_product->Склади) || empty($xml_product->ВидыЦен))
+				continue;
+
+			$price_in = $amount = 0;
+			foreach ($xml_product->Склади->Склад as $storage) {
+				$amount += $this->xml_attribute($storage, 'Остаток');
+			}
+			foreach ($xml_product->ВидыЦен->Цена as $price) {
+				$key = $this->xml_attribute($price, 'Код');
+				if($key == $this->price_id_1c)
+				{
+					$price_in = $this->xml_attribute($price, 'Цена');
+					$price_in = str_replace(',', '.', $price_in);
+				}
+			}
+			
+			foreach ($all_products as $site_product) {
+				if($site_product->id_1c == $id_1c)
+				{
+					$update = [];
+					if($site_product->price != $price_in)
+						$update['price'] = $price_in;
+					if($site_product->availability != $amount)
+						$update['availability'] = $amount;
+					if($site_product->currency != 'USD')
+						$update['currency'] = 'USD';
+					if(!empty($update))
+					{
+						$update['date_edit'] = $time;
+						$update['author_edit'] = 0;
+						$this->db->updateRow('s_shopshowcase_products', $update, $site_product->id);
+					}
+					break;
+				}
+			}
+		}
 	}
 
 	private function xml_attribute($object, $attribute)
