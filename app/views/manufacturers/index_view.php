@@ -1,4 +1,6 @@
 <main class="cars__manufacturers">
+    <h1><?=$_SESSION['alias']->name?></h1>
+    
    <div class="flex manufacturers__name">
     <div class="nane__english">
         <a href="#">A</a>

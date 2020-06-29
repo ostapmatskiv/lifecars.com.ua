@@ -3,8 +3,8 @@
 $this->load->js_init('init__main()'); ?>
 
 <main>
-    <h1>Запчастини для китайських автомобілів</h1>
-    
+    <h1><?=$_SESSION['alias']->name?></h1>
+
     <?php if(!empty($catalogAllGroups)) { ?>
     <div class="flex w66 h-evenly v-end main__logo">
         <?php foreach ($catalogAllGroups as $group) {

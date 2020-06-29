@@ -28,11 +28,11 @@ function init__parts() {
             if (model_cars.is(':visible')) {
                 model_cars.slideUp();
             } else {
-                $(this).find('button > img').attr('src', 'style/icons/model/arrow-down.svg');
+                $(this).find('button > img').attr('src', '/style/icons/model/arrow-down.svg');
                 model_cars.css("display", "flex")
                     .hide()
                     .slideDown();
-                $(this).find('button > img').attr('src', 'style/icons/model/arrow-up.svg');
+                $(this).find('button > img').attr('src', '/style/icons/model/arrow-up.svg');
             }
         } else
             window.location.href = SITE_URL + $(this).data('link');
