@@ -100,7 +100,7 @@ class wl_photos extends Controller {
 
                         $ntkd = $this->db->getAllDataByFieldInArray('wl_ntkd', ['alias' => $data['alias'], 'content' => $data['content']]);
                             foreach ($ntkd as $row) {
-                                if(strripos('i', $row->get_ivafc) === false)
+                                if(empty($row->get_ivafc) || strripos('i', $row->get_ivafc) === false)
                                 {
                                     if(empty($row->get_ivafc))
                                         $this->db->updateRow('wl_ntkd', ['get_ivafc' => 'i'], $row->id);

@@ -259,7 +259,7 @@ $_SESSION['alias']->js_load[] = 'assets/switchery/switchery.min.js';
 </style>
 
 <!-- blueimp Gallery styles -->
-<link rel="stylesheet" href="https://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+<link rel="stylesheet" href="<?=SITE_URL?>assets/blueimp/css/blueimp-gallery.min.css">
 <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
 <link rel="stylesheet" href="<?=SITE_URL?>assets/blueimp/css/jquery.fileupload.css">
 <link rel="stylesheet" href="<?=SITE_URL?>assets/blueimp/css/jquery.fileupload-ui.css">
