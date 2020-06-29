@@ -157,7 +157,7 @@ class shopshowcase extends Controller {
 			
 			if($_SESSION['option']->useGroups)
 			{
-				$groups = $this->shop_model->getGroups();
+				$groups = $this->shop_model->getGroups(-1);
 				$this->load->page_view('index_view', array('catalogAllGroups' => $groups));
 			}
 			else
