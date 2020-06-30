@@ -29,12 +29,14 @@
 .flex.v-start { align-items: flex-start }
 .flex.v-end { align-items: flex-end }
 
+.w80 { width: 80% }
 .w75 { width: 75% }
 .w66 { width: 66% }
 .w50 { width: 50% }
 .w33 { width: 33% }
 .w25 { width: 25% }
 .w20 { width: 20% }
+.w80-5 { width: calc(80% - 5px) }
 .w75-5 { width: calc(75% - 5px) }
 .w66-5 { width: calc(66% - 5px) }
 .w50-5 { width: calc(50% - 5px) }

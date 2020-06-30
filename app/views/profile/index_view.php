@@ -38,7 +38,7 @@
 
             <a href="<?=SITE_URL?>logout"><i class="fas fa-sign-out-alt"></i> Вийти</a>
         </aside>
-        <article class="w80">
+        <article class="w80-5">
             <?php if(!empty($_SESSION['notify']->errors)) { ?>
                <div class="alert alert-danger">
                     <span class="close" data-dismiss="alert">×</span>
