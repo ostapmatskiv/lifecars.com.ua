@@ -633,6 +633,22 @@ class shop_model {
 		return false;
 	}
 
+	public function getProductsCountInGroup($group_id = 0)
+	{
+		$wherePG = array('active' => 1);
+		if($group_id > 0)
+			$wherePG['group'] = $this->getEndGroups($group_id);
+
+		if($_SESSION['option']->ProductMultiGroup)
+		{
+			$this->db->select($this->table('_product_group').' as pg', 'product', $wherePG);
+			$this->db->group('product');
+			return $this->db->get('count');
+		}
+		else
+			return $this->db->getCount($this->table('_products'), $wherePG);
+	}
+
 	public function getProduct($alias, $key = 'alias', $all_info = true)
 	{
 		$cache_key = 'product/'.$this->db->getCacheContentKey('product_', $alias, 2);
@@ -1511,9 +1527,10 @@ class shop_model {
 		{
 			if(empty($this->productsIdInGroup))
 			{
+				$endGroups = $this->getEndGroups($group->id);
 				if($_SESSION['option']->ProductMultiGroup)
 				{
-					$products_id = $this->db->getAllDataByFieldInArray($this->table('_product_group'), array('group' => $group->id, 'active' => 1));
+					$products_id = $this->db->getAllDataByFieldInArray($this->table('_product_group'), array('group' => $endGroups, 'active' => 1));
 					if($products_id)
 						foreach ($products_id as $product) {
 							$products[] = $product->product;
@@ -1521,7 +1538,7 @@ class shop_model {
 				}
 				else
 				{
-					$products_id = $this->db->getAllDataByFieldInArray($this->table('_products'), array('group' => $group->id, 'active' => 1));
+					$products_id = $this->db->getAllDataByFieldInArray($this->table('_products'), array('group' => $endGroups, 'active' => 1));
 					if($products_id)
 						foreach ($products_id as $product) {
 							$products[] = $product->id;

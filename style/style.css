@@ -1409,8 +1409,9 @@ section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__orde
 }
 
 /*                 aside checkbox               */
-section.sale__catalog aside {margin-top: 35px;}
-section.sale__catalog .product__type {
+section.sale__catalog aside { margin-top: 35px }
+
+section.sale__catalog .filter {
 	width: 85%;
 	height: auto;
 	padding: 20px;
@@ -1418,41 +1419,12 @@ section.sale__catalog .product__type {
 	border-radius: 5px;
 	background-color: #fefefe;
 }
-section.sale__catalog .quality {
-	width: 85%;
-	height: auto;
-	padding: 20px;
-	margin-bottom: 5px;
-	border-radius: 5px;
-	background-color: #fefefe;
-}
-section.sale__catalog .manufacturers {
-	width: 85%;
-	height: auto;
-	padding: 20px;
-	margin-bottom: 5px;
-	border-radius: 5px;
-	background-color: #fefefe;
-}
-section.sale__catalog .storag {
-	width: 85%;
-	height: auto;
-	padding: 20px;
-	border-radius: 5px;
-	background-color: #fefefe;
-}
-section.sale__catalog .product__type,
-section.sale__catalog .quality,
-section.sale__catalog .manufacturers,
-section.sale__catalog .storag  {
+section.sale__catalog .filter  {
 	font-size: 16px;
 	font-weight: 600;
 	color: #666666;
 }
-section.sale__catalog .product__type .fa-chevron-circle-up,
-section.sale__catalog .quality .fa-chevron-circle-up,
-section.sale__catalog .manufacturers .fa-chevron-circle-up,
-section.sale__catalog .storag .fa-chevron-circle-up { color: #d9d9d9; }
+section.sale__catalog .filter .fa-chevron-circle-up { color: #d9d9d9; }
 main .pagination {margin: 0 auto 20px;}
 main .pagination button {
 	cursor: pointer;

@@ -57,7 +57,7 @@
         <div class="price__text"><?=number_format($product->price, 0, '.', ' ') ?> ₴</div>
         <div class="price__cart">
             <button class="cart__buy">
-                <img src="../style/icons/shopping-cart.png" alt="">
+                <img src="/style/icons/shopping-cart.png" alt="">
             </button>
         </div>
     </div>
@@ -103,7 +103,7 @@
         <div class="price__text">Під замовлення</div>
         <div class="price__cart">
             <button class="cart__order">
-                <img src="../style/icons/telephone-2.svg" alt="telephone">
+                <img src="/style/icons/telephone-2.svg" alt="telephone">
             </button>
         </div>
     </div>

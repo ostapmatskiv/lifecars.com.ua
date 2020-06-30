@@ -44,9 +44,6 @@ class shopshowcase extends Controller {
 
 		if(count($this->data->url()) > 1)
 		{
-			if(is_numeric($uri) && $uri != 0)
-				$_SESSION['alias']->content = $uri;
-
 			$type = null;
 			$this->shop_model->getBreadcrumbs = true;
 			$product = $this->shop_model->routeURL($this->data->url(), $type);
@@ -132,17 +129,18 @@ class shopshowcase extends Controller {
 							$products = $this->shop_model->getProducts($group->id);
 							$this->db->cache_add('products_in_group/'.$cache_key, $products);
 						}
+						else
+						{
+							if(count($products) >= $_SESSION['option']->paginator_per_page)
+								$_SESSION['option']->paginator_total = $this->shop_model->getProductsCountInGroup($group->id);
+							else
+								$_SESSION['option']->paginator_total = count($products);
+						}
 					}
 					if($products)
 					{
 						if($_SESSION['option']->showProductsParentsPages || !$group->haveChild)
-						{
-							$this->shop_model->productsIdInGroup = [];
-							foreach ($products as $product) {
-								$this->shop_model->productsIdInGroup[] = $product->id;
-							}
 							$filters = $this->shop_model->getOptionsToGroup($group->id);
-						}
 						$this->setProductsPrice($products);
 					}
 				}
