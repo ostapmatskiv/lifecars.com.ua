@@ -14,6 +14,7 @@
  * Версія 1.2 (07.02.2017) - додано підтипи для змін розміру зображень, покращено заливку та збереження фото
  * Версія 1.3 (24.11.2018) - додано можливість (якщо сервер дозволяє php.ini)/повідомлення про молку для заливки фотографій великого розміру
  * Версія 1.3.1 (11.12.2019) - виправлено збереження файлів у jpeg форматі
+ * Версія 1.4 (30.06.2020) - додано підтримку svg
  */
 
 class Image {
@@ -24,7 +25,7 @@ class Image {
     private $quality = 100;
     private $type;
 	private $extension = false;
-    private $allowed_ext = array('png', 'jpg', 'jpeg', 'gif');
+    private $allowed_ext = array('png', 'jpg', 'jpeg', 'gif', 'svg');
     private $upload_types = array('image/gif', 'image/jpg', 'image/jpeg', 'image/pjpeg', 'image/png');
     private $max_size = 52428;
     private $errors = array();
@@ -76,6 +77,8 @@ class Image {
         }
 
         if(in_array($extension, $this->allowed_ext) == false)
+			return false;
+		if($extension == 'svg')
 			return false;
 		
 		// Функція потребує NULL_PATH (відносно index.php)
@@ -182,7 +185,8 @@ class Image {
                 $ext = strtolower(substr($_FILES[$img_in]['name'], $pos + 1, $name_length));
                 if(in_array($ext, $this->allowed_ext))
                 {
-                    if(in_array($_FILES[$img_in]['type'], $this->upload_types)){
+                    if(in_array($_FILES[$img_in]['type'], $this->upload_types) || $ext == 'svg')
+                    {
                         $size = $_FILES[$img_in]['size'] / 1024;
                         if($size <= $this->max_size)
                         {
@@ -235,7 +239,7 @@ class Image {
                 $ext = strtolower(substr($_FILES[$img_in]['name'][$i], $pos + 1, $name_length));
                 if(in_array($ext, $this->allowed_ext))
                 {
-                    if(in_array($_FILES[$img_in]['type'][$i], $this->upload_types))
+                    if(in_array($_FILES[$img_in]['type'][$i], $this->upload_types) || $ext == 'svg')
                     {
                         $size = $_FILES[$img_in]['size'][$i] / 1024;
                         if($size <= $this->max_size)
