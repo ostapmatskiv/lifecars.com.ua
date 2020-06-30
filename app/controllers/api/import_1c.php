@@ -231,13 +231,19 @@ class import_1c extends Controller
 	{
 		// $this->db->shopDBdump = true;
 		// print_r($file_products);
-		$searchKeys = $my_product_cars = $my_product_analogs = $my_product_images = $my_analog_groups = [];
+		$searchKeys = $my_product_cars = $site_CatUseIn = $my_product_CatUseIn = $my_product_analogs = $my_product_images = $my_analog_groups = [];
 		if(isset($file_products->Номенклатура) && !$all)
 			foreach ($file_products->Номенклатура as $product) {
 				$key = $this->xml_attribute($product, 'Код');
 				if(!empty($key))
 					$searchKeys[] = $key;
 			}
+		$s_shopshowcase_options = $this->db->select('s_shopshowcase_options', 'id, alias', ['group' => -$this->category_option_id])->get('array');
+		if($s_shopshowcase_options)
+			foreach ($s_shopshowcase_options as $option) {
+				$site_CatUseIn[$option->alias] = $option->id;
+			}
+
 
 		if(!empty($searchKeys) || $all)
 		{
@@ -259,6 +265,14 @@ class import_1c extends Controller
 								$my_product_cars[$pg->product][] = $pg->group;
 							else
 								$my_product_cars[$pg->product] = [$pg->group];
+						}
+
+					if($s_shopshowcase_product_options = $this->db->select('s_shopshowcase_product_options', 'product, value', ['option' => $this->category_option_id])->get('array'))
+						foreach ($s_shopshowcase_product_options as $po) {
+							if(isset($my_product_CatUseIn[$po->product]))
+								$my_product_CatUseIn[$po->product][] = $po->value;
+							else
+								$my_product_CatUseIn[$po->product] = [$po->value];
 						}
 
 					if($wl_images = $this->db->select('wl_images', 'content, id_1c', ['alias' => $this->shop_wl_alias, 'content' => '>0'])->get('array'))
@@ -296,6 +310,13 @@ class import_1c extends Controller
 								$my_product_cars[$pg->product][] = $pg->group;
 							else
 								$my_product_cars[$pg->product] = [$pg->group];
+						}
+					if($s_shopshowcase_product_options = $this->db->select('s_shopshowcase_product_options', 'product, value', ['option' => $this->category_option_id, 'product' => $ids])->get('array'))
+						foreach ($s_shopshowcase_product_options as $po) {
+							if(isset($my_product_CatUseIn[$po->product]))
+								$my_product_CatUseIn[$po->product][] = $po->value;
+							else
+								$my_product_CatUseIn[$po->product] = [$po->value];
 						}
 					if($wl_images = $this->db->select('wl_images', 'content, id_1c', ['alias' => $this->shop_wl_alias, 'content' => $ids])->get('array'))
 						foreach ($wl_images as $image) {
@@ -574,6 +595,36 @@ class import_1c extends Controller
 									}
 								}
 							}
+							if(!empty($xml_product->ТоварныеКатегории))
+							{
+								$xml_cats = [];
+								foreach ($xml_product->ТоварныеКатегории->Категория as $cat) {
+									$cat = $this->xml_attribute($cat, 'Код');
+									if(!empty($cat))
+										if(isset($site_CatUseIn[$cat]))
+											$xml_cats[] = $site_CatUseIn[$cat];
+								}
+								if(!empty($xml_cats))
+									foreach ($xml_cats as $cat_id) {
+										$find_cat = false;
+										if(!empty($my_product_CatUseIn[$my_product->id]))
+											if(in_array($cat_id, $my_product_CatUseIn[$my_product->id]))
+												$find_cat = true;
+										if(!$find_cat)
+										{
+											$my_product_CatUseIn[$my_product->id][] = $cat_id;
+											$this->db->insertRow('s_shopshowcase_product_options', ['product' => $my_product->id, 'option' => $this->category_option_id, 'language' => '', 'value' => $cat_id]);
+										}
+									}
+								if(!empty($my_product_CatUseIn[$my_product->id]))
+									foreach ($my_product_CatUseIn[$my_product->id] as $cat_index => $cat_id) {
+										if(!in_array($cat_id, $xml_cats))
+										{
+											$this->db->deleteRow('s_shopshowcase_product_options', ['product' => $my_product->id, 'option' => $this->category_option_id, 'value' => $cat_id]);
+											unset($my_product_CatUseIn[$my_product->id][$cat_index]);
+										}
+									}
+							}
 							$find = true;
 							break;
 						}
@@ -725,6 +776,15 @@ class import_1c extends Controller
 																		'id_1c' => $image_id_1c
 																	]);
 							}
+						}
+					}
+					if(!empty($xml_product->ТоварныеКатегории))
+					{
+						foreach ($xml_product->ТоварныеКатегории->Категория as $cat) {
+							$cat = $this->xml_attribute($cat, 'Код');
+							if(!empty($cat))
+								if(isset($site_CatUseIn[$cat]))
+									$this->db->insertRow('s_shopshowcase_product_options', ['product' => $id, 'option' => $this->category_option_id, 'language' => '', 'value' => $site_CatUseIn[$cat]]);
 						}
 					}
 				}
