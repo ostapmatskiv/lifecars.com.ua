@@ -52,10 +52,16 @@
 
 .text-center { text-align: center }
 .text-right { text-align: right }
-.pull-left { float: left; width: auto; }
-.pull-right { float: right; width: auto; }
+.pull-left { float: left; width: auto }
+.pull-right { float: right; width: auto }
 .clearfix { clear: both }
 .relative { position: relative }
+
+.alert { padding: 15px }
+.alert-danger { background-color: #f52323 }
+.alert-success { background-color: #00ad00; color: #fff }
+.alert .close { float: right }
+.alert p { margin: 5px !important }
 
 html, body { font-size: 12px }
 nav li { list-style: none }
