@@ -68,9 +68,13 @@
 	<?php if(!empty($filters))
     	foreach ($filters as $filter) {
     		if($filter->id == 2) { ?>
-    		<div class="flex wrap catalog__detal">
+    		<div class="flex h-center wrap catalog__detal">
+                <a href="<?=$this->data->get_link($filter->alias)?>">
+                    <img src="/style/icons/catalog/component.svg" alt="all">
+                    <div><?=$this->text('Всі запчастини')?></div>
+                </a>
     			<?php foreach ($filter->values as $value) { ?>
-    				<a href="#">
+    				<a href="<?=$this->data->get_link($filter->alias, $value->id)?>">
     					<?php if(!empty($value->photo)) { ?>
 				            <img src="<?=$value->photo?>" alt="<?=$value->name?>">
 				        <?php } ?>
@@ -90,64 +94,60 @@
     </div> */ ?>
     <div class="flex h-evenly catalog__sorted">
         <div>
-            <a href="#">Дешеві</a>
-            <a href="#">Дорожчі</a>
-            <a href="#">А &mdash; Я</a>
-            <a href="#">Я &mdash; А</a>
+            <a href="<?=$this->data->get_link('sort', 'price_down')?>">Спершу дешеві</a>
+            <a href="<?=$this->data->get_link('sort', 'price_up')?>">Спершу дорожчі</a>
+            <a href="<?=$this->data->get_link('sort', 'name')?>">А &mdash; Я</a>
+            <a href="<?=$this->data->get_link('sort', 'name_desc')?>">Я &mdash; А</a>
         </div>
         <div class="quantity__goods">
-            Кількість товарів&mdash;<span>5 678</span>
+            Кількість товарів &mdash; <span><?=$_SESSION['option']->paginator_total?></span>
         </div>
     </div>
     
     <section class="flex sale__catalog">
         <aside class="w25">
-        	<?php /*
-            <div class="product__type">
-                <div class="flex v-center">
-                    <p>Тип товару</p>
-                    <i class="fas fa-chevron-circle-up"></i>
-                </div>
-                <form action="#">
-                    <input type="checkbox" name="type" id="type__id-1">
-                    <label for="type__id-1">Знижка<span>2 345</span></label>
-                    <input type="checkbox" name="type" id="type__id-2">
-                    <label for="type__id-2">Новинка <span>346</span></label>
-                    <input type="checkbox" name="type" id="type__id-3">
-                    <label for="type__id-3">Хіт продажу<span>5 687</span></label>
-                </form>
-            </div>
-            <div class="quality">
-                <div class="flex v-center">
-                    <p>Якість</p>
-                    <i class="fas fa-chevron-circle-up"></i>
-                </div>
-                <form action="#">
-                    <input type="checkbox" name="type" id="quality__id-1">
-                    <label for="quality__id-1">Аналог<span>2 345</span></label>
-                    <input type="checkbox" name="type" id="quality__id-2">
-                    <label for="quality__id-2">Ліцензія<span>2 347</span></label>
-                    <input type="checkbox" name="type" id="quality__id-3">
-                    <label for="quality__id-3">Оригінал<span>5 687</span></label>
-                </form>
-            </div> */ 
-            if(!empty($filters))
-            	foreach ($filters as $filter) {
-            		if($filter->id == 2)
-            			continue; ?>
-		            <div class="manufacturers">
-		                <div class="flex v-center">
-		                    <p><?=$filter->name?></p>
-		                    <!-- <i class="fas fa-chevron-circle-up"></i> -->
-		                </div>
-		                <form action="#">
-		                	<?php foreach ($filter->values as $value) { ?>
-		                		<input type="checkbox" name="type" id="value__id-<?=$value->id?>">
-		                    	<label for="value__id-<?=$value->id?>"><?=$value->name?><span><?=$value->count?></span></label>
-		                	<?php } ?>
-		                </form>
-		            </div>
-		    <?php } ?>
+            <form>
+            	<?php /*
+                <div class="product__type">
+                    <div class="flex v-center">
+                        <p>Тип товару</p>
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </div>
+                    <form action="#">
+                        <input type="checkbox" name="type" id="type__id-1">
+                        <label for="type__id-1">Знижка<span>2 345</span></label>
+                        <input type="checkbox" name="type" id="type__id-2">
+                        <label for="type__id-2">Новинка <span>346</span></label>
+                        <input type="checkbox" name="type" id="type__id-3">
+                        <label for="type__id-3">Хіт продажу<span>5 687</span></label>
+                    </form>
+                </div>*/ 
+                if($value = $this->data->get('sort'))
+                    echo "<input type='hidden' name='sort' value='{$value}' >";
+                if(!empty($filters))
+                	foreach ($filters as $filter) {
+                		if($filter->id == 2)
+                        {
+                            if($value = $this->data->get($filter->alias))
+                                echo "<input type='hidden' name='{$filter->alias}' value='{$value}' >";
+                			continue;
+                        } ?>
+    		            <div class="filter">
+    		                <div class="flex v-center">
+    		                    <p><?=$filter->name?></p>
+    		                    <!-- <i class="fas fa-chevron-circle-up"></i> -->
+    		                </div>
+    		                <div class="values">
+    		                	<?php foreach ($filter->values as $value) {
+                                    $checked = (!empty($_GET[$filter->alias]) && is_array($_GET[$filter->alias]) && in_array($value->id, $_GET[$filter->alias])) ? 'checked' : '';
+                                    ?>
+    		                		<input type="checkbox" name="<?=$filter->alias?>[]" value="<?=$value->id?>" id="value__id-<?=$value->id?>" <?=$checked?>>
+    		                    	<label for="value__id-<?=$value->id?>"><?=$value->name?><span><?=$value->count?></span></label>
+    		                	<?php } ?>
+                            </div>
+    		            </div>
+    		    <?php } ?>
+            </form>
         </aside>
         <div class="flex w75 wrap sale__wrrap">
             <div class="sale__card ">

@@ -135,8 +135,14 @@ class shopshowcase extends Controller {
 					}
 					if($products)
 					{
-						if(!$group->haveChild)
+						if($_SESSION['option']->showProductsParentsPages || !$group->haveChild)
+						{
+							$this->shop_model->productsIdInGroup = [];
+							foreach ($products as $product) {
+								$this->shop_model->productsIdInGroup[] = $product->id;
+							}
 							$filters = $this->shop_model->getOptionsToGroup($group->id);
+						}
 						$this->setProductsPrice($products);
 					}
 				}

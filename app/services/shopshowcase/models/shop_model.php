@@ -412,6 +412,15 @@ class shop_model {
 				case 'article':
 					$this->db->order('article ASC');
 					break;
+				case 'article_desc':
+					$this->db->order('article DESC');
+					break;
+				case 'name':
+					$this->db->order('name ASC', 'n');
+					break;
+				case 'name_desc':
+					$this->db->order('name DESC', 'n');
+					break;
 				case 'active_on':
 					if($_SESSION['option']->useGroups && $_SESSION['option']->ProductMultiGroup)
 						$this->db->order('active DESC', 'pg');

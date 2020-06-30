@@ -37,4 +37,7 @@ function init__parts() {
         } else
             window.location.href = SITE_URL + $(this).data('link');
     });
+    $('form .filter input').change(function() {
+        $(this).closest('form').submit();
+    });
 }

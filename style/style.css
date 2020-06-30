@@ -931,6 +931,11 @@ main .catalog__detal {
 	margin: 20px 0;
 	align-items: baseline;
 }
+main .catalog__detal a {
+	display: block;
+	margin: 0 15px;
+	text-align: center;
+}
 main .catalog__detal a div {
 	font-size: 16px;
 	font-weight: 600;
@@ -976,26 +981,10 @@ main .catalog__sorted .quantity__goods {
 }
 /*                         aside                       */
 
-
-main section.sale__catalog aside .product__type form,
-main section.sale__catalog aside .quality form,
-main section.sale__catalog aside .manufacturers form,
-main section.sale__catalog aside .storag form { margin-top: 10px;}
-
-main section.sale__catalog aside .product__type input[type=checkbox] + label,
-main section.sale__catalog aside .quality input[type=checkbox] + label, 
-main section.sale__catalog aside .manufacturers input[type=checkbox] + label,
-main section.sale__catalog aside .storag input[type=checkbox] + label  { display: block; margin-bottom: 2px;}
-
-main section.sale__catalog aside .product__type input[type=checkbox],
-main section.sale__catalog aside .quality input[type=checkbox],
-main section.sale__catalog aside .manufacturers input[type=checkbox],
-main section.sale__catalog aside .storag input[type=checkbox] { display: none;}
-
-main section.sale__catalog aside .product__type input[type=checkbox] + label:before,
-main section.sale__catalog aside .quality input[type=checkbox] + label:before,
-main section.sale__catalog aside .manufacturers input[type=checkbox] + label:before,
-main section.sale__catalog aside .storag input[type=checkbox] + label:before {
+main section.sale__catalog aside .filter .values { margin-top: 10px }
+main section.sale__catalog aside .filter .values input[type=checkbox] + label { display: block; margin-bottom: 2px }
+main section.sale__catalog aside .filter .values input[type=checkbox] { display: none }
+main section.sale__catalog aside .filter .values input[type=checkbox] + label:before {
 	content: "";
 	width: 14px;
 	height: 14px;
@@ -1004,26 +993,15 @@ main section.sale__catalog aside .storag input[type=checkbox] + label:before {
 	display: inline-block;
 	margin: 0 10px 0 10px;
 }
-main section.sale__catalog aside .product__type input[type=checkbox]:checked + label,
-main section.sale__catalog aside .quality input[type=checkbox]:checked + label,
-main section.sale__catalog aside .manufacturers input[type=checkbox]:checked + label,
-main section.sale__catalog aside .storag input[type=checkbox]:checked + label {
+main section.sale__catalog aside .filter .values input[type=checkbox]:checked + label {
 	width: 100%;
-	height: 22px;
-	margin-bottom: 2px;
 	border-radius: 15px;
 	background-color: #f2f2f2;
 }
 main section.sale__catalog aside .product__type input[type=checkbox]:checked + label::before {background-color: #ff5205;}
 
-main section.sale__catalog aside .manufacturers input[type=checkbox]:checked + label::before,
-main section.sale__catalog aside .quality input[type=checkbox]:checked + label::before,
-main section.sale__catalog aside .storag input[type=checkbox]:checked + label::before {background-color: #7cbe49;}
-
-main section.sale__catalog aside .product__type form label span,
-main section.sale__catalog aside .quality form label span,
-main section.sale__catalog aside .manufacturers form label span,
-main section.sale__catalog aside .storag form label span { float: right; margin-right: 10px;}
+main section.sale__catalog aside .filter input[type=checkbox]:checked + label::before { background-color: #7cbe49 }
+main section.sale__catalog aside .filter label span { float: right; margin-right: 10px }
 
 /*                        aside                                 */
 
