@@ -37,7 +37,6 @@
 					<?php if($model->photo) { ?>
 						<img src="<?=IMG_PATH.$model->photo?>" alt="<?=$model->name?>">
 					<?php } ?>
-			        <img src="style/images/carslogo/cars.png" alt="car">
 			        <div class="detal__text"><?=$model->name?></div>
 			    </a>
 			<?php } } ?>

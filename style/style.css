@@ -5,7 +5,9 @@ body {
 	font-family: 'Segoe UI', Arial;
 	background-color: #F2F2F2;
 }
-a {text-decoration: none}
+a {text-decoration: none }
+main { margin-bottom: 50px }
+main img { max-width: 100% }
 
 
 /*      Header        */
@@ -961,7 +963,7 @@ main .catalog__sorted div a {
 	font-weight: normal;
 	color: #8c8c8c;
 	}
-main .catalog__sorted {padding-left: 55px;}
+main .catalog__sorted {padding-left: 55px; margin-top: 50px;}
 main .catalog__sorted div a:hover {
 	background-color: #82C166;
 	color: #fff;
@@ -983,7 +985,7 @@ main section.sale__catalog aside .storag form { margin-top: 10px;}
 main section.sale__catalog aside .product__type input[type=checkbox] + label,
 main section.sale__catalog aside .quality input[type=checkbox] + label, 
 main section.sale__catalog aside .manufacturers input[type=checkbox] + label,
-main section.sale__catalog aside .storag input[type=checkbox] + label  { display: block;}
+main section.sale__catalog aside .storag input[type=checkbox] + label  { display: block; margin-bottom: 2px;}
 
 main section.sale__catalog aside .product__type input[type=checkbox],
 main section.sale__catalog aside .quality input[type=checkbox],
@@ -1837,7 +1839,8 @@ main.cars__models .cars__model span {
 	color: #666666;
 	margin-left: 20px;
 }
-main.cars__models .cars__model .model_info > div { width: 135px }
+main.cars__models .cars__model .model_info > div { width: 135px; text-align: center; }
+main.cars__models .cars__model .model_info > div img { width: auto; height: 60px; }
 
 main.cars__models .cars__model button {
 	width: 54px;

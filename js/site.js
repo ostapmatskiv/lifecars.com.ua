@@ -23,8 +23,8 @@ function init__main() {
 function init__parts() {
     $('.cars__model').click(function() {
         var group_alias = $(this).data('group');
-        if ($('.model_cars.' + group_alias + '__cars > a').length > 0) {
-            var model_cars = $('.model_cars.' + group_alias + '__cars');
+        if ($('.' + group_alias + '__cars > a').length > 0) {
+            var model_cars = $('.' + group_alias + '__cars');
             if (model_cars.is(':visible')) {
                 model_cars.slideUp();
             } else {

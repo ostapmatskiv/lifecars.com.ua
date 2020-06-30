@@ -6,8 +6,8 @@
                 <img class="header__logo" src="<?=SERVER_URL?>style/images/logo.png" alt="logo">
             </a>
             <div class="mobile__shoping">
-                <i class="label">238</i>
-                <a href="#" class="header__cart">
+                <i class="label">0</i>
+                <a href="<?=SITE_URL?>cart" class="header__cart">
                     <img src="<?=SERVER_URL?>style/icons/shopping-cart-16.png" alt="cart">
                 </a>
             </div>
@@ -16,12 +16,12 @@
             <?php if(!empty($catalogAllGroups)) { ?>
                 <select name="group">
                     <option value="0">Весь магазин</option>
-                    <?php foreach ($catalogAllGroups as $group) {
-                        if($group->parent == 0) {
-                            echo "<option value=\"{$group->id}\">{$group->name}</option>";
-                            foreach ($catalogAllGroups as $model) {
-                                if($model->parent == $group->id) {
-                                    echo "<option value=\"{$model->id}\">- {$model->name}</option>";
+                    <?php foreach ($catalogAllGroups as $h_group) {
+                        if($h_group->parent == 0) {
+                            echo "<option value=\"{$h_group->id}\">{$h_group->name}</option>";
+                            foreach ($catalogAllGroups as $h_model) {
+                                if($h_model->parent == $h_group->id) {
+                                    echo "<option value=\"{$h_model->id}\">- {$h_model->name}</option>";
                                 }
                             }
                         }
