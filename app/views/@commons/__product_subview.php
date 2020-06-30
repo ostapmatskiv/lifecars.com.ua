@@ -4,7 +4,7 @@
             <img src="<?=IMG_PATH.$product->catalog_photo?>" alt="<?=$product->article_show.' '.$product->name?>">
         <?php } if($product->old_price > $product->price) { ?>
             <i class="card__label">-<?=100-ceil($product->price / ($product->old_price / 100))?>%</i>
-        <?php } if(($product->date_add + 3600 * 24 * 30) > time()) { ?>
+        <?php } if(!empty($product->date_add) && ($product->date_add + 3600 * 24 * 30) > time()) { ?>
             <i class="new__label">new</i>
         <?php } ?>
     </a>
@@ -47,7 +47,7 @@
         <?php if($product->availability > 0) { ?>
         <div class="flex check__number">
             <span class="minus">-</span>
-            <input type="text" value="1" size="5"/>
+            <input type="number" value="1" min="1" max="<?=$product->availability?>" />
             <span class="plus">+</span>
         </div>
         <?php } ?>
@@ -66,10 +66,10 @@
         <h5>Зв'яжіться з нами</h5>
         <p>і ми проінформуємо Вас про можливість замовлення та оптимальну ціну на цей товар:</p>
         <div class="modal__name">
-            Шланг гальмівний задній Chery Eastar
+            <?=$product->name?>
         </div>
         <div class="modal__product">
-            B11-2915010
+            <?=$product->manufacturer?> <?=$product->article_show?>
         </div>
         <div class="modal__phone">
             <a href="tel:+380930000943">+38 093 0000 943</a>
@@ -80,10 +80,10 @@
 
         <div class="cart__form">
             <div class="form__name">
-                Шланг гальмівний задній Chery Eastar
+                <?=$product->name?>
             </div>
             <div class="form__product">
-                B11-2915010
+                <?=$product->manufacturer?> <?=$product->article_show?>
             </div>
             <form action="#">
                 <input required name="city" list="city__select" type="text" placeholder="Виберіть мшісто">

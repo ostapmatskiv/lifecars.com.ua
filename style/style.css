@@ -566,7 +566,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {
     left: -2px;
     border-radius: 10px;
     width: calc(100% + 4px);
-	height: 465px;
+	height: 445px;
 	display: none;
 	padding: 15px;
 	background-color: #ffc505;
@@ -665,7 +665,7 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.cart__
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {
 	position: absolute;
-	bottom: 15px;
+	bottom: 30px;
 	left: 0;
 	border-radius: 5px;
 	width: 100%;
@@ -1473,7 +1473,7 @@ main .pagination a:nth-child(4) {
 
 
 /*                          detal            */
-main.detal h2.detal__heading {
+main.detal h1.detal__heading {
 	font-size: 35px;
   	font-weight: normal;
   	line-height: 1.33;

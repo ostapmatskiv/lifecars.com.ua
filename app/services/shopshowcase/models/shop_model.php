@@ -661,10 +661,10 @@ class shop_model {
 				if($_SESSION['option']->useMarkUp > 0)
 					$this->db->join($this->table('_markup'), 'value as markup', array('from' => '<p.price', 'to' => '>=p.price'));
 				$row = $this->db->get();
-				$product_cache->price = $row->price;
-				$product_cache->old_price = $row->old_price;
+				$product->price = $row->price;
+				$product->old_price = $row->old_price;
 				if($_SESSION['option']->useMarkUp > 0)
-					$product_cache->markup = $row->markup;
+					$product->markup = $row->markup;
 				$product->promo_percent = $row->promo_percent;
 				$product->promo_from = $row->promo_from;
 				$product->promo_to = $row->promo_to;
@@ -850,7 +850,7 @@ class shop_model {
 	            if($getSimilar = $this->db->getAllDataById($this->table('_products_similar'), array('product' => $product->id)))
 				{
 					$this->db->select($this->table('_products_similar').' as s', '', array('group' => $getSimilar->group, 'product' => '!'.$product->id));
-					$this->db->join($this->table('_products').' as p', 'id, alias, article, article_show, `group`, price, old_price, currency', '#s.product');
+					$this->db->join($this->table('_products').' as p', 'id, alias, article, article_show, `group`, price, old_price, currency, availability', '#s.product');
 					$where_ntkd['content'] = '#p.id';
 					unset($where_ntkd['position']);
 					$this->db->join('wl_ntkd', 'name', $where_ntkd);

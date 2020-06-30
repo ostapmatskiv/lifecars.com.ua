@@ -76,7 +76,12 @@ class shopshowcase extends Controller {
 						}
 					}
 
-				$this->load->page_view('detal_view', array('product' => $product));
+				$otherProductsByGroup = false;
+				// $_SESSION['option']->paginator_per_page = 5;
+				// if($otherProductsByGroup = $this->shop_model->getProducts($product->group, $product->id))
+				// 	$this->setProductsPrice($otherProductsByGroup);
+
+				$this->load->page_view('detal_view', array('product' => $product, 'otherProductsByGroup' => $otherProductsByGroup));
 			}
 			elseif($_SESSION['option']->useGroups && $type == 'group' && $product)
 			{

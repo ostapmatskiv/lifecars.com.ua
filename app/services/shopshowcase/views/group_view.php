@@ -1,4 +1,3 @@
-<pre><?php // print_r($products[0]); ?></pre>
 <main>
     <div class="flex w50 auto__detal">
     	<?php $brend_id = $model_id = 0; $brend_link = 'parts';
@@ -155,7 +154,6 @@
                      require APP_PATH.'views/@commons/__product_subview.php';
                  } ?>
         </div>
-        
     </section>
 
     <?php /*

@@ -1,16 +1,73 @@
-$('.minus').click(function () {
-    var $input = $(this).parent().find('input');
-    var count = parseInt($input.val()) - 1;
-    count = count < 1 ? 1 : count;
-    $input.val(count);
-    $input.change();
-    return false;
-});
-$('.plus').click(function () {
-    var $input = $(this).parent().find('input');
-    $input.val(parseInt($input.val()) + 1);
-    $input.change();
-    return false;
+$(document).ready(function(){
+    $('.sale__card.no_availabilaty .cart__order').click(function () {
+        $(this).closest('.no_availabilaty').find('.cart__modal').slideDown();
+    })
+    $('.sale__card.no_availabilaty .modal__request').click(function () {
+        $(this).closest('.cart__modal').find('.cart__form').css("z-index", "10");
+    })
+    $('.sale__card.no_availabilaty .cart__hiden').click(function () {
+        $(this).closest('.cart__modal').slideUp();
+        $(this).closest('.cart__modal').find('.cart__form').css("z-index", "-1");
+    })
+    $('.minus').click(function () {
+        var $input = $(this).parent().find('input');
+        var count = parseInt($input.val()) - 1;
+        count = count < 1 ? 1 : count;
+        $input.val(count);
+        $input.change();
+        return false;
+    });
+    $('.plus').click(function () {
+        var $input = $(this).parent().find('input');
+        count = parseInt($input.val()) + 1;
+        if(count > $input.attr('max'))
+            count = $input.attr('max');
+        $input.val(count);
+        $input.change();
+        return false;
+    });
+
+    $('.fa-bars').click(function() {
+        $('.close__menu').css("display", "block");
+        $('.mob__nav').css("left", "0");
+     });
+
+     $('.fa-times').click(function() {
+        $('.mob__nav').css("left", "-281px");
+        $('.close__menu').css("display", "none");
+     })
+
+     $('.nav__mobile').removeClass("default");
+     $(window).scroll(function() {
+         if ($(this).scrollTop() > 85) {
+             $('.nav__mobile').addClass("default").fadeIn('slow');
+             $('.fa-bars').css("color", "#F2F2F2");
+         } else {
+             $('.nav__mobile').removeClass("default").fadeIn('slow');
+             $('.fa-bars').css("color", "#777");
+         };
+     });
+
+     $('.small__item').magnificPopup({
+        type : 'image',
+        gallery : {
+            enabled : true
+        }
+     });
+
+     $('.main__link').click(function() {
+        event.preventDefault();
+       if ($('div.logo__catalog').slideToggle().css("display", "flex")) {
+        $('section.cars__catalog').slideToggle().css("display", "none");
+       }
+    });
+     
+    $('.cross__eastar').click(function() {
+        event.preventDefault();
+        if ($('section.cars__catalog').slideToggle().css("display", "flex")) {
+            $('div.logo__catalog').slideToggle().css("display", "none");
+        }
+    });
 });
 
 function init__main() {
