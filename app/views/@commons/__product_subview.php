@@ -56,7 +56,7 @@
     <div class="flex v-center card__price">
         <div class="price__text"><?=number_format($product->price, 0, '.', ' ') ?> ₴</div>
         <div class="price__cart">
-            <button class="cart__buy" data-product_key="<?="{$product->wl_alias}-{$product->id}"?>">
+            <button class="cart__buy" data-product_key="<?="{$product->wl_alias}-{$product->id}"?>" data-product_name="<?="{$product->manufacturer} {$product->article_show} {$product->name}"?>">
                 <img src="/style/icons/shopping-cart.png" alt="">
             </button>
         </div>

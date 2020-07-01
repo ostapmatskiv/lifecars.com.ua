@@ -20,9 +20,30 @@ main img { max-width: 100% }
 	display: none;
 	justify-content: center;
 	align-items: center;
-	font-size: 30px;
+    flex-direction: column;
+    font-size: 22px;
     color: #fff;
 }
+#modal-add_success h4 { font-size: 30px; margin-bottom: 30px; }
+#modal-add_success a {
+	display: block;
+	padding: 15px;
+	text-align: center;
+	background-color: #7cbe49;
+	border: none;
+	border-radius: 5px;
+}
+#modal-add_success a:hover {
+    background-color: #669e3b;
+}
+#modal-add_success a.close {
+	background-color: #ffc505;
+}
+#modal-add_success a.close:hover {
+    background-color: #e4af00;
+}
+
+	
 #modal-bg {
 	position: fixed;
 	background: rgba(0,0,0,0.8);

@@ -110,7 +110,7 @@
                 <?php } ?>
             </div>
             <?php if($canBy && $product->availability > 0) { ?>
-            <button class="detal__cart">
+            <button class="detal__cart" data-product_key="<?="{$product->wl_alias}-{$product->id}"?>" data-product_name="<?="{$product->options['1-manufacturer']->value} {$product->article_show} {$product->name}"?>">
                 <img src="/style/icons/detal/shopping-cart.svg" alt="cart">
                 Додати до кошика
             </button>
@@ -154,6 +154,16 @@
                     Код товара <span>...........................................................................................</span> <?=$product->id?>
                 </li>
             </ul>
+            <?php if(!empty($product->group)) { ?>
+                <br>
+                <div class="detal__line"></div>
+                <p><?=$this->text('Застосовується до')?>:</p>
+                <ul>
+                <?php foreach ($product->group as $group) {
+                    echo "<li><a href='".SITE_URL.$group->link."'>{$group->name}</a></li>";
+                } ?>
+            </ul>
+            <?php } ?>
         </div>
         <div id="tab-2" class="menu__info">
             <?=html_entity_decode($_SESSION['alias']->text)?>

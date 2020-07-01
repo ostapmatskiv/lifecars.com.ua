@@ -42,7 +42,14 @@
 		include "@commons/footer.php";
 	?>
 	<div id="modal-bg"></div>
-	<div id="modal-add_success"></div>
+	<div id="modal-add_success">
+		<h4 class="product_name"></h4>
+		<h4><?=$this->text('Товар у корзині', 0)?></h4>
+		<div class="flex w30">
+			<a class="w50-5 close" href="#"><?=$this->text('Продовжити покупки', 0)?></a>
+			<a class="w50-5" href="<?=SITE_URL?>cart"><?=$this->text('До корзини', 0)?></a>
+		</div>
+	</div>
 
 	<script type="text/javascript" src="<?=SERVER_URL?>assets/jquery/jquery-3.4.1.min.js"></script>
 	<script type="text/javascript" src="<?=SERVER_URL?>assets/magnific-popup/magnific-popup.min.js"></script>
