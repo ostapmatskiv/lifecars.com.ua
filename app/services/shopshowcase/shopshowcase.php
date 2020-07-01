@@ -180,6 +180,7 @@ class shopshowcase extends Controller {
 
 	public function search()
 	{
+		$this->wl_alias_model->setContent();
 		if(isset($_GET['name']) || isset($_GET['group']))
 		{
 			if(isset($_GET['name']) && is_numeric($_GET['name']))
@@ -194,7 +195,7 @@ class shopshowcase extends Controller {
 			$group_id = 0;
 			if(isset($_GET['group']))
 			{
-				$this->db->select($this->shop_model->table('_groups').' as g', 'id', $this->data->get('group'), 'link');
+				$this->db->select($this->shop_model->table('_groups').' as g', 'id', $this->data->get('group'));
 				$where = array('content' => '#-g.id');
 				if($_SESSION['language']) $where['language'] = $_SESSION['language'];
 				$this->db->join('wl_ntkd', 'name, title', $where);
@@ -208,7 +209,7 @@ class shopshowcase extends Controller {
 			$products = $this->shop_model->getProducts($group_id);
 			$this->setProductsPrice($products);
 
-			$this->load->page_view('group_view', array('products' => $products));
+			$this->load->page_view('search_view', array('products' => $products));
 		}
 		if(isset($_GET['id']) || isset($_GET['article']))
 		{

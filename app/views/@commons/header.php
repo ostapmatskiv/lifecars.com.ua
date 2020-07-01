@@ -12,16 +12,20 @@
                 </a>
             </div>
         </div>
-        <form action="<?=SITE_URL?>search">
-            <?php if(!empty($catalogAllGroups)) { ?>
+        <form action="<?=SITE_URL?>parts/search">
+            <?php if(!empty($catalogAllGroups)) { 
+                $selected_id = $this->data->get('group');
+                ?>
                 <select name="group">
                     <option value="0">Весь магазин</option>
                     <?php foreach ($catalogAllGroups as $h_group) {
                         if($h_group->parent == 0) {
-                            echo "<option value=\"{$h_group->id}\">{$h_group->name}</option>";
+                            $selected = $selected_id == $h_group->id ? 'selected' : '';
+                            echo "<option value=\"{$h_group->id}\" {$selected}>{$h_group->name}</option>";
                             foreach ($catalogAllGroups as $h_model) {
                                 if($h_model->parent == $h_group->id) {
-                                    echo "<option value=\"{$h_model->id}\">- {$h_model->name}</option>";
+                                    $selected = $selected_id == $h_model->id ? 'selected' : '';
+                                    echo "<option value=\"{$h_model->id}\" {$selected}>- {$h_model->name}</option>";
                                 }
                             }
                         }
@@ -29,7 +33,7 @@
                 </select>
                 <i class="fas fa-chevron-down"></i>
             <?php } ?>
-            <input required="required" type="search" name="by" placeholder="Пошук">
+            <input required="required" type="search" name="name" value="<?=$this->data->get('name')?>" placeholder="Пошук">
             <button><i class="fas fa-search"></i></button>
         </form>
         <div class="flex v-center header__address">
