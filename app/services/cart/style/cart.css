@@ -152,7 +152,7 @@ table.__cart_products_list .name_action ~ table tr td {
 	border-top: 1px solid #F6F6F6;
 	border-bottom: 1px solid #F6F6F6;
 	text-align: center;
-    font-size: 12px;
+    font-size: 14px;
     padding: 2px 0;
     vertical-align: middle;
 }
@@ -161,7 +161,7 @@ table.__cart_products_list .name_action table {
     border-top: 1px solid #F6F6F6;
     border-bottom: 1px solid #F6F6F6;
     text-align: center;
-    font-size: 12px;
+    font-size: 13px;
     padding: 2px 0;
     vertical-align: middle;
 }
@@ -176,20 +176,21 @@ table.__cart_products_list .name_action ~ table thead tr td:nth-of-type(6) { wid
 table.__cart_products_list .name_action ~ table tbody tr * {
 	background: #F6F6F6;
 	border-radius: 2px;
-	padding: 2px 5px
+	height: 30px;
 }
 table.__cart_products_list .name_action ~ table tbody tr th:first-of-type,
 table.__cart_products_list .name_action ~ table tbody tr th:nth-of-type(2) {
 	width: 70px;
 	background: #E6E5E5;
 	color: #292929;
+	font-size: 15px;
 	text-align: center
 }
 
 table.__cart_products_list .name_action ~ table.simple_product th,
 table.__cart_products_list .name_action ~ table.simple_product td { width: 25% !important }
 table.__cart_products_list .name_action ~ table tbody tr td.amount,
-table.__cart_products_list .name_action ~ table tbody tr td.amount div { background: none; padding: 0; border: none }
+table.__cart_products_list .name_action ~ table tbody tr td.amount div { background: none; border: none }
 table.__cart_products_list .name_action ~ table tbody tr input {
 	text-align: center;
 	border: none;
@@ -202,35 +203,17 @@ table.__cart_products_list .name_action ~ table tbody tr input {
 table.__cart_products_list .name_action ~ table tbody tr input::placeholder { color: #fff }
 table.__cart_products_list .name_action ~ table tbody tr td.amount button {
 	background: none;
-	width: 20px;
+	width: 40px;
 	color: #29ABE2;
     border-radius: unset;
     text-align: center;
-	padding: 0
-}
-table.__cart_products_list  .name_action ~ table tbody tr td.amount button:first-child {
+	padding: 0;
 	background: #F6F6F6;
     border: none;
-    border-radius: 50px 0px 0px 50px;
-	padding-left: 4px;
-	outline: none;
+    cursor: pointer;
 }
-table.__cart_products_list  .name_action ~ table tbody tr td.amount button:last-child {
-	background: #F6F6F6;
-    border: none;
-    border-radius: 0px 50px 50px 0px;
-    background-position-x: right;
-    padding-right: 4px;
-	outline: none;
-}
-table.__cart_products_list  .name_action ~ table tbody tr td.amount button:first-child:hover,
-table.__cart_products_list  .name_action ~ table tbody tr td.amount button:last-child:hover {
+table.__cart_products_list  .name_action ~ table tbody tr td.amount button:hover {
 	background: #989898;
-}
-table.__cart_products_list  .name_action ~ table tbody tr td.amount button:first-child:hover {
-	color: #fff;
-}
-table.__cart_products_list  .name_action ~ table tbody tr td.amount button:last-child:hover {
 	color: #fff;
 }
 table.__cart_products_list .amount button i { font-size: 10px }
@@ -259,7 +242,6 @@ table.__cart_products_list .amount button.plus i { margin-left: -4px }
 	table.__cart_products_list .name_action ~ table tbody tr td:nth-of-type(1),
 	table.__cart_products_list .name_action ~ table thead tr td:nth-of-type(5),
 	table.__cart_products_list .name_action ~ table thead tr td:nth-of-type(6) { width: 120px }
-	table.__cart_products_list .name_action ~ table tbody tr td.amount button { width: 25px }
 	table.__cart_products_list .name_action ~ table tbody tr input { width: calc(100% - 50px) }
 }
 
