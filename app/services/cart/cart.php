@@ -1023,6 +1023,15 @@ class cart extends Controller {
         $this->load->json($res);
     }
 
+    public function getCountProductsInCart()
+    {
+        $this->load->smodel('cart_model');
+        $res = array('count' => 0);
+        if($products = $this->cart_model->getProductsInCart(0,0))
+            $res['count'] = $this->cart_model->getProductsCountInCart();
+        $this->load->json($res);
+    }
+
     public function __show_btn_add_product($product)
     {
         if(!empty($product))

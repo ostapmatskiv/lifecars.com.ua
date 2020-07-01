@@ -1,4 +1,4 @@
-<center><img src="<?=IMG_PATH?>logo.png" style="width: 150px"></center>
+<center><img src="/style/images/logo.png" style="width: 150px"></center>
 <div class="pull-right" style="text-align: right;">
 	<p><strong>вул. В.Великого 44</strong></p>
 	<p><strong>м. Львів, Україна, 79054</strong></p>

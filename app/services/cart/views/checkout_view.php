@@ -161,7 +161,7 @@
 			</form>
 		</div>
 
-		<div class="w70">
+		<div class="w70-5">
 			<?php if ($bonusCodes && $bonusCodes->showForm) { ?>
 				<form action="<?=SITE_URL.$_SESSION['alias']->alias?>/coupon" method="POST" class="coupon-form flex">
 					<input type="text" name="code" class="w75" placeholder="<?=$this->text('Маєте купон на знижку? Введіть код купону сюди')?>" required>

@@ -6,7 +6,7 @@
                 <img class="header__logo" src="<?=SERVER_URL?>style/images/logo.png" alt="logo">
             </a>
             <div class="mobile__shoping">
-                <i class="label">0</i>
+                <i class="label __CountProductsInCart">0</i>
                 <a href="<?=SITE_URL?>cart" class="header__cart">
                     <img src="<?=SERVER_URL?>style/icons/shopping-cart-16.png" alt="cart">
                 </a>
@@ -50,7 +50,7 @@
             </div>
          </div>
         <div class="flex header__shoping">
-            <i class="label">0</i>
+            <i class="label __CountProductsInCart">0</i>
             <a href="<?=SITE_URL?>cart" class="header__cart">
                 <img src="<?=SERVER_URL?>style/icons/shopping-cart-16.png" alt="cart">
             </a>

@@ -97,18 +97,14 @@ table.__cart_products_list > tbody td:first-child div {
 	font-size: 16px;
 	text-align: right
 }
-/* photo
 table.__cart_products_list > tbody td:nth-child(2) { width: 180px; padding: 0 10px }
 table.__cart_products_list > tbody td:nth-child(2) a {
 	display: block;
 	width: auto;
 	overflow: hidden;
-	border: 1px solid #B1B1B1;
 	border-radius: 2px;
 	margin-top: 5px;
-    padding: 12px 0 12px;
-}*/
-table.__cart_products_list > tbody td:nth-child(2) { padding: 0 10px }
+}
 table.__cart_products_list .name_action {
 	background: #F6F6F6;
 	border-radius: 2px;

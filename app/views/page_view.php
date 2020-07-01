@@ -41,6 +41,8 @@
 		
 		include "@commons/footer.php";
 	?>
+	<div id="modal-bg"></div>
+	<div id="modal-add_success"></div>
 
 	<script type="text/javascript" src="<?=SERVER_URL?>assets/jquery/jquery-3.4.1.min.js"></script>
 	<script type="text/javascript" src="<?=SERVER_URL?>assets/magnific-popup/magnific-popup.min.js"></script>

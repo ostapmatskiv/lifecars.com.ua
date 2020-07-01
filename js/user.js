@@ -1,107 +1,20 @@
 $(document).ready(function(){
         
-
-
-       
-        $('.cart__order:eq(0)').click(function() {
-            $('.cart__modal:eq(0)').css("display", "block");
-            
-        });
-        $('.cart__order:eq(1)').click(function() {
-            $('.cart__modal:eq(1)').css("display", "block");
-            
-        });
-
-        $('.cart__order:eq(2)').click(function() {
-            $('.cart__modal:eq(2)').css("display", "block");
-            
-        });
-
-        $('.cart__hiden:eq(0)').click(function() {
-            $('.cart__modal:eq(0)').css("display", "none");
-        });
-
-        $('.cart__hiden:eq(1)').click(function() {
-            $('.cart__modal:eq(1)').css("display", "none");
-        });
-
-        $('.cart__hiden:eq(2)').click(function() {
-            $('.cart__modal:eq(2)').css("display", "none");
-        });
-
-
-        $('.modal__request:eq(0)').click(function() {
-            $('.cart__form:eq(0)').css("z-index", "10");
-        });
-
-        $('.modal__request:eq(1)').click(function() {
-            $('.cart__form:eq(1)').css("z-index", "10");
-        });
-
-        $('.modal__request:eq(2)').click(function() {
-            $('.cart__form:eq(2)').css("z-index", "10");
-        });
-
-        $('.fa-bars').click(function() {
-            $('.close__menu').css("display", "block");
-            $('.mob__nav').css("left", "0");
-         });
-
-         $('.fa-times').click(function() {
-            $('.mob__nav').css("left", "-281px");
-            $('.close__menu').css("display", "none");
-         })
-
-         $('.nav__mobile').removeClass("default");
-         $(window).scroll(function() {
-             if ($(this).scrollTop() > 85) {
-                 $('.nav__mobile').addClass("default").fadeIn('slow');
-                 $('.fa-bars').css("color", "#F2F2F2");
-             } else {
-                 $('.nav__mobile').removeClass("default").fadeIn('slow');
-                 $('.fa-bars').css("color", "#777");
-             };
-         });
-
-         $('.small__item').magnificPopup({
-            type : 'image',
-            gallery : {
-                enabled : true
-            }
-         });
-
-         $('.main__link').click(function() {
-            event.preventDefault();
-           if ($('div.logo__catalog').slideToggle().css("display", "flex")) {
-            $('section.cars__catalog').slideToggle().css("display", "none");
-           }
-        });
-         
-        $('.cross__eastar').click(function() {
-            event.preventDefault();
-            if ($('section.cars__catalog').slideToggle().css("display", "flex")) {
-                $('div.logo__catalog').slideToggle().css("display", "none");
-            }
-        });
+    $(function() {
+        var tab = $('#tabs > div.menu__info'); 
+        tab.hide().filter(':first').show(); 
         
-        $(function() {
-            var tab = $('#tabs > div.menu__info'); 
-            tab.hide().filter(':first').show(); 
-            
-            // Клики по вкладкам.
-            $('#tabs .tabs-nav a').click(function(){
-                tab.hide(); 
-                tab.filter(this.hash).show(); 
-               $('#tabs .tabs-nav a').removeClass('active').css("color", "#8c8c8c");
-                $(this).addClass('active').css("color", "#82C166");
-                return false;
-            }).filter(':first').click();
-         
-        });
-
-        
-        
-  });
+        // Клики по вкладкам.
+        $('#tabs .tabs-nav a').click(function(){
+            tab.hide(); 
+            tab.filter(this.hash).show(); 
+           $('#tabs .tabs-nav a').removeClass('active').css("color", "#8c8c8c");
+            $(this).addClass('active').css("color", "#82C166");
+            return false;
+        }).filter(':first').click();
+     
+    });
+});
 
 $(function () {
     $( "#tabs" ).tabs();

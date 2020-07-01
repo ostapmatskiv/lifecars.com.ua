@@ -9,14 +9,12 @@
 		<?php if($products) foreach($products as $i => $product) { ?>
 		<tr id="product-<?=$product->key?>" <?=($product->active)?'':'class="disabled"'?>>
 			<td><div><?=$i + 1?></div></td>
-			<?php /* ?>
 			<td class="hideMobile"><a href="<?=SITE_URL.$product->info->link?>">
 				<?php if($product->info->photo) { ?>
 					<img src="<?=IMG_PATH?><?=$product->info->cart_photo ?? $product->info->admin_photo ?>" alt="<?=$product->info->name ?>">
 				<?php } else
 							echo '<img src="'.IMG_PATH.'logo.png">'; ?>
 				</a></td>
-			*/ ?>
 			<td>
 				<div class="name_action">
 					<?php if($actions) { ?>
@@ -27,9 +25,8 @@
 								<i class="<?=($product->active)?'fas fa-check':'far fa-circle'?>"></i>
 								<span><?=(!$product->active)?$this->text('Відкладено') : $this->text('У кошику')?></span>
 							</div>
-					<?php } } /* ?>
-					<a href="<?=SITE_URL.$product->info->link?>"><strong><?=$product->info->article_show ?></strong> <?=$product->info->name ?></a>*/ ?>
-					<p><strong><?=$product->info->article_show ?></strong> <?=$product->info->name ?></p>
+					<?php } } ?>
+					<a href="<?=SITE_URL.$product->info->link?>"><strong><?=$product->info->article_show ?></strong> <?=$product->info->name ?></a>
 				</div>
 				<?php if(!empty($product->product_options)) {
 					$p = '';
@@ -44,7 +41,9 @@
 				<table class="simple_product">	
 					<thead>
 						<tr>
-							<td><?=$this->text('Склад / Термін')?></td>
+							<?php if(!empty($product->storage)) { ?>
+								<td><?=$this->text('Склад / Термін')?></td>
+							<?php } ?>
 							<td><?=$this->text('Ціна')?></td>
 							<td><?=$this->text('Кількість шт.')?></td>
 							<td><?=$this->text('Загальна ціна')?></td>
@@ -52,12 +51,14 @@
 					</thead>
 					<tbody>
 						<tr>
+							<?php if(!empty($product->storage)) { ?>
 							<td><?=$product->storage->storage_name?></td>
+							<?php } ?>
 							<th id="pricePerOne-<?= $product->key ?>"><?=$product->info->price_format ?></th>
 							<td class="amount">
 								<div class="flex">
 									<button class="minus">-</button>
-									<input type="number" id="productQuantity-<?= $product->key?>" value="<?= $product->quantity?>" data-key="<?= $product->key?>" data-max="<?= $product->storage->amount_free?>" placeholder="1">
+									<input type="number" id="productQuantity-<?= $product->key?>" value="<?= $product->quantity?>" data-key="<?= $product->key?>" data-max="<?= $product->storage->amount_free ?? $product->info->availability?>" placeholder="1">
 									<button class="plus">+</button>
 								</div>
 							</td>

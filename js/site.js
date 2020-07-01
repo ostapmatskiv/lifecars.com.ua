@@ -1,4 +1,13 @@
 $(document).ready(function(){
+    $.ajax({
+        type: "POST",
+        url: SERVER_URL+'cart/getCountProductsInCart',
+        success: function(res)
+        {
+            $('.__CountProductsInCart').text(res.count);
+        }
+    });
+
     $('.sale__card.no_availabilaty .cart__order').click(function () {
         $(this).closest('.no_availabilaty').find('.cart__modal').slideDown();
     })
@@ -9,6 +18,27 @@ $(document).ready(function(){
         $(this).closest('.cart__modal').slideUp();
         $(this).closest('.cart__modal').find('.cart__form').css("z-index", "-1");
     })
+    $('.sale__card .cart__buy').click(function () {
+        $.ajax({
+            url: SITE_URL+'cart/addProduct',
+            type: 'POST',
+            data: {
+                'productKey' : $(this).data('product_key'),
+                'quantity' : $(this).closest('.sale__card').find('input').val(),
+                'options' : false
+            },
+            success:function(res){
+                if(res.result)
+                {
+                    $('.__CountProductsInCart').text(res.productsCountInCart);
+                    $('#modal-add_success').css('display', 'flex').text('Товар у корзині');
+                }
+            }
+        });
+    });
+    $('#modal-add_success').click(function(event) {
+        $(this).hide()
+    });
     $('.minus').click(function () {
         var $input = $(this).parent().find('input');
         var count = parseInt($input.val()) - 1;

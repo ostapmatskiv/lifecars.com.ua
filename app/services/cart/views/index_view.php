@@ -5,7 +5,7 @@
 } ?>
 
 <main id="cart" class="flex w100" data-sticky-container>
-	<div class="w75">
+	<div class="w75-5">
 		<h1><?=$_SESSION['alias']->name?></h1>
 
 		<div id="cart_notify" class="alert alert-danger hide">
