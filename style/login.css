@@ -232,6 +232,12 @@
 #login-container .alert {
     position: absolute;
     width: 100%;
+    color: #fff;
+    font-size: 14px;
+}
+#login-container .alert li {
+    list-style: none;
+    margin-bottom: 5px;
 }
 @media screen and (max-width: 576px) {
     #login-container, #login-container .form-container { width: 100% }

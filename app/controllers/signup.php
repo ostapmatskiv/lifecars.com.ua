@@ -3,7 +3,7 @@
 class Signup extends Controller {
 
     private $errors = array();
-    private $name = 'name'; // 'name'||'first_name, last_name' ім'я в одній змінній чи 2-х
+    private $name = 'first_name, last_name'; // 'name'||'first_name, last_name' ім'я в одній змінній чи 2-х
     public $additionall = array('phone'); // false додаткові поля при реєстрації. Згодом можна використовувати у ідентифікації, тощо
     private $new_user_type = 4; // Ід типу новозареєстрованого користувача
 
@@ -124,7 +124,7 @@ class Signup extends Controller {
 	        }
 	        else
 	            $_SESSION['notify']->errors = '<ul>'.$this->validator->getErrors('<li>', '</li>').'</ul>';
-	        $this->redirect();
+	        $this->redirect('signup');
 		}
 		$this->redirect('profile');
     }

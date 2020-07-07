@@ -169,7 +169,8 @@
         container.classList.remove("right-panel-active");
     });
 
-    <?php if(!empty($_GET['redirect']) || $this->data->re_post('redirect')) {
+    <?php $this->load->js('assets/jquery.mask.min.js');
+    if(!empty($_GET['redirect']) || $this->data->re_post('redirect')) {
         echo 'var redirect = "'.$this->data->re_post('redirect', $this->data->get('redirect')).'";';
     } else echo "var redirect = false;"; ?>
     
@@ -177,6 +178,22 @@
         $('.alert .close').click(function(){
             $('.alert').hide();
         });
+
+        var mask_options =  {
+          onKeyPress: function(cep, e, field, options) {
+            mask = '+00 (000) 000-00-00';
+            if(cep == '+')
+                field.mask(mask, mask_options);
+            else if(cep.length > 3)
+            {
+                cep = cep.substr(0, 3);
+                if(cep == '+38')
+                    $('input[name=phone]').mask('+38 (000) 000-00-00', mask_options);
+                else
+                    field.mask(mask, mask_options);
+            }
+        }};
+    $('input[name=phone]').mask('+38 (000) 000-00-00', mask_options);
     };
 </script>
 <?php if($_SESSION['option']->userSignUp && ($_SESSION['option']->facebook_initialise || $this->googlesignin->clientId)) {
