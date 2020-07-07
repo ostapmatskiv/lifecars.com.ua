@@ -416,7 +416,8 @@ section.sale .sale__wrrap .sale__card {
 }
 main.detal .detal__cart .sale__card:hover,
 section.sale .sale__wrrap .sale__card:hover {
-    border-color: #fefefe;
+    border-color: #7cbe49;
+    
 }
 main.detal .detal__cart .sale__card.no_availabilaty:hover ,
 section.sale .sale__wrrap .sale__card.no_availabilaty:hover {
@@ -2018,9 +2019,10 @@ main.cars__manufacturers section.catalog__name div a figure img {
 @media (max-width: 1441px) {
     
 	section.sale .sale__wrrap .sale__card {
-    	width: 220px;
+    	width: calc(20% - 5px);
 		padding: 8px;
 		min-height: auto;
+	    border-color: #fefefe;
 	}
 	section.sale .sale__wrrap .sale__card .card__img { height: 230px;}
 	.card__rating .rating:not(:checked) > label { font-size: 22px; }
