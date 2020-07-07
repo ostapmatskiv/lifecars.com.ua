@@ -206,8 +206,18 @@ class shopshowcase extends Controller {
 				}
 			}
 
+			$name = $this->data->get('name');
+			unset($_GET['name']);
+			$_GET['article'] = $name;
 			$products = $this->shop_model->getProducts($group_id);
-			$this->setProductsPrice($products);
+			if(empty($products))
+			{
+				$_GET['name'] = $name;
+				unset($_GET['article']);
+				$products = $this->shop_model->getProducts($group_id);
+			}
+			if($products)
+				$this->setProductsPrice($products);
 
 			$this->load->page_view('search_view', array('products' => $products));
 		}
