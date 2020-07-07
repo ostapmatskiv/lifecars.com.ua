@@ -2177,7 +2177,7 @@ main.cars__manufacturers section.catalog__name div a figure img {
 
 
 /*                   card sale             */
-@media (max-width: 1300px) {
+@media (max-width: 1400px) {
 	header form select {
 		width: 130px;
 		margin-left: 5px;
@@ -2210,7 +2210,7 @@ main.cars__manufacturers section.catalog__name div a figure img {
 	}
 
 }
-@media screen and (max-width: 1025px) {
+@media screen and (max-width: 1400px) {
 	header .header__address {display: none; }
 
 	main section.cars__catalog .base__detal,
