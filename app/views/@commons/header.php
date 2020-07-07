@@ -63,14 +63,13 @@
             <input required="required" type="search" name="name" value="<?=$this->data->get('name')?>" placeholder="Пошук за артикулом або назвою товару">
             <button><i class="fas fa-search"></i></button>
         </form>
-        <?php /* ?>
         <div class="flex v-center header__address">
             <i class="fas fa-map-marker-alt"></i>
             <address>
                 <a href="https://goo.gl/maps/ZVp3Y1JQkubKnLBR9" target="_blank">Львів, вул.<br>
                 Виговського, 49</a>
             </address>
-        </div> */ ?>
+        </div>
         <div class="flex v-center header__phone">
             <i class="fas fa-phone-alt"></i>
             <div>

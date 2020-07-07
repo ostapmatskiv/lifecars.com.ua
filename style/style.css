@@ -167,6 +167,7 @@ header .header__address {
 	font-size: 15px;
 	font-weight: 500;
 	color: #8c8c8c;
+	display: none;
 }
 header .header__address address {font-style: normal;}
 header .header__address .fa-map-marker-alt,
@@ -174,6 +175,12 @@ header .header__phone .fa-phone-alt {
 	font-size: 28px;
     margin-right: 10px;
     color: #8c8c8c;
+}
+@media screen and (min-width: 1400px) {
+	header .header__address { display: flex }
+}
+@media screen and (min-width: 1400px) and (max-width: 1550px) {
+	header form input { width: 380px }
 }
 header .header__phone{ margin-right: 20px;}
 header .header__phone .header__login { display: none;}
@@ -2169,41 +2176,9 @@ main.cars__manufacturers section.catalog__name div a figure img {
 
 
 /*                   card sale             */
-@media (max-width: 1400px) {
-	header form select {
-		width: 130px;
-		margin-left: 5px;
-		padding: 0px 5px;
-		font-size: 14px;
-	}
-	header form input {
-		width: 170px;
-		padding: 0 8px;
-		font-size: 14px;
-	}
-	header form .fa-chevron-down {
-		left: 110px;
-	}
-	header .header__address .fa-map-marker-alt, header .header__phone .fa-phone-alt {
-		font-size: 25px;
-		margin-right: 5px;
-	}
-	header .header__address {
-		font-size: 14px;
-	}
-	header nav a {
-		font-size: 14px;
-	}
-	header nav a:before {
-		width: 155px;
-	}
-	main section.sale .sale__nav a:before {
-		min-width: 190px;
-	}
 
-}
-@media screen and (max-width: 1400px) {
-	header .header__address {display: none; }
+@media screen and (max-width: 1024px) {
+	header form input { width: 200px }
 
 	main section.cars__catalog .base__detal,
 	main section.cars__base .base__detal { width: 141px; }
