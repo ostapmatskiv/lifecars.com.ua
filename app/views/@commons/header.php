@@ -58,21 +58,15 @@
             <a href="<?=SITE_URL?>cart" class="header__cart">
                 <img src="<?=SERVER_URL?>style/icons/shopping-cart-16.png" alt="cart">
             </a>
-            <div class="header__user">
-                <button>
+            <?php if($this->userIs()) { ?>
+                <a href="<?=SITE_URL?>profile" class="header__user" title="Мій кабінет">
                     <img src="<?=SERVER_URL?>style/icons/user.png" alt="user">
-                </button>
-                <div class="user__login">
-                    <?php if($this->userIs()) { ?>
-                        <a href="<?=SITE_URL?>profile" class="user__in">Мій кабінет</a>
-                        <?php if($this->userCan()) { ?>
-                        <a href="<?=SITE_URL?>admin" class="user__registration">Панель керування</a>
-                    <?php } } else { ?>
-                        <a href="<?=SITE_URL?>login" class="user__in">Увійти</a>
-                        <a href="<?=SITE_URL?>signup" class="user__registration">Реєстрація</a>
-                    <?php } ?>
-                </div>
-            </div>
+                </a>
+            <?php } else { ?>
+                <a href="<?=SITE_URL?>signup" class="header__user" title="Реєстрація">
+                    <img src="<?=SERVER_URL?>style/icons/user.png" alt="user">
+                </a>
+            <?php } ?>
         </div>
     </div>
     <nav class="flex v-center">
@@ -81,9 +75,11 @@
         <a href="<?=SITE_URL?>exchange-and-return" <?=($_SESSION['alias']->alias == 'exchange-and-return') ? 'class="active"' : ''?>>Повернення та гарантія</a>
         <a href="<?=SITE_URL?>delivery-and-payments" <?=($_SESSION['alias']->alias == 'delivery-and-payments') ? 'class="active"' : ''?>>Оплата та доставка</a>
         <a href="<?=SITE_URL?>contacts" <?=($_SESSION['alias']->alias == 'contacts') ? 'class="active"' : ''?>>Контакти</a>
-        <?php if($this->userIs()) { ?>
-            <a href="<?=SITE_URL?>profile" <?=($_SESSION['alias']->alias == 'profile') ? 'class="active"' : ''?>>Мій кабінет</a>
+        <?php if($this->userIs()) { if($this->userCan()) { ?>
+            <a href="<?=SITE_URL?>admin">Admin</a>
         <?php } else { ?>
+            <a href="<?=SITE_URL?>profile" <?=($_SESSION['alias']->alias == 'profile') ? 'class="active"' : ''?>>Мій кабінет</a>
+        <?php } } else { ?>
             <a href="<?=SITE_URL?>login" <?=(in_array($_SESSION['alias']->alias, ['login', 'signup'])) ? 'class="active"' : ''?>>Увійти / Реєстрація</a>
         <?php } ?>
     </nav>

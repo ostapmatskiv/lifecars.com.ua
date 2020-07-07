@@ -16,9 +16,9 @@
     <!-- begin header navigation right -->
     <ul class="nav navbar-nav navbar-right">
       <li>
-        <form action="<?=SITE_URL?>admin/search" class="navbar-form full-width">
+        <form action="<?=SITE_URL?>admin/parts/search" class="navbar-form full-width">
           <div class="form-group">
-            <input name="by" type="text" class="form-control" placeholder="Ключове слово пошуку..." />
+            <input name="article" type="text" class="form-control" placeholder="Ключове слово пошуку..." />
             <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
           </div>
         </form>
