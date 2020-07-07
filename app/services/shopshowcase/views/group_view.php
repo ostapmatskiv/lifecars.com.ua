@@ -149,10 +149,16 @@
             </form>
         </aside>
         <div class="flex w75 wrap sale__wrrap">
-            <?php if($products) 
+            <?php if($products) {
                 foreach ($products as $product) {
                      require APP_PATH.'views/@commons/__product_subview.php';
-                 } ?>
+                 }
+                 $add_block = 5 - count($products) % 5;
+                 if($add_block < 5)
+                    for ($i=0; $i < $add_block; $i++) { 
+                        echo "<div class='sale__card empty'></div>";
+                    } 
+            } ?>
         </div>
     </section>
 

@@ -24,14 +24,19 @@ main img { max-width: 100% }
     font-size: 22px;
     color: #fff;
 }
-#modal-add_success h4 { font-size: 30px; margin-bottom: 30px; }
+#modal-add_success img { margin-bottom: 15px; max-width: 90% }
+#modal-add_success h4 { font-size: 32px; margin-bottom: 30px; max-width: 90% }
+#modal-add_success h4.product_name { font-size: 26px }
+#modal-add_success .flex { width: 420px }
 #modal-add_success a {
 	display: block;
-	padding: 15px;
+	padding: 12px;
 	text-align: center;
 	background-color: #7cbe49;
 	border: none;
 	border-radius: 5px;
+	width: 205px;
+	font-size: 18px;
 }
 #modal-add_success a:hover {
     background-color: #669e3b;
@@ -41,6 +46,15 @@ main img { max-width: 100% }
 }
 #modal-add_success a.close:hover {
     background-color: #e4af00;
+}
+@media screen and (max-width: 500px) {
+	#modal-add_success h4 { text-align: center }
+	#modal-add_success .flex {
+		width: 300px;
+		flex-direction: column;
+    	align-items: center;
+    }
+    #modal-add_success a { margin-bottom: 15px }
 }
 
 	
@@ -414,6 +428,7 @@ section.sale .sale__wrrap .sale__card {
 	border-radius: 10px;
 	position: relative;
 }
+.sale__card.empty { border: none !important }
 main.detal .detal__cart .sale__card:hover,
 section.sale .sale__wrrap .sale__card:hover {
     border-color: #7cbe49;
@@ -984,6 +999,8 @@ main .catalog__detal a {
 	display: block;
 	margin: 0 15px;
 	text-align: center;
+	max-width: 150px;
+	margin-bottom: 15px
 }
 main .catalog__detal a div {
 	font-size: 16px;
@@ -1060,7 +1077,7 @@ section.sale__catalog .sale__wrrap {
 	margin-top: 25px;
 }
 section.sale__catalog .sale__wrrap .sale__card {
-	width: 24%;
+	width: calc(25% - 5px);
 	padding: 8px;
 	min-height: auto;
 	margin-bottom: 80px;

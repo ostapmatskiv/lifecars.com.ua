@@ -43,11 +43,12 @@
 	?>
 	<div id="modal-bg"></div>
 	<div id="modal-add_success">
+		<img src="<?=SERVER_URL?>style/images/logo.png" alt="logo">
 		<h4 class="product_name"></h4>
 		<h4><?=$this->text('Товар у корзині', 0)?></h4>
-		<div class="flex w30">
-			<a class="w50-5 close" href="#"><?=$this->text('Продовжити покупки', 0)?></a>
-			<a class="w50-5" href="<?=SITE_URL?>cart"><?=$this->text('До корзини', 0)?></a>
+		<div class="flex">
+			<a class="close" href="#"><?=$this->text('Продовжити покупки', 0)?></a>
+			<a href="<?=SITE_URL?>cart"><?=$this->text('До корзини', 0)?></a>
 		</div>
 	</div>
 

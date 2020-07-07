@@ -33,6 +33,10 @@ $(document).ready(function(){
                 {
                     $('.__CountProductsInCart').text(res.productsCountInCart);
                     $('#modal-add_success').css('display', 'flex');
+                    var logo_path = '/style/images/logo.png';
+                    if(res.product.cart_photo)
+                        logo_path = res.product.cart_photo;
+                    $('#modal-add_success img').attr('src', logo_path);
                     $('#modal-add_success h4.product_name').text(product_name);
                 }
             }
@@ -53,6 +57,10 @@ $(document).ready(function(){
                 {
                     $('.__CountProductsInCart').text(res.productsCountInCart);
                     $('#modal-add_success').css('display', 'flex');
+                    var logo_path = '/style/images/logo.png';
+                    if(res.product.cart_photo)
+                        logo_path = res.product.cart_photo;
+                    $('#modal-add_success img').attr('src', logo_path);
                     $('#modal-add_success h4.product_name').text(product_name);
                 }
             }

@@ -183,8 +183,8 @@ class shopshowcase extends Controller {
 		$this->wl_alias_model->setContent();
 		if(isset($_GET['name']) || isset($_GET['group']))
 		{
-			if(isset($_GET['name']) && is_numeric($_GET['name']))
-				$this->redirect($_SESSION['alias']->alias.'/'.$_GET['name']);
+			// if(isset($_GET['name']) && is_numeric($_GET['name']))
+			// 	$this->redirect($_SESSION['alias']->alias.'/'.$_GET['name']);
 
 			$this->load->smodel('shop_model');
 			$_SESSION['alias']->name = $_SESSION['alias']->title = $this->text('Пошук по назві');

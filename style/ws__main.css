@@ -63,7 +63,7 @@
 .clearfix { clear: both }
 .relative { position: relative }
 
-.alert { padding: 15px }
+.alert { padding: 15px; color: #fff }
 .alert-danger { background-color: #f52323 }
 .alert-success { background-color: #00ad00; color: #fff }
 .alert .close { float: right }

@@ -179,11 +179,12 @@
         <div class="flex detal__cart">
             <?php $add_block = 5 - count($product->similarProducts) % 5;
             foreach ($product->similarProducts as $product) {
+                    $product->wl_alias = $_SESSION['alias']->id;
                      require APP_PATH.'views/@commons/__product_subview.php';
                  }
             if($add_block < 5)
                 for ($i=0; $i < $add_block; $i++) { 
-                    echo "<div class='sale__card'></div>";
+                    echo "<div class='sale__card empty'></div>";
                 } ?>
         </div>
     <?php } ?>
@@ -195,7 +196,7 @@
             $add_block = 5 - count($otherProductsByGroup) % 5;
             if($add_block < 5)
                 for ($i=0; $i < $add_block; $i++) { 
-                    echo "<div class='sale__card'></div>";
+                    echo "<div class='sale__card empty'></div>";
                 } ?>
         </div>
     <?php } ?>

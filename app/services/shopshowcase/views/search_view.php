@@ -1,4 +1,6 @@
 <main>
+    <h1><?=$_SESSION['alias']->name?></h1>
+    <?php if($products) { ?>
     <div class="flex h-evenly catalog__sorted">
         <div>
             <a href="<?=$this->data->get_link('sort', 'price_down')?>">Спершу дешеві</a>
@@ -10,6 +12,7 @@
             Кількість товарів &mdash; <span><?=$_SESSION['option']->paginator_total?></span>
         </div>
     </div>
+    <?php } ?>
 
     <section class="sale">
         <div class="flex wrap sale__wrrap">
@@ -20,9 +23,14 @@
                  $add_block = 5 - count($products) % 5;
                  if($add_block < 5)
                     for ($i=0; $i < $add_block; $i++) { 
-                        echo "<div class='sale__card'></div>";
-                    } 
-            } ?>
+                        echo "<div class='sale__card empty'></div>";
+                    }
+            } else { ?>
+                <div class="alert alert-danger w100">
+                    <h4><?=$this->text('Вибачте, за даним запитом нічого не знайдено! Спробуйте повторити пошук змінивши артикул/назву товару')?></h4>
+                </div>
+            <?php } ?>
+            </div>
         </div>
     </section>
 

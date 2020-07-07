@@ -13,7 +13,7 @@
 				<?php if($product->info->photo) { ?>
 					<img src="<?=IMG_PATH?><?=$product->info->cart_photo ?? $product->info->admin_photo ?>" alt="<?=$product->info->name ?>">
 				<?php } else
-							echo '<img src="'.IMG_PATH.'logo.png">'; ?>
+							echo '<img src="/style/images/no_image2.png">'; ?>
 				</a></td>
 			<td>
 				<div class="name_action">
