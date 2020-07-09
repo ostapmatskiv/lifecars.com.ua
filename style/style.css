@@ -2023,17 +2023,18 @@ main.cars__manufacturers .manufacturers__name a:hover {
 	background-color: #7cbe49;
 	color: #fff;
 }
-main.cars__manufacturers section.catalog__name div { align-items: end;}
+main.cars__manufacturers section.catalog__name div { margin-bottom: 20px;}
 main.cars__manufacturers section.catalog__name div label{
 	font-size: 60px;
 	color: #666666;
 	text-transform: uppercase;
+	margin-right: 30px;
 }
+main.cars__manufacturers section.catalog__name div a { margin-right: 15px; text-align: center; }
 main.cars__manufacturers section.catalog__name div a figure img {
 	width: 100px;
     height: 100px;
     background: white;
-	padding: 24px 20px;
 	border-radius: 4px;
 }
 
