@@ -11,7 +11,8 @@ class import_1c extends Controller
 	private $manufacturer_option_id = 1;
 	private $category_option_id = 2;
 	private $price_id_1c = '000000001';
-	private $site_manufactures = [];
+	private $site_manufactures = []; // [id_1c] = $id_site
+	private $site_manufactures_alias = []; // [id_site] = $alias
 	private $site_cars = [];
 	private $site_categories = [];
 	
@@ -52,8 +53,8 @@ class import_1c extends Controller
 		if(!empty($file->Марки) && !empty($file->Автомобили))
 			$this->parse_groups($file->Марки, $file->Автомобили);
 
-		if(!empty($file->Товары) && !empty($file->Товары))
-			$this->parse_products($file->Товары, $all);
+		if(!empty($file->ПодчиненнаяНоменклатуры) && !empty($file->ПодчиненнаяНоменклатуры))
+			$this->parse_products($file->ПодчиненнаяНоменклатуры, $all);
 
 		$this->db->cache_delete_all(false, 'parts');
 	}
@@ -87,7 +88,10 @@ class import_1c extends Controller
 						if($my_manufacturer->alias == $key)
 						{
 							if(empty($this->site_manufactures[$key]))
+							{
 								$this->site_manufactures[$key] = $my_manufacturer->id;
+								$this->site_manufactures_alias[$my_manufacturer->id] = $this->prepareArticleKey($xml_manufacturers[$key]['uk']);
+							}
 							if($my_manufacturer->name_uk != $xml_manufacturers[$key]['uk'])
 								$this->db->updateRow('s_shopshowcase_options_name', ['name' => $xml_manufacturers[$key]['uk']], $my_manufacturer->name_id_uk);
 							if($my_manufacturer->name_ru != $xml_manufacturers[$key]['ru'])
@@ -104,6 +108,7 @@ class import_1c extends Controller
 					$insert = ['wl_alias' => $this->shop_wl_alias, 'group' => -$this->manufacturer_option_id, 'alias' => $key, 'position' => $last_position, 'active' => 1];
 					$id = $this->db->insertRow('s_shopshowcase_options', $insert);
 					$this->site_manufactures[$key] = $id;
+					$this->site_manufactures_alias[$id] = $this->prepareArticleKey($xml_manufacturers[$key]['uk']);
 					$this->db->insertRow('s_shopshowcase_options_name', ['option' => $id, 'language' => 'uk', 'name' => $xml_manufacturers[$key]['uk']]);
 					$this->db->insertRow('s_shopshowcase_options_name', ['option' => $id, 'language' => 'ru', 'name' => $xml_manufacturers[$key]['ru']]);
 				}
@@ -231,7 +236,7 @@ class import_1c extends Controller
 	{
 		// $this->db->shopDBdump = true;
 		// print_r($file_products);
-		$searchKeys = $my_product_cars = $site_CatUseIn = $my_product_CatUseIn = $my_product_analogs = $my_product_images = $my_analog_groups = [];
+		$searchKeys = $site_CatUseIn = $my_product_CatUseIn = $my_product_images = $my_analog_groups = $inserted_products_link = [];
 		if(isset($file_products->Номенклатура) && !$all)
 			foreach ($file_products->Номенклатура as $product) {
 				$key = $this->xml_attribute($product, 'Код');
@@ -250,7 +255,8 @@ class import_1c extends Controller
 			$where = ['wl_alias' => $this->shop_wl_alias];
 			if(!$all)
 				$where['id_1c'] = $searchKeys;
-			$my_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c, article_show, group', $where)
+			$my_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c, alias, article_show, group', $where)
+										->join('s_shopshowcase_groups as g', 'id_1c as group_id_1c', '#p.group')
 										->join('wl_ntkd as uk', 'id as name_id_uk, name as name_uk, text as text_uk', ['alias' => $this->shop_wl_alias, 'content' => '#p.id', 'language' => 'uk'])
 										->join('wl_ntkd as ru', 'id as name_id_ru, name as name_ru, text as text_ru', ['alias' => $this->shop_wl_alias, 'content' => '#p.id', 'language' => 'ru'])
 										->join('s_shopshowcase_product_options', 'id as row_manufacturer_id, value as manufacturer_id', ['option' => $this->manufacturer_option_id, 'product' => '#p.id'])
@@ -259,13 +265,9 @@ class import_1c extends Controller
 			{
 				if($all)
 				{
-					if($s_shopshowcase_product_group = $this->db->select('s_shopshowcase_product_group', 'product, `group`')->get('array'))
-						foreach ($s_shopshowcase_product_group as $pg) {
-							if(isset($my_product_cars[$pg->product]))
-								$my_product_cars[$pg->product][] = $pg->group;
-							else
-								$my_product_cars[$pg->product] = [$pg->group];
-						}
+					foreach ($my_products as $my_product) {
+						$inserted_products_link[] = $my_product->alias;
+					}
 
 					if($s_shopshowcase_product_options = $this->db->select('s_shopshowcase_product_options', 'product, value', ['option' => $this->category_option_id])->get('array'))
 						foreach ($s_shopshowcase_product_options as $po) {
@@ -277,25 +279,10 @@ class import_1c extends Controller
 
 					if($wl_images = $this->db->select('wl_images', 'content, id_1c', ['alias' => $this->shop_wl_alias, 'content' => '>0'])->get('array'))
 						foreach ($wl_images as $image) {
-							if(isset($my_product_cars[$image->content]))
+							if(isset($my_product_images[$image->content]))
 								$my_product_images[$image->content][] = $image->id_1c;
 							else
 								$my_product_images[$image->content] = [$image->id_1c];
-						}
-
-					if($s_shopshowcase_products_similar = $this->db->select('s_shopshowcase_products_similar as s', '`group`')
-																	->join('s_shopshowcase_products as p', 'id, id_1c', '#s.product')
-																	->get('array'))
-						foreach ($s_shopshowcase_products_similar as $product) {
-							if(!isset($my_analog_groups[$product->group]))
-							{
-								$my_analog_groups[$product->group] = [];
-								$my_analog_groups[$product->group]['id_1c'] = [];
-							}
-
-							$my_analog_groups[$product->group]['id_1c'][] = $product->id_1c;
-							$my_analog_groups[$product->group][$product->id_1c] = $product->id;
-							$my_product_analogs[$product->id] = $product->group;
 						}
 				}
 				else
@@ -303,14 +290,9 @@ class import_1c extends Controller
 					$ids = [];
 					foreach ($my_products as $my_product) {
 						$ids[] = $my_product->id;
+						$inserted_products_link[] = $my_product->alias;
 					}
-					if($s_shopshowcase_product_group = $this->db->select('s_shopshowcase_product_group', 'product, `group`', ['product' => $ids])->get('array'))
-						foreach ($s_shopshowcase_product_group as $pg) {
-							if(isset($my_product_cars[$pg->product]))
-								$my_product_cars[$pg->product][] = $pg->group;
-							else
-								$my_product_cars[$pg->product] = [$pg->group];
-						}
+
 					if($s_shopshowcase_product_options = $this->db->select('s_shopshowcase_product_options', 'product, value', ['option' => $this->category_option_id, 'product' => $ids])->get('array'))
 						foreach ($s_shopshowcase_product_options as $po) {
 							if(isset($my_product_CatUseIn[$po->product]))
@@ -318,43 +300,22 @@ class import_1c extends Controller
 							else
 								$my_product_CatUseIn[$po->product] = [$po->value];
 						}
+
 					if($wl_images = $this->db->select('wl_images', 'content, id_1c', ['alias' => $this->shop_wl_alias, 'content' => $ids])->get('array'))
 						foreach ($wl_images as $image) {
-							if(isset($my_product_cars[$image->content]))
+							if(isset($my_product_images[$image->content]))
 								$my_product_images[$image->content][] = $image->id_1c;
 							else
 								$my_product_images[$image->content] = [$image->id_1c];
 						}
-					if($s_shopshowcase_products_similar = $this->db->getAllDataByFieldInArray('s_shopshowcase_products_similar', ['product' => $ids]))
-					{
-						$similar_groups = [];
-						foreach ($s_shopshowcase_products_similar as $similar) {
-							if(!in_array($similar->group, $similar_groups))
-								$similar_groups[] = $similar->group;
-						}
-						$s_shopshowcase_products_similar = $this->db->select('s_shopshowcase_products_similar as s', '`group`', ['group' => $similar_groups])
-																	->join('s_shopshowcase_products as p', 'id, id_1c', '#s.product')
-																	->get('array');
-						foreach ($s_shopshowcase_products_similar as $product) {
-							if(!isset($my_analog_groups[$product->group]))
-							{
-								$my_analog_groups[$product->group] = [];
-								$my_analog_groups[$product->group]['id_1c'] = [];
-							}
-
-							$my_analog_groups[$product->group]['id_1c'][] = $product->id_1c;
-							$my_analog_groups[$product->group][$product->id_1c] = $product->id;
-							$my_product_analogs[$product->id] = $product->group;
-						}
-					}
 				}
 			}
 			
 			$last_position = 0;
-			$insert = ['wl_alias' => $this->shop_wl_alias, 'active' => 1, 'price' => 0, 'old_price' => 0, 'promo' => 0, 'currency' => '', 'group' => 0, 'availability' => 1, 'author_add' => 0, 'author_edit' => 0];
+			$insert = ['wl_alias' => $this->shop_wl_alias, 'active' => 1, 'price' => 0, 'old_price' => 0, 'promo' => 0, 'currency' => '', 'group' => 0, 'availability' => 0, 'author_add' => 0, 'author_edit' => 0];
 			$insert['date_add'] = $insert['date_edit'] = time();
 
-			foreach ($file_products->Номенклатура as $xml_product) {
+			foreach ($file_products->ПодчиненнаяНоменклатура as $xml_product) {
 				$key = $this->xml_attribute($xml_product, 'Код');
 				if(empty($key))
 					continue;
@@ -372,33 +333,9 @@ class import_1c extends Controller
 								$this->db->updateRow('wl_ntkd', ['name' => $xml_product->ЗаголовокТайтлРос, 'text' => $xml_product->ОписаниеРос], $my_product->name_id_ru);
 							if(!empty($xml_product->Авто))
 							{
-								$xml_cars = [];
-								foreach ($xml_product->Авто->Авто as $car) {
-									$car = (string) $car;
-									if(!empty($car))
-										if(isset($this->site_cars[$car]))
-											$xml_cars[] = $this->site_cars[$car];
-								}
-								if(!empty($xml_cars))
-									foreach ($xml_cars as $xml_car) {
-										$find_car = false;
-										if(!empty($my_product_cars[$my_product->id]))
-											if(in_array($xml_car, $my_product_cars[$my_product->id]))
-												$find_car = true;
-										if(!$find_car)
-										{
-											$my_product_cars[$my_product->id][] = $xml_car;
-											$this->db->insertRow('s_shopshowcase_product_group', ['product' => $my_product->id, 'group' => $xml_car, 'position' => count($my_product_cars[$my_product->id]), 'active' => 1]);
-										}
-									}
-								if(!empty($my_product_cars[$my_product->id]))
-									foreach ($my_product_cars[$my_product->id] as $car_index => $car_id) {
-										if(!in_array($car_id, $xml_cars))
-										{
-											$this->db->deleteRow('s_shopshowcase_product_group', ['product' => $my_product->id, 'group' => $car_id]);
-											unset($my_product_cars[$my_product->id][$car_index]);
-										}
-									}
+								$xml_car = (string) $xml_product->Авто;
+								if($my_product->group_id_1c != $xml_car && isset($this->site_cars[$xml_car]))
+									$this->db->updateRow('s_shopshowcase_products', ['group' => $this->site_cars[$xml_car]], $my_product->id);
 							}
 							if(!empty($xml_product->Производитель))
 							{
@@ -411,154 +348,32 @@ class import_1c extends Controller
 										else
 											$this->db->insertRow('s_shopshowcase_product_options', ['product' => $my_product->id, 'option' => $this->manufacturer_option_id, 'value' => $this->site_manufactures[$manufacturer]]);
 										$my_product->manufacturer_id = $this->site_manufactures[$manufacturer];
-									}
-							}
-							if(!empty($xml_product->Аналоги))
-							{
-								$xml_analogs = $find_add_id_1c_analogs = [];
-								$ok_analogs = [$my_product->id_1c];
-								foreach ($xml_product->Аналоги->Аналог_Номенклатура_Код as $analog) {
-									$analog = (string) $analog;
-									if(!empty($analog))
-										$xml_analogs[] = $analog;
-								}
-								if(isset($my_product_analogs[$my_product->id]))
-								{
-									$analog_group = $my_product_analogs[$my_product->id];
-									if(!empty($xml_analogs) && isset($my_analog_groups[$analog_group]))
-									{
-										foreach ($xml_analogs as $xml_analog_id_1c) {
-											if(in_array($xml_analog_id_1c, $my_analog_groups[$analog_group]['id_1c']))
-												$ok_analogs[] = $xml_analog_id_1c;
-											else
-												$find_add_id_1c_analogs[] = $xml_analog_id_1c;
-										}
-										if(!empty($find_add_id_1c_analogs))
+										$alias = $this->site_manufactures_alias[$my_product->manufacturer_id].'-'.$this->latterUAtoEN($xml_product->Артикул);
+										if($all)
 										{
-											if($analogs_site = $this->db->select('s_shopshowcase_products as p', 'id, id_1c', ['id_1c' => $find_add_id_1c_analogs])
-																->join('s_shopshowcase_products_similar as s', 'id as similar_id, `group`', ['product' => '#p.id'])
-																->get('array'))
-												foreach ($analogs_site as $analog) {
-													if($analog->similar_id)
-													{
-														if($analog->group != $analog_group)
-															$this->db->updateRow('s_shopshowcase_products_similar', ['group' => $analog_group], $analog->similar_id);
-													}
-													else
-														$this->db->insertRow('s_shopshowcase_products_similar', ['product' => $analog->id, 'group' => $analog_group]);
-													$my_analog_groups[$analog_group]['id_1c'][] = $analog->id_1c;
-													$ok_analogs[] = $analog->id_1c;
-													$my_analog_groups[$analog_group][$analog->id_1c] = $analog->id;
-													$my_product_analogs[$analog->id] = $analog_group;
-												}
-										}
-										foreach ($my_analog_groups[$analog_group]['id_1c'] as $i => $id_1c) {
-											if(!in_array($id_1c, $ok_analogs))
+											if(in_array($alias, $inserted_products_link))
 											{
-												if(isset($my_analog_groups[$analog_group][$id_1c]))
-												{
-													$product_id = $my_analog_groups[$analog_group][$id_1c];
-													$this->db->deleteRow('s_shopshowcase_products_similar', ['product' => $product_id]);
-													unset($my_analog_groups[$analog_group]['id_1c'][$i], $my_analog_groups[$analog_group][$id_1c], $my_product_analogs[$product_id]);
+												$i = 2;
+												while (in_array($alias.'-'.$i, $inserted_products_link)) {
+													$i++;
 												}
+												$alias = $alias.'-'.$i;
 											}
 										}
-									}
-									else
-									{
-										foreach ($my_analog_groups[$analog_group]['id_1c'] as $i => $id_1c) {
-											if($id_1c == $my_product->id_1c)
-											{
-												$this->db->deleteRow('s_shopshowcase_products_similar', ['product' => $my_product->id]);
-												unset($my_analog_groups[$analog_group]['id_1c'][$i], $my_analog_groups[$analog_group][$id_1c], $my_product_analogs[$my_product->id]);
-												break;
-											}
-										}
-									}
-								}
-								else if(!empty($xml_analogs))
-								{
-									if($analogs_site = $this->db->select('s_shopshowcase_products as p', 'id, id_1c', ['id_1c' => $xml_analogs])
-																->join('s_shopshowcase_products_similar as s', 'id as similar_id, `group`', ['product' => '#p.id'])
-																->get('array'))
-									{
-										$find_analog = false;
-										foreach ($analogs_site as $analog) {
-											$analog_group = $my_product_analogs[$analog->id] = $analog->group;
-											if(isset($my_analog_groups[$analog_group]))
-											{
-												$this->db->insertRow('s_shopshowcase_products_similar', ['product' => $my_product->id, 'group' => $analog->group]);
-												$my_analog_groups[$analog_group]['id_1c'][] = $my_product->id_1c;
-												$ok_analogs[] = $my_product->id_1c;
-												$my_analog_groups[$analog_group][$my_product->id_1c] = $my_product->id;
-												$my_product_analogs[$my_product->id] = $analog_group;
-
-												foreach ($xml_analogs as $xml_analog_id_1c) {
-													if(in_array($xml_analog_id_1c, $my_analog_groups[$analog_group]['id_1c']))
-													{
-														$ok_analogs[] = $xml_analog_id_1c;
-													}
-													else
-													{
-														foreach ($analogs_site as $analog_analoga) {
-															if($analog_analoga->id_1c == $xml_analog_id_1c)
-															{
-																if($analog_analoga->similar_id)
-																{
-																	if($analog->group != $analog_analoga->group)
-																		$this->db->updateRow('s_shopshowcase_products_similar', ['group' => $analog->group], $analog_analoga->similar_id);
-																}
-																else
-																	$this->db->insertRow('s_shopshowcase_products_similar', ['product' => $analog_analoga->id, 'group' => $analog->group]);
-																$my_analog_groups[$analog_group]['id_1c'][] = $analog_analoga->id_1c;
-																$ok_analogs[] = $analog_analoga->id_1c;
-																$my_analog_groups[$analog_group][$analog_analoga->id_1c] = $analog_analoga->id;
-																$my_product_analogs[$analog_analoga->id] = $analog_group;
-																break;
-															}
-														}
-													}
-												}
-												foreach ($my_analog_groups[$analog_group]['id_1c'] as $i => $id_1c) {
-													if(!in_array($id_1c, $ok_analogs))
-													{
-														if(isset($my_analog_groups[$analog_group][$id_1c]))
-														{
-															$product_id = $my_analog_groups[$analog_group][$id_1c];
-															$this->db->deleteRow('s_shopshowcase_products_similar', ['product' => $product_id]);
-															unset($my_analog_groups[$analog_group]['id_1c'][$i], $my_analog_groups[$analog_group][$id_1c], $my_product_analogs[$product_id]);
-														}
-													}
-												}
-
-												$find_analog = true;
-												break;
-											}
-										}
-										if(!$find_analog)
+										else
 										{
-											$analog_group = 1;
-							        		if($next = $this->db->getQuery('SELECT MAX(`group`) as nextGroup FROM `s_shopshowcase_products_similar`'))
-							        			$analog_group = $next->nextGroup + 1;
-
-											$my_analog_groups[$analog_group] = [];
-											$my_analog_groups[$analog_group]['id_1c'] = [$my_product->id_1c];
-											$my_analog_groups[$analog_group][$my_product->id_1c] = $my_product->id;
-											$my_product_analogs[$my_product->id] = $analog_group;
-
-											$this->db->insertRow('s_shopshowcase_products_similar', ['product' => $my_product->id, 'group' => $analog_group]);
-											foreach ($analogs_site as $analog) {
-												if(empty($analog->group))
-													$this->db->insertRow('s_shopshowcase_products_similar', ['product' => $analog->id, 'group' => $analog_group]);
-												else if($analog->group != $analog_group)
-													$this->db->updateRow('s_shopshowcase_products_similar', ['group' => $analog_group], $analog->similar_id);
-												$my_analog_groups[$analog_group]['id_1c'][] = $analog->id_1c;
-												$my_analog_groups[$analog_group][$analog->id_1c] = $analog->id;
-												$my_product_analogs[$analog->id] = $analog_group;
+											if($this->db->select('s_shopshowcase_products', 'id', ['alias' => $alias])->get())
+											{
+												$i = 2;
+												while ($this->db->select('s_shopshowcase_products', 'id', ['alias' => $alias.'-'.$i])->get()) {
+													$i++;
+												}
+												$alias = $alias.'-'.$i;
 											}
 										}
+										$this->db->updateRow('s_shopshowcase_products', ['alias' => $alias], $my_product->id);
+										$inserted_products_link[] = $alias;
 									}
-								}
 							}
 							if(!empty($xml_product->ВложеныеФайлы))
 							{
@@ -632,120 +447,61 @@ class import_1c extends Controller
 
 				if(!$find)
 				{
+					$insert['id_1c'] = $key;
 					$insert['article_show'] = (string) $xml_product->Артикул;
 					$insert['article'] = $this->prepareArticleKey($insert['article_show']);
-					$insert['id_1c'] = $key;
 					$insert['alias'] = $this->data->latterUAtoEN($insert['article_show']);
-					$id = $this->db->insertRow('s_shopshowcase_products', $insert);
-					$this->db->insertRow('wl_ntkd', ['alias' => $this->shop_wl_alias, 'content' => $id, 'name' => $xml_product->ЗаголовокТайтл, 'text' => $xml_product->Описание]);
-
-					$position = 1;
-					if(!empty($xml_product->Авто))
-						foreach ($xml_product->Авто->Авто as $car) {
-									$car = (string) $car;
-									if(!empty($car))
-										if(isset($this->site_cars[$car]))
-									$this->db->insertRow('s_shopshowcase_product_group', ['product' => $id, 'group' => $car, 'position' => $position++, 'active' => 1]);
+					if(!empty($xml_product->Производитель))
+					{
+						$manufacturer = (string) $xml_product->Производитель;
+						if(!empty($this->site_manufactures[$manufacturer]))
+						{
+							$manufacturer_id = $this->site_manufactures[$manufacturer];
+							$alias = $this->site_manufactures_alias[$manufacturer_id].'-'.$insert['alias'];
+							if($all)
+							{
+								if(in_array($alias, $inserted_products_link))
+								{
+									$i = 2;
+									while (in_array($alias.'-'.$i, $inserted_products_link)) {
+										$i++;
+									}
+									$alias = $alias.'-'.$i;
+								}
+							}
+							else
+							{
+								if($this->db->select('s_shopshowcase_products', 'id', ['alias' => $alias])->get())
+								{
+									$i = 2;
+									while ($this->db->select('s_shopshowcase_products', 'id', ['alias' => $alias.'-'.$i])->get()) {
+										$i++;
+									}
+									$alias = $alias.'-'.$i;
+								}
+							}
+							$insert['alias'] = $alias;
 						}
+					}
+					$inserted_products_link[] = $insert['alias'];
+					
+					if(!empty($xml_product->Авто))
+					{
+						$xml_car = (string) $xml_product->Авто;
+						if(isset($this->site_cars[$xml_car]))
+							$insert['group'] = $this->site_cars[$xml_car];
+					}
+
+					$id = $this->db->insertRow('s_shopshowcase_products', $insert);
+
+					$this->db->insertRow('wl_ntkd', ['alias' => $this->shop_wl_alias, 'content' => $id, 'language' => 'uk', 'name' => $xml_product->ЗаголовокТайтл, 'text' => $xml_product->Описание]);
+					$this->db->insertRow('wl_ntkd', ['alias' => $this->shop_wl_alias, 'content' => $id, 'language' => 'ru', 'name' => $xml_product->ЗаголовокТайтлРос, 'text' => $xml_product->ОписаниеРос]);
+
 					if(!empty($xml_product->Производитель))
 					{
 						$manufacturer = (string) $xml_product->Производитель;
 						if(!empty($this->site_manufactures[$manufacturer]))
 							$this->db->insertRow('s_shopshowcase_product_options', ['product' => $id, 'option' => $this->manufacturer_option_id, 'value' => $this->site_manufactures[$manufacturer]]);
-					}
-					if(!empty($xml_product->Аналоги))
-					{
-						$xml_analogs = $list_to_update_MyProductAnalogs = [];
-						$ok_analogs = [$key];
-						foreach ($xml_product->Аналоги->Аналог_Номенклатура_Код as $analog) {
-							$analog = (string) $analog;
-							if(!empty($analog))
-								$xml_analogs[] = $analog;
-						}
-
-						if(!empty($xml_analogs))
-						{
-							if($analogs_site = $this->db->select('s_shopshowcase_products as p', 'id, id_1c', ['id_1c' => $xml_analogs])
-																->join('s_shopshowcase_products_similar as s', 'id as similar_id, `group`', ['product' => '#p.id'])
-																->get('array'))
-							{
-								$find_analog = false;
-								foreach ($analogs_site as $analog) {
-									$analog_group = $my_product_analogs[$analog->id] = $analog->group;
-									if(isset($my_analog_groups[$analog_group]))
-									{
-										$this->db->insertRow('s_shopshowcase_products_similar', ['product' => $id, 'group' => $analog->group]);
-										$my_analog_groups[$analog_group]['id_1c'][] = $key;
-										$ok_analogs[] = $key;
-										$my_analog_groups[$analog_group][$key] = $id;
-										$my_product_analogs[$id] = $analog_group;
-
-										foreach ($xml_analogs as $xml_analog_id_1c) {
-											if(in_array($xml_analog_id_1c, $my_analog_groups[$analog_group]['id_1c']))
-											{
-												$ok_analogs[] = $xml_analog_id_1c;
-											}
-											else
-											{
-												foreach ($analogs_site as $analog_analoga) {
-													if($analog_analoga->id_1c == $xml_analog_id_1c)
-													{
-														if($analog_analoga->similar_id)
-														{
-															if($analog->group != $analog_analoga->group)
-																$this->db->updateRow('s_shopshowcase_products_similar', ['group' => $analog->group], $analog_analoga->similar_id);
-														}
-														else
-															$this->db->insertRow('s_shopshowcase_products_similar', ['product' => $analog_analoga->id, 'group' => $analog->group]);
-														$my_analog_groups[$analog_group]['id_1c'][] = $analog_analoga->id_1c;
-														$ok_analogs[] = $analog_analoga->id_1c;
-														$my_analog_groups[$analog_group][$analog_analoga->id_1c] = $analog_analoga->id;
-														$my_product_analogs[$analog_analoga->id] = $analog_group;
-														break;
-													}
-												}
-											}
-										}
-										foreach ($my_analog_groups[$analog_group]['id_1c'] as $i => $id_1c) {
-											if(!in_array($id_1c, $ok_analogs))
-											{
-												if(isset($my_analog_groups[$analog_group][$id_1c]))
-												{
-													$product_id = $my_analog_groups[$analog_group][$id_1c];
-													$this->db->deleteRow('s_shopshowcase_products_similar', ['product' => $product_id]);
-													unset($my_analog_groups[$analog_group]['id_1c'][$i], $my_analog_groups[$analog_group][$id_1c], $my_product_analogs[$product_id]);
-												}
-											}
-										}
-
-										$find_analog = true;
-										break;
-									}
-								}
-								if(!$find_analog)
-								{
-									$analog_group = 1;
-					        		if($next = $this->db->getQuery('SELECT MAX(`group`) as nextGroup FROM `s_shopshowcase_products_similar`'))
-					        			$analog_group = $next->nextGroup + 1;
-
-									$my_analog_groups[$analog_group] = [];
-									$my_analog_groups[$analog_group]['id_1c'] = [$key];
-									$my_analog_groups[$analog_group][$key] = $id;
-									$my_product_analogs[$id] = $analog_group;
-
-									$this->db->insertRow('s_shopshowcase_products_similar', ['product' => $id, 'group' => $analog_group]);
-									foreach ($analogs_site as $analog) {
-										if(empty($analog->group))
-											$this->db->insertRow('s_shopshowcase_products_similar', ['product' => $analog->id, 'group' => $analog_group]);
-										else if($analog->group != $analog_group)
-											$this->db->updateRow('s_shopshowcase_products_similar', ['group' => $analog_group], $analog->similar_id);
-										$my_analog_groups[$analog_group]['id_1c'][] = $analog->id_1c;
-										$my_analog_groups[$analog_group][$analog->id_1c] = $analog->id;
-										$my_product_analogs[$analog->id] = $analog_group;
-									}
-								}
-							}
-						}
 					}
 					if(!empty($xml_product->ВложеныеФайлы))
 					{

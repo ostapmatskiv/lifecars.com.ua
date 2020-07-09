@@ -71,7 +71,9 @@
             </div> */ ?>
         </div>
         <div class="text-right info__price">
-            <?php if($product->old_price > $product->price) { ?>
+            <?php if($this->userCan()) { ?>
+                <a href="/admin/<?=$product->link?>">Редагувати Admin</a>
+            <?php } if($product->old_price > $product->price) { ?>
             <div class="old__price">
                 <p><strike><?=number_format($product->old_price, 2, '.', ' ') ?></strike> ₴</p>
             </div>
@@ -87,21 +89,13 @@
                 <p>Економія за<br>рахунок знижки</p>
                 <div class="discount__price"><?=number_format($product->old_price - $product->price, 2, '.', ' ') ?> ₴</div>
             </div>
-            <?php } $canBy = false;
-            if(!empty($product->group))
-                foreach ($product->group as $g) {
-                    if($g->active)
-                    {
-                        $canBy = true;
-                        break;
-                    }
-                } ?>
+            <?php } ?>
             <div class="flex h-end v-center card__check detal__check">
                 <div class="flex v-center check__pieces">
                     <i class="fas fa-check-circle"></i>
                     <p>В наявності <span class="pieces"><?=$product->availability?></span> шт.</p>
                 </div>
-                <?php if($canBy && $product->availability > 0) { ?>
+                <?php if($product->active && $product->availability > 0) { ?>
                 <div class="flex check__number">
                     <span class="minus">-</span>
                     <input type="number" value="1" min="1" max="<?=$product->availability?>" />
@@ -109,7 +103,7 @@
                 </div>
                 <?php } ?>
             </div>
-            <?php if($canBy && $product->availability > 0) { ?>
+            <?php if($product->active && $product->availability > 0) { ?>
             <button class="detal__cart" data-product_key="<?="{$product->wl_alias}-{$product->id}"?>" data-product_name="<?="{$product->options['1-manufacturer']->value} {$product->article_show} {$product->name}"?>">
                 <img src="/style/icons/detal/shopping-cart.svg" alt="cart">
                 Додати до кошика
@@ -132,7 +126,19 @@
                 
             <ul>
                 <li>
-                    Група запчастин <span>....................................................................................</span> <?php 
+                    <?=$this->text('Застосовується до')?> <span>.............................................................................</span> <?php 
+                    if(!empty($product->parents)){
+                        $name = [];
+                        foreach ($product->parents as $group) {
+                            $name[] = $group->name;
+                        }
+                        $link = SITE_URL.$product->group_link;
+                        $name = implode(' ', $name);
+                        echo "<a href='{$link}'>{$name}</a> ";
+                    } ?>
+                </li>
+                <li>
+                    Група запчастин <span>................................................................................</span> <?php 
                     if(!empty($product->options['2-part']->value)){
                         $part = [];
                         foreach ($product->options['2-part']->value as $value) {
@@ -145,25 +151,15 @@
                     Артикул <span>..............................................................................................</span> <?=$product->article_show?>
                 </li>
                 <li>
-                    Виробник <span>............................................................................................</span> <?=$product->options['1-manufacturer']->value?>
+                    Виробник <span>...........................................................................................</span> <?=$product->options['1-manufacturer']->value?>
                 </li>
                 <li>
-                    Країна виробник <span>....................................................................................</span> Китай
+                    Країна виробник <span>...............................................................................</span> Китай
                 </li>
                 <li>
-                    Код товара <span>...........................................................................................</span> <?=$product->id?>
+                    Код товара <span>.........................................................................................</span> <?=$product->id?>
                 </li>
             </ul>
-            <?php if(!empty($product->group)) { ?>
-                <br>
-                <div class="detal__line"></div>
-                <p><?=$this->text('Застосовується до')?>:</p>
-                <ul>
-                <?php foreach ($product->group as $group) {
-                    echo "<li><a href='".SITE_URL.$group->link."'>{$group->name}</a></li>";
-                } ?>
-            </ul>
-            <?php } ?>
         </div>
         <div id="tab-2" class="menu__info">
             <?=html_entity_decode($_SESSION['alias']->text)?>
@@ -175,7 +171,7 @@
         <?php } ?>
     </div>
     
-    <?php if($product->similarProducts) { ?>
+    <?php if(false && $product->similarProducts) { ?>
         <div class="flex detal__cart">
             <?php $add_block = 5 - count($product->similarProducts) % 5;
             foreach ($product->similarProducts as $product) {
@@ -188,7 +184,7 @@
                 } ?>
         </div>
     <?php } ?>
-    <?php if(false && $otherProductsByGroup) { ?>
+    <?php if($otherProductsByGroup) { ?>
         <div class="flex detal__cart">
             <?php foreach ($otherProductsByGroup as $product) {
                      require APP_PATH.'views/@commons/__product_subview.php';
