@@ -86,4 +86,5 @@ input:focus { outline: none }
 }
 @media screen and (max-width: 576px) {
 	.m100 { width: 100% }
+	.hideMobile { display: none !important }
 }

@@ -76,9 +76,6 @@
                 <a href="tel:+380960000943">+38 096 0000 943</a><br>
                 <a href="tel:+380930000943">+38 093 0000 943</a>
             </div>
-            <div class="header__login">
-                <button class="header__user-in">Увійти</button>
-            </div>
          </div>
         <div class="flex header__shoping">
             <i class="label __CountProductsInCart">0</i>

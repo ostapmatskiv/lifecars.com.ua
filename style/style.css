@@ -155,7 +155,7 @@ header form button {
 	right: 10px;
 	border: none;
 }
-header form button .fa-search {color:#d9d9d9; }
+header form button .fa-search {color:#d9d9d9;font-size: 12px; }
 header form button i {
 	font-size: 22px;
 	color:#8c8c8c;
@@ -271,14 +271,18 @@ main .logo__text {
 	text-align: center;
 	font-size: 17px;
 	font-weight: 600;
-	color: #666666;
+	color: #666;
 	text-transform: uppercase;
 	letter-spacing: 2px;
-	white-space: nowrap;
 }
 main .main__logo a {
 	position: relative;
 	text-align: center;
+	width: 20%;
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 70px;
 }
 main .main__logo a img { max-height: 40px; max-width: 70px }
 main .main__logo a .fa-chevron-down {
@@ -2377,8 +2381,6 @@ main.cars__models .models__byd button {
 	}
 	main .catalog__sorted {padding-left: 148px;}
 	main section.sale .sale__nav a:before { min-width: 135px; }
-	main .main__logo a:nth-child(1) { margin-right: 25px; }
-	main .main__logo a:nth-child(4) { margin-right: 20px; }
 	section.sale .sale__wrrap .sale__card { width:25%; }
 	section.sale .sale__wrrap .sale__card .card__img { height: 200px; }
 	.card__rating .rating:not(:checked) > label {font-size: 17px;}
@@ -2540,9 +2542,10 @@ main.cars__models .models__byd button {
 }
 
 @media screen and (max-width: 426px) {
-	header  { padding: 0 0 30px 0;}
-	header > div { flex-direction: column;}
-	header .header__shoping { display: none;}
+	#top_header { padding: 2px }
+	header  { padding: 0 0 30px 0 }
+	header > div { flex-direction: column }
+	header .header__shoping { display: none }
 	header .nav__mobile {
 		width: 100%;
 		display: flex;
@@ -2554,7 +2557,7 @@ main.cars__models .models__byd button {
 		margin-right: 22px;
 	}
 	header .header__phone div {font-size: 13px;}
-	header form button { top: 30px;}
+	header form button { top: 26px }
 	header .mobile__shoping a.header__cart {
 		background-color: #fff;
 		border-radius: 100%;
@@ -2628,7 +2631,7 @@ main.cars__models .models__byd button {
 	main .catalog__sorted {padding-left: 0px;}
 	main section.sale .sale__nav { display: none;}
 	section.sale .sale__wrrap .sale__card { width: 50%; }
-	main .main__logo a img {height: 35px;}
+	main .main__logo a img {max-height: 30px; max-width: 50px;}
 	main h1 {
 		font-size: 23px;
 		letter-spacing: 1px;
@@ -2642,8 +2645,6 @@ main.cars__models .models__byd button {
 	main section.cars__catalog .base__detal .detal__text,
 	main section.cars__base .base__detal .detal__text {font-size: 15px;}
 
-	main .main__logo a:nth-child(1) {margin-right: 10px;}
-	main .main__logo a:nth-child(4) {margin-right: 10px;}
 	main .logo__text {font-size: 13px;}
 	section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order { margin-top: 11px; }
 	footer .footer__info .footer__shop,
