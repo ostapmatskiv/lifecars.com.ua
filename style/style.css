@@ -101,7 +101,7 @@ main img { max-width: 100% }
 #top_header { padding-top: 2px }
 #top_header div {
 	display: inline-block;
-    font-size: 13px;
+    font-size: 12px;
     color: #8c8c8c;
 }
 #top_header div a.active {
@@ -110,27 +110,27 @@ main img { max-width: 100% }
 #top_header div img { height: 12px }
 #top_header div.language { margin-right: 50px }
 #top_header div.profile a { margin-right: 20px }
-header { padding: 20px 0 30px 0 }
+header { padding: 16px 0 25px 0 }
 header .mob__menu,
 header div.flex .fa-bars,
 header .mobile__shoping { display: none }
-header img.header__logo { width: 250px }
+header img.header__logo { width: 200px }
 header form {position: relative }
 header form .fa-chevron-down {
-	font-size: 19px;
+	font-size: 12px;
 	color: #d9d9d9;
 	position: absolute;
 	top: 50%;
     transform: translateY(-50%);
-    left: 175px;
+    left: 140px;
 }
 header form select {
-	height: 40px;
-	width: 200px;
+	height: 32px;
+	width: 160px;
 	border-radius: 3px;
 	border: 0;
 	padding: 0 7px;
-	font-size: 15px;
+	font-size: 12px;
 	color:#8c8c8c;
 	background: #fff;
 	outline: none;
@@ -138,13 +138,13 @@ header form select {
 	-webkit-appearance: none;
 }
 header form input {
-	height: 40px;
-    width: 400px;
+	height: 32px;
+    width: 360px;
     border-radius: 3px;
     border: 0;
     padding: 0 10px;
     margin-left: 5px;
-    font-size: 15px;
+    font-size: 12px;
     color: #888888;
 }
 header form button {
@@ -164,28 +164,28 @@ header form button i {
     transform: translateY(-50%); 
 }
 header .header__address {
-	font-size: 15px;
+	font-size: 12px;
 	font-weight: 500;
 	color: #8c8c8c;
 	display: none;
 }
-header .header__address address {font-style: normal;}
+header .header__address address { font-style: normal }
 header .header__address .fa-map-marker-alt,
 header .header__phone .fa-phone-alt {
-	font-size: 28px;
+	font-size: 22px;
     margin-right: 10px;
     color: #8c8c8c;
 }
-@media screen and (min-width: 1400px) {
+@media screen and (min-width: 1366px) {
 	header .header__address { display: flex }
 }
 @media screen and (min-width: 1400px) and (max-width: 1550px) {
-	header form input { width: 380px }
+	header form input { width: 360px }
 }
 header .header__phone{ margin-right: 20px;}
 header .header__phone .header__login { display: none;}
 header .header__phone div {
-	font-size: 15px;
+	font-size: 12px;
 	font-weight: 500;
 	color: #8c8c8c;
 }
@@ -196,7 +196,7 @@ header .header__shoping a.header__cart {
     justify-content: center;
     align-items: center;
 }
-header .header__shoping .header__cart img { padding: 10px; }
+header .header__shoping .header__cart img { padding: 10px; width: 42px }
 header .header__shoping .header__user {
 	outline: none;
 	font-size: 25px;
@@ -218,23 +218,23 @@ header .header__shoping i.label {
 	position: absolute;
     top: 50%;
     transform: translateY(-50%);
-	left: -29px;
+	left: -28px;
 	font-weight: 600;
 	color: #fff;
-	font-size: 14px;
+	font-size: 12px;
 	line-height: 1.4;
 	font-style: normal;
 	text-align: center;
-	height: 20px;
-	width: 40px;
+	height: 18px;
+	width: 36px;
 	border-radius: 0 50px 50px 0;
 	background-color: #82C166;
 }
 header nav {
-	margin-top: 30px;
+	margin-top: 20px;
 }
 header nav a {
-	font-size: 16px;
+	font-size: 14px;
 	font-weight: 600;
 	color: #8c8c8c;
 	text-align: center;
@@ -257,7 +257,7 @@ header nav a.active::before  {
  /*                                    Main                                         */
 
 main h1 {
-	font-size: 36px;
+	font-size: 30px;
 	font-weight: 600;
 	text-transform: uppercase;
 	font-style: normal;
@@ -280,7 +280,7 @@ main .main__logo a {
 	position: relative;
 	text-align: center;
 }
-main .main__logo a img { height: 50px;}
+main .main__logo a img { height: 40px;}
 main .main__logo a .fa-chevron-down {
 	position: absolute;
 	bottom: -25px;
@@ -361,8 +361,8 @@ main #main__slick .slick-prev {
   top: 50%;
   outline: none;
   transform: translateY(-50%);
-  width: 28px;
-  height: 52px;
+  width: 25px;
+  height: 40px;
   cursor: pointer;
 }
 main #main__slick .slick-next {
@@ -376,8 +376,8 @@ background: url('icons/right-arrow.png') center center / cover no-repeat;
   top: 50%;
   outline: none;
   transform: translateY(-50%);
-  width: 28px;
-  height: 52px;
+  width: 25px;
+  height: 40px;
 }
 
 
@@ -547,13 +547,13 @@ section.sale .sale__wrrap .sale__card .rating__comment i.rating__lebel {
 }
 main.detal .detal__cart .sale__card .card__text,
 section.sale .sale__wrrap .sale__card .card__text {
-	height: 100px;
+	height: 70px;
 	display: table-cell;
 	vertical-align: middle;
-	font-size: 18px;
-	font-weight: 600;
+	font-size: 14px;
+	font-weight: 700;
 	text-align: left;
-	color: #262626;
+	color: #000;
 }
 main.detal .detal__cart .sale__card .card__info,
 section.sale .sale__wrrap .sale__card .card__info {
@@ -563,13 +563,13 @@ section.sale .sale__wrrap .sale__card .card__info {
 section.sale .sale__wrrap .sale__card .card__info .info__article { margin-right: 5px;} 
 main.detal .detal__cart .sale__card .card__info .info__article p,
 section.sale .sale__wrrap .sale__card .card__info .info__article p {
-	font-size: 15px;
+	font-size: 12px;
 	padding-top: 5px;
 	color: #a6a6a6;
 }
 main.detal .detal__cart .sale__card .card__info .info__name p,
 section.sale .sale__wrrap .sale__card .card__info .info__name p {
-	font-size: 15px;
+	font-size: 12px;
 	padding-top: 5px;
 	color: #262626;
 }
@@ -796,16 +796,16 @@ section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .
 /*                                 cart modal                                               */
 
 main.detal .detal__cart .sale__card .card__price,
-section.sale .sale__wrrap .sale__card .card__price { margin-top: 18px;}
+section.sale .sale__wrrap .sale__card .card__price { margin-top: 18px; margin-bottom: 8px }
 main.detal .detal__cart .sale__card .card__price .price__text,
 section.sale .sale__wrrap .sale__card .card__price .price__text {
-	font-size: 32px;
-	font-weight: 400;
+	font-size: 27px;
+	font-weight: 500;
 	color: #262626;
 }
 main.detal .detal__cart .sale__card.no_availabilaty .card__price .price__text,
 section.sale .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {
-	font-size: 18px;
+	font-size: 14px;
     font-weight: 400;
     color: #262626;
 }
@@ -1553,7 +1553,7 @@ main .pagination a:nth-child(4) {
 
 /*                          detal            */
 main.detal h1.detal__heading {
-	font-size: 35px;
+	font-size: 28px;
   	font-weight: normal;
   	line-height: 1.33;
   	text-align: left;
@@ -1563,8 +1563,8 @@ main.detal section.detal__info { padding: 30px 0;}
 main.detal section.detal__info .info__img {width: 40%;}
 main.detal section.detal__info .img__big {
 	position: relative;
-	width: 410px;
-	height: 410px;
+	width: 300px;
+	height: 300px;
 	border-radius: 5px;
 	background-color: #fefefe;
 	background-image: url(images/no_image2.png);
@@ -1641,31 +1641,32 @@ main.detal section.detal__info .info__bonus .bonus__extra .extra__img {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 94px;
-	height: 94px;
+	width: 65px;
+	height: 65px;
 	border-radius: 47px;
 	background-color: #fefefe;
 	margin-right: 15px;
-	margin-bottom: 15px;
 }
 main.detal section.detal__info .info__bonus .bonus__send p,
 main.detal section.detal__info .info__bonus .bonus__guarantee p,
 main.detal section.detal__info .info__bonus .bonus__return p,
 main.detal section.detal__info .info__bonus .bonus__extra p {
-	font-size: 16px;
+	font-size: 12px;
   	font-weight: 400;
   	color: #666666;
 }
-main.detal section.detal__info .info__bonus .bonus__extra p {width: 80%;}
+main.detal section.detal__info .info__bonus .flex { margin-bottom: 10px }
+main.detal section.detal__info .info__bonus img { width: 60% }
+main.detal section.detal__info .info__bonus .bonus__extra p { width: 80% }
 
-main.detal section.detal__info .info__price{width: 30%;}
+main.detal section.detal__info .info__price{ width: 30% }
 main.detal section.detal__info .info__price .old__price p {
-	font-size: 36px;
+	font-size: 25px;
 	font-weight: 500;
 	color: #a6a6a6;
 }
 main.detal section.detal__info .info__price .new__price {
-	font-size: 90px;
+	font-size: 65px;
 	font-weight: 500;
 	color: #262626;
 }
@@ -1673,7 +1674,7 @@ main.detal section.detal__info .info__price .discount .discount__procent {
 	margin-right: 10px;
 	width: 60px;
   	height: 25px;
-	font-size: 16px;
+	font-size: 13px;
 	text-align: center;
 	color: #fefefe;
 	border-radius: 0 50px 50px 0;
@@ -1681,35 +1682,35 @@ main.detal section.detal__info .info__price .discount .discount__procent {
 }
 main.detal section.detal__info .info__price .discount p {
 	text-align: left;
-	font-size: 13px;
+	font-size: 12px;
 	font-weight: 400;
 	color: #8c8c8c;
 	line-height: 1;
 }
 main.detal section.detal__info .info__price .discount .discount__price {
 	margin-left: 20px;
-	font-size: 36px;
+	font-size: 30px;
 	font-weight: 500;
 	color: #7cbe49;
 }
-main.detal section.detal__info .info__price .card__check.detal__check {margin-top: 30px;}
+main.detal section.detal__info .info__price .card__check.detal__check {margin-top: 24px;}
 main.detal section.detal__info .info__price .card__check.detal__check .fa-check-circle {
-	margin-right: 13px;
-	font-size: 30px;
+	margin-right: 12px;
+	font-size: 18px;
 	color: #7cbe49;
 	border-radius: 100%;
 }
 main.detal section.detal__info .info__price .card__check.detal__check p {
-	font-size: 20px;
+	font-size: 13px;
 	font-weight: normal;
 	color: #666666;
 }
 
 main.detal section.detal__info .info__price .card__check.detal__check span.minus {
-display: inline-block;
-	width: 50px;
-	height: 30px;
-	font-size: 30px;
+	display: inline-block;
+	width: 30px;
+	height: 22px;
+	font-size: 18px;
 	line-height: 0.7;
 	margin: 0 4px 0 10px;
 	text-align: center;
@@ -1719,18 +1720,18 @@ display: inline-block;
 	cursor: pointer;
 }
 main.detal section.detal__info .info__price .card__check.detal__check input {
-	width: 50px;
-	height: 30px;
+	width: 45px;
+	height: 20px; 
 	text-align: center;
-	font-size: 16px;
+	font-size: 13px;
 	color: #666666;
 	border: none;
 }
 main.detal section.detal__info .info__price .card__check.detal__check span.plus {
 	display: inline-block;
-	width: 50px;
-	height: 30px;
-	font-size: 30px;
+	width: 30px;
+	height: 20px;
+	font-size: 22px;
 	line-height: 0.7;
 	margin-left: 4px;
 	text-align: center;
@@ -1751,19 +1752,19 @@ main.detal section.detal__info .info__price .card__check.detal__check span.plus:
 }
 main.detal section.detal__info .info__price button.detal__cart {
 	margin-top: 15px;
-	width: 400px;
-	height: 75px;
+    width: 280px;
+    height: 48px;
+    font-size: 18px;
 	border: none;
 	border-radius: 5px;
 	background-color: #7cbe49;
-	font-size: 30px;
   	font-weight: 500;
 	color: #fefefe;
 	outline: none;
 	cursor: pointer;
 }
 main.detal section.detal__info .info__price button.detal__cart:hover {background-color: rgb(63, 121, 21);}
-main.detal section.detal__info .info__price button.detal__cart img {vertical-align: middle; margin-right: 10px;}
+main.detal section.detal__info .info__price button.detal__cart img {vertical-align: middle; margin-right: 10px;width: 22px}
 main.detal section.detal__info .info__price button.detal__bay {
 	margin-top: 15px;
 	width: 400px;
@@ -2051,24 +2052,20 @@ main.cars__manufacturers section.catalog__name div a figure img {
 	}
 	section.sale .sale__wrrap .sale__card .card__img { height: 230px;}
 	.card__rating .rating:not(:checked) > label { font-size: 22px; }
-	section.sale .sale__wrrap .sale__card .card__text { font-size: 16px; }
-	section.sale .sale__wrrap .sale__card .card__info .info__article p { font-size: 14px; }
-	section.sale .sale__wrrap .sale__card .card__info .info__name p { font-size: 14px; }
 	section.sale .sale__wrrap .sale__card .card__check .check__pieces p {font-size: 11px;}
 	section.sale .sale__wrrap .sale__card .card__check .check__pieces .fa-check-circle { font-size: 18px; }
 	section.sale .sale__wrrap .sale__card .check__number { width: 70px; }
-	section.sale .sale__wrrap .sale__card .card__price .price__text { font-size: 34px; }
 	section.sale .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {font-size: 16px;}
 	section.sale .sale__wrrap .sale__card .card__price button.cart__buy {
 		width: 85px;
 		height: 35px;
 	}
-	section.sale .sale__wrrap .sale__card .card__price button.cart__buy img { width: 23px;}
+	section.sale .sale__wrrap .sale__card .card__price button.cart__buy img { width: 20px;}
 	section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order {
 		width: 85px;
 		height: 35px;
 	}
-	section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order img { width: 23px;}
+	section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order img { width: 20px;}
 	section.sale .sale__wrrap .sale__card .card__price button.cart__buy:after {
 		bottom: -11px;
 		font-size: 10px;
@@ -2091,10 +2088,6 @@ main.cars__manufacturers section.catalog__name div a figure img {
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product { margin-top: 15px;}
 	 
 	/*              detal              */
-	main.detal section.detal__info .img__big {
-		width: 330px;
-		height: 330px;
-	}
 	main.detal section.detal__info .info__img .img__small .small__img {
 		width: 87px;
 		height: 72px;
@@ -2117,49 +2110,11 @@ main.cars__manufacturers section.catalog__name div a figure img {
 		height: 20px;
 		font-size: 14px;
 	}
-	main .catalog__sorted {padding-left: 98px;}
-	main.detal section.detal__info .info__bonus .bonus__send .send__img,
-	main.detal section.detal__info .info__bonus .bonus__guarantee .guarantee__img,
-	main.detal section.detal__info .info__bonus .bonus__return .return__img,
-	main.detal section.detal__info .info__bonus .bonus__extra .extra__img {
-		width: 80px;
-		height: 80px;
-	   }
-	main.detal section.detal__info .info__bonus .bonus__send .send__img img,
-	main.detal section.detal__info .info__bonus .bonus__guarantee .guarantee__img img,
-	main.detal section.detal__info .info__bonus .bonus__return .return__img img,
-	main.detal section.detal__info .info__bonus .bonus__extra .extra__img img {width: 65%;}
-	main.detal section.detal__info .info__bonus .bonus__send p,
-	main.detal section.detal__info .info__bonus .bonus__guarantee p,
-	main.detal section.detal__info .info__bonus .bonus__return p,
-	main.detal section.detal__info .info__bonus .bonus__extra p {font-size: 14px; padding-bottom: 15px;}
-	main.detal section.detal__info .info__price .old__price p {font-size: 30px;}
-	main.detal section.detal__info .info__price .new__price {font-size: 70px;}
+	main .catalog__sorted {padding-left: 98px}
 	main.detal section.detal__info .info__price .discount .discount__procent {
 		width: 45px;
 		height: 20px;
 		font-size: 14px;
-	}
-	main.detal section.detal__info .info__price .card__check.detal__check .fa-check-circle {font-size: 21px;}
-	main.detal section.detal__info .info__price .card__check.detal__check p {font-size: 16px;}
-	main.detal section.detal__info .info__price .card__check.detal__check span.minus {
-		width: 35px;
-		height: 20px;
-		font-size: 22px;
-	}
-	main.detal section.detal__info .info__price .card__check.detal__check input {
-		width: 45px;
-		height: 20px; 
-	}
-	main.detal section.detal__info .info__price .card__check.detal__check span.plus {
-		width: 35px;
-		height: 20px;
-		font-size: 22px;
-	}
-	main.detal section.detal__info .info__price button.detal__cart {
-		width: 320px;
-		height: 60px;
-		font-size: 25px;
 	}
 	main.detal section.detal__info .info__price button.detal__bay {
 		width: 320px;
