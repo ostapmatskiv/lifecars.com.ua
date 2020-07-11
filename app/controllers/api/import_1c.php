@@ -396,7 +396,7 @@ class import_1c extends Controller
 											$position = count($my_product_images[$my_product->id]);
 											$this->checkImagePath('images/parts/'.$my_product->id);
 											$path_to = 'images/parts/'.$my_product->id.'/'.$image_path;
-											if(rename('import/photos/'.$image_path, $path_to))
+											if(copy('import/photos/'.$image_path, $path_to))
 												$this->db->insertRow('wl_images', ['alias' => $this->shop_wl_alias, 
 																					'content' => $my_product->id,
 																					'file_name' => $image_path,
@@ -520,7 +520,7 @@ class import_1c extends Controller
 								$position = count($my_product_images[$id]);
 								$this->checkImagePath('images/parts/'.$id);
 								$path_to = 'images/parts/'.$id.'/'.$image_path;
-								if(rename('import/photos/'.$image_path, $path_to))
+								if(copy('import/photos/'.$image_path, $path_to))
 									$this->db->insertRow('wl_images', ['alias' => $this->shop_wl_alias, 
 																		'content' => $id,
 																		'file_name' => $image_path,
