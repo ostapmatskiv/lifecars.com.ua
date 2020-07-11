@@ -62,13 +62,12 @@
                 </div>
                 <p>Безпроблемне <u>повернення</u><br>товару</p>
             </div>
-            <?php /* ?>
             <div class="flex h-start v-center bonus__extra">
                 <div class="extra__img">
                     <img src="/style/icons/detal/extra.svg" alt="extra">
                 </div>
                 <p class="etra__text">Нараховуваєм Вам 5% від суми замовлення, при наявності бонусної картки обо за зроблене замовленняпри реєстрації на нашому сайті</p>
-            </div> */ ?>
+            </div>
         </div>
         <div class="text-right info__price">
             <?php if($this->userCan()) { ?>
@@ -92,7 +91,7 @@
             <?php } ?>
             <div class="flex h-end v-center card__check detal__check">
                 <div class="flex v-center check__pieces">
-                    <i class="fas fa-check-circle"></i>
+                    <i class="fas <?=$product->availability > 0 ? 'fa-check-circle' : 'fa-times-circle'?>"></i>
                     <p>В наявності <span class="pieces"><?=$product->availability?></span> шт.</p>
                 </div>
                 <?php if($product->active && $product->availability > 0) { ?>
@@ -123,7 +122,6 @@
         </nav>
         <div id="tab-1" class="menu__info">
             <h4><?=$_SESSION['alias']->list?></h4><hr><br>
-                
             <ul>
                 <li>
                     <?=$this->text('Застосовується до')?> <span>.............................................................................</span> <?php 

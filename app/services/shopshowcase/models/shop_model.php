@@ -362,6 +362,9 @@ class shop_model {
 			$where['+#p.price'] = '<='.$price_max;
 		}
 
+		if(!empty($_GET['availability']) && $_GET['availability'] == 1)
+			$where['#p.availability'] = '>0';
+
 		if($active && $_SESSION['option']->useGroups > 0 && $_SESSION['option']->ProductMultiGroup == 0 && isset($where['group']))
 			$where['#g.active'] = 1;
 
@@ -380,7 +383,7 @@ class shop_model {
 			$where_availability_name['availability'] = '#p.availability';
 			if($_SESSION['language']) $where_availability_name['language'] = $_SESSION['language'];
 			$this->db->join($_SESSION['service']->table.'_availability_name', 'name as availability_name', $where_availability_name);
-		}
+		}		
 
 		if($_SESSION['option']->useMarkUp > 0)
 			$this->db->join($this->table('_markup'), 'value as markup', array('from' => '<p.price', 'to' => '>=p.price'));

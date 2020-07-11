@@ -41,7 +41,7 @@
     </div>
     <div class="flex v-center card__check">
         <div class="flex v-center check__pieces">
-            <i class="fas fa-check-circle"></i>
+            <i class="fas <?=$product->availability > 0 ? 'fa-check-circle' : 'fa-times-circle'?>"></i>
             <p>В наявності <span class="pieces"><?=$product->availability?></span> шт.</p>
         </div>
         <?php if($product->availability > 0) { ?>
