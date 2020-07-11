@@ -219,10 +219,11 @@ class shopshowcase extends Controller {
 			}
 			if($products)
 				$this->setProductsPrice($products);
-
+			$_GET['name'] = $name;
+			
 			$this->load->page_view('search_view', array('products' => $products));
 		}
-		if(isset($_GET['id']) || isset($_GET['article']))
+		else if(isset($_GET['id']) || isset($_GET['article']))
 		{
 			$this->load->smodel('shop_model');
 			$id = 0;

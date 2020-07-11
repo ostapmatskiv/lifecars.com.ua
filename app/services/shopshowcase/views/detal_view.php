@@ -165,7 +165,7 @@
             <?=html_entity_decode($_SESSION['alias']->text)?>
         </div>
 
-        <?php if($product->similarProducts) { ?>
+        <?php if($product->similarProducts || $otherProductsByGroup) { ?>
             <div class="detal__line"></div>
             <p><?=$this->text('Аналоги')?></p>
         <?php } ?>
