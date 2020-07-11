@@ -73,8 +73,8 @@
         <div class="flex v-center header__phone">
             <i class="fas fa-phone-alt"></i>
             <div>
-                <a href="tel:+380965836762">+38 096 583 67 62</a><br>
-                <a href="tel:+380582359854">+38 058 235 98 54</a>
+                <a href="tel:+380960000943">+38 096 0000 943</a><br>
+                <a href="tel:+380930000943">+38 093 0000 943</a>
             </div>
             <div class="header__login">
                 <button class="header__user-in">Увійти</button>

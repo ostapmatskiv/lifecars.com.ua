@@ -6,7 +6,7 @@ $this->load->js_init('init__main()'); ?>
     <h1><?=$_SESSION['alias']->name?></h1>
 
     <?php if(!empty($catalogAllGroups)) { ?>
-    <div class="flex w66 h-evenly v-end main__logo">
+    <div class="flex w50 h-evenly v-end main__logo">
         <?php foreach ($catalogAllGroups as $group) {
             if($group->parent == 0) { ?>
                 <a href="<?=SITE_URL.'parts/'.$group->alias?>" data-group="<?=$group->alias?>">

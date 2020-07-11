@@ -27,8 +27,8 @@
             <div class="flex h-start v-center contacts__phone">
                 <img src="/style/icons/telephone-5.svg" alt="telephone">
                 <div>
-                    <a href="tel:+380965836762">+38 096 583 67 62</a><br>
-                    <a href="tel:+380582359854">+38 058 235 98 54</a>
+                    <a href="tel:+380960000943">+38 096 0000 943</a><br>
+                    <a href="tel:+380930000943">+38 093 0000 943</a>
                 </div>
             </div>
        </div>

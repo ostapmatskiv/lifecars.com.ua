@@ -1,5 +1,5 @@
 <div class="sale__card <?=($product->availability > 0)?'':'no_availabilaty'?>">
-    <a href="<?=SITE_URL.$product->link?>" class="flex h-center v-center card__img">
+    <a href="<?=SITE_URL.$product->link?>" class="flex h-center v-center card__img <?=empty($product->photo)?'empty_photo' : ''?>">
         <?php if(!empty($product->photo)) { ?>
             <img src="<?=IMG_PATH.$product->catalog_photo?>" alt="<?=$product->article_show.' '.$product->name?>">
         <?php } if($product->old_price > $product->price) { ?>
