@@ -79,9 +79,8 @@ class export_1c extends Controller
 				$orders_id[] = $order->id;
 			$orders_products = $this->db->select('s_cart_products as cp', '*', ['cart' => $orders_id])
 											->join('s_shopshowcase_products', 'id_1c, article_show', '#cp.product_id')
-											->join('s_shopstorage', 'id_1c as storage_id_1c, name as storage_name', '#cp.storage_alias')
-											->join('wl_ntkd', 'name', ['alias' => '#cp.product_alias', 'content' => '#cp.product_id'])
-											// ->join('wl_ntkd', 'name', ['alias' => '#cp.product_alias', 'content' => '#cp.product_id', 'language' => $_SESSION['language']])
+											// ->join('s_shopstorage', 'id_1c as storage_id_1c, name as storage_name', '#cp.storage_alias')
+											->join('wl_ntkd', 'name', ['alias' => '#cp.product_alias', 'content' => '#cp.product_id', 'language' => $_SESSION['language']])
 											->get('array');
 			if($orders_products)											
 			foreach ($orders as $order)
