@@ -450,40 +450,39 @@ class import_1c extends Controller
 					$insert['id_1c'] = $key;
 					$insert['article_show'] = (string) $xml_product->Артикул;
 					$insert['article'] = $this->prepareArticleKey($insert['article_show']);
-					$insert['alias'] = $this->data->latterUAtoEN($insert['article_show']);
+					$alias = $this->data->latterUAtoEN($insert['article_show']);
 					if(!empty($xml_product->Производитель))
 					{
 						$manufacturer = (string) $xml_product->Производитель;
 						if(!empty($this->site_manufactures[$manufacturer]))
 						{
 							$manufacturer_id = $this->site_manufactures[$manufacturer];
-							$alias = $this->site_manufactures_alias[$manufacturer_id].'-'.$insert['alias'];
-							if($all)
-							{
-								if(in_array($alias, $inserted_products_link))
-								{
-									$i = 2;
-									while (in_array($alias.'-'.$i, $inserted_products_link)) {
-										$i++;
-									}
-									$alias = $alias.'-'.$i;
-								}
-							}
-							else
-							{
-								if($this->db->select('s_shopshowcase_products', 'id', ['alias' => $alias])->get())
-								{
-									$i = 2;
-									while ($this->db->select('s_shopshowcase_products', 'id', ['alias' => $alias.'-'.$i])->get()) {
-										$i++;
-									}
-									$alias = $alias.'-'.$i;
-								}
-							}
-							$insert['alias'] = $alias;
+							$alias = $this->site_manufactures_alias[$manufacturer_id].'-'.$alias;
 						}
 					}
-					$inserted_products_link[] = $insert['alias'];
+					if($all)
+					{
+						if(in_array($alias, $inserted_products_link))
+						{
+							$i = 2;
+							while (in_array($alias.'-'.$i, $inserted_products_link)) {
+								$i++;
+							}
+							$alias = $alias.'-'.$i;
+						}
+					}
+					else
+					{
+						if($this->db->select('s_shopshowcase_products', 'id', ['alias' => $alias])->get())
+						{
+							$i = 2;
+							while ($this->db->select('s_shopshowcase_products', 'id', ['alias' => $alias.'-'.$i])->get()) {
+								$i++;
+							}
+							$alias = $alias.'-'.$i;
+						}
+					}
+					$insert['alias'] = $inserted_products_link[] = $alias;
 					
 					if(!empty($xml_product->Авто))
 					{
