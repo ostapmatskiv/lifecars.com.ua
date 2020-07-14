@@ -12,7 +12,8 @@ $(document).ready(function(){
         $(this).closest('.no_availabilaty').find('.cart__modal').slideDown();
     })
     $('.sale__card.no_availabilaty .modal__request').click(function () {
-        $(this).closest('.cart__modal').find('.cart__form').css("z-index", "10");
+        $(this).closest('.cart__modal').find('.cart__form').slideDown();
+        $(this).closest('.cart__modal').find('h5').slideUp();
     })
     $('.sale__card.no_availabilaty .cart__hiden').click(function () {
         $(this).closest('.cart__modal').slideUp();

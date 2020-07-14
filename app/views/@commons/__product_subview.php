@@ -62,50 +62,50 @@
         </div>
     </div>
     <?php } else { ?>
-    <div class="cart__modal">
-        <h5>Зв'яжіться з нами</h5>
-        <p>і ми проінформуємо Вас про можливість замовлення та оптимальну ціну на цей товар:</p>
-        <div class="modal__name">
-            <?=$product->name?>
+        <div class="flex v-center card__price">
+            <div class="price__text">Під замовлення</div>
+            <div class="price__cart">
+                <button class="cart__order">
+                    <img src="/style/icons/telephone-2.svg" alt="telephone">
+                </button>
+            </div>
         </div>
-        <div class="modal__product">
-            <?=$product->manufacturer?> <?=$product->article_show?>
-        </div>
-        <div class="modal__phone">
-            <a href="tel:+380930000943">+38 093 0000 943</a>
-            <a href="tel:+380960000946">+38 096 0000 946</a>
-        </div>
-        <span>або</span>
-        <button class="modal__request">Залишити заявку</button>
-
-        <div class="cart__form">
-            <div class="form__name">
+        <div class="cart__modal">
+            <h5>Зв'яжіться з нами</h5>
+            <p>і ми проінформуємо Вас про можливість замовлення та оптимальну ціну на цей товар:</p>
+            <div class="modal__name">
                 <?=$product->name?>
             </div>
-            <div class="form__product">
+            <div class="modal__product">
                 <?=$product->manufacturer?> <?=$product->article_show?>
             </div>
-            <form action="#">
-                <input required name="city" list="city__select" type="text" placeholder="Виберіть мшісто">
-                <datalist id="city__select"></datalist>
-                <input required type="text" placeholder="Ім'я">
-                <input required type="tel" placeholder="Телефон">
-                <input required type="email" placeholder="Електронна адреса">
-                <button class="form__btn">Надіслати запит</button>
-            </form>
-        </div>
+            <div class="modal__phone">
+                <a href="tel:+380930000943">+38 093 0000 943</a>
+                <a href="tel:+380960000946">+38 096 0000 946</a>
+            </div>
+            <span>або</span>
+            <button class="modal__request">Залишити заявку</button>
 
-        <button class="cart__hiden">
-            <i class="fas fa-chevron-circle-up"></i>
-        </button>
-    </div>
-    <div class="flex v-center card__price">
-        <div class="price__text">Під замовлення</div>
-        <div class="price__cart">
-            <button class="cart__order">
-                <img src="/style/icons/telephone-2.svg" alt="telephone">
+            <div class="cart__form">
+                <div class="form__name">
+                    <?=$product->name?>
+                </div>
+                <div class="form__product">
+                    <?=$product->manufacturer?> <?=$product->article_show?>
+                </div>
+                <form action="#">
+                    <input required name="city" list="city__select" type="text" placeholder="Виберіть місто">
+                    <datalist id="city__select"></datalist>
+                    <input required type="text" placeholder="Ім'я">
+                    <input required type="tel" placeholder="Телефон">
+                    <input required type="email" placeholder="Електронна адреса">
+                    <button class="form__btn">Надіслати запит</button>
+                </form>
+            </div>
+
+            <button class="cart__hiden">
+                <i class="fas fa-chevron-circle-up"></i>
             </button>
         </div>
-    </div>
     <?php } ?>
 </div>
