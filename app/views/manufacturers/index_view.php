@@ -3,10 +3,7 @@
     
    <div class="flex manufacturers__name">
     <div class="nane__english">
-        <?php $manufactures = $this->db->select('s_shopshowcase_options as o', 'id, photo', ['group' => -1])
-                                        ->join('s_shopshowcase_options_name as n', 'name', ['option' => '#o.id', 'language' => $_SESSION['language']])
-                                        ->order('name', 'n')
-                                        ->get('array');
+        <?php 
         if($manufactures) {
             $letter = '';
             foreach ($manufactures as $m) {
@@ -31,6 +28,8 @@
                 if(!empty($m->name))
                 {
                     $img = '/style/images/no_image2.png';
+                    if(!empty($m->photo))
+                        $img = '/images/parts/options/1-manufacturer/'.$m->photo;
                     $l = substr($m->name, 0, 1);
                     $l = strtoupper($l);
                     if($l != $letter)
@@ -41,7 +40,7 @@
                             <label for="#">'.$l.'</label>';
                         $letter = $l;
                     } ?>
-                    <a href="#"> 
+                    <a href="<?=SITE_URL?>manufacturers/<?=$m->link?>"> 
                         <figure>
                             <img src="<?=$img?>" alt="<?=$m->name?>">
                             <figcaption><?=$m->name?></figcaption>
