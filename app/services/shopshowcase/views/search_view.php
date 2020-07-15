@@ -34,19 +34,7 @@
         </div>
     </section>
 
-    <?php /*
-    <div class="flex h-center v-center w50 pagination">
-        <button>
-           <img src="/style/icons/catalog/back-left.svg" alt="left">
-        </button>
-            <a href="">1</a>
-            <a href="">486</a>
-            <a href="">487</a>
-            <a href="">488</a>
-            <a href="">2546</a>
-        <button>
-           <img src="/style/icons/catalog/back-right.svg" alt="right">
-        </button>
-    </div>
-    */ ?>
+    <?php $this->load->library('paginator');
+    $this->paginator->style('ul', 'flex h-center v-center w50 pagination');
+    echo $this->paginator->get(); ?>
 </main>
