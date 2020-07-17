@@ -71,6 +71,11 @@ $(document).ready(function(){
         event.preventDefault;
         $('#modal-add_success').hide()
     });
+    $('.modal .close, .modal .fa-times').click(function(event) {
+        event.preventDefault;
+        $(this).closest('.modal').hide()
+        $('#modal-bg').hide()
+    });
     $('.minus').click(function () {
         var $input = $(this).parent().find('input');
         var count = parseInt($input.val()) - 1;

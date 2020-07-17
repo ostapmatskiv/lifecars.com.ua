@@ -1,5 +1,5 @@
 $(document).ready(function (){
-	var sticky_price_box = new Sticky('#cart .price-box');
+	// var sticky_price_box = new Sticky('#cart .price-box');
 	recount()
 });
 
@@ -262,7 +262,7 @@ $('#cart .name_action button.delete').click(function () {
 		var img = product.find('img');
 		if(img)
 			popupCart.find('.product-img').empty().append(img.clone());
-		popupCart.find('.product-name').html(product.find('.name_action p').text());
+		popupCart.find('.product-name').html(product.find('.name_action a').text());
 		popupCart.find('.product-price').html($('#pricePerOne-'+key).html()+' x '+ $('#productQuantity-'+key).val()+ ' = <strong>'+$('#priceSum-'+key).html()+'</strong>');
 		// popupCart.find('.product-options').html(product.find('h3~p:not(.price)').clone());
 		// popupCart.find('.product-options').html(product.find('p.article').clone());
@@ -309,10 +309,10 @@ $('table.__cart_products_list .name_action ~ table tbody tr td.amount input').on
 	// this.value = this.value.replace(/(?![0-9])./gmi,'');
 	changeQuantity(this, this.value.replace(/(?![0-9])./gmi,''));
 })
-$('table.__cart_products_list .name_action ~ table tbody tr td.amount button.minus').click(function(){
+$('table.__cart_products_list .name_action ~ table tbody tr td.amount button.minusInCart').click(function(){
 	changeQuantity(this, '-')
 })
-$('table.__cart_products_list .name_action ~ table tbody tr td.amount button.plus').click(function(){
+$('table.__cart_products_list .name_action ~ table tbody tr td.amount button.plusInCart').click(function(){
 	changeQuantity(this, '+')
 })
 

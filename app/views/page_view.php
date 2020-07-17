@@ -26,7 +26,7 @@
 	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>style/ws__main.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
 	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>assets/magnific-popup/magnific-popup.css">
-	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>style/style.css?v=0.0.2">
+	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>style/style.css?v=0.0.3">
 </head>
 <body>
 	<?php
@@ -43,12 +43,14 @@
 	?>
 	<div id="modal-bg"></div>
 	<div id="modal-add_success">
-		<img src="<?=SERVER_URL?>style/images/logo.png" alt="logo">
-		<h4 class="product_name"></h4>
-		<h4><?=$this->text('Товар у корзині', 0)?></h4>
-		<div class="flex">
-			<a class="close" href="#"><?=$this->text('Продовжити покупки', 0)?></a>
-			<a href="<?=SITE_URL?>cart"><?=$this->text('До корзини', 0)?></a>
+		<div class="bg-white">
+			<img src="<?=SERVER_URL?>style/images/logo.png" alt="logo">
+			<h4 class="product_name"></h4>
+			<h4><?=$this->text('Товар у корзині', 0)?></h4>
+			<div class="flex">
+				<a class="close" href="#"><?=$this->text('Продовжити покупки', 0)?></a>
+				<a href="<?=SITE_URL?>cart"><?=$this->text('До корзини', 0)?></a>
+			</div>
 		</div>
 	</div>
 

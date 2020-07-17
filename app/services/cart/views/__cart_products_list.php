@@ -57,9 +57,9 @@
 							<th id="pricePerOne-<?= $product->key ?>"><?=$product->info->price_format ?></th>
 							<td class="amount">
 								<div class="flex">
-									<button class="minus">-</button>
+									<button class="minusInCart">-</button>
 									<input type="number" id="productQuantity-<?= $product->key?>" value="<?= $product->quantity?>" data-key="<?= $product->key?>" data-max="<?= $product->storage->amount_free ?? $product->info->availability?>" placeholder="1">
-									<button class="plus">+</button>
+									<button class="plusInCart">+</button>
 								</div>
 							</td>
 							<th id="priceSum-<?= $product->key ?>"><?=$product->info->sum_format ?></th>

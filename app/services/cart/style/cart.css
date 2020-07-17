@@ -98,7 +98,7 @@ table.__cart_products_list > tbody td:first-child div {
 	font-size: 16px;
 	text-align: right
 }
-table.__cart_products_list > tbody td:nth-child(2) { width: 180px; padding: 0 10px }
+table.__cart_products_list > tbody td:nth-child(2) { width: 150px; padding: 0 10px }
 table.__cart_products_list > tbody td:nth-child(2) a {
 	display: block;
 	width: auto;
@@ -106,15 +106,13 @@ table.__cart_products_list > tbody td:nth-child(2) a {
 	border-radius: 2px;
 	margin-top: 5px;
 }
+table.__cart_products_list > tbody td:nth-child(2) a img:hover { transform: scale(1.05); transition: all 1s }
 table.__cart_products_list .name_action {
-	background: #F6F6F6;
-	border-radius: 2px;
 	color: #292929;
-	margin-top: 4px;
-	padding: 5px 10px
+	margin-bottom: 5px;
 }
 table.__cart_products_list .name_action p {
-	font-size: 16px;
+	font-size: 15px;
 	margin: 0
 }
 table.__cart_products_list .name_action a {
@@ -127,8 +125,6 @@ table.__cart_products_list .name_action .delete {
 	color: #fff;
     height: 25px;
     width: 30px;
-    margin-top: -4px;
-	margin-right: -5px;
 	border: none;
 }
 table.__cart_products_list .name_action .delete:hover { background: #E40000 }
@@ -138,7 +134,6 @@ table.__cart_products_list .name_action .product-active {
     color: #fff;
     height: 25px;
     width: 100px;
-    margin-top: -4px;
     margin-right: 10px;
     cursor: pointer;
 }
@@ -147,20 +142,14 @@ table.__cart_products_list .name_action .product-active span { padding-left: 5px
 table.__cart_products_list .name_action .product-active:hover { background: #FB9006 }
 table.__cart_products_list p.article {margin: 2px 0 0 0; padding-left: 5px; font-size: 12px }
 table.__cart_products_list p.article strong { font-size: 12px }
-table.__cart_products_list .name_action ~ table { border-spacing: 5px; width: 100% }
+table.__cart_products_list .name_action ~ table { border-spacing: 5px; width: 100%; max-width: 700px }
 table.__cart_products_list .name_action ~ table tr td {
 	color: #AFAFAF;
-	border-top: 1px solid #F6F6F6;
-	border-bottom: 1px solid #F6F6F6;
 	text-align: center;
-    font-size: 14px;
-    padding: 2px 0;
-    vertical-align: middle;
+    font-size: 12px;
 }
 table.__cart_products_list .name_action table {
     color: #AFAFAF;
-    border-top: 1px solid #F6F6F6;
-    border-bottom: 1px solid #F6F6F6;
     text-align: center;
     font-size: 13px;
     padding: 2px 0;
@@ -177,14 +166,14 @@ table.__cart_products_list .name_action ~ table thead tr td:nth-of-type(6) { wid
 table.__cart_products_list .name_action ~ table tbody tr * {
 	background: #F6F6F6;
 	border-radius: 2px;
-	height: 30px;
+	height: 25px;
 }
 table.__cart_products_list .name_action ~ table tbody tr th:first-of-type,
 table.__cart_products_list .name_action ~ table tbody tr th:nth-of-type(2) {
 	width: 70px;
 	background: #E6E5E5;
 	color: #292929;
-	font-size: 15px;
+	font-size: 14px;
 	text-align: center
 }
 
@@ -206,11 +195,11 @@ table.__cart_products_list .name_action ~ table tbody tr td.amount button {
 	background: none;
 	width: 40px;
 	color: #29ABE2;
+	border: #989898 1px solid;
     border-radius: unset;
     text-align: center;
 	padding: 0;
 	background: #F6F6F6;
-    border: none;
     cursor: pointer;
 }
 table.__cart_products_list  .name_action ~ table tbody tr td.amount button:hover {
@@ -218,9 +207,16 @@ table.__cart_products_list  .name_action ~ table tbody tr td.amount button:hover
 	color: #fff;
 }
 table.__cart_products_list .amount button i { font-size: 10px }
-table.__cart_products_list .amount button.plus i { margin-left: -4px }
+table.__cart_products_list .amount button.plusInCart i { margin-left: -4px }
 
 
+#cart-product-delete {
+	width: 100%;
+	max-width: 620px;
+	height: auto;
+    left: calc(50% - 310px);
+}
+#cart-product-delete h4 { font-size: 20px; text-align: center; padding: 10px 0 20px; }
 #cart-product-delete h5 { font-weight: 400; font-size: 18px; font-weight: bold }
 #cart-product-delete .product-options { margin: 5px 0 }
 #cart-product-delete p.product-price + p { margin-top: 30px }

@@ -21,13 +21,19 @@ main img { max-width: 100% }
 	justify-content: center;
 	align-items: center;
     flex-direction: column;
+}
+#modal-add_success .bg-white {
+	width: 50%;
+	max-width: 700px;
+	background-color: #fff;
     font-size: 22px;
-    color: #fff;
+    text-align: center;
+    padding: 50px;
 }
 #modal-add_success img { margin-bottom: 15px; max-width: 90% }
 #modal-add_success h4 { font-size: 32px; margin-bottom: 30px; max-width: 90% }
 #modal-add_success h4.product_name { font-size: 26px }
-#modal-add_success .flex { width: 420px }
+#modal-add_success .flex { width: 420px; margin: auto }
 #modal-add_success a {
 	display: block;
 	padding: 12px;
@@ -37,6 +43,7 @@ main img { max-width: 100% }
 	border-radius: 5px;
 	width: 205px;
 	font-size: 18px;
+	color: #fff
 }
 #modal-add_success a:hover {
     background-color: #669e3b;
@@ -93,6 +100,7 @@ main img { max-width: 100% }
 	margin: auto;
 	padding: 10px 30px;
 	margin-bottom: 15px;
+    border: none;
 	border-radius: 2px
 }
 
