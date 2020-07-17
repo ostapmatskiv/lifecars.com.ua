@@ -81,7 +81,7 @@
 
 #cart textarea, #cart select { width: 100% }
 #cart #oferta { padding-left: 0; background: none; text-align: left }
-#cart #oferta i { font-size: 25px; color: #29ABE2; margin-right: 10px; float: left }
+#cart #oferta i { font-size: 16px; color: #29ABE2; margin-top: 5px; margin-right: 10px; float: left }
 #cart #oferta div { margin-top: 5px }
 #cart #oferta a { display: inline; text-decoration: underline }
 @media(max-width: 1023px){#cart .price-box { position: inherit !important; margin-bottom: 15px }}
