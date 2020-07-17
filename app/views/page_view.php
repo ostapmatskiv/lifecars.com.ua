@@ -48,7 +48,7 @@
 			<h4 class="product_name"></h4>
 			<h4><?=$this->text('Товар у корзині', 0)?></h4>
 			<div class="flex">
-				<a class="close" href="#"><?=$this->text('Продовжити покупки', 0)?></a>
+				<a class="close" href="javascript:void(0)"><?=$this->text('Продовжити покупки', 0)?></a>
 				<a href="<?=SITE_URL?>cart"><?=$this->text('До корзини', 0)?></a>
 			</div>
 		</div>

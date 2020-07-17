@@ -1,4 +1,5 @@
 <?php if($_SESSION['cart']->initJsStyle) {
+	$_SESSION['alias']->js_load[] = 'assets/sticky.min.js';
 	$_SESSION['alias']->js_load[] = 'js/'.$_SESSION['alias']->alias.'/cart.js';
 	echo '<link rel="stylesheet" type="text/css" href="'.SITE_URL.'style/'.$_SESSION['alias']->alias.'/cart.css">';
 	$_SESSION['cart']->initJsStyle = false;
@@ -65,7 +66,7 @@
 				<?php } ?>
 			</form>
 		<?php } ?>
-		<div class="price-box" data-margin-top="35">
+		<div class="price-box">
 			<p class="price">
 				<?=$this->text('Попередня сума')?>
 				<strong class="right"><?=$products ? $subTotalFormat : '0.00'?></strong>

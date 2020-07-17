@@ -1,5 +1,5 @@
 $(document).ready(function (){
-	// var sticky_price_box = new Sticky('#cart .price-box');
+	var sticky_price_box = new Sticky('#cart .price-box');
 	recount()
 });
 
