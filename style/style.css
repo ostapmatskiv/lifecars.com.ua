@@ -2706,3 +2706,96 @@ main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a
 	}
 	/*             accessories      */
 }
+
+}
+
+
+#contacts{
+    margin-top: 60px;
+}
+#contacts .contactsText div{
+	margin: 14px 0;
+}
+#contacts h2{
+	font-size: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    color: #666666;
+    margin: 0 auto 30px;
+}
+#contacts .contactsText p{
+	font-size: 18px;
+    font-weight: 600;
+    color: #8c8c8c;
+	text-align: center;
+}
+#contacts .contactsText p i{
+    color: #82C166;
+	margin-right: 5px;
+}
+i.fas.iNone::before{
+	color: transparent;
+}
+#contacts .contactsText p a{
+	font-size: 18px;
+    font-weight: 600;
+    color: #8c8c8c;
+	text-align: center;
+}
+#contacts .contactsText p a:hover{
+    color: #82C166;
+}
+#contacts .contactsMap iframe{
+	width: 80%;
+	height: 300px;
+	margin: 30px 10% 0;
+}
+
+#contacts .contactsForm form{
+    padding-left: 40px;
+    padding-bottom: 60px;
+}
+#contacts .contactsForm form input,
+#contacts .contactsForm form textarea{
+    box-shadow: 0 0 0 0 rgba(140,140,140,.5);
+    background-color: transparent;
+    color: #000;
+	font-family: 'Segoe UI', Arial;
+    font-size: 16px;
+    font-weight: 400;
+    margin: 7px 5%;
+	border: solid 1px #82C166;
+	border-radius: 10px;
+	padding: 14px 30px;
+	width: 90%;
+	background-color: #fff;
+}
+#contacts .contactsForm form input:focus,
+#contacts .contactsForm form textarea:focus,
+textarea:active{
+    outline: none;
+	border-color: #82C166;
+	box-shadow: 2px 2px 8px #82C166;
+}
+#contacts .contactsForm form input[type="submit"]{
+    background: #82C166;
+	font-family: 'Segoe UI', Arial;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: #FFF;
+    padding: 16px 56px;
+    margin: 5px calc(50% - 120px) 0;
+    cursor: pointer;
+    border: 1px solid #82C166;
+    transition: all 0.3s ease;
+    width: 240px;
+    text-transform: uppercase;
+}
+#contacts .contactsForm form input[type="submit"]:hover{
+    background: #fff;
+	color: #82C166;
+	box-shadow: 2px 2px 8px #82C166;
+}
