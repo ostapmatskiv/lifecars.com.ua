@@ -5,13 +5,7 @@
 #cart .w25 {width: 24%;}
 #cart .w70 {width: 69%;}
 #cart .w30 {width: 30%;}
-#cart h1 {
-	text-align: left;
-	margin-top: 0;
-	text-transform: uppercase;
-    font-weight: 400;
-    font-size: 30px;
-}
+#cart h1 { text-align: left }
 #cart h4 { font-size: 20px; margin-bottom: 10px; font-weight: normal }
 
 #cart .w30 input, #cart textarea, #cart select {
@@ -243,28 +237,7 @@ table.__cart_products_list .amount button.plusInCart i { margin-left: -4px }
 	table.__cart_products_list .name_action ~ table tbody tr input { width: calc(100% - 50px) }
 }
 
-@media(max-width: 1100px){
-	#nova-poshta-warehouse .info .w33, #nova-poshta-warehouse .info .w33 strong { font-size: 11px; letter-spacing: -0.5px }
-	#cart-product-delete {
-	    height: 300px;
-	    width: 90%;
-	    left: 5%;
-	    top: calc(50% - 150px);
-	}
-	#cart-product-delete img{
-		width: 60%;
-		margin-left: 20%
-	}
-}
-@media(max-width: 1023px){
-	#cart-product-delete {
-	    height: 96%;
-	    width: 96%;
-	    left: 2%;
-	    top: 2%;
-	}
-	#cart-product-delete img{
-		width: 50%;
-		margin-left: 25%
-	}
+@media(max-width: 576px){
+	table.__cart_products_list > tbody tr td { padding-bottom: 10px }
+	table.__cart_products_list > tbody td:first-child { display: none }
 }

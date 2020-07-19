@@ -4,7 +4,7 @@
 	color: inherit;
 	padding: 0;
 	margin: 0;
-	/*height: auto;*/
+	outline: none;
 }
 .container {
 	width: 90%;
@@ -25,10 +25,11 @@
 .flex.h-center { justify-content: center }
 .flex.h-evenly { justify-content: space-evenly }
 .flex.h-end { justify-content: flex-end }
-.flex.v-center {align-items: center }
+.flex.v-center { align-items: center }
 .flex.v-start { align-items: flex-start }
 .flex.v-end { align-items: flex-end }
 
+.w-auto { width: auto }
 .w100 { width: 100% }
 .w80 { width: 80% }
 .w75 { width: 75% }
@@ -49,6 +50,9 @@
 .w20-5 { width: calc(20% - 5px) }
 .h100 { height: 100% }
 .h100v { height: 100vh }
+
+.m0	{ margin: 0 }
+.p0	{ padding: 0 }
 
 .border { border: 1px solid #000 }
 .border.red { border-color: red }
@@ -79,12 +83,36 @@ input:focus { outline: none }
 
 @media screen and (max-width: 1025px) {
 	.t100 { width: 100% }
+	.t-hide { display: none !important }
 	.container {
 		width: 100%;
 		padding: 0 15px;
 	}
 }
 @media screen and (max-width: 576px) {
-	.m100 { width: 100% }
-	.hideMobile { display: none !important }
+	.m-p0 { padding: 0 !important }
+	.m-m0 { margin: 0 !important }
+
+	.m100 { width: 100% !important }
+	.m-hide { display: none !important }
+	.m-block { display: block !important }
+	.m-inline { display: inline !important }
+	.m-inlineBlock { display: inline-block !important }
+	.m-flex {
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex !important;
+		justify-content: space-between;
+	}
+	.m-flex.column, .flex.m-column { flex-direction: column }
+	.m-flex.wrap, .flex.m-wrap { flex-wrap: wrap }
+	.m-flex.h-start, .flex.m-h-start { justify-content: flex-start }
+	.m-flex.h-center, .flex.m-h-center { justify-content: center }
+	.m-flex.h-evenly, .flex.m-h-evenly { justify-content: space-evenly }
+	.m-flex.h-end, .flex.m-h-end { justify-content: flex-end }
+	.m-flex.v-center, .flex.m-v-center { align-items: center }
+	.m-flex.v-start, .flex.m-v-start { align-items: flex-start }
+	.m-flex.v-end, .flex.m-v-end { align-items: flex-end }
 }

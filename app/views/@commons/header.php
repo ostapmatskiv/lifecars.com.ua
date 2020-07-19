@@ -3,14 +3,14 @@
         <?php /* <i class="fas fa-map-marker-alt"></i>
         <a href="https://goo.gl/maps/ZVp3Y1JQkubKnLBR9" target="_blank">Львів, вул. Виговського, 49</a> */ ?>
     </div>
-    <div>
-        <div class="language">
+    <div class="m-flex m100">
+        <div class="language m-m0">
             <a href="<?=SITE_URL_UK?>" <?=$_SESSION['language'] == 'uk' ? 'class="active"' : ''?>>UA</a> | <a href="<?=SITE_URL_RU?>" <?=$_SESSION['language'] == 'ru' ? 'class="active"' : ''?>>RU</a>
         </div>
         <div class="profile">
             <?php if($this->userIs()) { ?>
                 Вітаємо, 
-                <a href="<?=SITE_URL?>profile" class="active" title="Мій кабінет">
+                <a href="<?=SITE_URL?>profile/<?=$_SESSION['user']->alias?>" class="active" title="Мій кабінет">
                     <img src="<?=SERVER_URL?>style/icons/user.png" alt="user">
                     <?=$_SESSION['user']->name?>
                 </a>
@@ -115,8 +115,20 @@
             <a href="<?=SITE_URL?>">
                 <img class="mob__logo" src="/style/images/logo.png" alt="logo">
             </a>
-            <a href="<?=SITE_URL?>login">Увійти</a>
-            <a href="<?=SITE_URL?>signup">Реєстрація</a>
+            <?php if($this->userIs()) { ?>
+                <a href="<?=SITE_URL?>profile/<?=$_SESSION['user']->alias?>" title="Мій кабінет">
+                    <img src="<?=SERVER_URL?>style/icons/user.png" alt="user">
+                    <?=$_SESSION['user']->name?>
+                </a>
+                <?php if($this->userCan()) { ?>
+                    <a href="/admin" class="admin">Admin</a>
+                <?php } ?>
+                <a href="<?=SITE_URL?>profile/edit"><?=$this->text('Редагувати профіль', 0)?></a>
+                <a href="/logout"><?=$this->text('Вийти', 0)?></a>
+            <?php } else { ?>
+                <a href="<?=SITE_URL?>login"><?=$this->text('Увійти', 0)?></a>
+                <a href="<?=SITE_URL?>signup"><?=$this->text('Реєстрація', 0)?></a>
+            <?php } ?>
             <div class="mob__border"></div>
             <a href="<?=SITE_URL?>parts" <?=($_SESSION['alias']->alias == 'parts') ? 'class="active"' : ''?>>Каталог запчастин</a>
             <a href="<?=SITE_URL?>manufacturers" <?=($_SESSION['alias']->alias == 'manufacturers') ? 'class="active"' : ''?>>Виробники</a>
@@ -125,7 +137,9 @@
             <a href="<?=SITE_URL?>contacts" <?=($_SESSION['alias']->alias == 'contacts') ? 'class="active"' : ''?>>Контакти</a>
             <div class="mob__border"></div>
             <a href="<?=SITE_URL?>cart">Мій кошик</a>
-            <a href="#">Оформлення замовлення</a>
+            <?php if (!empty($_SESSION['cart'])) { ?>
+                <a href="<?=SITE_URL?>cart/checkout">Оформлення замовлення</a>
+            <?php } ?>
             <a href="<?=SITE_URL?>about">Про нас</a>
         </div>
     </div>

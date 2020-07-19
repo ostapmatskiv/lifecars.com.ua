@@ -2363,14 +2363,15 @@ main.cars__models .models__byd button {
 		margin-top: 10px;
 		margin-left: 0;
 	}
-	header .header__phone { order: -1;}
 	header .header__phone {
+		order: -1;
 		width: calc(100% + 30px);
 		padding: 5px 15px 5px 15px;
 		margin: 0px;
 		margin-bottom: 10px;
 		background: #8c8c8c;
-		}
+		justify-content: center
+	}
 	header .header__phone .header__login .header__user-in {
 		background: transparent;
 		border: none;
@@ -2461,15 +2462,17 @@ main.cars__models .models__byd button {
 		min-height: 100vh;
 	}
 	header div.mob__menu .mob__nav a {
-		font-size: 16px;
+		font-size: 15px;
     	padding: 8px 10px;
     	margin: -1px 15px;
     	color: #fff;
     	width: calc(100% - 30px);
    		display: block;
 	}
+	header div.mob__menu .mob__nav a img { height: 15px }
 	header div.mob__menu .mob__nav a img.mob__logo {
 		width: calc(100% - 30px);
+		height: auto;
     	max-width: 200px;
 		margin: 15px 0;
 	}

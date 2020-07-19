@@ -4,7 +4,7 @@
     <h1><?=$this->text('Кабінет клієнта').' '.$user->name?></h1>
 
     <div class="flex">
-        <aside class="w20">
+        <aside class="w20 m-hide">
             <?php $user_photo = ($user->photo) ? IMG_PATH.'profile/s_'.$user->photo : IMG_PATH.'empty-avatar.png';
             if(isset($_SESSION['alias']->link) && $_SESSION['alias']->link == 'profile/edit') { ?>
                 <div id="photo-block" class="mob_user_photo">
@@ -38,7 +38,7 @@
 
             <a href="<?=SITE_URL?>logout"><i class="fas fa-sign-out-alt"></i> Вийти</a>
         </aside>
-        <article class="w80-5">
+        <article class="w80-5 m100">
             <?php if(!empty($_SESSION['notify']->errors)) { ?>
                <div class="alert alert-danger">
                     <span class="close" data-dismiss="alert">×</span>

@@ -1,5 +1,5 @@
 <table class="__cart_products_list">
-	<thead>
+	<thead class="m-hide">
 		<tr>
 			<th><?=count($products)?></th>
 			<td colspan="2"><?=$this->text('Всього товарів у кошику')?></td>
@@ -9,7 +9,7 @@
 		<?php if($products) foreach($products as $i => $product) { ?>
 		<tr id="product-<?=$product->key?>" <?=($product->active)?'':'class="disabled"'?>>
 			<td><div><?=$i + 1?></div></td>
-			<td class="hideMobile"><a href="<?=SITE_URL.$product->info->link?>">
+			<td><a href="<?=SITE_URL.$product->info->link?>">
 				<?php if($product->info->photo) { ?>
 					<img src="<?=IMG_PATH?><?=$product->info->cart_photo ?? $product->info->admin_photo ?>" alt="<?=$product->info->name ?>">
 				<?php } else

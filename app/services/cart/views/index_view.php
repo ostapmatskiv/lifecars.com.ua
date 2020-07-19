@@ -5,8 +5,8 @@
 	$_SESSION['cart']->initJsStyle = false;
 } ?>
 
-<main id="cart" class="flex w100" data-sticky-container>
-	<div class="w75-5">
+<main id="cart" class="flex w100 m-column" data-sticky-container>
+	<div class="w75-5 m100">
 		<h1><?=$_SESSION['alias']->name?></h1>
 
 		<div id="cart_notify" class="alert alert-danger hide">
@@ -26,7 +26,7 @@
 			<p><?=$this->text('Корзина пуста')?></p>
 		</div>
 	</div>
-	<div class="w25">
+	<div class="w25 m100">
 		<?php if(false && !$this->userIs()) { ?>
  			<h4><?=$this->text('Вже купували?')?></h4>
  			<p><?=$this->text('Увійдіть - це заощадить Ваш час')?></p>
