@@ -24,7 +24,7 @@ class wl_sitemap extends Controller {
                 $sitemap->name = '';
                 $where = array('alias' => $sitemap->alias, 'content' => $sitemap->content);
                 if($_SESSION['language'])
-                    $where['language'] = $sitemap->language;
+                    $where['language'] = $_SESSION['language'];
 
                 if($sitemap->alias > 0)
                 {
