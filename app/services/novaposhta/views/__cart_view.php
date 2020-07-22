@@ -121,13 +121,13 @@ if(empty($novaposhta_selected) && $userShipping && $userShipping->department)
 </script>
 
 <style>
-    #nova-poshta-method { border: 2px solid #29ABE2; border-radius: 2px; margin: 5px 0 }
+    #nova-poshta-method { border: 2px solid #7cbe49; border-radius: 2px; margin: 5px 0 }
     #nova-poshta-method div { padding: 5px; text-align: center; cursor: pointer }
-    #nova-poshta-method div.active { background: #29ABE2; color: #fff }
+    #nova-poshta-method div.active { background: #7cbe49; color: #fff }
     #nova-poshta-method div:hover { text-decoration: underline }
     #buyer { margin: 15px 0 }
     #nova-poshta-warehouse .info {
-        border: #29abe2 1px solid;
+        border: #7cbe49 1px solid;
         padding: 5px 10px;
         border-radius: 2px
     }

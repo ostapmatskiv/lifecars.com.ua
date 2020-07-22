@@ -7,17 +7,18 @@
 #cart .w30 {width: 30%;}
 #cart h1 { text-align: left }
 #cart h4 { font-size: 20px; margin-bottom: 10px; font-weight: normal }
+#cart .alert { margin-bottom: 15px; }
 
 #cart .w30 input, #cart textarea, #cart select {
     height: auto;
     width: 100%;
-	background: #eee !important;
+	background: #ddd !important;
 	border: none !important;
 	border-radius: 2px;
 	padding: 10px;
 	margin-bottom: 5px;
 }
-#cart input:-internal-autofill-selected { background: #eee }
+#cart input:-internal-autofill-selected { background: #ddd }
 #cart form p { margin: 5px 0 }
 #cart form a { display: block; width: auto }
 #cart .facebook p { text-align: center; margin: 5px 0 }
@@ -33,7 +34,7 @@
 #cart .facebook button:hover { background-image: linear-gradient(#3b5998, #4e69a2 50%) }
 
 #cart p.price {
-	background: #29ABE2;
+	background: #7cbe49;
 	color: #fff;
 	border-radius: 2px;
 	padding: 15px 10px 30px;
@@ -179,7 +180,7 @@ table.__cart_products_list .name_action ~ table tbody tr td.amount div { backgro
 table.__cart_products_list .name_action ~ table tbody tr input {
 	text-align: center;
 	border: none;
-	background: #29ABE2;
+	background: #7cbe49;
     border-radius: unset;
 	color: #fff;
 	width: calc(100% - 40px);
@@ -189,7 +190,7 @@ table.__cart_products_list .name_action ~ table tbody tr input::placeholder { co
 table.__cart_products_list .name_action ~ table tbody tr td.amount button {
 	background: none;
 	width: 40px;
-	color: #29ABE2;
+	color: #7cbe49;
 	border: #989898 1px solid;
     border-radius: unset;
     text-align: center;

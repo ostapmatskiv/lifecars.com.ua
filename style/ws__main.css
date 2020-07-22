@@ -73,6 +73,14 @@
 .alert .close { float: right }
 .alert p { margin: 5px !important }
 
+.btn { padding: 5px 15px; color: #fff; border: none; cursor: pointer }
+.btn-danger { background-color: #f52323 }
+.btn-danger { background-color: #f52323 }
+.btn-success { background-color: #00ad00 }
+.btn-success:hover { background-color: #019a01 }
+.btn-warning { background-color: #f59c1a }
+.btn-warning:hover { background-color: #e29018 }
+
 .hide { display: none }
 .show { display: block }
 

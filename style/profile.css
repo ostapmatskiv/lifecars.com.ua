@@ -12,7 +12,7 @@ main #tabs ul li a {
 main #tabs ul li.ui-tabs-active a,
 main #tabs ul li a:hover,
 main .flex aside a.active,
-main .flex aside a:hover { color: #fff; background: #29ABE2 }
+main .flex aside a:hover { color: #fff; background: #7cbe49 }
 main .flex aside #photo-block { position: relative }
 main .flex aside #photo-block #loading {
 	position: absolute;
@@ -38,7 +38,7 @@ main #tabs .media { cursor: pointer; text-decoration: underline }
 
 main article h2 { font-size: 25px }
 main article h3 { font-size: 22px }
-main article h4 { font-size: 20px }
+main article h4 { font-size: 20px; margin: 5px 0; }
 /*
 @media screen and (max-width: 576px){
 	article .btn{

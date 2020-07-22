@@ -104,6 +104,14 @@ main img { max-width: 100% }
 	border-radius: 2px
 }
 
+form button, .btn {
+    background: #7cbe49; color: #fff;
+    padding: 5px 15px;
+    border: none;
+    cursor: pointer;
+}
+form button:hover, .btn:hover { background: #68a03d }
+
 
 /*      Header        */
 #top_header { padding-top: 2px }
@@ -1837,7 +1845,6 @@ main.cars__manufacturers section.catalog__name div a figure img {
 		bottom: -11px;
 		font-size: 10px;
 	}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {width: calc(100% + 4px); height: 465px;}
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {font-size: 30px;}
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {font-size: 21px;}
 	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {

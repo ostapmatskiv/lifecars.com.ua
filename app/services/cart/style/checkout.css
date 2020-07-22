@@ -1,5 +1,5 @@
 #cart > a.right {
-    background: #29abe2;
+    background: #7cbe49;
     color: #fff;
     padding: 5px 30px;
     border-radius: 2px;
@@ -58,9 +58,9 @@
     background-repeat: no-repeat;
 }
 
-#cart-signup { border: 2px solid #29ABE2; border-radius: 2px; margin-top: 20px }
+#cart-signup { border: 2px solid #7cbe49; border-radius: 2px; margin-top: 20px }
 #cart-signup div { padding: 5px; text-align: center; cursor: pointer }
-#cart-signup div.active { background: #29ABE2; color: #fff }
+#cart-signup div.active { background: #7cbe49; color: #fff }
 #cart-signup div:hover { text-decoration: underline }
 #buyer { margin: 15px 0 }
 
@@ -71,9 +71,9 @@
     text-align: center;
     cursor: pointer;
     border-radius: 2px;
-    background: #eee
+    background: #ddd
 }
-#payments label.active { color: #fff; background: #29ABE2 }
+#payments label.active { color: #fff; background: #7cbe49 }
 #payments .payment-info { padding-bottom: 5px }
 #payments label input,
 #cart form#confirm input.hide,
@@ -81,7 +81,7 @@
 
 #cart textarea, #cart select { width: 100% }
 #cart #oferta { padding-left: 0; background: none; text-align: left }
-#cart #oferta i { font-size: 16px; color: #29ABE2; margin-top: 5px; margin-right: 10px; float: left }
+#cart #oferta i { font-size: 16px; color: #7cbe49; margin-top: 5px; margin-right: 10px; float: left }
 #cart #oferta div { margin-top: 5px }
 #cart #oferta a { display: inline; text-decoration: underline }
 @media(max-width: 1023px){#cart .price-box { position: inherit !important; margin-bottom: 15px }}
