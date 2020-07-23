@@ -50,6 +50,9 @@ class style extends Controller {
                             case 'gif':
                                 header("Content-type: image/gif");
                                 break;
+                            case 'svg':
+                                header("Content-type: image/svg+xml");
+                                break;
                             case 'css':
                                 header("Content-Type: text/css");
                                 break;
