@@ -20,8 +20,8 @@
 	        </p>
 	        <p>Остання операція: <strong><?= $cart->date_edit > 0 ? date('d.m.Y H:i', $cart->date_edit) : 'очікує' ?></strong>
 	        </p>
-	        <?php if(isset($cart->date_1с)) { ?>
-	        <p>Синхронізація з 1с: <strong><?= $cart->date_1с > 0 ? date('d.m.Y H:i', $cart->date_1с) : 'очікує' ?></p>
+	        <?php if(isset($cart->date_1c)) { ?>
+	        <p>Синхронізація з 1с: <strong><?= $cart->date_1c > 0 ? date('d.m.Y H:i', $cart->date_1c) : 'очікує' ?></p>
 	        <?php } ?>
 	    </div>
 	</div>
@@ -157,7 +157,7 @@ if($cart->shipping_id || !empty($cart->shipping_info)) { ?>
 		            <tr>
 		                <th>Сума (у валюті корзини)</th>
 		                <td>
-		                    <input name="amount" type="number" min="0.01" step="0.01" class="form-control" value="<?=$cart->total - $cart->payed?>" required />
+		                    <input name="amount" type="number" min="0.01" step="0.01" class="form-control" value="<?=round($cart->total - $cart->payed, 2)?>" required />
 		                </td>
 		            </tr>
 		            <tr>

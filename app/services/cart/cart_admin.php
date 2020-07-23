@@ -1402,7 +1402,7 @@ class cart_admin extends Controller {
             if($amount = $this->data->post('amount'))
                 if($cart = $this->db->getAllDataById('s_cart', $cartId))
                 {
-                    $amount = (float) $amount;
+                    $amount = (float) round($amount, 2);
                     $cart->payed = (float) $cart->payed;
                     $payed = $amount + $cart->payed;
                     $updateData = ['payed' => $payed, 'date_edit' => time()];

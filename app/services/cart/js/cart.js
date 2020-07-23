@@ -361,5 +361,9 @@ function changeQuantity(el, action) {
 			amount.attr('title', 'Максимальна доступна кількість '+max+' од.');
 			amount.val(max);
 		}
+
+		$("#cart_notify p").text('Максимальна доступна кількість '+max+' од.')
+		$('#cart_notify').removeClass('hide').fadeIn();
+		$("html, body").animate({ scrollTop: 0 }, "slow");
 	}
 }
