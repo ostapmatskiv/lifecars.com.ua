@@ -125,6 +125,13 @@ class novaposhta extends Controller {
             if(!empty($info['address_street']))
                 $text .= $info['address_street'].' '.$info['address_house'];
         }
+        if(!empty($info['recipientName']))
+        {
+            $text .= "<p>{$this->text('Отримувач')}: <strong>{$info['recipientName']}";
+            if(!empty($info['recipientPhone']))
+                $text .= ", {$info['recipientPhone']}</strong>";
+            $text .= "</strong></p>";
+        }
         return $text;
     }
 

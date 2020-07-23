@@ -5,7 +5,7 @@ main article table {
 	border-collapse: collapse
 }
 main article table th,
-main article table td { border: 1px solid #eee !important; padding: 10px }
+main article table td { border: 1px solid #ddd !important; padding: 10px }
 table.products_list { margin-top: 40px }
 table.products_list img { max-width: 200px; padding-right: 15px }
 table.products_list a { display: block; width: auto }
@@ -20,22 +20,23 @@ h4 { margin: 40px 0 10px }
 
 del { text-decoration: line-through; font-weight: normal }
 
-main table tfoot tr:last-child td { background: #eee; border-color: #fff !important }
+main table tfoot tr:last-child td { background: #ddd; border-color: #fff !important }
 @media(max-width: 767px){
 	main article table th, main article table td{
 		max-width: 20%;
 		padding: 1px;
 	}
 	
+	table.products_list tbody tr :nth-child(2) { padding: 3px }
 	table.products_list tbody tr :nth-child(3),
 	table.products_list tbody tr :nth-child(4),
 	table.products_list tbody tr :nth-child(5){
 		padding-right: 10px
 	}
-	table.products_list img{ display: none }
+	table.products_list thead tr th:nth-child(1),
+	table.products_list tbody tr td:nth-child(1),
+	table.products_list img { display: none }
 }
 @media(max-width: 320px){
-	main article table th:last-child, main article table td:last-child{
-		display: none;
-	}
+	main article table th:nth-child(3), main article table td:nth-child(3){ display: none }
 }

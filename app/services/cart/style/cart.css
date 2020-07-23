@@ -1,13 +1,12 @@
 * { box-sizing: border-box;}
 #cart { margin-top: 20px }
-.right { float: right;}
-#cart .w75 {width: 75%;}
-#cart .w25 {width: 24%;}
-#cart .w70 {width: 69%;}
-#cart .w30 {width: 30%;}
+.right { float: right }
+#cart .w75 {width: 75% }
+#cart .w25 {width: 24% }
+#cart .w70 {width: 69% }
+#cart .w30 {width: 30% }
 #cart h1 { text-align: left }
 #cart h4 { font-size: 20px; margin-bottom: 10px; font-weight: normal }
-#cart .alert { margin-bottom: 15px; }
 
 #cart .w30 input, #cart textarea, #cart select {
     height: auto;

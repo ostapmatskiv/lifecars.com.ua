@@ -47,14 +47,13 @@ function show_image (file) {
     reader.readAsDataURL(file);
 }
 
-$('main #tabs table tr i.right').click(function (){
+$('main #tabs table tr i.pull-right').click(function (){
     var e = $(this);
+    e.closest('form').find("button.hide").removeClass('hide');
     var text = this.parentElement.innerText;
     required = e.data('required');
     e.parent().empty().append($('<input/>', {name: e.data('name'), type: 'text', value: text, required: required}));
     $('input[name=phone]').mask('+38 (000) 000-00-00');
-
-    $("main #tabs #main button.hide").removeClass('hide');
 })
 
 function facebookSignUp() {

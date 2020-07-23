@@ -98,7 +98,7 @@
             <a href="<?=$this->data->get_link('sort', 'name')?>">А &mdash; Я</a>
             <a href="<?=$this->data->get_link('sort', 'name_desc')?>">Я &mdash; А</a>
         </div>
-        <div class="quantity__goods">
+        <div class="quantity__goods m-hide">
             Кількість товарів &mdash; <span><?=$_SESSION['option']->paginator_total?></span>
         </div>
     </div>

@@ -78,7 +78,7 @@ if(!$showPayment &&  $cart->action == 'closed') {
 		<?php } ?>
 	</tbody>
 	<tfoot>
-		<?php if ($cart->subTotalFormat != $cart->totalFormat) { ?>
+		<?php if ($cart->subTotal != $cart->total) { ?>
 			<tr>
 				<td colspan="6"><?=$this->text('Сума')?>: <strong><?= $cart->subTotalFormat ?></strong></td>
 			</tr>

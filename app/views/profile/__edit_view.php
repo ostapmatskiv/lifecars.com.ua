@@ -10,7 +10,7 @@
                 <tbody>
                     <tr>
                         <td><?=$this->text("Моє ім'я")?></td>
-                        <td><i class="fas fa-pencil-alt right" data-name="name" data-required="true"></i> <?=$user->name?></td>
+                        <td><i class="fas fa-pencil-alt pull-right" data-name="name" data-required="true"></i> <?=$user->name?></td>
                     </tr>
                     <tr>
                         <td><?=$this->text('Мій')?> email</td>
@@ -25,7 +25,7 @@
                                     <?php if(isset($user->info[$key])) {
                                         if($key == 'phone') $user->info[$key] = $this->data->formatPhone($user->info[$key]);
                                         ?>
-                                        <i class="fas fa-pencil-alt right" data-name="<?= $key ?>"></i> <?=$user->info[$key]?>
+                                        <i class="fas fa-pencil-alt pull-right" data-name="<?= $key ?>"></i> <?=$user->info[$key]?>
                                     <?php } else { $showSave = true; ?>
                                         <input type='text' name='<?=$key?>'>
                                     <?php } ?>
@@ -66,7 +66,7 @@
                     <?php } else { ?>
                         <tr>
                             <td>Facebook <i class="fab fa-facebook"></i></td>
-                            <td><a href="<?=SITE_URL?>profile/facebook_disable" class="media right"> Відключити </a> <?=$this->text('Авторизацію підключено')?></td>
+                            <td><a href="<?=SITE_URL?>profile/facebook_disable" class="media pull-right"> Відключити </a> <?=$this->text('Авторизацію підключено')?></td>
                         </tr>
                     <?php } } ?>
                     <tr>
@@ -140,5 +140,6 @@
     $_SESSION['alias']->js_load[] = "assets/blueimp/js/vendor/jquery.ui.widget.js";
     $_SESSION['alias']->js_load[] = "assets/blueimp/js/load-image.all.min.js";
     $_SESSION['alias']->js_load[] = "assets/blueimp/js/jquery.fileupload.js";
+    $_SESSION['alias']->js_load[] = "assets/jquery.mask.min.js";
     $_SESSION['alias']->js_load[] = "js/user.js";
  ?>

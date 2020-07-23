@@ -36,7 +36,7 @@
 <style>
 	table.cart_list { width: 100%; max-width: 100%; border-collapse: collapse; }
 	table.cart_list th, table.cart_list td {
-	    border: 1px solid #eee;
+	    border: 1px solid #ddd !important;
 	    padding: 10px;
 	}
 </style>
