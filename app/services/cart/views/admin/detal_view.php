@@ -67,7 +67,58 @@
 	</div>
 </div>
 
-<?php if(!empty($cart->comment)) { ?>
+<?php if(!empty($cart->payment->name)) { ?>
+<div class="panel">
+	<div class="panel-body">
+		<?php
+    	echo '<legend><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Оплата</legend></p>';
+	    echo '<p>Платіжний механізм: <b>'.$cart->payment->name.'</b></p>';
+	    echo "<p>{$cart->payment->info}</p>";
+	    if(!empty($cart->payment->admin_link))
+	        echo "<a href='{$cart->payment->admin_link}' class='btn btn-info btn-xs'><i class=\"fa fa-external-link\" aria-hidden=\"true\"></i> Повна інформація по оплаті</a>";
+		?>
+	</div>
+</div>
+<?php } if($cart->payed < $cart->total && empty($cart->payment_alias)) { ?>
+<div class="panel">
+	<div class="panel-body">
+		<legend><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Внести оплату</legend>
+		<table class="table table-striped table-bordered nowrap" width="100%">
+		    <form action="<?= SITE_URL.'admin/'. $_SESSION['alias']->alias.'/addPayment'?>" onsubmit="return confirm('Внести оплату')" method="POST" class="form-horizontal" >
+		        <input type="hidden" name="cart" value="<?= $cart->id?>">
+		        <tbody>
+		            <tr>
+		                <th>Механізм</th>
+		                <td>
+		                    <select name="status" class="form-control" required>
+		                        <?php foreach($cart->paymentsMethod as $method) if(empty($method->wl_alias)) { ?>
+		                        <option value="<?= $method->id?>"><?= $method->name?></option>
+		                        <?php } ?>
+		                    </select>
+		                </td>
+		            </tr>
+		            <tr>
+		                <th>Сума (у валюті корзини)</th>
+		                <td>
+		                    <input name="amount" type="number" min="0.01" step="0.01" class="form-control" value="<?=round($cart->total - $cart->payed, 2)?>" required />
+		                </td>
+		            </tr>
+		            <tr>
+		                <th>Коментар</th>
+		                <td><textarea name="comment" class="form-control" rows="5"></textarea></td>
+		            </tr>
+		            <tr>
+		                <th></th>
+		                <td>
+		                    <button type="submit" class="btn btn-md btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i> Внести оплату</button>
+		                </td>
+		            </tr>
+		        </tbody>
+		    </form>
+		</table>
+	</div>
+</div>
+<?php } if(!empty($cart->comment)) { ?>
 <div class="panel">
 	<div class="panel-body">
 	    <legend><i class="fa fa-commenting" aria-hidden="true"></i> Коментар (побажання) клієнта до замовлення</legend>
@@ -124,57 +175,7 @@ if($cart->shipping_id || !empty($cart->shipping_info)) { ?>
         </div>
 	</div>
 </div>
-<?php } if(!empty($cart->payment->name)) { ?>
-<div class="panel">
-	<div class="panel-body">
-		<?php
-    	echo '<legend><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Оплата</legend></p>';
-	    echo '<p>Платіжний механізм: <b>'.$cart->payment->name.'</b></p>';
-	    echo "<p>{$cart->payment->info}</p>";
-	    if(!empty($cart->payment->admin_link))
-	        echo "<a href='{$cart->payment->admin_link}' class='btn btn-info btn-xs'><i class=\"fa fa-external-link\" aria-hidden=\"true\"></i> Повна інформація по оплаті</a>";
-		?>
-	</div>
-</div>
-<?php } if($cart->payed < $cart->total && empty($cart->payment_alias)) { ?>
-<div class="panel">
-	<div class="panel-body">
-		<legend><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Внести оплату</legend>
-		<table class="table table-striped table-bordered nowrap" width="100%">
-		    <form action="<?= SITE_URL.'admin/'. $_SESSION['alias']->alias.'/addPayment'?>" onsubmit="return confirm('Внести оплату')" method="POST" class="form-horizontal" >
-		        <input type="hidden" name="cart" value="<?= $cart->id?>">
-		        <tbody>
-		            <tr>
-		                <th>Механізм</th>
-		                <td>
-		                    <select name="status" class="form-control" required>
-		                        <?php foreach($cart->paymentsMethod as $method) if(empty($method->wl_alias)) { ?>
-		                        <option value="<?= $method->id?>"><?= $method->name?></option>
-		                        <?php } ?>
-		                    </select>
-		                </td>
-		            </tr>
-		            <tr>
-		                <th>Сума (у валюті корзини)</th>
-		                <td>
-		                    <input name="amount" type="number" min="0.01" step="0.01" class="form-control" value="<?=round($cart->total - $cart->payed, 2)?>" required />
-		                </td>
-		            </tr>
-		            <tr>
-		                <th>Коментар</th>
-		                <td><textarea name="comment" class="form-control" rows="5"></textarea></td>
-		            </tr>
-		            <tr>
-		                <th></th>
-		                <td>
-		                    <button type="submit" class="btn btn-md btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i> Внести оплату</button>
-		                </td>
-		            </tr>
-		        </tbody>
-		    </form>
-		</table>
-	</div>
-</div>
+
 <?php } if($cart->status > 0 && $cart->status_weight < 90) { ?>
 <div class="panel">
 	<div class="panel-body">

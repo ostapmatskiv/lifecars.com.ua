@@ -3,7 +3,7 @@ $('#clientName').on('input propertychange', function () {
 	if(this.value.length >= 3 || Number.isInteger(this.value.length) )
 		$.ajax({
 	        type: "POST",
-	        url: ALIAS_ADMIN_URL+'searchClient',
+	        url: CART_ADMIN_URL+'searchClient',
 	        data: {
 	        	by: this.value,
 	        	limit: 20,

@@ -1,11 +1,14 @@
 <div class="row">
 	<div class="row search-row">
+		<?php if(!empty($__dashboard_subview)) { ?>
+			<h2>Нові та активні Ваші замовлення</h2>
+		<?php } ?>
         <form>
             <div class="col-sm-4 search-col">
                 <input type="number" name="id" class="form-control" placeholder="№ Замовлення" value="<?=$this->data->get('id')?>">
             </div>
             <div class="col-sm-4 search-col">
-                <input type="text" name="article" class="form-control" placeholder="Артикул товару" value="<?=$this->data->get('article')?>">
+                <input type="text" name="article" class="form-control" placeholder="Артикул товару у замовленні" value="<?=$this->data->get('article')?>">
             </div>
             <div class="col-lg-4 col-sm-4 search-col">
                 <button class="btn btn-primary btn-search btn-block"><i class="fa fa-search"></i><strong> Знайти</strong></button>
@@ -20,8 +23,12 @@
             <div class="panel-heading">
                 <div class="panel-heading-btn">
                 	<a href="<?= SITE_URL.'admin/'.$_SESSION['alias']->alias?>/add" class="btn btn-warning btn-xs"><i class="fa fa-plus"></i> Додати покупку</a>
-                	<a href="<?= SITE_URL.'admin/'.$_SESSION['alias']->alias?>/bonus" class="btn btn-success btn-xs"><i class="fa fa-ravelry"></i> Бонус-коди</a>
-                	<a href="<?= SITE_URL.'admin/'.$_SESSION['alias']->alias?>/settings" class="btn btn-info btn-xs"><i class="fa fa-cogs"></i> Налаштування</a>
+                	<?php if(!empty($__dashboard_subview)) { ?>
+                		<a href="<?=SITE_URL?>admin/cart" class="btn btn-xs btn-success"><i class="fa fa-list"></i> До всіх замовлень</a>
+                	<?php } else { ?>
+	                	<a href="<?= SITE_URL.'admin/'.$_SESSION['alias']->alias?>/bonus" class="btn btn-success btn-xs"><i class="fa fa-ravelry"></i> Бонус-коди</a>
+	                	<a href="<?= SITE_URL.'admin/'.$_SESSION['alias']->alias?>/settings" class="btn btn-info btn-xs"><i class="fa fa-cogs"></i> Налаштування</a>
+	                <?php } ?>
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
                 </div>
@@ -36,7 +43,7 @@
             </div>
 			<div class="panel-body">
                 <div class="table-responsive">
-                	<form id="cartFilter">
+                	<form id="cartFilter" action="<?= SITE_URL.'admin/'.$_SESSION['alias']->alias?>">
                 		<input type="hidden" name="user" value="<?=$this->data->get('user')?>">
                 		<?php if($article = $this->data->get('article'))
                 			echo '<input type="hidden" name="article" value="'.$article.'">';
@@ -168,7 +175,9 @@
 	</div>
 </div>
 
-
+<script type="text/javascript">
+    var CART_ADMIN_URL = '<?=SITE_URL.'admin/'.$_SESSION['alias']->alias.'/'?>';
+  </script>
 <style type="text/css">
 	.search-row {
 	    max-width: 800px;

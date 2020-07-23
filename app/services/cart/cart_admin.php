@@ -26,8 +26,6 @@ class cart_admin extends Controller {
         {
             if($cart = $this->cart_model->getById($id))
             {
-                $_SESSION['alias']->breadcrumb = array($_SESSION['alias']->name => 'admin/'.$_SESSION['alias']->alias, 'Замовлення #'.$id => '');
-                $_SESSION['alias']->name .= '. Замовлення #'.$id.' від '.date('d.m.Y H:i', $cart->date_add);
                 $cart->totalFormat = $cart->total;
                 $cart->subTotal = $cart->subTotalFormat = $cart->shippingPrice = $cart->shippingPriceFormat = 0;
                 $cart->shipping = $cart->payment = $cart->paymentsMethod = false;
@@ -95,7 +93,10 @@ class cart_admin extends Controller {
                 else if($cart->payment_id)
                     $cart->payment = $this->cart_model->getPayments(array('id' => $cart->payment_id))[0];
 
+                $_SESSION['alias']->breadcrumb = array($_SESSION['alias']->name => 'admin/'.$_SESSION['alias']->alias, 'Замовлення #'.$id => '');
+                $_SESSION['alias']->name .= '. Замовлення #'.$id.' від '.date('d.m.Y H:i', $cart->date_add);
                 $_SESSION['alias']->title = $_SESSION['alias']->name;
+                
                 if($this->data->uri(3) == 'print')
                 {
                     if(isset($_GET['go']))
@@ -1402,9 +1403,11 @@ class cart_admin extends Controller {
             if($amount = $this->data->post('amount'))
                 if($cart = $this->db->getAllDataById('s_cart', $cartId))
                 {
-                    $amount = (float) round($amount, 2);
+                    $amount = (float) $amount;
                     $cart->payed = (float) $cart->payed;
                     $payed = $amount + $cart->payed;
+                    if($cart->total - $payed < 0.01)
+                        $payed = $cart->total;
                     $updateData = ['payed' => $payed, 'date_edit' => time()];
 
                     if($method = $this->data->post('method'))
@@ -1619,7 +1622,20 @@ class cart_admin extends Controller {
             $_SESSION['option']->paginator_per_page = 20;
         $this->load->smodel('cart_model');
         ob_start();
-        $this->load->view('admin/__tab_profile', array('orders' => $this->cart_model->getCarts(array('user' => $user_id))));
+        $where = array();
+        $where['status'] = array(1, 2, 3, 4, 5);
+        $where['manager'] = array(0, $_SESSION['user']->id);
+        $carts = $this->cart_model->getCarts($where);
+        if($carts)
+            foreach ($carts as $cart) {
+                $cart->totalFormat = $this->load->function_in_alias($cart->products[0]->product_alias, '__formatPrice', $cart->total);
+                if($cart->products)
+                    foreach ($cart->products as $product) {
+                        $product->info = $this->load->function_in_alias($product->product_alias, '__get_Product', $product->product_id);
+                        break;
+                    }
+            }
+        $this->load->view('admin/index_view', array('carts' => $carts, '__dashboard_subview' => true));
         $subview = ob_get_contents();
         ob_end_clean();
         return $subview;
