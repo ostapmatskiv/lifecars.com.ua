@@ -21,17 +21,21 @@ class export_1c extends Controller
 
 		if($type == 'json')
 		{
-			$this->db->select('wl_users as u', 'id, id_1c, email, name, type', 1, 'status')
+			$this->db->select('wl_users as u', 'id, id_1c, email, name, type')
 						->join('wl_user_info as i', 'value as user_phone', ['user' => '#u.id', 'field' => 'phone'])
 						->join('wl_user_types as t', 'title as type_name', '#u.type');
-			$this->load->json($this->db->get('array'));
+			$users = $this->db->get('array');
+			foreach ($users as $user) {
+				$user->id = 'life-'.$user->id;
+			}
+			$this->load->json($users);
 		}
 
 
 		$xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n
 					<VygruzkaKlientiv>\n
 						<Клиенты>\n";
-		$this->db->select('wl_users as u', 'id, id_1c, email, name, type', 1, 'status')
+		$this->db->select('wl_users as u', 'id, id_1c, email, name, type')
 					->join('wl_user_info as i', 'value as user_phone', ['user' => '#u.id', 'field' => 'phone'])
 					->join('wl_user_types as t', 'title as type_name', '#u.type');
 		if ($users = $this->db->get('array'))
