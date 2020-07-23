@@ -327,6 +327,18 @@ class Loader {
 			}
 		}
 
+		if(empty($_SESSION['alias-cache'][$_SESSION['alias']->id]))
+			$_SESSION['alias-cache'][$_SESSION['alias']->id] = new stdClass();
+		$_SESSION['alias-cache'][$_SESSION['alias']->id]->alias = clone $_SESSION['alias'];
+		if(isset($_SESSION['option']))
+			$_SESSION['alias-cache'][$_SESSION['alias']->id]->options = clone $_SESSION['option'];
+		else
+			$_SESSION['alias-cache'][$_SESSION['alias']->id]->options = null;
+		if(isset($_SESSION['service']))
+			$_SESSION['alias-cache'][$_SESSION['alias']->id]->service = clone $_SESSION['service'];
+		else
+			$_SESSION['alias-cache'][$_SESSION['alias']->id]->service = null;
+
 		if(is_object($alias))
 		{
 			if($_SESSION['alias']->id == $alias->id)
@@ -343,11 +355,13 @@ class Loader {
 				{
 					if(is_callable(array($this, '__construct')))
 						$this->__construct();
+					$result = false;
 					if(is_callable(array($this, '_remap')))
-						return $this->_remap($method, $data);
+						$result = $this->_remap($method, $data);
 					else if(is_callable(array($this, $method)))
-						return $this->$method($data);
-					return false;
+						$result = $this->$method($data);
+					$_SESSION['alias'] = clone $_SESSION['alias-cache'][$old_alias]->alias;
+					return $result;
 				}
 			}
 
@@ -356,18 +370,6 @@ class Loader {
 				$this->wl_aliases[$alias->id] = clone $alias;
 				$this->wl_aliases[$alias->alias] = clone $alias;
 			}
-
-			if(empty($_SESSION['alias-cache'][$_SESSION['alias']->id]))
-				$_SESSION['alias-cache'][$_SESSION['alias']->id] = new stdClass();
-			$_SESSION['alias-cache'][$_SESSION['alias']->id]->alias = clone $_SESSION['alias'];
-			if(isset($_SESSION['option']))
-				$_SESSION['alias-cache'][$_SESSION['alias']->id]->options = clone $_SESSION['option'];
-			else
-				$_SESSION['alias-cache'][$_SESSION['alias']->id]->options = null;
-			if(isset($_SESSION['service']))
-				$_SESSION['alias-cache'][$_SESSION['alias']->id]->service = clone $_SESSION['service'];
-			else
-				$_SESSION['alias-cache'][$_SESSION['alias']->id]->service = null;
 
 			if(isset($_SESSION['alias-cache'][$alias->id]))
 			{
