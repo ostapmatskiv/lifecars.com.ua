@@ -37,9 +37,9 @@ class export_1c extends Controller
 		if ($users = $this->db->get('array'))
 		{
 			foreach ($users as $user) {
-				$xml .= "\t" . '<Клиент КодСайта="'.$user->id.'" Код="'.$user->id_1c.'">' . "\n";
+				$xml .= "\t" . '<Клиент КодСайта="life-'.$user->id.'" Код="'.$user->id_1c.'">' . "\n";
 
-				$xml .= "\t\t" . '<site_id>' . $user->id . '</site_id>' . "\n";
+				$xml .= "\t\t" . '<site_id>life-' . $user->id . '</site_id>' . "\n";
 				$xml .= "\t\t" . '<name>' . $user->name . '</name>' . "\n";
 				$xml .= "\t\t" . '<email>' . $user->email . '</email>' . "\n";
 				$xml .= "\t\t" . '<tel>' . $user->user_phone . '</tel>' . "\n";
@@ -100,6 +100,7 @@ class export_1c extends Controller
 				$xml .= "\t\t" . '<currency_code>'.$this->order_currency.'</currency_code>' . "\n";
 				$xml .= "\t\t" . '<currency_rate>1</currency_rate>' . "\n";
 
+				$order->user = 'life-'.$order->user;
 				$xml .= "\t\t" . '<client>' . "\n";
 				foreach ($user_keys as $xml_key => $key) {
 					if(empty($order->$key))
