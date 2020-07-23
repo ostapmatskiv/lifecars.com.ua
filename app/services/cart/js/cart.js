@@ -292,7 +292,7 @@ function recount(counter) {
 		$('table.__cart_products_list > tbody td:first-child div').each(function(){
 			$(this).text(i++)
 		});
-	var products = $('table.__cart_products_list tbody tr:not(.disabled)');
+	var products = $('table.__cart_products_list > tbody > tr:not(.disabled)');
 	if(products.length)
 	{
 		$('a[href$=checkout]').attr('disabled', false).addClass('active');
