@@ -6,7 +6,7 @@
 class export_1c extends Controller
 {
 
-	private $order_currency = 'USD';
+	private $order_currency = 'UAH';
 	
 	function index()
 	{

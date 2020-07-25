@@ -1731,6 +1731,8 @@ class cart_admin extends Controller {
         if(is_numeric($cartId))
             $cart = $this->db->getAllDataById('s_cart', $cartId);
         if (is_object($cart) && !empty($cart->id)) {
+            if($cart->1c_status > 0)
+                $this->db->updateRow('s_cart', ['1c_status' => 0], $cart->id);
             $total = $this->db->getQuery("SELECT SUM(quantity * price) as totalPrice FROM `s_cart_products` WHERE `cart` = $cart->id")->totalPrice;
             if ($total) {
                 if($cart->bonus)
