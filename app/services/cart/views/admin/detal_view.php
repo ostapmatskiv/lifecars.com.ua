@@ -21,7 +21,7 @@
 	        <p>Остання операція: <strong><?= $cart->date_edit > 0 ? date('d.m.Y H:i', $cart->date_edit) : 'очікує' ?></strong>
 	        </p>
 	        <?php if(isset($cart->date_1c)) { ?>
-	        <p>Синхронізація з 1с: <strong><?= $cart->date_1c > 0 ? date('d.m.Y H:i', $cart->date_1c) : 'очікує' ?></p>
+	        <p>Синхронізація з 1с: <strong><?= $cart->date_1c > 0 ? date('d.m.Y H:i', $cart->date_1c) : 'очікує' ?></strong></p>
 	        <?php } ?>
 	    </div>
 	</div>
