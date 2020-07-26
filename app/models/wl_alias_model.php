@@ -17,7 +17,7 @@ class wl_alias_model
 		$_SESSION['alias']->code = 202;
 		$_SESSION['alias']->service = false;
 		$_SESSION['alias']->name = $_SESSION['alias']->title = $_SESSION['alias']->breadcrumb_name = $alias;
-		$_SESSION['alias']->description = $_SESSION['alias']->keywords = $_SESSION['alias']->text = $_SESSION['alias']->list = $_SESSION['alias']->meta = '';
+		$_SESSION['alias']->description = $_SESSION['alias']->keywords = $_SESSION['alias']->text = $_SESSION['alias']->list = $_SESSION['alias']->meta = $_SESSION['alias']->global_MetaTags = '';
 		$_SESSION['alias']->files = $_SESSION['alias']->audios = $_SESSION['alias']->image = $_SESSION['alias']->images = $_SESSION['alias']->videos = false;
 		$_SESSION['alias']->js_plugins = $_SESSION['alias']->js_load = $_SESSION['alias']->js_init = $_SESSION['alias']->breadcrumbs = array();
 	}
@@ -132,7 +132,7 @@ class wl_alias_model
 		else
 			$_SESSION['alias']->service = false;
 		$_SESSION['alias']->name = $_SESSION['alias']->title = $_SESSION['alias']->breadcrumb_name = $page->link;
-		$_SESSION['alias']->description = $_SESSION['alias']->keywords = $_SESSION['alias']->text = $_SESSION['alias']->list = $_SESSION['alias']->meta = '';
+		$_SESSION['alias']->description = $_SESSION['alias']->keywords = $_SESSION['alias']->text = $_SESSION['alias']->list = $_SESSION['alias']->meta = $_SESSION['alias']->global_MetaTags = '';
 		$_SESSION['alias']->files = $_SESSION['alias']->audios = $_SESSION['alias']->image = $_SESSION['alias']->images = $_SESSION['alias']->videos = false;
 		$_SESSION['alias']->js_plugins = $_SESSION['alias']->js_load = $_SESSION['alias']->js_init = $_SESSION['alias']->breadcrumbs = array();
 		if(isset($_SESSION['alias-cache'][$_SESSION['alias']->id]))

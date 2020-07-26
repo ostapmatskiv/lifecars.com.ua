@@ -1408,7 +1408,7 @@ class cart_admin extends Controller {
                     $payed = $amount + $cart->payed;
                     if($cart->total - $payed < 0.01)
                         $payed = $cart->total;
-                    $updateData = ['payed' => $payed, 'date_edit' => time()];
+                    $updateData = ['payed' => $payed, 'date_edit' => time(), '1c_status' => 0];
 
                     if($method = $this->data->post('method'))
                     {
