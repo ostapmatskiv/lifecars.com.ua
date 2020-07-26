@@ -1406,7 +1406,8 @@ class cart_admin extends Controller {
                     $amount = (float) $amount;
                     $cart->payed = (float) $cart->payed;
                     $payed = $amount + $cart->payed;
-                    if($cart->total - $payed < 0.01)
+                    $diff = $cart->total - $payed;
+                    if($diff > 0 && $diff < 0.01)
                         $payed = $cart->total;
                     $updateData = ['payed' => $payed, 'date_edit' => time(), '1c_status' => 0];
 
