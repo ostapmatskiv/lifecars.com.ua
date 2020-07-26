@@ -9,7 +9,7 @@
 	    	<p>Поточний статус: <strong><?= $cart->status_name ?? 'Формування' ?></strong></p>
 	        <p>Загальна сума замовлення: <strong><?= $cart->totalFormat?></strong></p>
 	        <p>Оплата: <strong><?php if($cart->payed == 0) echo "Не оплачено";
-	        							elseif($cart->payed >= $cart->total) echo "Оплачено повністю";
+	        							elseif($cart->payed >= $cart->total) echo "Оплачено повністю ({$cart->payed} грн)";
 	        							else echo "Часткова оплата <u>{$cart->payedFormat}</u>"; ?></strong></p>
 	    </div>
 	    <div class="col-md-4">
