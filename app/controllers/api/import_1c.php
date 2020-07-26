@@ -654,6 +654,7 @@ class import_1c extends Controller
 						$update['date_edit'] = $time;
 						$update['author_edit'] = 0;
 						$this->db->updateRow('s_shopshowcase_products', $update, $site_product->id);
+						$this->load->function_in_alias($this->shop_wl_alias, '__after_edit', $site_product->id, true);
 					}
 					break;
 				}
