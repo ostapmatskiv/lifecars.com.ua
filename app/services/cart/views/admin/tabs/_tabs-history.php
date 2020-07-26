@@ -13,9 +13,13 @@
                 <th>Статус</th>
                 <td>
                     <select name="status" class="form-control" required>
-                        <?php foreach($cartStatuses as $status) {?>
-                        <option value="<?= $status->id?>"><?= $status->name?></option>
-                        <?php } ?>
+                        <optgroup label="Керування замовленням">
+                            <?php foreach($cartStatuses as $status) { if($status->weight < 90 || ($cart->payed >= $cart->total && $status->id == 6)) { ?>
+                            <option value="<?= $status->id?>"><?= $status->name?></option>
+                            <?php } } ?>
+                        </optgroup>
+                        <option value="0" disabled>---------------------------------------</option>
+                        <option value="7">Скасоване</option>
                     </select>
                 </td>
             </tr>
