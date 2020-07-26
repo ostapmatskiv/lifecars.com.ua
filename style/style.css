@@ -454,7 +454,7 @@ section.sale__catalog .sale__wrrap .sale__card {
 	position: relative;
 	background: #fff
 }
-.sale__card.empty { border: none !important }
+.sale__card.empty { border: none !important; background: none !important }
 main.detal .detal__cart .sale__card:hover,
 section.sale .sale__wrrap .sale__card:hover,
 section.sale__catalog .sale__wrrap .sale__card:hover {
@@ -997,7 +997,7 @@ footer .footer__info .footer__contacts .contacts__phone a {
   	font-weight: normal;
   	color: #666666;
  }
-footer .footer__info .footer__payments .payments__img img { padding: 0 4px;}
+footer .footer__info .footer__payments .payments__img img { padding: 0 4px }
 
 footer .footer__subtitle {
 	min-height: 85px;

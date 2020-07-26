@@ -1,4 +1,4 @@
-<div class="container">
+<main>
 <?php
 
 /**
@@ -50,4 +50,4 @@ if(isset($pay) && $pay->amount > 0 && !empty($_SESSION['option']->public_key) &&
 	<p>Увага! Помилка налаштування сервісу</p>
 <?php } ?>
 
-</div>
+</main>
