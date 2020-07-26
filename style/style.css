@@ -8,6 +8,7 @@ body {
 a {text-decoration: none }
 main { margin-bottom: 50px }
 main img { max-width: 100% }
+.pt-50 { padding-top: 50px }
 
 #modal-add_success {
 	position: fixed;

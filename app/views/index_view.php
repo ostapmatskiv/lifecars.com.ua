@@ -54,7 +54,7 @@ $this->load->js_init('init__main()'); ?>
             <img src="style/images/main_owl/auto6.png" alt="auto">
         </div>
     </div>
-    <section class="sale">
+    <section class="sale pt-50">
         <?php /*
         <div class="flex v-center sale__nav">
             <a href="#">Новинки &mdash; 5</a>
