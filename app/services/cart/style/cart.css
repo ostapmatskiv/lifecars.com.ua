@@ -33,13 +33,13 @@
 #cart .facebook button:hover { background-image: linear-gradient(#3b5998, #4e69a2 50%) }
 
 #cart p.price {
-	background: #7cbe49;
-	color: #fff;
+	background: #fff;
+	color: #7cbe49;
 	border-radius: 2px;
 	padding: 15px 10px 30px;
 	margin-bottom: 3px
 }
-#cart .price-box { margin-top: 40px }
+#cart .price-box { margin-top: 52px }
 #cart p.price strong { font-size: 25px }
 #cart p.discount {
 	background: #6D6D6D;
@@ -59,14 +59,14 @@
 	text-align: center;
 	padding: 20px;
 	margin-top: 10px;
-	border-radius: 2px;
+	border-radius: 5px;
 	cursor: default;
 	font-size: 20px;
 	text-decoration: none;
 	border: none
 }
-#cart .checkout.active { cursor: pointer; background: #74C186 }
-#cart .checkout.active:hover { background: #4d945d }
+#cart .checkout.active { cursor: pointer; background: #7cbe49 }
+#cart .checkout.active:hover { background: rgb(63, 121, 21) }
 
 table.__cart_products_list { border-collapse: collapse; width: 100% }
 table.__cart_products_list > thead * { color: #fff; padding: 2px 5px }
@@ -216,12 +216,10 @@ table.__cart_products_list .amount button.plusInCart i { margin-left: -4px }
 #cart-product-delete .product-options { margin: 5px 0 }
 #cart-product-delete p.product-price + p { margin-top: 30px }
 #cart-product-delete .actions { margin-top: 20px; color: #fff }
-#cart-product-delete .actions .close { background: #74C186 }
-#cart-product-delete .actions .close:hover { background: #4d945d }
-#cart-product-delete .actions .postpone { background: #FCAA3F }
-#cart-product-delete .actions .postpone:hover { background: #FB9006 }
+#cart-product-delete .actions .postpone { background: #74C186 }
+#cart-product-delete .actions .postpone:hover { background: #4d945d }
 #cart-product-delete .actions .delete { background: #E22929 }
-#cart-product-delete .actions .delete:hover { background: #E40000 }
+#cart-product-delete .actions .delete:hover { background: #b92323 }
 
 
 
@@ -241,3 +239,64 @@ table.__cart_products_list .amount button.plusInCart i { margin-left: -4px }
 	table.__cart_products_list > tbody tr td { padding-bottom: 10px }
 	table.__cart_products_list > tbody td:first-child { display: none }
 }
+
+
+
+
+
+
+
+
+/* ------ v2 -------- */
+.table__cart_products_list2 .tr.disabled,
+.table__cart_products_list2 .tr.disabled .amount { background: #ffe4c4 }
+.table__cart_products_list2 .thead,
+.table__cart_products_list2 .amount,
+.table__cart_products_list2 .tr {
+	background: #fff;
+	color: #000;
+	margin-bottom: 5px;
+    border-radius: 2px;
+	width: 100%;
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.table__cart_products_list2 .th { font-weight: 600 }
+.table__cart_products_list2 .th,
+.table__cart_products_list2 .td { padding: 5px; text-align: center }
+.table__cart_products_list2 .photo { width: 11%; max-width: 150px }
+.table__cart_products_list2 .name { width: 36%; text-align: left }
+.table__cart_products_list2 .name.no_actions { width: 54%; text-align: left }
+.table__cart_products_list2 .price,
+.table__cart_products_list2 .sum { width: 10%; max-width: 120px; font-weight: 600 }
+.table__cart_products_list2 .amount,
+.table__cart_products_list2 .actions { width: 18%; max-width: 200px }
+.table__cart_products_list2 .amount input { border: 1px solid #d9d9d9 }
+.table__cart_products_list2 .delete {
+	border-radius: 2px;
+	background: #E22929;
+	color: #fff;
+    height: 25px;
+    width: 30px;
+	border: none;
+}
+.table__cart_products_list2 .delete:hover { background: #b92323 }
+.table__cart_products_list2 .product-active {
+	border-radius: 2px;
+    background: #ffe4c4;
+    color: #000;
+    height: 25px;
+    width: 80px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+.table__cart_products_list2 .product-active input { display: none }
+.table__cart_products_list2 .product-active span { padding-left: 5px }
+.table__cart_products_list2 .product-active:hover { background: #FB9006; color: #fff }
+.table__cart_products_list2 .product-active.postpone { background: #7cbe49; color: #fff }
+.table__cart_products_list2 .product-active.postpone:hover { background: #6ba53e; color: #fff }

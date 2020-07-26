@@ -22,10 +22,11 @@
 
 	<div class="flex w100">
 		<div class="w30 m100">
+			<?php /* ?>
 			<div id="percents" data-margin-top="0"><div class="active"></div><div class="text">15%</div></div>
 			<div class="info" data-margin-top="27"><?=$this->text('Статус заповнення інформації')?></div>
 
-			<?php if(!$this->userIs()) { ?>
+			<?php */ if(!$this->userIs()) { ?>
 				<div id="cart-signup" class="flex">
 					<div data-tab="new-buyer" class="w50 active"><?=$this->text('Я новий покупець')?></div>
 					<div data-tab="regular-buyer" class="w50"><?=$this->text('Я постійний покупець')?></div>
@@ -53,7 +54,7 @@
 				</div>
 
 				<?php $this->load->library('facebook'); 
-				if($_SESSION['option']->facebook_initialise){ ?>
+				if(false && $_SESSION['option']->facebook_initialise){ ?>
 					<div class="facebook">
 						<p><?=$this->text('Швидкий вхід:')?></p>
 						<button class="facebookSignUp" onclick="return facebookSignUp()">Facebook <i class="fab fa-facebook"></i></button>
@@ -86,7 +87,7 @@
 					<input type="text" name="email" value="<?=$this->data->re_post('email')?>" class="hide" required>
 					<input type="text" name="phone" value="<?=$this->data->re_post('phone')?>" class="hide" required>
 					<input type="text" name="name" value="<?=$this->data->re_post('name')?>" class="hide" required>
-				<?php } else { ?>
+				<?php } /* else { ?>
 					<div id="buyer">
 						<h4><?=$this->text('Покупець')?></h4>
 			 			<p>
@@ -96,7 +97,7 @@
 				 			<?php } else echo '<br>'.$this->data->formatPhone($_SESSION['user']->phone); ?>
 			 			</p>
 					</div>
-				<?php } if($shippings)
+				<?php } */ if($shippings)
 					require_once '__shippings_subview.php';
 				if($payments) { ?>
 					<h4><?=$this->text('Оплата')?></h4>
@@ -168,7 +169,7 @@
 					<button class="w25"><?=$this->text('Застосувати купон')?></button>
 				</form>
 			<?php } $actions = false;
-			require_once '__cart_products_list.php'; ?>
+			require_once '__cart_products_list2.php'; ?>
 		</div>
 	</div>
 </main>

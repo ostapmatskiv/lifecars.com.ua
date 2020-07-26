@@ -452,6 +452,7 @@ section.sale__catalog .sale__wrrap .sale__card {
 	border: 2px solid #fefefe;
 	border-radius: 10px;
 	position: relative;
+	background: #fff
 }
 .sale__card.empty { border: none !important }
 main.detal .detal__cart .sale__card:hover,
@@ -1505,39 +1506,35 @@ main.detal section.detal__info .info__price .card__check.detal__check p {
 	color: #666;
 }
 
-main.detal section.detal__info .info__price .card__check.detal__check span.minus {
+main.detal section.detal__info .info__price .card__check.detal__check span.minus,
+.table__cart_products_list2 .amount span.minusInCart,
+main.detal section.detal__info .info__price .card__check.detal__check span.plus,
+.table__cart_products_list2 .amount span.plusInCart {
 	display: inline-block;
 	width: 30px;
-	height: 22px;
-	font-size: 18px;
+	height: 20px;
+	font-size: 22px;
 	line-height: 0.7;
-	margin: 0 4px 0 10px;
+	margin: 0 0 0 10px;
 	text-align: center;
 	color: #fff;
 	border-radius:50px 0 0 50px;
 	background-color: #d9d9d9;
 	cursor: pointer;
 }
-main.detal section.detal__info .info__price .card__check.detal__check input {
-	width: 45px;
+main.detal section.detal__info .info__price .card__check.detal__check input,
+.table__cart_products_list2 .amount input {
+	width: 50px;
 	height: 20px; 
 	text-align: center;
 	font-size: 13px;
 	color: #666666;
 	border: none;
 }
-main.detal section.detal__info .info__price .card__check.detal__check span.plus {
-	display: inline-block;
-	width: 30px;
-	height: 20px;
-	font-size: 22px;
-	line-height: 0.7;
-	margin-left: 4px;
-	text-align: center;
-	color: #fff;
+main.detal section.detal__info .info__price .card__check.detal__check span.plus,
+.table__cart_products_list2 .amount span.plusInCart {
+	margin-left: 0;
 	border-radius: 0 50px 50px 0;
-	background-color: #d9d9d9;
-	cursor: pointer;
 }
 section.sale__catalog .sale__wrrap .sale__card .check__number span.minus:hover,
 section.sale__catalog .sale__wrrap .sale__card .check__number span.plus:hover,

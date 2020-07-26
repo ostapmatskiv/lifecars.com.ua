@@ -1,4 +1,5 @@
 $(document).ready(function (){
+	var sticky_price_box = new Sticky('#cart .price-box');
 	recount()
 });
 
@@ -243,21 +244,15 @@ $('#cart .product-active').click(function () {
 	var input = $(this).find('input');
 	var active = 0;
 	if (input.prop("checked"))
-	{
-		$(this).addClass('postpone');
-		$(this).closest('.tr').attr('title', 'Товар відкладено');
 		input.prop("checked", false);
-	}
 	else
 	{
-		$(this).removeClass('postpone');
-		$(this).closest('.tr').attr('title', '');
 		input.prop("checked", true);
 		active = 1;
 	}
 	cart.active(input.val(), active);
 });
-$('#cart .table__cart_products_list2 button.delete').click(function () {
+$('#cart .name_action button.delete').click(function () {
 	var key = $(this).val();
 	var product = $('#product-'+key);
 	var popupCart = $('#cart-product-delete');
@@ -280,7 +275,6 @@ $('#cart-product-delete .actions .postpone').click(function () {
 	if(id)
 	{
 		cart.active(id, 0);
-		$('#product-'+id+' .product-active').addClass('postpone');
 		$('#product-'+id+' .product-active input').attr('checked', false);
 	}
 	$('#modal-bg, .modal').fadeOut()
@@ -293,26 +287,32 @@ $('#cart-product-delete .actions .delete').click(function () {
 });
 
 function recount(counter) {
-	var products = $('.table__cart_products_list2 .tr:not(.disabled)');
+	var i = 1;
+	if(counter == true)
+		$('table.__cart_products_list > tbody td:first-child div').each(function(){
+			$(this).text(i++)
+		});
+	var products = $('table.__cart_products_list > tbody > tr:not(.disabled)');
 	if(products.length)
 	{
 		$('a[href$=checkout]').attr('disabled', false).addClass('active');
 	}
 	else
 		$('a[href$=checkout]').attr('disabled', true).removeClass('active');
+	$('table.__cart_products_list > thead th').text(products.length);
 }
 
 function isInt(n) {
     return +n === parseInt(n) && !(n % 1);
 }
-$('.table__cart_products_list2 .amount input').on('change', function () {
+$('table.__cart_products_list .name_action ~ table tbody tr td.amount input').on('change', function () {
 	// this.value = this.value.replace(/(?![0-9])./gmi,'');
 	changeQuantity(this, this.value.replace(/(?![0-9])./gmi,''));
 })
-$('.table__cart_products_list2 .amount span.minusInCart').click(function(){
+$('table.__cart_products_list .name_action ~ table tbody tr td.amount button.minusInCart').click(function(){
 	changeQuantity(this, '-')
 })
-$('.table__cart_products_list2 .amount span.plusInCart').click(function(){
+$('table.__cart_products_list .name_action ~ table tbody tr td.amount button.plusInCart').click(function(){
 	changeQuantity(this, '+')
 })
 

@@ -1,4 +1,4 @@
-<div id="nova-poshta-method" class="flex">
+<div id="nova-poshta-method" class="flex hide">
     <div data-tab="warehouse" class="w50 active"><?=$this->text('На відділення')?></div>
     <div data-tab="courier" class="w50"><?=$this->text("Кур'єром")?></div>
 </div>
@@ -47,6 +47,40 @@ if(empty($novaposhta_selected) && $userShipping && $userShipping->department)
 //$this->load->js_init('initShipping()'); ?>
 <script>
     window.onload = function ( ) {
+        
+    };
+    function setCity(city) {
+        $("#nova-poshta-warehouse select").empty().append('<option selected disabled="" value="">Виберіть відділення</option>');
+        $("#nova-poshta-warehouse .info").addClass('hide');
+        $('input[name="nova-poshta-city-ref"]').val(city);
+        if($('input[name="nova-poshta-method"]').val() == 'warehouse')
+        {
+            $("div#divLoading").addClass('show');
+            $.ajax({
+                url: '<?=SITE_URL.$_SESSION['alias']->alias?>/getWarehouses',
+                type: 'POST',
+                data: { 'city' : city },
+                success:function(warehouses) {
+                    if(warehouses)
+                        warehouses.forEach(function(warehous) {
+                            $('<option/>', { text: warehous.name, title: warehous.title, 'data-id': warehous.id, 'data-info': warehous.info}).appendTo($("#nova-poshta-warehouse select"))
+                        });
+                },
+                complete: function() {
+                    $("div#divLoading").removeClass('show');
+                }
+            })
+        }
+        else
+            $('input[name="novaposhta-address-street"]').autocomplete({
+                source: '<?=SITE_URL.$_SESSION['alias']->alias?>/getAddresses/'+city,
+                minLength: 2
+            });
+    }
+
+    function initShipping() {
+        $('input[name="nova-poshta-method"]').attr('required', true);
+
         $('input[name="novaposhta-city"]').autocomplete({
             source: '<?=SITE_URL.$_SESSION['alias']->alias?>/getcities/warehouse',
             minLength: 3,
@@ -85,38 +119,6 @@ if(empty($novaposhta_selected) && $userShipping && $userShipping->department)
             $('input[name="nova-poshta-warehouse-ref"]').val(option.data('id'));
             $("#nova-poshta-warehouse .info").html(option.data('info')).removeClass('hide')
         });
-    };
-    function setCity(city) {
-        $("#nova-poshta-warehouse select").empty().append('<option selected disabled="" value="">Виберіть відділення</option>');
-        $("#nova-poshta-warehouse .info").addClass('hide');
-        $('input[name="nova-poshta-city-ref"]').val(city);
-        if($('input[name="nova-poshta-method"]').val() == 'warehouse')
-        {
-            $("div#divLoading").addClass('show');
-            $.ajax({
-                url: '<?=SITE_URL.$_SESSION['alias']->alias?>/getWarehouses',
-                type: 'POST',
-                data: { 'city' : city },
-                success:function(warehouses) {
-                    if(warehouses)
-                        warehouses.forEach(function(warehous) {
-                            $('<option/>', { text: warehous.name, title: warehous.title, 'data-id': warehous.id, 'data-info': warehous.info}).appendTo($("#nova-poshta-warehouse select"))
-                        });
-                },
-                complete: function() {
-                    $("div#divLoading").removeClass('show');
-                }
-            })
-        }
-        else
-            $('input[name="novaposhta-address-street"]').autocomplete({
-                source: '<?=SITE_URL.$_SESSION['alias']->alias?>/getAddresses/'+city,
-                minLength: 2
-            });
-    }
-
-    function initShipping() {
-        $('input[name="nova-poshta-method"]').attr('required', true);
     }
 </script>
 
@@ -129,7 +131,8 @@ if(empty($novaposhta_selected) && $userShipping && $userShipping->department)
     #nova-poshta-warehouse .info {
         border: #7cbe49 1px solid;
         padding: 5px 10px;
-        border-radius: 2px
+        border-radius: 2px;
+        display: none;
     }
     #cart input.ui-autocomplete-loading { background: #eee url("<?=SERVER_URL?>style/images/ui-anim_basic_16x16.gif") right center no-repeat !important }
 </style>

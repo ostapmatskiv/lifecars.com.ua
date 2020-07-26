@@ -20,7 +20,7 @@
 			</div>
 		<?php } unset($_SESSION['notify']); ?>
 
-		<?php $actions = true; if($products) require_once '__cart_products_list.php'; ?>
+		<?php $actions = true; if($products) require_once '__cart_products_list2.php'; ?>
 
 		<div class="alert alert-warning <?=$products ? 'hide' : ''?> emptyCart">
 			<p><?=$this->text('Корзина пуста')?></p>
@@ -94,7 +94,7 @@
 	</div>
 	<input type="hidden" id="action-product-key">
 	<div class="flex actions">
-		<button class="close"><?=$this->text('Скасувати')?></button>
+		<!-- <button class="close"><?=$this->text('Скасувати')?></button> -->
 		<button class="postpone"><?=$this->text('Відкласти товар')?></button>
 		<button class="delete"><?=$this->text('Видалити з корзини')?></button>
 	</div>
