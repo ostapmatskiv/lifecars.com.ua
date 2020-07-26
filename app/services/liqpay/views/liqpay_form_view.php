@@ -1,4 +1,4 @@
-<div class="container content">
+<div class="container">
 <?php
 
 /**
@@ -10,7 +10,7 @@ if(isset($pay) && $pay->amount > 0 && !empty($_SESSION['option']->public_key) &&
 
 ?>
 	
-	<h2 style="font-size: 43px;"><i class="fa fa-cc-visa"></i> Зачекайте хвильку..</h2>
+	<h2 style="font-size: 43px;"><i class="fab fa-cc-visa"></i> Зачекайте хвильку..</h2>
     <h3 style="font-size: 27px;">проводиться перенаправлення на сервіс оплати</h3>
     
     <p class="reply__text">*Якщо перенаправлення не відбулось автоматично, будь ласка натисніть</p>

@@ -131,6 +131,14 @@ class cart extends Controller {
                                     $payments = $this->db->select('wl_aliases_cooperation as c', 'alias2 as id', $cooperation_where)
                                                             ->join('wl_ntkd', 'name, list as info', $ntkd)
                                                             ->get('array');
+                                    if(count($payments) == 1)
+                                    {
+                                        $cart->return_url = $_SESSION['alias']->alias.'/'.$cart->id;
+                                        $cart->wl_alias = $_SESSION['alias']->id;
+
+                                        $this->load->function_in_alias($payments[0]->id, '__get_Payment', $cart);
+                                        exit;
+                                    }
                                     $this->load->profile_view('pay_view', array('cart' => $cart, 'payments' => $payments));
                                 }
                                 else
