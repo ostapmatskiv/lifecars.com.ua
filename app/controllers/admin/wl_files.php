@@ -26,7 +26,7 @@ class wl_files extends Controller {
 			$alias = $this->data->post('alias');
 			$content = $this->data->post('content');
 
-			$max_size = ‭31457280‬;
+			$max_size = 31457280;
 			$post_max_size = $this->data->parse_size(ini_get('post_max_size'));
 		    if ($post_max_size > 0) {
 		    	$max_size = $post_max_size;
@@ -90,7 +90,7 @@ class wl_files extends Controller {
 
 					$ntkd = $this->db->getAllDataByFieldInArray('wl_ntkd', ['alias' => $alias, 'content' => $content]);
 						foreach ($ntkd as $row) {
-							if(strripos('f', $row->get_ivafc) === false)
+							if(empty($row->get_ivafc) || strripos('f', $row->get_ivafc) === false)
 							{
 								if(empty($row->get_ivafc))
 									$this->db->updateRow('wl_ntkd', ['get_ivafc' => 'f'], $row->id);

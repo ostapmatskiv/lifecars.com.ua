@@ -56,7 +56,7 @@ class wl_Video extends Controller {
 				{
 					$ntkd = $this->db->getAllDataByFieldInArray('wl_ntkd', ['alias' => $_POST['alias'], 'content' => $_POST['content']]);
 						foreach ($ntkd as $row) {
-							if(strripos('v', $row->get_ivafc) === false)
+							if(empty($row->get_ivafc) || strripos('v', $row->get_ivafc) === false)
 							{
 								if(empty($row->get_ivafc))
 									$this->db->updateRow('wl_ntkd', ['get_ivafc' => 'v'], $row->id);

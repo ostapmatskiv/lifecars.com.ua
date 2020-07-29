@@ -68,7 +68,7 @@ class wl_Audio extends Controller {
 
 					$ntkd = $this->db->getAllDataByFieldInArray('wl_ntkd', ['alias' => $alias, 'content' => $content]);
 						foreach ($ntkd as $row) {
-							if(strripos('a', $row->get_ivafc) === false)
+							if(empty($row->get_ivafc) || strripos('a', $row->get_ivafc) === false)
 							{
 								if(empty($row->get_ivafc))
 									$this->db->updateRow('wl_ntkd', ['get_ivafc' => 'a'], $row->id);
