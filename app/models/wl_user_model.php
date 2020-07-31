@@ -201,6 +201,7 @@ class wl_user_model {
                 ->get();
 		if($user && $code == $user->auth_id)
 		{
+            $user->next = 1;
             $status = $this->db->getAllDataById('wl_user_status', $user->next);
 			$this->db->updateRow('wl_users', array('status' => $user->next), $user->id);
 			$user->status = $user->next;
