@@ -17,9 +17,23 @@ class wl_alias_model
 		$_SESSION['alias']->code = 202;
 		$_SESSION['alias']->service = false;
 		$_SESSION['alias']->name = $_SESSION['alias']->title = $_SESSION['alias']->breadcrumb_name = $alias;
-		$_SESSION['alias']->description = $_SESSION['alias']->keywords = $_SESSION['alias']->text = $_SESSION['alias']->list = $_SESSION['alias']->meta = $_SESSION['alias']->global_MetaTags = '';
+		$_SESSION['alias']->description = $_SESSION['alias']->keywords = $_SESSION['alias']->text = $_SESSION['alias']->list = $_SESSION['alias']->meta = $_SESSION['option']->global_MetaTags = '';
 		$_SESSION['alias']->files = $_SESSION['alias']->audios = $_SESSION['alias']->image = $_SESSION['alias']->images = $_SESSION['alias']->videos = false;
 		$_SESSION['alias']->js_plugins = $_SESSION['alias']->js_load = $_SESSION['alias']->js_init = $_SESSION['alias']->breadcrumbs = array();
+
+		$wl_options_0 = $this->db->cache_get('wl_options_0', 'wl_aliases');
+		if($wl_options_0 === NULL)
+		{
+			$options_where['service'] = $options_where['alias'] = array(0);
+			if($options = $this->db->getAllDataByFieldInArray('wl_options', $options_where, 'service, alias'))
+				foreach($options as $opt) {
+					$key = $opt->name;
+					$_SESSION['option']->$key = $opt->value;
+				}
+			$this->db->cache_add('wl_options_0', $_SESSION['option'], 'wl_aliases');
+		}
+		elseif(!empty($wl_options_0))
+			$_SESSION['option'] = $wl_options_0;
 	}
 
     public function init($alias, $link = '')
