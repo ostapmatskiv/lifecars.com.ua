@@ -597,6 +597,7 @@ class import_1c extends Controller
 		}
 	}
 
+	private $update_currency = false;
 	private function import_Currency($xml)
 	{
 		foreach ($xml->Валюта as $currency) {
@@ -607,6 +608,7 @@ class import_1c extends Controller
 				$rate = str_replace(',', '.', $rate);
 				if(empty($_SESSION['currency']['USD']) || $_SESSION['currency']['USD'] != $rate)
 				{
+					$this->update_currency = true;
 					$data = [];
 					$data['currency'] = $rate;
 					$data['day'] = strtotime('today');
@@ -622,9 +624,11 @@ class import_1c extends Controller
 
 					echo "USD: {$rate} <br>";
 
+					$_SESSION['currency']['USD'] = $rate;
 					if(isset($_SESSION['__page_before_init'][9]))
 			            $_SESSION['__page_before_init'][9] = 0;
 			        $this->db->cache_delete('currency', 'wl_aliases');
+			        $this->db->cache_delete_all(false, 'currency');
 				}
 			}
 		}
@@ -639,10 +643,11 @@ class import_1c extends Controller
 			return false;
 
 		$time = time();
+		$all_products = false;
 		
 		if($all_products)
 			$all_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c, price, currency, availability')->get('array');
-		else
+		elseif(!empty($file->ОстаткиНоменклатуры))
 		{
 			$id_1c_list = [];
 			foreach ($file->ОстаткиНоменклатуры->Номенклатура as $xml_product) {
@@ -655,7 +660,15 @@ class import_1c extends Controller
 		}
 
 		if(empty($all_products))
+		{
+			if(!$this->update_currency)
+				if($file_name = $this->data->get('file'))
+				{
+					if (file_exists($this->folder.$file_name))
+						unlink($this->folder.$file_name);
+				}
 			return false;
+		}
 
 		foreach ($file->ОстаткиНоменклатуры->Номенклатура as $xml_product) {
 			$id_1c = $this->xml_attribute($xml_product, 'Код');
