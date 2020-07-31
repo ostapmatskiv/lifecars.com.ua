@@ -166,7 +166,7 @@ class Signup extends Controller {
 				$this->redirect('login');
 			}
 		}
-		$this->load->page_404();
+		$this->load->page_404(false);
 	}
 
 	public function check_email()
