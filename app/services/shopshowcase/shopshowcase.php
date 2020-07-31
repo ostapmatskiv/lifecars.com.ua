@@ -320,7 +320,7 @@ class shopshowcase extends Controller {
                     $checkedGroups[] = $group->id;
                 }
 
-                $products = $this->export_model->getProducts($checkedGroups, false, $go);
+                $products = $this->export_model->getProducts($checkedGroups);
 		        $this->setProductsPrice($products);
 				$this->ymlgenerator->createYml($products, $groups);
 	        }
