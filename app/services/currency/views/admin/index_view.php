@@ -109,7 +109,7 @@
 			    <div class="widget-chart-content">
 			        <h4 class="chart-title">
 			            Курс UAH / USD
-			            <small>Статистика подобово за останній місяць. Дані ПриватБанку</small>
+			            <small>Статистика подобово за останній місяць</small>
 			        </h4>
 			        <div id="visitors-line-chart" class="morris-inverse" style="height: 260px;"></div>
 			    </div>
@@ -156,7 +156,7 @@
 	    $where = array();
 	    $where['day'] = '>='.$day;
 	    $where['currency'] = $usd_id;
-	    $where['from'] = 'Privat24';
+	    // $where['from'] = 'Privat24';
     	$this->db->select($_SESSION['service']->table.'_history', '*', $where);
     	$history = $this->db->get('array');
     	if(!empty($history)) { 

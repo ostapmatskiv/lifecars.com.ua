@@ -597,8 +597,44 @@ class import_1c extends Controller
 		}
 	}
 
+	private function import_Currency($xml)
+	{
+		foreach ($xml->Валюта as $currency) {
+			$key = $this->xml_attribute($currency, 'Наименование');
+			$rate = $this->xml_attribute($currency, 'Курс');
+			if($key == 'USD')
+			{
+				$rate = str_replace(',', '.', $rate);
+				if(empty($_SESSION['currency']['USD']) || $_SESSION['currency']['USD'] != $rate)
+				{
+					$data = [];
+					$data['currency'] = $rate;
+					$data['day'] = strtotime('today');
+					$this->db->updateRow('s_currency', $data, 1);
+					// $this->db->updateRow('s_currency', $currency, ['code' => 'USD']);
+
+					$history['currency'] = 1; // ['code' => 'USD']
+					$history['value'] = $rate;
+					$history['day'] = $data['day'];
+					$history['from'] = '1c';
+					$history['update'] = time();
+					$this->db->insertRow('s_currency_history', $history);
+
+					echo "USD: {$rate} <br>";
+
+					if(isset($_SESSION['__page_before_init'][9]))
+			            $_SESSION['__page_before_init'][9] = 0;
+			        $this->db->cache_delete('currency', 'wl_aliases');
+				}
+			}
+		}
+	}
+
 	private function parse_VygruzkaZalyshkiv($file, $all_products = false)
 	{		
+		if(isset($file->КурсыВалют->Валюта))
+			$this->import_Currency($file->КурсыВалют);
+
 		if(!isset($file->Склади->Склад))
 			return false;
 
