@@ -50,7 +50,7 @@ class Image {
 	 */
 	public function getExtension()
 	{
-		if($this->image)
+		if($this->image || $this->extension == 'svg')
 			return $this->extension;
 		return false;
 	}
@@ -79,7 +79,10 @@ class Image {
         if(in_array($extension, $this->allowed_ext) == false)
 			return false;
 		if($extension == 'svg')
-			return false;
+		{
+			$this->extension = 'svg';
+			return true;
+		}
 		
 		// Функція потребує NULL_PATH (відносно index.php)
 		// !Важливо для роботи через піддомен
