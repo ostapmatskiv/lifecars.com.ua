@@ -138,7 +138,7 @@ class Signup extends Controller {
 			if($status = $this->wl_user_model->checkConfirmed($_SESSION['user']->email, $this->data->post('code')))
 			{
 				$_SESSION['notify']->success = $this->text('Підтвердження пройшло успішно!');
-				$this->redirect($status->load);
+				$this->redirect('profile/edit');
 			}
 			else
 			{
@@ -158,7 +158,7 @@ class Signup extends Controller {
 			if ($status = $this->wl_user_model->checkConfirmed($this->data->get('email'), $this->data->get('code')))
 			{
 				$_SESSION['notify']->success = $this->text('Підтвердження пройшло успішно!');
-				$this->redirect('profile');
+				$this->redirect('profile/edit');
 			}
 			else
 			{
