@@ -247,7 +247,7 @@ class cart extends Controller {
                             $showPayment = true;
             }
 
-            $this->load->profile_view('list_view', array('orders' => $orders, 'showPayment' => $showPayment), $user);
+            $this->load->page_view('list_view', array('orders' => $orders, 'showPayment' => $showPayment), $user);
         }
         else
             $this->redirect('login');
