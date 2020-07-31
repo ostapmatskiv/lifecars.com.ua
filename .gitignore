@@ -11,3 +11,4 @@ _install/
 *.xml
 *.gz
 robots.txt
+/xd

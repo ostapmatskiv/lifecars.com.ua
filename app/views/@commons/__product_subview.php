@@ -93,12 +93,22 @@
                 <div class="form__product">
                     <?=$product->manufacturer?> <?=$product->article_show?>
                 </div>
-                <form action="#">
-                    <input required name="city" list="city__select" type="text" placeholder="Виберіть місто">
-                    <datalist id="city__select"></datalist>
-                    <input required type="text" placeholder="Ім'я">
-                    <input required type="tel" placeholder="Телефон">
-                    <input required type="email" placeholder="Електронна адреса">
+                <form method="POST" action="<?=SITE_URL?>save/orders">
+                    <input type="hidden" name="product" value="<?=$product->manufacturer?> <?=$product->article_show?> <?=$product->name?>">
+                    <input required name="city" list="city__select" type="text" placeholder="Місто">
+                    <datalist id="city__select">
+                        <option>Львів</option>
+                        <option>Київ</option>
+                        <option>Харків</option>
+                        <option>Одеса</option>
+                        <option>Дніпро</option>
+                        <option>Івано-Франківськ</option>
+                        <option>Тернопіль</option>
+                        <option>Запоріжжя</option>
+                    </datalist>
+                    <input required name="name" type="text" placeholder="Ім'я">
+                    <input required name="phone" type="tel" placeholder="Телефон">
+                    <input required name="email" type="email" placeholder="Електронна адреса">
                     <button class="form__btn">Надіслати запит</button>
                 </form>
             </div>

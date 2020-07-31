@@ -70,15 +70,15 @@
 .alert { padding: 15px; margin-bottom: 15px; color: #fff }
 .alert.alert-danger { background-color: #f52323 }
 .alert.alert-warning { background-color: #f59c1a }
-.alert.alert-success { background-color: #00ad00 }
+.alert.alert-success { background-color: #82c166 }
 .alert .close { float: right }
 .alert p { margin: 5px !important }
 
 .btn { padding: 5px 15px; color: #fff; border: none; cursor: pointer }
 .btn.btn-danger { background-color: #f52323 }
 .btn.btn-danger:hover { background-color: #d41e1e }
-.btn.btn-success { background-color: #00ad00 }
-.btn.btn-success:hover { background-color: #019a01 }
+.btn.btn-success { background-color: #82c166 }
+.btn.btn-success:hover { background-color: #82c166 }
 .btn.btn-warning { background-color: #f59c1a }
 .btn.btn-warning:hover { background-color: #e29018 }
 

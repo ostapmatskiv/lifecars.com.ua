@@ -2,160 +2,245 @@
 @import url(fonts/segoeui/font_s.css);
 
 body {
-	font-family: 'Segoe UI', Arial;
-	background-color: #F2F2F2;
+    font-family: 'Segoe UI', Arial;
+    background-color: #F2F2F2;
 }
-a {text-decoration: none }
-main { margin-bottom: 50px }
-main img { max-width: 100% }
-.pt-50 { padding-top: 50px }
+
+a {
+    text-decoration: none
+}
+
+main {
+    margin-bottom: 50px
+}
+
+main img {
+    max-width: 100%
+}
+
+.pt-50 {
+    padding-top: 50px
+}
 
 #modal-add_success {
-	position: fixed;
-    background: rgba(0,0,0,.8);
+    position: fixed;
+    background: rgba(0, 0, 0, .8);
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-	z-index: 998;
-	display: none;
-	justify-content: center;
-	align-items: center;
+    z-index: 998;
+    display: none;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
 }
+
 #modal-add_success .bg-white {
-	width: 50%;
-	max-width: 700px;
-	background-color: #fff;
+    width: 50%;
+    max-width: 700px;
+    background-color: #fff;
     font-size: 22px;
     text-align: center;
     padding: 50px;
 }
-#modal-add_success img { margin-bottom: 15px; max-width: 90% }
-#modal-add_success h4 { font-size: 32px; margin-bottom: 30px; max-width: 90% }
-#modal-add_success h4.product_name { font-size: 26px }
-#modal-add_success .flex { width: 420px; margin: auto }
-#modal-add_success a {
-	display: block;
-	padding: 12px;
-	text-align: center;
-	background-color: #7cbe49;
-	border: none;
-	border-radius: 5px;
-	width: 205px;
-	font-size: 18px;
-	color: #fff
+
+#modal-add_success img {
+    margin-bottom: 15px;
+    max-width: 90%
 }
+
+#modal-add_success h4 {
+    font-size: 32px;
+    margin-bottom: 30px;
+    max-width: 90%
+}
+
+#modal-add_success h4.product_name {
+    font-size: 26px
+}
+
+#modal-add_success .flex {
+    width: 420px;
+    margin: auto
+}
+
+#modal-add_success a {
+    display: block;
+    padding: 12px;
+    text-align: center;
+    background-color: #7cbe49;
+    border: none;
+    border-radius: 5px;
+    width: 205px;
+    font-size: 18px;
+    color: #fff
+}
+
 #modal-add_success a:hover {
     background-color: #669e3b;
 }
+
 #modal-add_success a.close {
-	background-color: #ffc505;
+    background-color: #ffc505;
 }
+
 #modal-add_success a.close:hover {
     background-color: #e4af00;
 }
+
 @media screen and (max-width: 500px) {
-	#modal-add_success h4 { text-align: center }
-	#modal-add_success .flex {
-		width: 300px;
-		flex-direction: column;
-    	align-items: center;
+    #modal-add_success h4 {
+        text-align: center
     }
-    #modal-add_success a { margin-bottom: 15px }
+
+    #modal-add_success .flex {
+        width: 300px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #modal-add_success a {
+        margin-bottom: 15px
+    }
 }
 
-	
+
 #modal-bg {
-	position: fixed;
-	background: rgba(0,0,0,0.8);
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	z-index: 998;
-	display: none
+    position: fixed;
+    background: rgba(0, 0, 0, 0.8);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 998;
+    display: none
 }
+
 .modal {
-	position: fixed;
-	border-radius: 5px;
-	background: #fff;
-	padding: 15px;
-	width: 420px;
-	height: 520px;
-	top: 10%;
-	left: calc(50% - 210px);
-	z-index: 999;
-	display: none
+    position: fixed;
+    border-radius: 5px;
+    background: #fff;
+    padding: 15px;
+    width: 420px;
+    height: 520px;
+    top: 10%;
+    left: calc(50% - 210px);
+    z-index: 999;
+    display: none
 }
-.modal i.fa-times { cursor: pointer }
-.modal input, .modal textarea {
-	height: auto;
-	border: 1px solid #a2a2a2;
+
+.modal i.fa-times {
+    cursor: pointer
+}
+
+.modal input,
+.modal textarea {
+    height: auto;
+    border: 1px solid #a2a2a2;
     padding: 5px 10px;
     margin-bottom: 30px;
 }
-.modal textarea { width: 100%; height: 100px }
-.modal button {
-	display: block;
-	margin: auto;
-	padding: 10px 30px;
-	margin-bottom: 15px;
-    border: none;
-	border-radius: 2px
+
+.modal textarea {
+    width: 100%;
+    height: 100px
 }
 
-form button, .btn {
-    background: #7cbe49; color: #fff;
+.modal button {
+    display: block;
+    margin: auto;
+    padding: 10px 30px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 2px
+}
+
+form button,
+.btn {
+    background: #7cbe49;
+    color: #fff;
     padding: 5px 15px;
     border: none;
     cursor: pointer;
 }
-form button:hover, .btn:hover { background: #68a03d }
+
+form button:hover,
+.btn:hover {
+    background: #68a03d
+}
 
 
 /*      Header        */
-#top_header { padding-top: 2px }
+#top_header {
+    padding-top: 2px
+}
+
 #top_header div {
-	display: inline-block;
+    display: inline-block;
     font-size: 12px;
     color: #8c8c8c;
 }
+
 #top_header div a.active {
-	font-weight: 700;
+    font-weight: 700;
 }
-#top_header div img { height: 12px }
-#top_header div.language { margin-right: 50px }
-#top_header div.profile a { margin-right: 20px }
-header { padding: 15px 0 20px 0 }
+
+#top_header div img {
+    height: 12px
+}
+
+#top_header div.language {
+    margin-right: 50px
+}
+
+#top_header div.profile a {
+    margin-right: 20px
+}
+
+header {
+    padding: 15px 0 20px 0
+}
+
 header .mob__menu,
 header div.flex .fa-bars,
-header .mobile__shoping { display: none }
-header img.header__logo { width: 200px }
-header form {position: relative }
+header .mobile__shoping {
+    display: none
+}
+
+header img.header__logo {
+    width: 200px
+}
+
+header form {
+    position: relative
+}
+
 header form .fa-chevron-down {
-	font-size: 12px;
-	color: #d9d9d9;
-	position: absolute;
-	top: 50%;
+    font-size: 12px;
+    color: #d9d9d9;
+    position: absolute;
+    top: 50%;
     transform: translateY(-50%);
     left: 140px;
 }
+
 header form select {
-	height: 32px;
-	width: 160px;
-	border-radius: 3px;
-	border: 0;
-	padding: 0 7px;
-	font-size: 12px;
-	color:#8c8c8c;
-	background: #fff;
-	outline: none;
-	appearance: none;
-	-webkit-appearance: none;
+    height: 32px;
+    width: 160px;
+    border-radius: 3px;
+    border: 0;
+    padding: 0 7px;
+    font-size: 12px;
+    color: #8c8c8c;
+    background: #fff;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
 }
+
 header form input {
-	height: 32px;
+    height: 32px;
     width: 360px;
     border-radius: 3px;
     border: 0;
@@ -164,274 +249,347 @@ header form input {
     font-size: 12px;
     color: #888888;
 }
-header form button {
-	position: absolute;
-	top: 50%;
-	outline: none;
-    background: transparent;
-	right: 10px;
-	border: none;
-	padding: 0;
-}
-header form button .fa-search {color:#d9d9d9;font-size: 12px; }
-header form button i {
-	font-size: 22px;
-	color:#8c8c8c;
-	top: 50%;
 
-    transform: translateY(-50%); 
+header form button {
+    position: absolute;
+    top: 50%;
+    outline: none;
+    background: transparent;
+    right: 10px;
+    border: none;
+    padding: 0;
 }
+
+header form button .fa-search {
+    color: #d9d9d9;
+    font-size: 12px;
+}
+
+header form button i {
+    font-size: 22px;
+    color: #8c8c8c;
+    top: 50%;
+
+    transform: translateY(-50%);
+}
+
 header .header__address {
-	font-size: 12px;
-	font-weight: 500;
-	color: #8c8c8c;
-	display: none;
+    font-size: 12px;
+    font-weight: 500;
+    color: #8c8c8c;
+    display: none;
 }
-header .header__address address { font-style: normal }
+
+header .header__address address {
+    font-style: normal
+}
+
 header .header__address .fa-map-marker-alt,
 header .header__phone .fa-phone-alt {
-	font-size: 22px;
+    font-size: 22px;
     margin-right: 10px;
     color: #8c8c8c;
 }
+
 @media screen and (min-width: 1366px) {
-	header .header__address { display: flex }
+    header .header__address {
+        display: flex
+    }
 }
+
 @media screen and (min-width: 1400px) and (max-width: 1550px) {
-	header form input { width: 360px }
+    header form input {
+        width: 360px
+    }
 }
-header .header__phone{ margin-right: 20px;}
-header .header__phone .header__login { display: none;}
+
+header .header__phone {
+    margin-right: 20px;
+}
+
+header .header__phone .header__login {
+    display: none;
+}
+
 header .header__phone div {
-	font-size: 12px;
-	font-weight: 500;
-	color: #8c8c8c;
+    font-size: 12px;
+    font-weight: 500;
+    color: #8c8c8c;
 }
+
 header .header__shoping a.header__cart {
-	background-color: #fff;
-	border-radius: 100%;
-	display: flex;
+    background-color: #fff;
+    border-radius: 100%;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
-header .header__shoping .header__cart img { padding: 10px; width: 42px }
-header .header__shoping .header__user {
-	outline: none;
-	font-size: 25px;
-	background-color: #fff;
-	border: none;
-	border-radius: 100%;
-	margin-left: 15px;
-	color: #8c8c8c;
-	display: flex;
-    justify-content: center;
-	align-items: center;
-	cursor: pointer;
-}
-header .header__shoping .header__user img { padding: 10px 12px }
 
-header .header__shoping { position: relative; }
+header .header__shoping .header__cart img {
+    padding: 10px;
+    width: 42px
+}
+
+header .header__shoping .header__user {
+    outline: none;
+    font-size: 25px;
+    background-color: #fff;
+    border: none;
+    border-radius: 100%;
+    margin-left: 15px;
+    color: #8c8c8c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+header .header__shoping .header__user img {
+    padding: 10px 12px
+}
+
+header .header__shoping {
+    position: relative;
+}
+
 header .header__shoping i.label {
-	display: block;
-	position: absolute;
+    display: block;
+    position: absolute;
     top: 50%;
     transform: translateY(-50%);
-	left: -28px;
-	font-weight: 600;
-	color: #fff;
-	font-size: 12px;
-	line-height: 1.4;
-	font-style: normal;
-	text-align: center;
-	height: 18px;
-	width: 36px;
-	border-radius: 0 50px 50px 0;
-	background-color: #82C166;
+    left: -28px;
+    font-weight: 600;
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.4;
+    font-style: normal;
+    text-align: center;
+    height: 18px;
+    width: 36px;
+    border-radius: 0 50px 50px 0;
+    background-color: #82C166;
 }
+
 header nav {
-	margin-top: 15px;
+    margin-top: 15px;
 }
+
 header nav a {
-	font-size: 14px;
-	font-weight: 600;
-	color: #8c8c8c;
-	text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #8c8c8c;
+    text-align: center;
 }
+
 header nav a:before {
-	content: "";
-	display: block;
-	height: 4px;
-	    width: 180px;
-	margin-bottom: 10px;
-	background: #fff;
+    content: "";
+    display: block;
+    height: 4px;
+    width: 180px;
+    margin-bottom: 10px;
+    background: #fff;
 }
+
 header nav a:hover::before,
-header nav a.active::before  {
-	background: #82C166;
+header nav a.active::before {
+    background: #82C166;
 }
 
 /*                                      Header                                          */
 
- /*                                    Main                                         */
+/*                                    Main                                         */
 
 main h1 {
-	font-size: 28px;
-	font-weight: 600;
-	text-transform: uppercase;
-	font-style: normal;
-	letter-spacing: 2px;
-	text-align: center;
-	color: #666;
-	margin-bottom: 15px;
+    font-size: 28px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-style: normal;
+    letter-spacing: 2px;
+    text-align: center;
+    color: #666;
+    margin-bottom: 15px;
 }
-main .main__logo { margin: 0 auto 40px }
+
+main .main__logo {
+    margin: 0 auto 40px
+}
+
 main .logo__text {
-	margin-top: 10px;
-	text-align: center;
-	font-size: 15px;
-	font-weight: 600;
-	color: #666;
-	text-transform: uppercase;
-	letter-spacing: 2px;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
+
 main .main__logo a {
-	position: relative;
-	text-align: center;
-	width: 20%;
-	display: flex;
+    position: relative;
+    text-align: center;
+    width: 20%;
+    display: flex;
     flex-direction: column;
     align-items: center;
     height: 60px;
 }
-main .main__logo a img { max-height: 35px; max-width: 60px; }
+
+main .main__logo a img {
+    max-height: 35px;
+    max-width: 60px;
+}
+
 main .main__logo a .fa-chevron-down {
-	position: absolute;
-	bottom: -25px;
+    position: absolute;
+    bottom: -25px;
     left: 50%;
     transform: translateX(-50%);
     font-size: 18px;
     color: #d9d9d9;
 }
+
 main .main__logo a:hover .fa-chevron-down,
 main .main__logo a.active .logo__text,
-main .main__logo a.active .fa-chevron-down{
-	color: #82C166;
+main .main__logo a.active .fa-chevron-down {
+    color: #82C166;
 }
 
 
 /*                        cars__detal                           */
 
 main section.cars__catalog,
-main section.cars__base { overflow: hidden }
-main section.cars__catalog .base__detal, 
-main section.cars__base .base__detal {
-	cursor: pointer;
-	width: 200px;
+main section.cars__base {
+    overflow: hidden
 }
+
+main section.cars__catalog .base__detal,
+main section.cars__base .base__detal {
+    cursor: pointer;
+    width: 200px;
+}
+
 main section.cars__catalog .base__detal img,
 main section.cars__base .base__detal img {
-	display: block;
-	margin: 0 auto;
+    display: block;
+    margin: 0 auto;
 }
+
 main section.cars__catalog .base__detal .detal__text,
-main section.cars__base .base__detal .detal__text{
-	font-size: 17px;
-	font-weight: 500;
-	text-transform: uppercase;
-	letter-spacing: 2px;
-	text-align: center;
-	color: #666666;
-	margin-bottom: 40px;
+main section.cars__base .base__detal .detal__text {
+    font-size: 17px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    color: #666666;
+    margin-bottom: 40px;
 }
+
 main section.cars__catalog .base__detal:hover .detal__text,
-main section.cars__base .base__detal:hover .detal__text{ color: #82C166; }
+main section.cars__base .base__detal:hover .detal__text {
+    color: #82C166;
+}
 
 
 
 /*                         cars__detal                         */
 
 
- /*                        Main_Carousel                               */
+/*                        Main_Carousel                               */
 
-main .slick__main .draggable { border-radius: 5px;}
+main .slick__main .draggable {
+    border-radius: 5px;
+}
+
 main #main__slick .slick-dots {
-	position: absolute;
-	bottom: -35px;
-	left: 0;
-	width: 100%;
-	z-index: 10;
-	text-align: center;
+    position: absolute;
+    bottom: -35px;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    text-align: center;
 }
+
 main #main__slick .slick-dots li {
-	list-style: none;
-	cursor: pointer;
-	margin: 0 7px;
-	width: 18px;
-	height: 18px;
-	border-radius: 50%;
-	background: #fff;
-	display: inline-block;
+    list-style: none;
+    cursor: pointer;
+    margin: 0 7px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    display: inline-block;
 }
-main #main__slick .slick-dots li.slick-active { background: #7cbe49; }
-main #main__slick .slick-dots li button { display: none; }
+
+main #main__slick .slick-dots li.slick-active {
+    background: #7cbe49;
+}
+
+main #main__slick .slick-dots li button {
+    display: none;
+}
+
 main #main__slick .slick-prev {
-  background: url('icons/left-arrow.png') center center / cover no-repeat;
-  font-size: 0px;
-  border: 0px;
-  position: absolute;
-  left: 17px;
-  z-index: 10;
-  top: 50%;
-  outline: none;
-  transform: translateY(-50%);
-  width: 25px;
-  height: 40px;
-  cursor: pointer;
+    background: url('icons/left-arrow.png') center center / cover no-repeat;
+    font-size: 0px;
+    border: 0px;
+    position: absolute;
+    left: 17px;
+    z-index: 10;
+    top: 50%;
+    outline: none;
+    transform: translateY(-50%);
+    width: 25px;
+    height: 40px;
+    cursor: pointer;
 }
+
 main #main__slick .slick-next {
-background: url('icons/right-arrow.png') center center / cover no-repeat;
-  font-size: 0px;
-  border: 0px;
-  position: absolute;
-  right: 17px;
-  z-index: 10;
-  cursor: pointer;
-  top: 50%;
-  outline: none;
-  transform: translateY(-50%);
-  width: 25px;
-  height: 40px;
+    background: url('icons/right-arrow.png') center center / cover no-repeat;
+    font-size: 0px;
+    border: 0px;
+    position: absolute;
+    right: 17px;
+    z-index: 10;
+    cursor: pointer;
+    top: 50%;
+    outline: none;
+    transform: translateY(-50%);
+    width: 25px;
+    height: 40px;
 }
 
 
 /*                                        Main_Carousel                                         */
 
 
-															   
+
 /*                                       Sale                                              */
 
 main section.sale a {
-	font-size: 17px;
-	font-weight: 600;
-	text-align: center;
-	color: #8c8c8c;
+    font-size: 17px;
+    font-weight: 600;
+    text-align: center;
+    color: #8c8c8c;
 }
+
 main section.sale .sale__nav a:before {
-	content: "";
-	display: block;
-	height: 4px;
-	min-width: 200px;
-	margin-bottom: 10px;
-	background: #fff;
+    content: "";
+    display: block;
+    height: 4px;
+    min-width: 200px;
+    margin-bottom: 10px;
+    background: #fff;
 }
+
 main section.sale .sale__nav a:hover,
 main section.sale .sale__nav a:active {
-	color: #82C166;
+    color: #82C166;
 }
 
 main section.sale .sale__nav a:hover::before,
 main section.sale .sale__nav a:active::before {
-	background: #82C166;
+    background: #82C166;
 }
 
 
@@ -440,236 +598,270 @@ main section.sale .sale__nav a:active::before {
 
 
 section.sale .sale__wrrap {
-	margin-top: 35px;
+    margin-top: 35px;
 }
+
 main.detal .detal__cart .sale__card,
 section.sale .sale__wrrap .sale__card,
 section.sale__catalog .sale__wrrap .sale__card {
-	width: calc(20% - 5px);
-	padding: 8px;
-	min-height: auto;
-	margin-bottom: 20px;
-	border: 2px solid #fefefe;
-	border-radius: 10px;
-	position: relative;
-	background: #fff
+    width: calc(20% - 5px);
+    padding: 8px;
+    min-height: auto;
+    margin-bottom: 20px;
+    border: 2px solid #fefefe;
+    border-radius: 10px;
+    position: relative;
+    background: #fff
 }
-.sale__card.empty { border: none !important; background: none !important }
+
+.sale__card.empty {
+    border: none !important;
+    background: none !important
+}
+
 main.detal .detal__cart .sale__card:hover,
 section.sale .sale__wrrap .sale__card:hover,
 section.sale__catalog .sale__wrrap .sale__card:hover {
     border-color: #7cbe49;
 }
-main.detal .detal__cart .sale__card.no_availabilaty:hover ,
+
+main.detal .detal__cart .sale__card.no_availabilaty:hover,
 section.sale .sale__wrrap .sale__card.no_availabilaty:hover,
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty:hover {
     border-color: #ffc505;
 }
+
 main.detal .detal__cart .sale__card .card__img img,
 section.sale .sale__wrrap .sale__card .card__img img,
 section.sale__catalog .sale__wrrap .sale__card .card__img img {
-	width: 100%;
+    width: 100%;
 }
+
 main.detal .detal__cart .sale__card .card__img i.card__label,
 section.sale .sale__wrrap .sale__card .card__img i.card__label {
-	position: absolute;
-	top: 26px;
-	left: -16px;
-	transform: translateY(50%);
-	font-weight: 600;
-	color: #fff;
-	font-size: 14px;
-	line-height: 1.4;
-	font-style: normal;
-	text-align: center;
-	height: 20px;
-	width: 45px;
-	border-radius: 0 50px 50px 0;
-	background-color: #7cbe49;
+    position: absolute;
+    top: 26px;
+    left: -16px;
+    transform: translateY(50%);
+    font-weight: 600;
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.4;
+    font-style: normal;
+    text-align: center;
+    height: 20px;
+    width: 45px;
+    border-radius: 0 50px 50px 0;
+    background-color: #7cbe49;
 }
+
 main.detal .detal__cart .sale__card .card__img i.new__label,
 section.sale .sale__wrrap .sale__card .card__img i.new__label {
-	position: absolute;
-	top: 50px;
-	left: -16px;
-	transform: translateY(50%);
-	font-weight: 600;
-	color: #fff;
-	text-transform: uppercase;
-	font-size: 15px;
-	line-height: 1.4;
-	font-style: normal;
-	text-align: center;
-	height: 20px;
-	width: 45px;
-	border-radius: 0 50px 50px 0;
-	background-color: #ff5205;
+    position: absolute;
+    top: 50px;
+    left: -16px;
+    transform: translateY(50%);
+    font-weight: 600;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 15px;
+    line-height: 1.4;
+    font-style: normal;
+    text-align: center;
+    height: 20px;
+    width: 45px;
+    border-radius: 0 50px 50px 0;
+    background-color: #ff5205;
 }
+
 main.detal .detal__cart .sale__card .card__img,
 section.sale .sale__wrrap .sale__card .card__img,
 section.sale__catalog .sale__wrrap .sale__card .card__img {
-	width: 100%;
-	height: 180px;
-	background-color: transparent;
-	overflow: hidden;
-	border-radius: 5px;
+    width: 100%;
+    height: 180px;
+    background-color: transparent;
+    overflow: hidden;
+    border-radius: 5px;
 }
+
 main.detal .detal__cart .sale__card .card__img.empty_photo,
 section.sale .sale__wrrap .sale__card .card__img.empty_photo,
 section.sale__catalog .sale__wrrap .sale__card .card__img.empty_photo {
-	background-color: #fff;
-	background-image: url(images/no_image2.png);
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: 50%;
+    background-color: #fff;
+    background-image: url(images/no_image2.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 50%;
 }
 
-.card__rating .rating:not(:checked) > input {
-    position:absolute;
-    top:-9999px;
+.card__rating .rating:not(:checked)>input {
+    position: absolute;
+    top: -9999px;
 }
-.card__rating .rating:not(:checked) > label {
-    float:right;
-    width:1em;
-    overflow:hidden;
-    white-space:nowrap;
-    cursor:pointer;
-    font-size:20px;
+
+.card__rating .rating:not(:checked)>label {
+    float: right;
+    width: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 20px;
     color: #fff;
 }
-.card__rating .rating:not(:checked) > label:before {
+
+.card__rating .rating:not(:checked)>label:before {
     content: '★ ';
 }
-.card__rating .rating > input:checked ~ label {
-    color: #ffc505;    
+
+.card__rating .rating>input:checked~label {
+    color: #ffc505;
 }
-.card__rating .rating:not(:checked) > label:hover,
-.card__rating .rating:not(:checked) > label:hover ~ label {
-    color: #deb217;  
+
+.card__rating .rating:not(:checked)>label:hover,
+.card__rating .rating:not(:checked)>label:hover~label {
+    color: #deb217;
 }
-.card__rating .rating > input:checked + label:hover,
-.card__rating .rating > input:checked + label:hover ~ label,
-.card__rating .rating > input:checked ~ label:hover,
-.card__rating .rating > input:checked ~ label:hover ~ label,
-.card__rating .rating > label:hover ~ input:checked ~ label {
+
+.card__rating .rating>input:checked+label:hover,
+.card__rating .rating>input:checked+label:hover~label,
+.card__rating .rating>input:checked~label:hover,
+.card__rating .rating>input:checked~label:hover~label,
+.card__rating .rating>label:hover~input:checked~label {
     color: #c59b08;
 }
+
 main.detal .detal__cart .sale__card .rating__comment,
 section.sale .sale__wrrap .sale__card .rating__comment,
 section.sale__catalog .sale__wrrap .sale__card .rating__comment {
-	flex-grow: 1;
-	margin-left: 30px;
-	display: flex;
+    flex-grow: 1;
+    margin-left: 30px;
+    display: flex;
     flex-grow: 1;
     margin-left: 30px;
     align-items: flex-end;
     margin-top: 5px;
 }
+
 main.detal .detal__cart .sale__card .rating__comment i.rating__lebel,
 section.sale .sale__wrrap .sale__card .rating__comment i.rating__lebel,
 section.sale__catalog .sale__wrrap .sale__card .rating__comment i.rating__lebel {
-  font-size: 13px;
-  font-weight: normal;
-  letter-spacing: normal;
-  color: #8c8c8c;
-  margin-right: 11px;
-  font-style: normal;
+    font-size: 13px;
+    font-weight: normal;
+    letter-spacing: normal;
+    color: #8c8c8c;
+    margin-right: 11px;
+    font-style: normal;
 }
+
 main.detal .detal__cart .sale__card .card__text,
 section.sale .sale__wrrap .sale__card .card__text,
 section.sale__catalog .sale__wrrap .sale__card .card__text {
-	height: 70px;
-	display: table-cell;
-	vertical-align: middle;
-	font-size: 14px;
-	font-weight: 700;
-	text-align: left;
-	color: #000;
+    height: 70px;
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: left;
+    color: #000;
 }
+
 main.detal .detal__cart .sale__card .card__info,
 section.sale .sale__wrrap .sale__card .card__info,
 section.sale__catalog .sale__wrrap .sale__card .card__info {
-	/* margin-top: 15px; */
-	display: flex;
+    /* margin-top: 15px; */
+    display: flex;
 }
+
 main.detal .detal__cart .sale__card .card__info .info__article,
 section.sale .sale__wrrap .sale__card .card__info .info__article,
-section.sale__catalog .sale__wrrap .sale__card .card__info .info__article { margin-right: 5px} 
+section.sale__catalog .sale__wrrap .sale__card .card__info .info__article {
+    margin-right: 5px
+}
+
 main.detal .detal__cart .sale__card .card__info .info__article p,
 section.sale .sale__wrrap .sale__card .card__info .info__article p,
 section.sale__catalog .sale__wrrap .sale__card .card__info .info__article p {
-	font-size: 12px;
-	padding-top: 5px;
-	color: #a6a6a6;
+    font-size: 12px;
+    padding-top: 5px;
+    color: #a6a6a6;
 }
+
 main.detal .detal__cart .sale__card .card__info .info__name p,
 section.sale .sale__wrrap .sale__card .card__info .info__name p,
 section.sale__catalog .sale__wrrap .sale__card .card__info .info__name p {
-	font-size: 12px;
-	padding-top: 5px;
-	color: #262626;
+    font-size: 12px;
+    padding-top: 5px;
+    color: #262626;
 }
+
 main.detal .detal__cart .sale__card .card__check,
 section.sale .sale__wrrap .sale__card .card__check,
 section.sale__catalog .sale__wrrap .sale__card .card__check {
-	margin-top: 15px;
+    margin-top: 15px;
 }
+
 main.detal .detal__cart .sale__card .card__check .check__pieces .fa-check-circle,
 section.sale .sale__wrrap .sale__card .card__check .check__pieces .fa-check-circle,
 section.sale__catalog .sale__wrrap .sale__card .card__check .check__pieces .fa-check-circle {
-	font-size: 16px;
-  	color: #7cbe49;
+    font-size: 16px;
+    color: #7cbe49;
 }
+
 main.detal .detal__cart .sale__card .card__check .check__pieces .fa-times-circle,
 section.sale .sale__wrrap .sale__card .card__check .check__pieces .fa-times-circle,
 section.sale__catalog .sale__wrrap .sale__card .card__check .check__pieces .fa-times-circle {
-	font-size: 16px;
-	color: #FFC505;
+    font-size: 16px;
+    color: #FFC505;
 }
+
 main.detal .detal__cart .sale__card .card__check .check__pieces p,
 section.sale .sale__wrrap .sale__card .card__check .check__pieces p,
 section.sale__catalog .sale__wrrap .sale__card .card__check .check__pieces p {
-	font-size: 14px;
-	  color: #262626;
-	  margin-left: 6px;
+    font-size: 14px;
+    color: #262626;
+    margin-left: 6px;
 }
+
 main.detal .detal__cart .sale__card .check__number,
 section.sale .sale__wrrap .sale__card .check__number,
 section.sale__catalog .sale__wrrap .sale__card .check__number {
-	width: 80px;
+    width: 80px;
 }
+
 main.detal .detal__cart .sale__card .check__number span.minus,
 section.sale .sale__wrrap .sale__card .check__number span.minus,
 section.sale__catalog .sale__wrrap .sale__card .check__number span.minus {
-	display: inline-block;
-	width: 30px;
-	height: 20px;
-	text-align: center;
-	color: #fff;
-	border-radius:50px 0 0 50px;
-	background-color: #d9d9d9;
-	cursor: pointer;
+    display: inline-block;
+    width: 30px;
+    height: 20px;
+    text-align: center;
+    color: #fff;
+    border-radius: 50px 0 0 50px;
+    background-color: #d9d9d9;
+    cursor: pointer;
 }
+
 main.detal .detal__cart .sale__card .check__number input,
 section.sale .sale__wrrap .sale__card .check__number input,
 section.sale__catalog .sale__wrrap .sale__card .check__number input {
-	width: 40px;
-	text-align: center;
-	font-size: 16px;
-	color: #666666;
-	border: none;
+    width: 40px;
+    text-align: center;
+    font-size: 16px;
+    color: #666666;
+    border: none;
 }
-main.detal .detal__cart .sale__card .check__number span.plus ,
+
+main.detal .detal__cart .sale__card .check__number span.plus,
 section.sale .sale__wrrap .sale__card .check__number span.plus,
 section.sale__catalog .sale__wrrap .sale__card .check__number span.plus {
-	display: inline-block;
-	width: 30px;
-	height: 20px;
-	text-align: center;
-	color: #fff;
-	border-radius: 0 50px 50px 0;
-	background-color: #d9d9d9;
-	cursor: pointer;
+    display: inline-block;
+    width: 30px;
+    height: 20px;
+    text-align: center;
+    color: #fff;
+    border-radius: 0 50px 50px 0;
+    background-color: #d9d9d9;
+    cursor: pointer;
 }
 
 
@@ -677,113 +869,123 @@ section.sale__catalog .sale__wrrap .sale__card .check__number span.plus {
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal,
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal {
-	position: absolute;
+    position: absolute;
     top: -2px;
     left: -2px;
     border-radius: 10px;
     width: calc(100% + 4px);
-	height: calc(100% + 4px);
-	display: none;
-	padding: 15px;
-	background-color: #ffc505;
+    height: calc(100% + 4px);
+    display: none;
+    padding: 15px;
+    background-color: #ffc505;
 }
+
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal h5,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5,
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {
-	font-size: 28px;
-	margin-top: 5px;
+    font-size: 28px;
+    margin-top: 5px;
     font-weight: bold;
     line-height: 0.93;
     text-align: left;
     color: #2d3b40;
 }
+
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal p,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal p,
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal p {
-	font-size: 13px;
-	font-weight: 600;
-	text-align: left;
-	color: #ffffff;
-	margin-top: 15px;
-} 
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    color: #ffffff;
+    margin-top: 15px;
+}
+
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__name,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__name,
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__name {
-	font-size: 14px;
+    font-size: 14px;
     font-weight: bold;
     text-align: left;
-	color: #2d3b40;
-	margin-top: 15px;
+    color: #2d3b40;
+    margin-top: 15px;
 }
+
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__product,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__product,
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__product {
-	font-size: 14px;
-	font-weight: normal;
-	text-align: left;
-	color: #2d3b40;
-	margin-top: 10px;
-	margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: left;
+    color: #2d3b40;
+    margin-top: 10px;
+    margin-bottom: 20px;
 
 }
+
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a,
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {
-	font-size: 20px;
-	font-weight: bold;
-	text-align: left;
-	color: #2d3b40;
-	display: block;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+    color: #2d3b40;
+    display: block;
 }
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal span ,
+
+main.detal .detal__cart .sale__card.no_availabilaty .cart__modal span,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal span,
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal span {
-	display: block;
-	font-size: 16px;
-	font-weight: normal;
-	text-align: center;
-	color: #2d3b40;
-	margin-top: 8px;
+    display: block;
+    font-size: 16px;
+    font-weight: normal;
+    text-align: center;
+    color: #2d3b40;
+    margin-top: 8px;
 }
+
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal button.modal__request,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request,
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {
-	width: 100%;
-	height: 40px;
-	border-radius: 5px;
-	background-color: #e0ad04;
-	border: none;
-	outline: none;
-	margin-top: 10px;
-	font-size: 18px;
-	font-weight: normal;
-	text-align: center;
-	color: #ffffff;
-	cursor: pointer;
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    background-color: #e0ad04;
+    border: none;
+    outline: none;
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: normal;
+    text-align: center;
+    color: #ffffff;
+    cursor: pointer;
 }
+
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal button.cart__hiden,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.cart__hiden,
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal button.cart__hiden {
-	width: 34px;
-	height: 34px;
-	position: absolute;
+    width: 34px;
+    height: 34px;
+    position: absolute;
     bottom: -17px;
-	left: 50%;
+    left: 50%;
     transform: translateX(-50%);
-	background-color: #ffc505;
-	border: none;
-	outline: none;
-	border-radius: 100%;
+    background-color: #ffc505;
+    border: none;
+    outline: none;
+    border-radius: 100%;
 }
+
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal button.cart__hiden .fa-chevron-circle-up,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.cart__hiden .fa-chevron-circle-up,
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal button.cart__hiden .fa-chevron-circle-up {
-	font-size: 25px;
+    font-size: 25px;
     text-align: center;
     opacity: 0.4;
 }
+
 .cart__modal-show {
-	display: block;
+    display: block;
 }
 
 /*                                                cart form                                           */
@@ -791,64 +993,69 @@ section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal butt
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form,
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	border-radius: 5px;
-	width: 100%;
-	padding: 5px 21px 31px 21px;
-	background-color: #ffc505;
-	display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-radius: 5px;
+    width: 100%;
+    padding: 5px 21px 31px 21px;
+    background-color: #ffc505;
+    display: none;
 }
+
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__name,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__name,
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__name {
-	font-size: 23px;
-	font-weight: bold;
-	text-align: left;
-	color: #2d3b40;
+    font-size: 23px;
+    font-weight: bold;
+    text-align: left;
+    color: #2d3b40;
 }
+
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__product,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product,
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product {
-	font-size: 16px;
-  	font-weight: normal;
-  	text-align: left;
-  	color: #2d3b40;
-  	margin-top: 15px;
+    font-size: 16px;
+    font-weight: normal;
+    text-align: left;
+    color: #2d3b40;
+    margin-top: 15px;
 }
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form input ,
+
+main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form input,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input,
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {
-	width: 100%;
-	height: 30px;
-	border: none;
-  	border-radius: 5px;
-	background-color: #ffffff;
-	margin-top: 15px;
-	padding-left: 15px;
+    width: 100%;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffffff;
+    margin-top: 15px;
+    padding-left: 15px;
 }
+
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form input::placeholder,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input::placeholder,
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input::placeholder {
-	font-size: 14px;
-	font-weight: 400;
-	color: #a6a6a6;
+    font-size: 14px;
+    font-weight: 400;
+    color: #a6a6a6;
 }
+
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__btn,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__btn,
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__btn {
-	width: 100%;
-	height: 40px;
-	border: none;
-	border-radius: 5px;
-	background-color: #2d3b40;
-	font-size: 20px;
-	font-weight: 400;
-	text-align: center;
-	color: #ffffff;
-	outline: none;
-	margin-top: 30px;
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2d3b40;
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center;
+    color: #ffffff;
+    outline: none;
+    margin-top: 30px;
 }
 
 /*                                           cart form                                            */
@@ -857,47 +1064,56 @@ section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .car
 /*                                 cart modal                                               */
 
 main.detal .detal__cart .sale__card .card__price,
-section.sale .sale__wrrap .sale__card .card__price { margin-top: 18px; margin-bottom: 10px }
+section.sale .sale__wrrap .sale__card .card__price {
+    margin-top: 18px;
+    margin-bottom: 10px
+}
+
 main.detal .detal__cart .sale__card .card__price .price__text,
 section.sale .sale__wrrap .sale__card .card__price .price__text {
-	font-size: 27px;
-	font-weight: 500;
-	color: #262626;
+    font-size: 27px;
+    font-weight: 500;
+    color: #262626;
 }
+
 main.detal .detal__cart .sale__card.no_availabilaty .card__price .price__text,
 section.sale .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {
-	font-size: 14px;
+    font-size: 14px;
     font-weight: 400;
     color: #262626;
 }
+
 main.detal .detal__cart .sale__card .card__price button.cart__buy,
 section.sale .sale__wrrap .sale__card .card__price button.cart__buy {
-	position: relative;
-	width: 85px;
+    position: relative;
+    width: 85px;
     height: 35px;
-	border: none;
-  	border-radius: 5px;
-	background-color: #7cbe49;
-	color: #fff;
-	outline: none;
-	text-align: center;
-	cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #7cbe49;
+    color: #fff;
+    outline: none;
+    text-align: center;
+    cursor: pointer;
 }
+
 section.sale .sale__wrrap .sale__card .card__price button.cart__buy img,
-section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order img { width: 20px}
+section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order img {
+    width: 20px
+}
 
 main.detal .detal__cart .sale__card .card__price button.cart__buy:hover,
 section.sale .sale__wrrap .sale__card .card__price button.cart__buy:hover,
 section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy:hover {
-	background-color: rgb(63, 121, 21);
+    background-color: rgb(63, 121, 21);
 }
 
 main.detal .detal__cart .sale__card .card__price button.cart__buy:after,
 section.sale .sale__wrrap .sale__card .card__price button.cart__buy:after {
-	content: "Додати до кошика";
-	position: absolute;
-	display: none;
-	width: 100%;
+    content: "Додати до кошика";
+    position: absolute;
+    display: none;
+    width: 100%;
     bottom: -13px;
     left: 50%;
     transform: translateX(-50%);
@@ -906,29 +1122,32 @@ section.sale .sale__wrrap .sale__card .card__price button.cart__buy:after {
     text-align: center;
     color: #a6a6a6;
 }
+
 main.detal .detal__cart .sale__card.no_availabilaty button.cart__order,
 section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order {
-	position: relative;
-	width: 85px;
+    position: relative;
+    width: 85px;
     height: 35px;
-	margin-top: 5px;
-	border: none;
-	outline: none;
-  	border-radius: 5px;
-	background-color: #FFC505;
-	text-align: center;
-	cursor: pointer;
+    margin-top: 5px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: #FFC505;
+    text-align: center;
+    cursor: pointer;
 }
+
 main.detal .detal__cart .sale__card.no_availabilaty button.cart__order:hover,
 section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:hover,
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order:hover {
-	background-color: rgb(216, 166, 3);
+    background-color: rgb(216, 166, 3);
 }
+
 main.detal .detal__cart .sale__card.no_availabilaty button.cart__order:after,
 section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:after {
-	content: "Звязатися з нами" ;
-	position: absolute;
-	display: none;
+    content: "Звязатися з нами";
+    position: absolute;
+    display: none;
     width: 100%;
     bottom: -13px;
     left: 50%;
@@ -936,95 +1155,117 @@ section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:after {
     font-size: 10px;
     font-weight: normal;
     text-align: center;
-	color: #a6a6a6;
+    color: #a6a6a6;
 }
+
 main.detal .detal__cart .sale__card .card__price button.cart__buy:hover:after,
 main.detal .detal__cart .sale__card.no_availabilaty button.cart__order:hover:after,
 section.sale .sale__wrrap .sale__card .card__price button.cart__buy:hover:after,
 section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:hover:after {
-	display: block;
+    display: block;
 }
 
- /*                                                                   Sale Card                              */
+/*                                                                   Sale Card                              */
 
 /*                                                         Sale                                    */
 
 /*                                  Footer     */
-				 
+
 footer {
-	background: #e8e8e8;
+    background: #e8e8e8;
 }
-footer .footer__info{
-	padding: 35px 0;
-	padding-left: 40px;
+
+footer .footer__info {
+    padding: 35px 0;
+    padding-left: 40px;
 }
+
 footer .footer__info h5 {
-	font-size: 16px;
-	font-weight: bold;
-	line-height: 0.91;
-	text-align: left;
-	color: #666666;
-	margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 0.91;
+    text-align: left;
+    color: #666666;
+    margin-bottom: 20px;
 }
+
 footer .footer__info .footer__account a,
 footer .footer__info .footer__information a,
 footer .footer__info .footer__shop a {
-	display: block;
-	font-size: 15px;
-	font-weight: normal;
-	line-height: 1.25;
-	text-align: left;
-	color: #666666;
-	text-decoration: underline;
-	cursor: pointer;
-	padding-bottom: 10px;
+    display: block;
+    font-size: 15px;
+    font-weight: normal;
+    line-height: 1.25;
+    text-align: left;
+    color: #666666;
+    text-decoration: underline;
+    cursor: pointer;
+    padding-bottom: 10px;
 }
+
 footer .footer__info .footer__contacts .fa-map-marker-alt {
-	font-size: 28px;
-	color: #bfbfbf;
+    font-size: 28px;
+    color: #bfbfbf;
 }
+
 footer .footer__info .footer__contacts address {
-	font-size: 15px;
-	margin-left: 20px;
-	font-style: normal;
-  	font-weight: normal;
-  	color: #666666;
+    font-size: 15px;
+    margin-left: 20px;
+    font-style: normal;
+    font-weight: normal;
+    color: #666666;
 }
-footer .footer__info .footer__contacts .contacts__address { margin-bottom: 20px;}
+
+footer .footer__info .footer__contacts .contacts__address {
+    margin-bottom: 20px;
+}
+
 footer .footer__info .footer__contacts .contacts__phone a {
-	margin-left: 20px;
-	font-size: 15px;
-  	font-weight: normal;
-  	color: #666666;
- }
-footer .footer__info .footer__payments .payments__img img { padding: 0 4px }
+    margin-left: 20px;
+    font-size: 15px;
+    font-weight: normal;
+    color: #666666;
+}
+
+footer .footer__info .footer__payments .payments__img img {
+    padding: 0 4px
+}
 
 footer .footer__subtitle {
-	min-height: 85px;
-	background: #b3b3b3;
-	padding: 30px 0;
+    min-height: 85px;
+    background: #b3b3b3;
+    padding: 30px 0;
 }
+
 footer .footer__subtitle .subtitle__text {
-	font-size: 16px;
-	font-weight: normal;
-	color: #ffffff;
+    font-size: 16px;
+    font-weight: normal;
+    color: #ffffff;
 }
+
 footer .footer__subtitle .subtitle__text span {
-	margin-left: 20px;
+    margin-left: 20px;
 }
-footer .footer__subtitle .subtitle__link img.webspirit__img { width: 39px; }
+
+footer .footer__subtitle .subtitle__link img.webspirit__img {
+    width: 39px;
+}
+
 footer .footer__subtitle .subtitle__link p {
-	margin-left: 11px;
-	font-size: 12px;
-  	font-weight: normal;
-  	color: #ffffff;
+    margin-left: 11px;
+    font-size: 12px;
+    font-weight: normal;
+    color: #ffffff;
 }
+
 footer .footer__subtitle .subtitle__link p a {
-	text-decoration: underline;
+    text-decoration: underline;
 }
+
 footer .footer__subtitle .subtitle__link img.genetka {
-	margin-left: 30px;
+    margin-left: 30px;
 }
+
 #login-container input {
     background-color: #eee;
     padding: 12px 15px;
@@ -1038,14 +1279,28 @@ footer .footer__subtitle .subtitle__link img.genetka {
 
 /*                            catalog                              */
 main .auto__detal {
-	margin: 0 auto;
-	justify-content: space-evenly;
+    margin: 0 auto;
+    justify-content: space-evenly;
 }
-main .auto__detal ~ div.logo__catalog {display: none; height: 85px;}
-main .auto__detal ~ section.cars__catalog {height: auto; display: none; margin-top: 15px;}
-main .auto__detal a img { max-height: 40px; max-width: 70px }
+
+main .auto__detal~div.logo__catalog {
+    display: none;
+    height: 85px;
+}
+
+main .auto__detal~section.cars__catalog {
+    height: auto;
+    display: none;
+    margin-top: 15px;
+}
+
+main .auto__detal a img {
+    max-height: 40px;
+    max-width: 70px
+}
+
 main .auto__detal a .detal__text {
-	margin-top: 10px;
+    margin-top: 10px;
     text-align: center;
     font-size: 17px;
     font-weight: 600;
@@ -1053,162 +1308,222 @@ main .auto__detal a .detal__text {
     text-transform: uppercase;
     letter-spacing: 2px;
 }
+
 main .auto__detal a .fa-chevron-down {
-	font-size: 23px;
-	color: #d9d9d9;
-	display: block;
-	text-align: center;
-	margin-top: 10px;
+    font-size: 23px;
+    color: #d9d9d9;
+    display: block;
+    text-align: center;
+    margin-top: 10px;
 }
-main .auto__detal a:hover .fa-chevron-down { color: #82C166; }
+
+main .auto__detal a:hover .fa-chevron-down {
+    color: #82C166;
+}
+
 main .catalog__detal {
-	margin: 20px 0;
-	align-items: baseline;
+    margin: 20px 0;
+    align-items: baseline;
 }
+
 main .catalog__detal a {
-	display: block;
-	text-align: center;
-	width: 12%;
-	margin-bottom: 15px
+    display: block;
+    text-align: center;
+    width: 12%;
+    margin-bottom: 15px
 }
+
 main .catalog__detal a img {
     max-height: 40px;
     max-width: 70px;
 }
+
 main .catalog__detal a div {
-	font-size: 16px;
-	font-weight: 600;
-	text-align: center;
-	color: #666666;
-	margin-top: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    color: #666666;
+    margin-top: 15px;
 }
-main .catalog__detal a:hover div { color: #82C166; }
-main .catalog__info { margin: 20px 0 40px 0;}
+
+main .catalog__detal a:hover div {
+    color: #82C166;
+}
+
+main .catalog__info {
+    margin: 20px 0 40px 0;
+}
+
 main .catalog__info a {
-	font-size: 15px;
-  	font-weight: normal;
-  	text-align: center;
-	color: #666666;
-	text-decoration: underline;
+    font-size: 15px;
+    font-weight: normal;
+    text-align: center;
+    color: #666666;
+    text-decoration: underline;
 }
+
 main .catalog__info a:hover {
-	text-decoration: none;
-	color: #82C166;
+    text-decoration: none;
+    color: #82C166;
 }
-main .catalog__sorted div {margin: 0 auto;}
+
+main .catalog__sorted div {
+    margin: 0 auto;
+}
+
 main .catalog__sorted div a {
-	width: 72px;
-	height: 28px;
-	border-radius: 50px 50px 50px 50px;
-	margin-right: 7px;
-	padding: 7px 11px;
-	background-color: #fff;
-	font-size: 12px;
-	font-weight: normal;
-	color: #8c8c8c;
-	}
-main .catalog__sorted {padding-left: 55px; margin-top: 50px;}
+    width: 72px;
+    height: 28px;
+    border-radius: 50px 50px 50px 50px;
+    margin-right: 7px;
+    padding: 7px 11px;
+    background-color: #fff;
+    font-size: 12px;
+    font-weight: normal;
+    color: #8c8c8c;
+}
+
+main .catalog__sorted {
+    padding-left: 55px;
+    margin-top: 50px;
+}
+
 main .catalog__sorted div a:hover {
-	background-color: #82C166;
-	color: #fff;
+    background-color: #82C166;
+    color: #fff;
 }
+
 main .catalog__sorted .quantity__goods {
-	margin: 0 0 0 auto;
-	font-size: 13px;
-	font-weight: normal;
-	color: #8c8c8c;
+    margin: 0 0 0 auto;
+    font-size: 13px;
+    font-weight: normal;
+    color: #8c8c8c;
 }
+
 /*                         aside                       */
 
-main section.sale__catalog aside .filter .values { margin-top: 10px }
-main section.sale__catalog aside .filter .values input[type=checkbox] + label { display: block; margin-bottom: 2px }
-main section.sale__catalog aside .filter .values input[type=checkbox] { display: none }
-main section.sale__catalog aside .filter .values input[type=checkbox] + label:before {
-	content: "";
-	width: 14px;
-	height: 14px;
-	background-color: #f2f2f2;
-	border-radius: 100%;
-	display: inline-block;
-	margin: 0 10px 0 10px;
+main section.sale__catalog aside .filter .values {
+    margin-top: 10px
 }
-main section.sale__catalog aside .filter .values input[type=checkbox]:checked + label {
-	width: 100%;
-	border-radius: 15px;
-	background-color: #f2f2f2;
-}
-main section.sale__catalog aside .product__type input[type=checkbox]:checked + label::before {background-color: #ff5205;}
 
-main section.sale__catalog aside .filter input[type=checkbox]:checked + label::before { background-color: #7cbe49 }
-main section.sale__catalog aside .filter label span { float: right; margin-right: 10px }
+main section.sale__catalog aside .filter .values input[type=checkbox]+label {
+    display: block;
+    margin-bottom: 2px
+}
+
+main section.sale__catalog aside .filter .values input[type=checkbox] {
+    display: none
+}
+
+main section.sale__catalog aside .filter .values input[type=checkbox]+label:before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    background-color: #f2f2f2;
+    border-radius: 100%;
+    display: inline-block;
+    margin: 0 10px 0 10px;
+}
+
+main section.sale__catalog aside .filter .values input[type=checkbox]:checked+label {
+    width: 100%;
+    border-radius: 15px;
+    background-color: #f2f2f2;
+}
+
+main section.sale__catalog aside .product__type input[type=checkbox]:checked+label::before {
+    background-color: #ff5205;
+}
+
+main section.sale__catalog aside .filter input[type=checkbox]:checked+label::before {
+    background-color: #7cbe49
+}
+
+main section.sale__catalog aside .filter label span {
+    float: right;
+    margin-right: 10px
+}
 
 /*                        aside                                 */
 
 
 /*               sale__catalog                 */
-section.sale__catalog .sale__wrrap { margin-top: 25px }
-section.sale__catalog .sale__wrrap .sale__card { width: calc(25% - 5px) }
+section.sale__catalog .sale__wrrap {
+    margin-top: 25px
+}
+
+section.sale__catalog .sale__wrrap .sale__card {
+    width: calc(25% - 5px)
+}
+
 section.sale__catalog .sale__wrrap .sale__card .card__img i.card__label {
-	position: absolute;
-	top: 26px;
-	left: -16px;
-	transform: translateY(50%);
-	font-weight: 600;
-	color: #fff;
-	font-size: 14px;
-	line-height: 1.4;
-	font-style: normal;
-	text-align: center;
-	height: 20px;
-	width: 45px;
-	border-radius: 0 50px 50px 0;
-	background-color: #7cbe49;
+    position: absolute;
+    top: 26px;
+    left: -16px;
+    transform: translateY(50%);
+    font-weight: 600;
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.4;
+    font-style: normal;
+    text-align: center;
+    height: 20px;
+    width: 45px;
+    border-radius: 0 50px 50px 0;
+    background-color: #7cbe49;
 }
+
 section.sale__catalog .sale__wrrap .sale__card .card__img i.new__label {
-	position: absolute;
-	top: 50px;
-	left: -16px;
-	transform: translateY(50%);
-	font-weight: 600;
-	color: #fff;
-	text-transform: uppercase;
-	font-size: 15px;
-	line-height: 1.4;
-	font-style: normal;
-	text-align: center;
-	height: 20px;
-	width: 45px;
-	border-radius: 0 50px 50px 0;
-	background-color: #ff5205;
+    position: absolute;
+    top: 50px;
+    left: -16px;
+    transform: translateY(50%);
+    font-weight: 600;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 15px;
+    line-height: 1.4;
+    font-style: normal;
+    text-align: center;
+    height: 20px;
+    width: 45px;
+    border-radius: 0 50px 50px 0;
+    background-color: #ff5205;
 }
-.card__rating .rating:not(:checked) > input {
-    position:absolute;
-    top:-9999px;
+
+.card__rating .rating:not(:checked)>input {
+    position: absolute;
+    top: -9999px;
 }
-.card__rating .rating:not(:checked) > label {
-    float:right;
-    width:1em;
-    overflow:hidden;
-    white-space:nowrap;
-    cursor:pointer;
-    font-size:20px;
+
+.card__rating .rating:not(:checked)>label {
+    float: right;
+    width: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 20px;
     color: #fff;
 }
-.card__rating .rating:not(:checked) > label:before {
+
+.card__rating .rating:not(:checked)>label:before {
     content: '★ ';
 }
-.card__rating .rating > input:checked ~ label {
-    color: #ffc505;    
+
+.card__rating .rating>input:checked~label {
+    color: #ffc505;
 }
-.card__rating .rating:not(:checked) > label:hover,
-.card__rating .rating:not(:checked) > label:hover ~ label {
-    color: #deb217;  
+
+.card__rating .rating:not(:checked)>label:hover,
+.card__rating .rating:not(:checked)>label:hover~label {
+    color: #deb217;
 }
-.card__rating .rating > input:checked + label:hover,
-.card__rating .rating > input:checked + label:hover ~ label,
-.card__rating .rating > input:checked ~ label:hover,
-.card__rating .rating > input:checked ~ label:hover ~ label,
-.card__rating .rating > label:hover ~ input:checked ~ label {
+
+.card__rating .rating>input:checked+label:hover,
+.card__rating .rating>input:checked+label:hover~label,
+.card__rating .rating>input:checked~label:hover,
+.card__rating .rating>input:checked~label:hover~label,
+.card__rating .rating>label:hover~input:checked~label {
     color: #c59b08;
 }
 
@@ -1216,34 +1531,41 @@ section.sale__catalog .sale__wrrap .sale__card .card__img i.new__label {
 /*                               catalog----  cart modal                                               */
 
 
-section.sale__catalog .sale__wrrap .sale__card .card__price { margin-top: 18px;margin-bottom: 10px;}
-section.sale__catalog .sale__wrrap .sale__card .card__price .price__text {
-	font-size: 30px;
-	font-weight: 400;
-	color: #262626;
+section.sale__catalog .sale__wrrap .sale__card .card__price {
+    margin-top: 18px;
+    margin-bottom: 10px;
 }
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {
-	font-size: 14px;
+
+section.sale__catalog .sale__wrrap .sale__card .card__price .price__text {
+    font-size: 30px;
     font-weight: 400;
     color: #262626;
 }
-section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy {
-	position: relative;
-	width: 85px;
-	height: 35px;
-	border: none;
-  	border-radius: 5px;
-	background-color: #7cbe49;
-	color: #fff;
-	outline: none;
-	text-align: center;
-	cursor: pointer;
+
+section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {
+    font-size: 14px;
+    font-weight: 400;
+    color: #262626;
 }
+
+section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy {
+    position: relative;
+    width: 85px;
+    height: 35px;
+    border: none;
+    border-radius: 5px;
+    background-color: #7cbe49;
+    color: #fff;
+    outline: none;
+    text-align: center;
+    cursor: pointer;
+}
+
 section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy:after {
-	content: "Додати до кошика";
-	position: absolute;
-	display: none;
-	width: 100%;
+    content: "Додати до кошика";
+    position: absolute;
+    display: none;
+    width: 100%;
     bottom: -13px;
     left: 50%;
     transform: translateX(-50%);
@@ -1252,22 +1574,24 @@ section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy:aft
     text-align: center;
     color: #a6a6a6;
 }
+
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order {
-	position: relative;
-	width: 85px;
-	height: 35px;
-	margin-top: 3px;
-	border: none;
-	outline: none;
-  	border-radius: 5px;
-	background-color: #FFC505;
-	text-align: center;
-	cursor: pointer;
+    position: relative;
+    width: 85px;
+    height: 35px;
+    margin-top: 3px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: #FFC505;
+    text-align: center;
+    cursor: pointer;
 }
+
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order:after {
-	content: "Звязатися з нами" ;
-	position: absolute;
-	display: none;
+    content: "Звязатися з нами";
+    position: absolute;
+    display: none;
     width: 100%;
     bottom: -13px;
     left: 50%;
@@ -1275,267 +1599,353 @@ section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__orde
     font-size: 10px;
     font-weight: normal;
     text-align: center;
-	color: #a6a6a6;
+    color: #a6a6a6;
 }
+
 section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy:hover:after,
 section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order:hover:after {
-	display: block;
+    display: block;
 }
+
 section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy img,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order img { width: 20px}
+section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order img {
+    width: 20px
+}
 
 /*                 aside checkbox               */
-section.sale__catalog aside { margin-top: 35px }
+section.sale__catalog aside {
+    margin-top: 35px
+}
 
 section.sale__catalog .filter {
-	width: 85%;
-	height: auto;
-	padding: 20px;
-	margin-bottom: 5px;
-	border-radius: 5px;
-	background-color: #fefefe;
+    width: 85%;
+    height: auto;
+    padding: 20px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    background-color: #fefefe;
 }
-section.sale__catalog .filter  {
-	font-size: 13px;
-	font-weight: 600;
-	color: #666;
+
+section.sale__catalog .filter {
+    font-size: 13px;
+    font-weight: 600;
+    color: #666;
 }
-section.sale__catalog .filter .fa-chevron-circle-up { color: #d9d9d9; }
+
+section.sale__catalog .filter .fa-chevron-circle-up {
+    color: #d9d9d9;
+}
 
 
 
-ul.pagination {margin: 0 auto 20px}
-ul.pagination li { display: block; margin: 0 5px; }
+ul.pagination {
+    margin: 0 auto 20px
+}
+
+ul.pagination li {
+    display: block;
+    margin: 0 5px;
+}
+
 ul.pagination .previous-off,
-ul.pagination .next-off { display: none }
+ul.pagination .next-off {
+    display: none
+}
+
 .pagination li a {
-	font-size: 12px;
-	font-weight: normal;
-	line-height: 1.5;
-	text-align: center;
-	color: #262626;
-	display: block;
-	width: 47px;
-  	height: 20px;
-  	border-radius: 2px;
-  	background-color: #d9d9d9;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 1.5;
+    text-align: center;
+    color: #262626;
+    display: block;
+    width: 47px;
+    height: 20px;
+    border-radius: 2px;
+    background-color: #d9d9d9;
 }
+
 .pagination a:hover {
-	background-color: #bfbfbf;
+    background-color: #bfbfbf;
 }
+
 .pagination .previous a,
 .pagination .next a {
-	cursor: pointer;
-	width: 40px;
-	height: 40px;
-	padding: 10px;
-	background-color: #d9d9d9;
-	border: none;
-	outline: none;
-	border-radius: 100%
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    background-color: #d9d9d9;
+    border: none;
+    outline: none;
+    border-radius: 100%
 }
+
 .pagination .active {
-	width: 47px;
-	height: 30px;
-	border-radius: 2px;
-	background-color: #7cbe49;
-	font-size: 16px;
-	font-weight: bold;
-	line-height: 1.8;
-	text-align: center;
-	color: #f2f2f2;
+    width: 47px;
+    height: 30px;
+    border-radius: 2px;
+    background-color: #7cbe49;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.8;
+    text-align: center;
+    color: #f2f2f2;
 }
+
 /*                         catalog             */
 
 
 /*                          detal            */
 main.detal h1.detal__heading {
-	font-size: 28px;
-  	font-weight: normal;
-  	line-height: 1.33;
-  	text-align: left;
-  	color: #262626;
+    font-size: 28px;
+    font-weight: normal;
+    line-height: 1.33;
+    text-align: left;
+    color: #262626;
 }
-main.detal section.detal__info { padding: 30px 0;}
-main.detal section.detal__info .info__img {width: 40%;}
+
+main.detal section.detal__info {
+    padding: 30px 0;
+}
+
+main.detal section.detal__info .info__img {
+    width: 40%;
+}
+
 main.detal section.detal__info .img__big {
-	position: relative;
-	width: 300px;
-	height: 300px;
-	border-radius: 5px;
-	background-color: #fefefe;
-	background-image: url(images/no_image2.png);
-	background-repeat: no-repeat;
-	background-position: center;
+    position: relative;
+    width: 300px;
+    height: 300px;
+    border-radius: 5px;
+    background-color: #fefefe;
+    background-image: url(images/no_image2.png);
+    background-repeat: no-repeat;
+    background-position: center;
 }
+
 main.detal section.detal__info .img__big i.img__discount {
-	position: absolute;
-	top: 20px;
-	left: -30px;
-	width: 60px;
-	height: 25px;
-	background-color: #7cbe49;
-	border-radius: 0 50px 50px 0;
-	font-size: 16px;
-	font-style: normal;
-  	font-weight: 600;
-  	text-align: center;
-  	color: #fefefe;
+    position: absolute;
+    top: 20px;
+    left: -30px;
+    width: 60px;
+    height: 25px;
+    background-color: #7cbe49;
+    border-radius: 0 50px 50px 0;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    text-align: center;
+    color: #fefefe;
 }
+
 main.detal section.detal__info .img__big i.img__new {
-	position: absolute;
-	top: 55px;
-	left: -30px;
-	width: 60px;
-	height: 25px;
-	background-color: #ff5205;
-	border-radius: 0 50px 50px 0;
-	font-size: 16px;
-	font-style: normal;
-	font-weight: 600;
-	text-align: center;
-	color: #fefefe;
+    position: absolute;
+    top: 55px;
+    left: -30px;
+    width: 60px;
+    height: 25px;
+    background-color: #ff5205;
+    border-radius: 0 50px 50px 0;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    text-align: center;
+    color: #fefefe;
 }
+
 main.detal section.detal__info .img__big i.img__hit {
-	position: absolute;
-	top: 90px;
-	left: -30px;
-	width: 60px;
-	height: 25px;
-	background-color: #ffc505;
-	border-radius: 0 50px 50px 0;
-	font-size: 16px;
-	font-style: normal;
-	font-weight: 600;
-	text-align: center;
-	color: #fefefe;
+    position: absolute;
+    top: 90px;
+    left: -30px;
+    width: 60px;
+    height: 25px;
+    background-color: #ffc505;
+    border-radius: 0 50px 50px 0;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    text-align: center;
+    color: #fefefe;
 }
-main.detal section.detal__info .img__big img {width: 100%;}
-main.detal section.detal__info div.flex.h-evenly.v-center.card__rating.detal__rating {max-width: 350px}
-main.detal section.detal__info .card__rating.detal__rating .rating:not(:checked) > label {font-size: 24px;}
-main.detal section.detal__info .info__img div.m__right {margin-right: 10px;}
+
+main.detal section.detal__info .img__big img {
+    width: 100%;
+}
+
+main.detal section.detal__info div.flex.h-evenly.v-center.card__rating.detal__rating {
+    max-width: 350px
+}
+
+main.detal section.detal__info .card__rating.detal__rating .rating:not(:checked)>label {
+    font-size: 24px;
+}
+
+main.detal section.detal__info .info__img div.m__right {
+    margin-right: 10px;
+}
+
 main.detal section.detal__info .info__img .rating__comment .rating__lebel {
-	font-size: 16px;
-  	font-weight: normal;
- 	 font-style: normal;
-  	line-height: 1.31;
-  	color: #8c8c8c;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1.31;
+    color: #8c8c8c;
 }
-main.detal section.detal__info .info__img .img__small .small__img  a img {padding: 16px 6px; background-color: #fefefe; border-radius: 5px;}
+
+main.detal section.detal__info .info__img .img__small .small__img a img {
+    padding: 16px 6px;
+    background-color: #fefefe;
+    border-radius: 5px;
+}
+
 main.detal section.detal__info .info__img .img__small .small__img {
-	width: 104px;
-	height: 104px;
-	border-radius: 5px;
-	border: 1px solid transparent;
-	margin-bottom: 5px;
+    width: 104px;
+    height: 104px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    margin-bottom: 5px;
 }
-main.detal section.detal__info .info__img .img__small .small__img:hover {border-color: #7cbe49;}
-main.detal section.detal__info .info__bonus { width: 30%;}
+
+main.detal section.detal__info .info__img .img__small .small__img:hover {
+    border-color: #7cbe49;
+}
+
+main.detal section.detal__info .info__bonus {
+    width: 30%;
+}
+
 main.detal section.detal__info .info__bonus .bonus__send .send__img,
 main.detal section.detal__info .info__bonus .bonus__guarantee .guarantee__img,
 main.detal section.detal__info .info__bonus .bonus__return .return__img,
 main.detal section.detal__info .info__bonus .bonus__extra .extra__img {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 65px;
-	height: 65px;
-	border-radius: 47px;
-	background-color: #fefefe;
-	margin-right: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 65px;
+    height: 65px;
+    border-radius: 47px;
+    background-color: #fefefe;
+    margin-right: 15px;
 }
+
 main.detal section.detal__info .info__bonus .bonus__send p,
 main.detal section.detal__info .info__bonus .bonus__guarantee p,
 main.detal section.detal__info .info__bonus .bonus__return p,
 main.detal section.detal__info .info__bonus .bonus__extra p {
-	font-size: 12px;
-  	font-weight: 400;
-  	color: #666666;
+    font-size: 12px;
+    font-weight: 400;
+    color: #666666;
 }
-main.detal section.detal__info .info__bonus .flex { margin-bottom: 10px }
-main.detal section.detal__info .info__bonus img { width: 60% }
-main.detal section.detal__info .info__bonus .bonus__extra p { width: 80% }
 
-main.detal section.detal__info .info__price{ width: 30% }
+main.detal section.detal__info .info__bonus .flex {
+    margin-bottom: 10px
+}
+
+main.detal section.detal__info .info__bonus img {
+    width: 60%
+}
+
+main.detal section.detal__info .info__bonus .bonus__extra p {
+    width: 80%
+}
+
+main.detal section.detal__info .info__price {
+    width: 30%
+}
+
 main.detal section.detal__info .info__price .old__price p {
-	font-size: 25px;
-	font-weight: 500;
-	color: #a6a6a6;
+    font-size: 25px;
+    font-weight: 500;
+    color: #a6a6a6;
 }
+
 main.detal section.detal__info .info__price .new__price {
-	font-size: 65px;
-	font-weight: 500;
-	color: #262626;
+    font-size: 65px;
+    font-weight: 500;
+    color: #262626;
 }
+
 main.detal section.detal__info .info__price .discount .discount__procent {
-	margin-right: 10px;
-	width: 60px;
-  	height: 25px;
-	font-size: 13px;
-	text-align: center;
-	color: #fefefe;
-	border-radius: 0 50px 50px 0;
-	background-color: #7cbe49;
+    margin-right: 10px;
+    width: 60px;
+    height: 25px;
+    font-size: 13px;
+    text-align: center;
+    color: #fefefe;
+    border-radius: 0 50px 50px 0;
+    background-color: #7cbe49;
 }
+
 main.detal section.detal__info .info__price .discount p {
-	text-align: left;
-	font-size: 12px;
-	font-weight: 400;
-	color: #8c8c8c;
-	line-height: 1;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 400;
+    color: #8c8c8c;
+    line-height: 1;
 }
+
 main.detal section.detal__info .info__price .discount .discount__price {
-	margin-left: 20px;
-	font-size: 30px;
-	font-weight: 500;
-	color: #7cbe49;
+    margin-left: 20px;
+    font-size: 30px;
+    font-weight: 500;
+    color: #7cbe49;
 }
-main.detal section.detal__info .info__price .card__check.detal__check {margin-top: 24px;}
+
+main.detal section.detal__info .info__price .card__check.detal__check {
+    margin-top: 24px;
+}
+
 main.detal section.detal__info .info__price .card__check.detal__check .fas {
-	margin-right: 12px;
-	font-size: 18px;
-	color: #7cbe49;
-	border-radius: 100%;
+    margin-right: 12px;
+    font-size: 18px;
+    color: #7cbe49;
+    border-radius: 100%;
 }
+
 main.detal section.detal__info .info__price .card__check.detal__check .fa-times-circle {
-	color: #FFC505;
+    color: #FFC505;
 }
+
 main.detal section.detal__info .info__price .card__check.detal__check p {
-	font-size: 13px;
-	font-weight: normal;
-	color: #666;
+    font-size: 13px;
+    font-weight: normal;
+    color: #666;
 }
 
 main.detal section.detal__info .info__price .card__check.detal__check span.minus,
 .table__cart_products_list2 .amount span.minusInCart,
 main.detal section.detal__info .info__price .card__check.detal__check span.plus,
 .table__cart_products_list2 .amount span.plusInCart {
-	display: inline-block;
-	width: 30px;
-	height: 20px;
-	font-size: 22px;
-	line-height: 0.7;
-	margin: 0 0 0 10px;
-	text-align: center;
-	color: #fff;
-	border-radius:50px 0 0 50px;
-	background-color: #d9d9d9;
-	cursor: pointer;
+    display: inline-block;
+    width: 30px;
+    height: 20px;
+    font-size: 22px;
+    line-height: 0.7;
+    margin: 0 0 0 10px;
+    text-align: center;
+    color: #fff;
+    border-radius: 50px 0 0 50px;
+    background-color: #d9d9d9;
+    cursor: pointer;
 }
+
 main.detal section.detal__info .info__price .card__check.detal__check input,
 .table__cart_products_list2 .amount input {
-	width: 50px;
-	height: 20px; 
-	text-align: center;
-	font-size: 13px;
-	color: #666666;
-	border: none;
+    width: 50px;
+    height: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: #666666;
+    border: none;
 }
+
 main.detal section.detal__info .info__price .card__check.detal__check span.plus,
 .table__cart_products_list2 .amount span.plusInCart {
-	margin-left: 0;
-	border-radius: 0 50px 50px 0;
+    margin-left: 0;
+    border-radius: 0 50px 50px 0;
 }
+
 section.sale__catalog .sale__wrrap .sale__card .check__number span.minus:hover,
 section.sale__catalog .sale__wrrap .sale__card .check__number span.plus:hover,
 main.detal .detal__cart .sale__card .check__number span.plus:hover,
@@ -1544,1211 +1954,2145 @@ main.detal .detal__cart .sale__card .check__number span.minus:hover,
 section.sale .sale__wrrap .sale__card .check__number span.minus:hover,
 main.detal section.detal__info .info__price .card__check.detal__check span.minus:hover,
 main.detal section.detal__info .info__price .card__check.detal__check span.plus:hover {
-	background-color: #b8b4b4;
+    background-color: #b8b4b4;
 }
+
 main.detal section.detal__info .info__price button.detal__cart {
-	margin-top: 15px;
+    margin-top: 15px;
     width: 280px;
     height: 48px;
     font-size: 18px;
-	border: none;
-	border-radius: 5px;
-	background-color: #7cbe49;
-  	font-weight: 500;
-	color: #fefefe;
-	outline: none;
-	cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #7cbe49;
+    font-weight: 500;
+    color: #fefefe;
+    outline: none;
+    cursor: pointer;
 }
-main.detal section.detal__info .info__price button.detal__cart:hover {background-color: rgb(63, 121, 21);}
-main.detal section.detal__info .info__price button.detal__cart img {vertical-align: middle; margin-right: 10px;width: 22px}
+
+main.detal section.detal__info .info__price button.detal__cart:hover {
+    background-color: rgb(63, 121, 21);
+}
+
+main.detal section.detal__info .info__price button.detal__cart img {
+    vertical-align: middle;
+    margin-right: 10px;
+    width: 22px
+}
+
 main.detal section.detal__info .info__price button.detal__bay {
-	margin-top: 15px;
-	width: 400px;
-	height: 45px;
-	border: none;
-	border-radius: 5px;
-	background-color: #ffc505;
-	font-size: 25px;
-	font-weight: normal;
-	color: #fefefe;
-	outline: none;
-	cursor: pointer;
+    margin-top: 15px;
+    width: 400px;
+    height: 45px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffc505;
+    font-size: 25px;
+    font-weight: normal;
+    color: #fefefe;
+    outline: none;
+    cursor: pointer;
 }
-main.detal section.detal__info .info__price button.detal__bay:hover {background-color: rgb(216, 166, 3);}
-main.detal section.detal__info .info__price button.detal__bay img {vertical-align: middle; margin-right: 10px;}
+
+main.detal section.detal__info .info__price button.detal__bay:hover {
+    background-color: rgb(216, 166, 3);
+}
+
+main.detal section.detal__info .info__price button.detal__bay img {
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
 main.detal .detal__menu nav a {
-	font-size: 20px;
-	font-weight: 600;
-	text-align: center;
-	color: #8c8c8c;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    color: #8c8c8c;
 }
+
 main.detal .detal__menu nav a::before {
-	content: "";
+    content: "";
     display: block;
     height: 5px;
     width: 280px;
     margin-bottom: 10px;
-	background: #fff;
-}
-main.detal .detal__menu nav a:hover::before {background: #82C166;}
-main.detal .detal__menu nav a:active::before {background: #82C166;}
-main.detal .detal__menu nav a:hover {color: #82C166; }
-main.detal .detal__menu nav a:active {color: #82C166; }
-main.detal .detal__menu .menu__info {margin: 40px 0 60px 0;}
-main.detal .detal__menu .menu__info ul li {
-	list-style: none;
-	font-size: 16px;
-	font-weight: 400;
-	text-align: left;
-	color: #262626;
-	margin-bottom: 10px;
+    background: #fff;
 }
 
-main.detal .detal__menu .menu__info ul li span { letter-spacing: 3px;}
+main.detal .detal__menu nav a:hover::before {
+    background: #82C166;
+}
+
+main.detal .detal__menu nav a:active::before {
+    background: #82C166;
+}
+
+main.detal .detal__menu nav a:hover {
+    color: #82C166;
+}
+
+main.detal .detal__menu nav a:active {
+    color: #82C166;
+}
+
+main.detal .detal__menu .menu__info {
+    margin: 40px 0 60px 0;
+}
+
+main.detal .detal__menu .menu__info ul li {
+    list-style: none;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: left;
+    color: #262626;
+    margin-bottom: 10px;
+}
+
+main.detal .detal__menu .menu__info ul li span {
+    letter-spacing: 3px;
+}
+
 main.detal .detal__menu .detal__line {
-	width: 100%;
-	height: 3px;
-	border-radius: 5px;
-	background-color: #fefefe;
-	margin-bottom: 5px;
+    width: 100%;
+    height: 3px;
+    border-radius: 5px;
+    background-color: #fefefe;
+    margin-bottom: 5px;
 }
+
 main.detal .detal__menu p {
-	font-size: 20px;
-	font-weight: 400;
-	text-align: center;
-	color: #8c8c8c;
-	margin-bottom: 25px;
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center;
+    color: #8c8c8c;
+    margin-bottom: 25px;
 }
+
 /*                          detal            */
 
 /*                         model                */
-main.cars__models{padding-bottom: 140px;}
+main.cars__models {
+    padding-bottom: 140px;
+}
 
-main.cars__models .model__menu {margin-bottom: 40px;}
+main.cars__models .model__menu {
+    margin-bottom: 40px;
+}
 
 main.cars__models .model__menu a {
-	opacity: 0.8;
-	font-size: 16px;
-  	font-weight: 300;
-  	text-align: center;
-  	color: #666666;
+    opacity: 0.8;
+    font-size: 16px;
+    font-weight: 300;
+    text-align: center;
+    color: #666666;
 }
+
 main.cars__models .model__menu a:before {
-	content: "";
+    content: "";
     display: block;
     height: 2px;
     width: 180px;
     margin-bottom: 10px;
     background: #fff;
 }
-main.cars__models .model__menu a:hover::before{
-	background: #7cbe49;
+
+main.cars__models .model__menu a:hover::before {
+    background: #7cbe49;
 }
+
 main.cars__models .model__menu a:hover {
-	color: #7cbe49;
+    color: #7cbe49;
 }
 
 main.cars__models .cars__model {
-	width: 100%;
-  	height: 81px;
-  	border-radius: 41px;
-	border: solid 2px #ffffff;
-	margin-bottom: 20px;
-	padding-left: 45px;
-	padding-right: 15px;
-	cursor: pointer;
+    width: 100%;
+    height: 81px;
+    border-radius: 41px;
+    border: solid 2px #ffffff;
+    margin-bottom: 20px;
+    padding-left: 45px;
+    padding-right: 15px;
+    cursor: pointer;
 }
-main.cars__models .cars__model:hover { border: solid 2px #82C166 }
+
+main.cars__models .cars__model:hover {
+    border: solid 2px #82C166
+}
+
 main.cars__models .cars__model span {
-	font-size: 20px;
-	font-weight: 600;
-	line-height: 1.35;
-	letter-spacing: 2px;
-	text-transform: uppercase;
-	color: #666;
-	margin-left: 20px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #666;
+    margin-left: 20px;
 }
-main.cars__models .cars__model .model_info > div { width: 135px; text-align: center }
-main.cars__models .cars__model .model_info > div img { width: auto; height: 50px }
+
+main.cars__models .cars__model .model_info>div {
+    width: 135px;
+    text-align: center
+}
+
+main.cars__models .cars__model .model_info>div img {
+    width: auto;
+    height: 50px
+}
 
 main.cars__models .cars__model button {
-	width: 54px;
-	height: 54px;
-	border-radius: 27px;
-	background-color: #fefefe;
-	border: none;
-	outline: none;
+    width: 54px;
+    height: 54px;
+    border-radius: 27px;
+    background-color: #fefefe;
+    border: none;
+    outline: none;
 }
+
 main.cars__models .model_cars .base__detal img {
-	display: block;
-	margin: 0 auto;
+    display: block;
+    margin: 0 auto;
 }
 
 main.cars__models .model_cars .base__detal {
-	cursor: pointer;
-	width: 16%;
-	display: block;
+    cursor: pointer;
+    width: 16%;
+    display: block;
 }
+
 main.cars__models .model_cars .base__detal .detal__text {
-	font-size: 20px;
-	text-align: center;
-	color: #666666;
-	text-transform: uppercase;
-	margin-bottom: 40px;
+    font-size: 20px;
+    text-align: center;
+    color: #666666;
+    text-transform: uppercase;
+    margin-bottom: 40px;
 }
+
 main.cars__models .model_cars .base__detal:hover .detal__text {
-	color: #82C166;
+    color: #82C166;
 }
+
 main.cars__models .model_cars {
-	display: none;
-	height: auto;
+    display: none;
+    height: auto;
 }
 
 /*                        model                    */
 
 /*                        accessories                   */
-main.cars__accessories .model__menu {margin-bottom: 40px;}
+main.cars__accessories .model__menu {
+    margin-bottom: 40px;
+}
 
 main.cars__accessories .model__menu a {
-	opacity: 0.8;
-	font-size: 16px;
-  	font-weight: 300;
-  	text-align: center;
-  	color: #666666;
+    opacity: 0.8;
+    font-size: 16px;
+    font-weight: 300;
+    text-align: center;
+    color: #666666;
 }
+
 main.cars__accessories .model__menu a:before {
-	content: "";
+    content: "";
     display: block;
     height: 2px;
     width: 180px;
     margin-bottom: 10px;
     background: #fff;
 }
-main.cars__accessories .model__menu a:hover::before{background: #7cbe49;}
-main.cars__accessories .model__menu a:hover {color: #7cbe49;}
+
+main.cars__accessories .model__menu a:hover::before {
+    background: #7cbe49;
+}
+
+main.cars__accessories .model__menu a:hover {
+    color: #7cbe49;
+}
 
 
-main.cars__accessories .accessories__list{justify-content: stretch;}
+main.cars__accessories .accessories__list {
+    justify-content: stretch;
+}
+
 main.cars__accessories .accessories__list a {
-	border: 1px solid transparent;
+    border: 1px solid transparent;
     border-radius: 5px;
-	width: 14%;
-	padding-top: 10px;
-	margin-bottom: 60px;
+    width: 14%;
+    padding-top: 10px;
+    margin-bottom: 60px;
 }
+
 main.cars__accessories .accessories__list a:hover {
-	border: 1px solid #7cbe49;
+    border: 1px solid #7cbe49;
 }
-main.cars__accessories .accessories__list a figure {width: calc(100% - 30px); margin: 0 auto;}
-main.cars__accessories .accessories__list a figure img {width: 100%;}
+
+main.cars__accessories .accessories__list a figure {
+    width: calc(100% - 30px);
+    margin: 0 auto;
+}
+
+main.cars__accessories .accessories__list a figure img {
+    width: 100%;
+}
+
 main.cars__accessories .accessories__list a figure figcaption {
-	font-size: 17px;
-	font-weight: 300;
-	text-align: left;
-	color: #666666;
+    font-size: 17px;
+    font-weight: 300;
+    text-align: left;
+    color: #666666;
 }
+
 /*                        accessories                   */
 
 /*                        liquids, light                       */
 main.cars__light .model__menu,
-main.cars__liquids .model__menu {margin-bottom: 40px;}
+main.cars__liquids .model__menu {
+    margin-bottom: 40px;
+}
 
 main.cars__light .model__menu a,
 main.cars__liquids .model__menu a {
-	opacity: 0.8;
-	font-size: 16px;
-  	font-weight: 300;
-  	text-align: center;
-  	color: #666666;
+    opacity: 0.8;
+    font-size: 16px;
+    font-weight: 300;
+    text-align: center;
+    color: #666666;
 }
+
 main.cars__light .model__menu a:before,
 main.cars__liquids .model__menu a:before {
-	content: "";
+    content: "";
     display: block;
     height: 2px;
     width: 180px;
     margin-bottom: 10px;
     background: #fff;
 }
+
 main.cars__light .model__menu a:hover::before,
-main.cars__liquids .model__menu a:hover::before{background: #7cbe49;}
+main.cars__liquids .model__menu a:hover::before {
+    background: #7cbe49;
+}
+
 main.cars__light .model__menu a:hover,
-main.cars__liquids .model__menu a:hover {color: #7cbe49;}
+main.cars__liquids .model__menu a:hover {
+    color: #7cbe49;
+}
 
 main.cars__light .light__list,
-main.cars__liquids .liquids__list{justify-content: stretch;}
+main.cars__liquids .liquids__list {
+    justify-content: stretch;
+}
+
 main.cars__light .light__list a,
 main.cars__liquids .liquids__list a {
-	width: 14%;
-	padding-top: 10px;
-	margin-bottom: 60px;
+    width: 14%;
+    padding-top: 10px;
+    margin-bottom: 60px;
 }
+
 main.cars__light .light__list a figure,
-main.cars__liquids .liquids__list a figure {width: calc(100% - 30px); margin: 0 auto;}
+main.cars__liquids .liquids__list a figure {
+    width: calc(100% - 30px);
+    margin: 0 auto;
+}
+
 main.cars__light .light__list a figure img,
 main.cars__liquids .liquids__list a figure img {
-	width: 100px;
+    width: 100px;
     height: 100px;
     background: white;
-	padding: 24px 20px;
-	border-radius: 4px;
+    padding: 24px 20px;
+    border-radius: 4px;
 }
+
 main.cars__light .light__list a figure figcaption,
 main.cars__liquids .liquids__list a figure figcaption {
-	font-size: 17px;
-	font-weight: 300;
-	text-align: left;
-	color: #666666;
+    font-size: 17px;
+    font-weight: 300;
+    text-align: left;
+    color: #666666;
 }
+
 /*                        liquids, light                      */
 
 /*                       cars__manufacturers                 */
-main.cars__manufacturers .manufacturers__name {margin-bottom: 50px;}
+main.cars__manufacturers .manufacturers__name {
+    margin-bottom: 50px;
+}
+
 main.cars__manufacturers .manufacturers__name a {
-	width: 28px;
-	height: 28px;
-	background-color: #fff;
-	border-radius: 50px;
-	font-size: 12px;
+    width: 28px;
+    height: 28px;
+    background-color: #fff;
+    border-radius: 50px;
+    font-size: 12px;
     text-align: center;
     display: inline-block;
-	line-height: 28px;
-	margin-right: 10px;
+    line-height: 28px;
+    margin-right: 10px;
 }
-main.cars__manufacturers .manufacturers__name a:last-child{margin-right: 0px;}
+
+main.cars__manufacturers .manufacturers__name a:last-child {
+    margin-right: 0px;
+}
+
 main.cars__manufacturers .manufacturers__name a:hover {
-	background-color: #7cbe49;
-	color: #fff;
+    background-color: #7cbe49;
+    color: #fff;
 }
-main.cars__manufacturers section.catalog__name div { margin-bottom: 20px;}
-main.cars__manufacturers section.catalog__name div label{
-	font-size: 60px;
-	color: #666666;
-	text-transform: uppercase;
-	margin-right: 30px;
+
+main.cars__manufacturers section.catalog__name div {
+    margin-bottom: 20px;
 }
-main.cars__manufacturers section.catalog__name div a { margin-right: 15px; text-align: center; }
+
+main.cars__manufacturers section.catalog__name div label {
+    font-size: 60px;
+    color: #666666;
+    text-transform: uppercase;
+    margin-right: 30px;
+}
+
+main.cars__manufacturers section.catalog__name div a {
+    margin-right: 15px;
+    text-align: center;
+}
+
 main.cars__manufacturers section.catalog__name div a figure img {
-	width: 100px;
+    width: 100px;
     height: 100px;
     background: white;
-	border-radius: 4px;
+    border-radius: 4px;
 }
 
 /*                        cars__manufacturers                */
 
 
 @media (max-width: 1441px) {
-	.card__rating .rating:not(:checked) > label { font-size: 22px }
-	section.sale .sale__wrrap .sale__card .card__check .check__pieces p {font-size: 11px}
-	section.sale .sale__wrrap .sale__card .card__check .check__pieces .fa-check-circle { font-size: 18px; }
-	section.sale .sale__wrrap .sale__card .check__number { width: 70px; }
-	section.sale .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {font-size: 16px;}
-		section.sale .sale__wrrap .sale__card .card__price button.cart__buy:after {
-		bottom: -11px;
-		font-size: 10px;
-	}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {font-size: 30px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {font-size: 21px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {
-		width: 100%;
-		height: 35px;
-		font-size: 17px;
-	}
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {font-size: 22px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {width: 100%;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {width: 100%;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__btn {
-		width: 100%;
-		font-size: 17px;
-	}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product { margin-top: 15px;}
-	 
-	/*              detal              */
-	main.detal section.detal__info .info__img .img__small .small__img {
-		width: 87px;
-		height: 72px;
-	}
-	main.detal section.detal__info .info__img .img__small .small__img a img {padding: 0;}
-	main.detal section.detal__info .img__big i.img__discount {
-		width: 45px;
-		height: 20px;
-		font-size: 14px;
-	}
-	main.detal section.detal__info .img__big i.img__new {
-		top: 45px;
-		width: 45px;
-		height: 20px;
-		font-size: 14px;
-	}
-	main.detal section.detal__info .img__big i.img__hit {
-		top: 70px;
-		width: 45px;
-		height: 20px;
-		font-size: 14px;
-	}
-	main .catalog__sorted {padding-left: 98px}
-	main.detal section.detal__info .info__price .discount .discount__procent {
-		width: 45px;
-		height: 20px;
-		font-size: 14px;
-	}
-	main.detal section.detal__info .info__price button.detal__bay {
-		width: 320px;
-		height: 35px;
-		font-size: 22px;
-	}
-	main.detal .detal__menu nav a::before {width: 220px;}
-	main.detal .detal__menu .menu__info ul li span {letter-spacing: 1px;}
-	main.detal .detal__cart .sale__card .card__check .check__pieces p, section.sale .sale__wrrap .sale__card .card__check .check__pieces p {font-size: 12px;}
-	main.detal .detal__cart .sale__card.no_availabilaty .card__price .price__text, section.sale .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {font-size: 16px;}
-	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a, section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {font-size: 22px;}
-	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__name, section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__name {font-size: 17px;}
+    .card__rating .rating:not(:checked)>label {
+        font-size: 22px
+    }
 
-	/*              detal                  */
+    section.sale .sale__wrrap .sale__card .card__check .check__pieces p {
+        font-size: 11px
+    }
+
+    section.sale .sale__wrrap .sale__card .card__check .check__pieces .fa-check-circle {
+        font-size: 18px;
+    }
+
+    section.sale .sale__wrrap .sale__card .check__number {
+        width: 70px;
+    }
+
+    section.sale .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {
+        font-size: 16px;
+    }
+
+    section.sale .sale__wrrap .sale__card .card__price button.cart__buy:after {
+        bottom: -11px;
+        font-size: 10px;
+    }
+
+    section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {
+        font-size: 30px;
+    }
+
+    section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {
+        font-size: 21px;
+    }
+
+    section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {
+        width: 100%;
+        height: 35px;
+        font-size: 17px;
+    }
+
+    section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {
+        font-size: 22px;
+    }
+
+    section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {
+        width: 100%;
+    }
+
+    section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {
+        width: 100%;
+    }
+
+    section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__btn {
+        width: 100%;
+        font-size: 17px;
+    }
+
+    section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product {
+        margin-top: 15px;
+    }
+
+    /*              detal              */
+    main.detal section.detal__info .info__img .img__small .small__img {
+        width: 87px;
+        height: 72px;
+    }
+
+    main.detal section.detal__info .info__img .img__small .small__img a img {
+        padding: 0;
+    }
+
+    main.detal section.detal__info .img__big i.img__discount {
+        width: 45px;
+        height: 20px;
+        font-size: 14px;
+    }
+
+    main.detal section.detal__info .img__big i.img__new {
+        top: 45px;
+        width: 45px;
+        height: 20px;
+        font-size: 14px;
+    }
+
+    main.detal section.detal__info .img__big i.img__hit {
+        top: 70px;
+        width: 45px;
+        height: 20px;
+        font-size: 14px;
+    }
+
+    main .catalog__sorted {
+        padding-left: 98px
+    }
+
+    main.detal section.detal__info .info__price .discount .discount__procent {
+        width: 45px;
+        height: 20px;
+        font-size: 14px;
+    }
+
+    main.detal section.detal__info .info__price button.detal__bay {
+        width: 320px;
+        height: 35px;
+        font-size: 22px;
+    }
+
+    main.detal .detal__menu nav a::before {
+        width: 220px;
+    }
+
+    main.detal .detal__menu .menu__info ul li span {
+        letter-spacing: 1px;
+    }
+
+    main.detal .detal__cart .sale__card .card__check .check__pieces p,
+    section.sale .sale__wrrap .sale__card .card__check .check__pieces p {
+        font-size: 12px;
+    }
+
+    main.detal .detal__cart .sale__card.no_availabilaty .card__price .price__text,
+    section.sale .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {
+        font-size: 16px;
+    }
+
+    main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a,
+    section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {
+        font-size: 22px;
+    }
+
+    main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__name,
+    section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__name {
+        font-size: 17px;
+    }
+
+    /*              detal                  */
 
 
-/*                   card sale             */
+    /*                   card sale             */
 
-@media screen and (max-width: 1024px) {
-	header form input { width: 200px }
+    @media screen and (max-width: 1024px) {
+        header form input {
+            width: 200px
+        }
 
-	main section.cars__catalog .base__detal,
-	main section.cars__base .base__detal { width: 141px; }
-	main section.cars__catalog .base__detal img,
-	main section.cars__base .base__detal img { width: 90%; }
+        main section.cars__catalog .base__detal,
+        main section.cars__base .base__detal {
+            width: 141px;
+        }
 
-	footer .footer__info { padding-left: 15px; padding-right: 15px;}
-	section.sale .sale__wrrap .sale__card { width:20%; }
-	main .catalog__sorted {padding-left: 120px;}
-	main section.sale__catalog aside .product__type input[type=checkbox]:checked + label,
-	main section.sale__catalog aside .quality input[type=checkbox]:checked + label,
-	main section.sale__catalog aside .manufacturers input[type=checkbox]:checked + label,
-	main section.sale__catalog aside .storag input[type=checkbox]:checked + label {height: 20px;}
-	section.sale .sale__wrrap .sale__card .card__img { height: 200px; }
-	.card__rating .rating:not(:checked) > label {font-size: 17px;}
-	section.sale .sale__wrrap .sale__card .card__info .info__article { margin-right: 15px; }
-	section.sale .sale__wrrap .sale__card .card__price .price__text {font-size: 25px;}
-	section.sale .sale__wrrap .sale__card .card__price button.cart__buy {
-		width: 70px;
-		height: 30px;
-	}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {font-size: 15px; }
-	section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order {
-		width: 70px;
-		height: 30px;
-		margin-top: 0px;
-	}
-	section.sale .sale__wrrap .sale__card .card__price button.cart__buy:hover:after,
-	section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:hover:after {display: none;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {font-size: 25px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal p { margin-top: 10px; }
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__name {margin-top: 10px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__product {margin-bottom: 10px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {font-size: 17px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal span {font-size: 16px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {font-size: 16px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {height: 425px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {padding: 5px 10px 31px 10px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product {margin-top: 10px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {margin-top: 10px;}
+        main section.cars__catalog .base__detal img,
+        main section.cars__base .base__detal img {
+            width: 90%;
+        }
 
-	/*                               catalog                      */
+        footer .footer__info {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
 
-	main .auto__detal a img {height: 50px;}
-	main .auto__detal a .detal__text {font-size: 15px;}
-	main .catalog__detal a img { height: 50px;}
-	main .catalog__detal a div {font-size: 14px;}
+        section.sale .sale__wrrap .sale__card {
+            width: 20%;
+        }
 
-	section.sale__catalog .product__type,
-	section.sale__catalog .quality,
-	section.sale__catalog .manufacturers,
-	section.sale__catalog .storag{width: 95%;}
+        main .catalog__sorted {
+            padding-left: 120px;
+        }
 
-	section.sale__catalog .product__type,
-	section.sale__catalog .quality, 
-	section.sale__catalog .manufacturers, 
-	section.sale__catalog .storag {font-size: 15px;}
+        main section.sale__catalog aside .product__type input[type=checkbox]:checked+label,
+        main section.sale__catalog aside .quality input[type=checkbox]:checked+label,
+        main section.sale__catalog aside .manufacturers input[type=checkbox]:checked+label,
+        main section.sale__catalog aside .storag input[type=checkbox]:checked+label {
+            height: 20px;
+        }
 
-	/*     catalog---sale---card         */
-	section.sale__catalog .sale__wrrap .sale__card .card__img {height: 200px;}
-	section.sale__catalog .sale__wrrap .sale__card .card__text {font-size: 16px;}
-	section.sale__catalog .sale__wrrap .sale__card .card__info .info__article p {font-size: 14px;}
-	section.sale__catalog .sale__wrrap .sale__card .card__info .info__name p {font-size: 14px;}
-	section.sale__catalog .sale__wrrap .sale__card .card__info .info__article {margin-right: 15px;}
-	section.sale__catalog .sale__wrrap .sale__card .card__price .price__text {font-size: 25px;}
-	section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy {
-		width: 70px;
-		height: 30px;
-	}
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order {
-		width: 70px;
-		height: 30px;
-		margin-top: 0px;
-	}
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal {height: 427px;}
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {font-size: 14px; line-height: 1;}
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order img {width: 23px;}
-	section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy img {width: 23px;}
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {font-size: 25px;}
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal p {margin-top: 10px;}
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__name {margin-top: 10px;}
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__product {margin: 10px 0;}
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {font-size: 17px;}
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal span {font-size: 16px;}
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {font-size: 16px;}
-	section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy:after,
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order:after {content: "";}
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form  {padding: 5px 10px 31px 10px;}
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product,
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input  {margin-top: 10px;}
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__btn {font-size: 17px;}
-	/*     catalog----sale ----card        */
+        section.sale .sale__wrrap .sale__card .card__img {
+            height: 200px;
+        }
 
-   /*                 detal                          */
-   main.detal h2.detal__heading {font-size: 24px;}
-   main.detal section.detal__info .img__big {
-    width: 250px;
-    height: 250px;
+        .card__rating .rating:not(:checked)>label {
+            font-size: 17px;
+        }
+
+        section.sale .sale__wrrap .sale__card .card__info .info__article {
+            margin-right: 15px;
+        }
+
+        section.sale .sale__wrrap .sale__card .card__price .price__text {
+            font-size: 25px;
+        }
+
+        section.sale .sale__wrrap .sale__card .card__price button.cart__buy {
+            width: 70px;
+            height: 30px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {
+            font-size: 15px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order {
+            width: 70px;
+            height: 30px;
+            margin-top: 0px;
+        }
+
+        section.sale .sale__wrrap .sale__card .card__price button.cart__buy:hover:after,
+        section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:hover:after {
+            display: none;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {
+            font-size: 25px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal p {
+            margin-top: 10px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__name {
+            margin-top: 10px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__product {
+            margin-bottom: 10px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {
+            font-size: 17px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal span {
+            font-size: 16px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {
+            font-size: 16px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {
+            height: 425px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {
+            padding: 5px 10px 31px 10px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product {
+            margin-top: 10px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {
+            margin-top: 10px;
+        }
+
+        /*                               catalog                      */
+
+        main .auto__detal a img {
+            height: 50px;
+        }
+
+        main .auto__detal a .detal__text {
+            font-size: 15px;
+        }
+
+        main .catalog__detal a img {
+            height: 50px;
+        }
+
+        main .catalog__detal a div {
+            font-size: 14px;
+        }
+
+        section.sale__catalog .product__type,
+        section.sale__catalog .quality,
+        section.sale__catalog .manufacturers,
+        section.sale__catalog .storag {
+            width: 95%;
+        }
+
+        section.sale__catalog .product__type,
+        section.sale__catalog .quality,
+        section.sale__catalog .manufacturers,
+        section.sale__catalog .storag {
+            font-size: 15px;
+        }
+
+        /*     catalog---sale---card         */
+        section.sale__catalog .sale__wrrap .sale__card .card__img {
+            height: 200px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card .card__text {
+            font-size: 16px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card .card__info .info__article p {
+            font-size: 14px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card .card__info .info__name p {
+            font-size: 14px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card .card__info .info__article {
+            margin-right: 15px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card .card__price .price__text {
+            font-size: 25px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy {
+            width: 70px;
+            height: 30px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order {
+            width: 70px;
+            height: 30px;
+            margin-top: 0px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal {
+            height: 427px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order img {
+            width: 23px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy img {
+            width: 23px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {
+            font-size: 25px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal p {
+            margin-top: 10px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__name {
+            margin-top: 10px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__product {
+            margin: 10px 0;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {
+            font-size: 17px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal span {
+            font-size: 16px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {
+            font-size: 16px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy:after,
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order:after {
+            content: "";
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {
+            padding: 5px 10px 31px 10px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product,
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {
+            margin-top: 10px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__btn {
+            font-size: 17px;
+        }
+
+        /*     catalog----sale ----card        */
+
+        /*                 detal                          */
+        main.detal h2.detal__heading {
+            font-size: 24px;
+        }
+
+        main.detal section.detal__info .img__big {
+            width: 250px;
+            height: 250px;
+        }
+
+        main.detal section.detal__info .info__img .img__small .small__img img {
+            width: 100%;
+        }
+
+        main.detal section.detal__info .img__big i.img__discount,
+        main.detal section.detal__info .img__big i.img__new,
+        main.detal section.detal__info .img__big i.img__hit {
+            left: -10px;
+        }
+
+        main.detal section.detal__info .info__bonus .bonus__send .send__img,
+        main.detal section.detal__info .info__bonus .bonus__guarantee .guarantee__img,
+        main.detal section.detal__info .info__bonus .bonus__return .return__img,
+        main.detal section.detal__info .info__bonus .bonus__extra .extra__img {
+            width: 60px;
+            height: 60px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        main.detal section.detal__info .info__bonus .bonus__send p,
+        main.detal section.detal__info .info__bonus .bonus__guarantee p,
+        main.detal section.detal__info .info__bonus .bonus__return p,
+        main.detal section.detal__info .info__bonus .bonus__extra p {
+            font-size: 12px;
+            padding-bottom: 5px;
+        }
+
+        main.detal section.detal__info .info__price .old__price p {
+            font-size: 20px;
+        }
+
+        main.detal section.detal__info .info__price .new__price {
+            font-size: 35px;
+            margin-left: 5px;
+        }
+
+        main.detal section.detal__info .info__price .discount .discount__procent {
+            width: 40px;
+            height: 17px;
+            font-size: 12px;
+        }
+
+        main.detal section.detal__info .info__price .card__check.detal__check .fa-check-circle {
+            font-size: 20px;
+            margin-right: 5px;
+        }
+
+        main.detal section.detal__info .info__price .discount p {
+            font-size: 11px;
+        }
+
+        main.detal section.detal__info .info__price .discount .discount__price {
+            margin-left: 5px;
+            font-size: 22px;
+        }
+
+        main.detal section.detal__info .info__price .card__check.detal__check p {
+            font-size: 12px;
+        }
+
+        main.detal section.detal__info .info__price .card__check.detal__check span.minus {
+            width: 20px;
+            height: 17px;
+            font-size: 19px;
+        }
+
+        main.detal section.detal__info .info__price .card__check.detal__check input {
+            width: 35px;
+            height: 17px;
+            font-size: 15px;
+        }
+
+        main.detal section.detal__info .info__price .card__check.detal__check span.plus {
+            width: 20px;
+            height: 17px;
+            font-size: 19px;
+        }
+
+        main.detal section.detal__info .info__price button.detal__cart {
+            width: 210px;
+            height: 50px;
+            font-size: 16px;
+        }
+
+        main.detal section.detal__info .info__price button.detal__bay {
+            width: 210px;
+            height: 30px;
+            font-size: 16px;
+        }
+
+        main.detal .detal__menu nav a::before {
+            width: 180px;
+        }
+
+        main.detal .detal__menu nav a {
+            font-size: 17px;
+        }
+
+        main.detal .detal__cart .sale__card .card__info .info__article p {
+            font-size: 13px;
+        }
+
+        main.detal .detal__cart .sale__card .card__info .info__name p {
+            font-size: 13px;
+        }
+
+        main.detal .detal__cart .sale__card .card__check .check__pieces p {
+            font-size: 11px;
+        }
+
+        main.detal .detal__cart .sale__card .check__number {
+            width: 60px;
+        }
+
+        main.detal .detal__cart .sale__card .check__number input {
+            width: 30px;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty button.cart__order {
+            margin-top: 9px;
+            width: 75px;
+            height: 35px;
+        }
+
+        main.detal .detal__cart .sale__card .card__price button.cart__buy {
+            width: 75px;
+            height: 35px;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty .card__price .price__text {
+            font-size: 14px;
+        }
+
+        main.detal .detal__cart .sale__card .card__price .price__text {
+            font-size: 25px;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__btn,
+        main.detal .detal__cart .sale__card.no_availabilaty .cart__modal button.modal__request {
+            font-size: 17px;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a {
+            font-size: 20px;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__product {
+            margin-bottom: 10px;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__name {
+            font-size: 16px;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__product {
+            margin-top: 10px;
+        }
+
+        /*         model             */
+        main.cars__models .geely__cars .base__detal img,
+        main.cars__models .chery__cars .base__detal img,
+        main.cars__models .wall__cars .base__detal img,
+        main.cars__models .lifan__cars .base__detal img,
+        main.cars__models .byd__cars .base__detal img {
+            width: 90%;
+        }
+
+        main.cars__models .geely__cars .base__detal .detal__text,
+        main.cars__models .chery__cars .base__detal .detal__text,
+        main.cars__models .wall__cars .base__detal .detal__text main.cars__models .lifan__cars .base__detal .detal__text,
+        main.cars__models .byd__cars .base__detal .detal__text {
+            font-size: 16px;
+        }
+
+        main.cars__models .models__geely,
+        main.cars__models .models__chery,
+        main.cars__models .models__wall,
+        main.cars__models .models__lifan,
+        main.cars__models .models__byd {
+            height: 65px;
+        }
+
+        main.cars__models .models__geely .geely__info>div,
+        main.cars__models .models__chery .chery__info>div,
+        main.cars__models .models__wall .wall__info>div,
+        main.cars__models .models__lifan .lifan__info>div,
+        main.cars__models .models__byd .byd__info>div {
+            width: 70px;
+        }
+
+        main.cars__models .models__geely .geely__info>div img,
+        main.cars__models .models__chery .chery__info>div img,
+        main.cars__models .models__wall .wall__info>div img,
+        main.cars__models .models__lifan .lifan__info>div img,
+        main.cars__models .models__byd .byd__info>div img {
+            width: 100%;
+        }
+
+        main.cars__models .models__geely button,
+        main.cars__models .models__chery button,
+        main.cars__models .models__wall button,
+        main.cars__models .models__lifan button,
+        main.cars__models .models__byd button {
+            width: 40px;
+            height: 40px;
+        }
+
+        /*          model           */
+
+        /*                   detal                          */
+    }
+
+    @media screen and (max-width: 769px) {
+
+        header form select,
+        header form .fa-chevron-down,
+        header .header__shoping .header__user {
+            display: none;
+        }
+
+        header nav a:before {
+            width: 100%;
+        }
+
+        main h1 {
+            font-size: 32px;
+            letter-spacing: 1px;
+        }
+
+        main .catalog__sorted {
+            padding-left: 148px;
+        }
+
+        main section.sale .sale__nav a:before {
+            min-width: 135px;
+        }
+
+        section.sale .sale__wrrap .sale__card {
+            width: 25%;
+        }
+
+        section.sale .sale__wrrap .sale__card .card__img {
+            height: 200px;
+        }
+
+        .card__rating .rating:not(:checked)>label {
+            font-size: 17px;
+        }
+
+        section.sale .sale__wrrap .sale__card .card__info .info__article {
+            margin-right: 15px;
+        }
+
+        section.sale .sale__wrrap .sale__card .card__price .price__text {
+            font-size: 25px;
+        }
+
+        section.sale .sale__wrrap .sale__card .card__price button.cart__buy {
+            width: 70px;
+            height: 30px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {
+            font-size: 14px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order {
+            width: 70px;
+            height: 30px;
+            margin-top: -3px;
+        }
+
+        section.sale .sale__wrrap .sale__card .card__price button.cart__buy:hover:after,
+        section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:hover:after {
+            display: none;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {
+            font-size: 25px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal p {
+            margin-top: 10px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__name {
+            margin-top: 10px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__product {
+            margin-bottom: 10px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {
+            font-size: 17px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal span {
+            font-size: 16px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {
+            font-size: 16px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {
+            height: 427px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {
+            padding: 5px 10px 31px 10px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product {
+            margin-top: 10px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {
+            margin-top: 10px;
+        }
+
+        footer .footer__info .footer__contacts address {
+            margin-left: 7px;
+        }
+
+        footer .footer__info .footer__contacts .contacts__phone a {
+            margin-left: 7px;
+        }
+
+        footer .footer__info div.w20 {
+            width: 25%;
+        }
+
+        footer .footer__info .footer__account {
+            display: none;
+        }
+
+        footer .footer__subtitle div.w50 {
+            width: 100%;
+        }
+
+        footer .footer__subtitle .subtitle__text {
+            text-align: center;
+        }
+
+        footer .footer__subtitle .subtitle__link {
+            justify-content: center;
+        }
+
+        /*                catalog               */
+        main .catalog__info a {
+            font-size: 11px;
+        }
+
+        main .catalog__info {
+            margin: 15px 0 20px 0;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card {
+            width: 33%;
+        }
+
+        section.sale__catalog .product__type,
+        section.sale__catalog .quality,
+        section.sale__catalog .manufacturers,
+        section.sale__catalog .storag {
+            padding: 15px 5px;
+            font-size: 13px;
+        }
+
+        main section.sale__catalog aside .product__type input[type=checkbox]+label:before,
+        main section.sale__catalog aside .quality input[type=checkbox]+label:before,
+        main section.sale__catalog aside .manufacturers input[type=checkbox]+label:before,
+        main section.sale__catalog aside .storag input[type=checkbox]+label:before {
+            width: 11px;
+            height: 11px;
+        }
+
+        main section.sale__catalog aside .product__type input[type=checkbox]:checked+label,
+        main section.sale__catalog aside .quality input[type=checkbox]:checked+label,
+        main section.sale__catalog aside .manufacturers input[type=checkbox]:checked+label,
+        main section.sale__catalog aside .storag input[type=checkbox]:checked+label {
+            height: 18px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card {
+            padding: 6px;
+        }
+
+        main .pagination button {
+            width: 30px;
+            height: 30px;
+        }
+
+        main .pagination button img {
+            height: 14px;
+        }
+
+        main .pagination a:nth-child(2),
+        main .pagination a:nth-child(6) {
+            width: 40px;
+            height: 18px;
+        }
+
+        main .pagination a:nth-child(3),
+        main .pagination a:nth-child(5) {
+            width: 40px;
+            height: 18px;
+        }
+
+        main .pagination a:nth-child(4) {
+            width: 40px;
+            height: 27px;
+            font-size: 14px;
+        }
+
+        /*                catalog                 */
+
+        /*                 detal                 */
+        main.detal section.detal__info .img__big {
+            width: 190px;
+            height: 190px;
+        }
+
+        main.detal section.detal__info .img__big i.img__discount {
+            width: 40px;
+            height: 17px;
+            font-size: 12px;
+        }
+
+        main.detal section.detal__info .img__big i.img__new {
+            width: 40px;
+            height: 17px;
+            font-size: 12px;
+            top: 40px;
+        }
+
+        main.detal section.detal__info .img__big i.img__hit {
+            width: 40px;
+            height: 17px;
+            font-size: 12px;
+            top: 60px;
+        }
+
+        main.detal section.detal__info .info__img .img__small .small__img {
+            width: 60px;
+            height: 50px;
+        }
+
+        main.detal section.detal__info .info__bonus .bonus__send p,
+        main.detal section.detal__info .info__bonus .bonus__guarantee p,
+        main.detal section.detal__info .info__bonus .bonus__return p,
+        main.detal section.detal__info .info__bonus .bonus__extra p {
+            font-size: 9px;
+        }
+
+        main.detal section.detal__info .info__price .old__price p {
+            font-size: 18px;
+        }
+
+        main.detal section.detal__info .info__price .new__price {
+            font-size: 30px;
+        }
+
+        main.detal section.detal__info .info__price .card__check.detal__check {
+            margin-top: 15px;
+        }
+
+        main.detal .detal__menu .menu__info ul li span {
+            letter-spacing: 0px;
+        }
+
+        main.detal .detal__menu .menu__info {
+            margin: 20px 0 30px 0;
+        }
+
+        main.detal .detal__menu .menu__info ul li {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        main.detal .detal__cart .sale__card:nth-child(5) {
+            display: none;
+        }
+
+        main.detal .detal__cart .sale__card,
+        section.sale .sale__wrrap .sale__card {
+            width: 25%;
+        }
+
+        main.detal .detal__cart .sale__card .card__info .info__name p {
+            font-size: 12px;
+        }
+
+        main.detal .detal__cart .sale__card .card__info .info__article p {
+            font-size: 12px;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty button.cart__order {
+            margin-top: 0px;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a {
+            font-size: 17px;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__name {
+            font-size: 15px;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form input::placeholder {
+            font-size: 12px;
+        }
+
+
+        main.detal .detal__menu nav a::before {
+            width: 140px;
+        }
+
+        /*                  detal                  */
+        /*             model                 */
+        main.cars__accessories .model__menu a:before,
+        main.cars__liquids .model__menu a:before,
+        main.cars__light .model__menu a:before,
+        main.cars__models .model__menu a:before {
+            width: 130px;
+        }
+
+        main.cars__models .geely__cars .base__detal,
+        main.cars__models .chery__cars .base__detal,
+        main.cars__models .wall__cars .base__detal,
+        main.cars__models .lifan__cars .base__detal,
+        main.cars__models .byd__cars .base__detal {
+            width: 20%;
+        }
+
+        /*             model                  */
+        /*             accessories           */
+        main.cars__accessories .accessories__list a {
+            width: 16%;
+            margin-bottom: 50px;
+        }
+
+        main.cars__accessories .accessories__list a figure figcaption {
+            font-size: 14px;
+        }
+
+        /*             accessories          */
+        /*              liquids, light           */
+        main.cars__light .light__list a,
+        main.cars__liquids .liquids__list a {
+            width: 16%;
+        }
+
+        main.cars__light .light__list a figure img,
+        main.cars__liquids .liquids__list a figure img {
+            width: 80px;
+            height: 80px;
+            padding: 20px 16px;
+        }
+
+        /*              liquids, light          */
+    }
+
+    @media screen and (max-width: 426px) {
+        #top_header {
+            padding: 2px
+        }
+
+        header {
+            padding: 0 0 30px 0
+        }
+
+        header>div {
+            flex-direction: column
+        }
+
+        header .header__shoping {
+            display: none
+        }
+
+        header .nav__mobile {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header img.header__logo {
+            width: 230px;
+            margin-right: 22px;
+        }
+
+        header .header__phone div {
+            font-size: 13px;
+        }
+
+        header form button {
+            top: 26px
+        }
+
+        header .mobile__shoping a.header__cart {
+            background-color: #fff;
+            border-radius: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        header .mobile__shoping {
+            position: relative;
+            display: flex;
+        }
+
+        header .mobile__shoping i.label {
+            display: block;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: -19px;
+            font-weight: 600;
+            color: #fff;
+            font-size: 12px;
+            line-height: 1.2;
+            font-style: normal;
+            text-align: center;
+            height: 15px;
+            width: 30px;
+            border-radius: 0 50px 50px 0;
+            background-color: #82C166;
+        }
+
+        header .mobile__shoping .header__cart img {
+            padding: 10px;
+        }
+
+        header div.flex .fa-bars {
+            display: block;
+            width: 35px;
+            height: 35px;
+            font-size: 30px;
+            float: left;
+            color: #8c8c8c;
+        }
+
+        header .header__address .fa-map-marker-alt,
+        header .header__phone .fa-phone-alt {
+            display: none;
+        }
+
+        header nav.flex {
+            display: none;
+        }
+
+        header form {
+            width: 100%;
+        }
+
+        header form input {
+            width: 100%;
+            margin-top: 10px;
+            margin-left: 0;
+        }
+
+        header .header__phone {
+            order: -1;
+            width: calc(100% + 30px);
+            padding: 5px 15px 5px 15px;
+            margin: 0px;
+            margin-bottom: 10px;
+            background: #8c8c8c;
+            justify-content: center
+        }
+
+        header .header__phone .header__login .header__user-in {
+            background: transparent;
+            border: none;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        header .header__phone div {
+            color: #F2F2F2;
+            display: flex;
+        }
+
+        header .header__phone div a {
+            margin-right: 15px;
+        }
+
+        header .header__phone .header__login {
+            display: flex;
+            flex-direction: column;
+        }
+
+        main .catalog__sorted {
+            padding-left: 0px;
+        }
+
+        main section.sale .sale__nav {
+            display: none;
+        }
+
+        section.sale .sale__wrrap .sale__card {
+            width: 50%;
+        }
+
+        main .main__logo a img {
+            max-height: 30px;
+            max-width: 50px;
+        }
+
+        main h1 {
+            font-size: 23px;
+            letter-spacing: 1px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order {
+            margin-top: 15px;
+        }
+
+        main section.sale {
+            padding: 30px 0 0 0;
+        }
+
+        main section.cars__catalog .base__detal,
+        main section.cars__base .base__detal {
+            width: 95px;
+        }
+
+        main section.cars__catalog .base__detal .detal__text,
+        main section.cars__base .base__detal .detal__text {
+            font-size: 15px;
+        }
+
+        main .logo__text {
+            font-size: 13px;
+        }
+
+        section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order {
+            margin-top: 11px;
+        }
+
+        footer .footer__info .footer__shop,
+        footer .footer__info .footer__information {
+            display: none;
+        }
+
+        footer .footer__info .footer__contacts .contacts__address,
+        footer .footer__info .footer__contacts .contacts__phone {
+            justify-content: center;
+        }
+
+        footer .footer__info div.w20 {
+            width: 100%;
+        }
+
+        footer .footer__info {
+            padding: 10px 15px;
+        }
+
+        footer .footer__info h5 {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        footer .footer__info .footer__payments .payments__img {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        footer .footer__subtitle .subtitle__link {
+            display: none;
+        }
+
+        footer .footer__subtitle {
+            min-height: 40px;
+            padding: 10px 0;
+        }
+
+        header div.mob__menu {
+            display: block;
+            position: fixed;
+            z-index: 1002;
+            margin-left: -15px;
+            top: 0;
+            width: 100vw;
+            background: rgba(0, 0, 0, .8);
+        }
+
+        header div.mob__menu .close__menu {
+            transition: .54s;
+            width: 100%;
+            height: 100vh;
+            display: none;
+            position: fixed;
+            background: rgba(0, 0, 0, .8);
+        }
+
+        header div.mob__menu .close__menu .fa-times {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            color: #fff;
+        }
+
+        header div.mob__menu .mob__nav {
+            transition: .54s;
+            left: -281px;
+            position: absolute;
+            background: #3c3c3a;
+            width: 280px;
+            min-height: 100vh;
+        }
+
+        header div.mob__menu .mob__nav a {
+            font-size: 15px;
+            padding: 8px 10px;
+            margin: -1px 15px;
+            color: #fff;
+            width: calc(100% - 30px);
+            display: block;
+        }
+
+        header div.mob__menu .mob__nav a img {
+            height: 15px
+        }
+
+        header div.mob__menu .mob__nav a img.mob__logo {
+            width: calc(100% - 30px);
+            height: auto;
+            max-width: 200px;
+            margin: 15px 0;
+        }
+
+        header div.mob__menu .mob__nav .mob__border {
+            margin: 3px 0;
+            height: 1px;
+            background: #777;
+            width: 100%;
+            display: block;
+        }
+
+        header div.nav__mobile.default {
+            position: fixed;
+            top: 0;
+            padding: 15px;
+            background: #777;
+            z-index: 11;
+        }
+
+        /*               catalog               */
+        main .catalog__detal {
+            margin: 10px 0;
+        }
+
+        main .catalog__detal a img {
+            height: 40px;
+        }
+
+        main div.flex.wrap.catalog__detal a {
+            text-align: center;
+            width: 25%;
+            margin-bottom: 10px;
+        }
+
+        main .catalog__info {
+            margin: 15px 0 15px 0;
+        }
+
+        main .catalog__sorted div a {
+            width: 50px;
+            height: 20px;
+            margin-right: 5px;
+            padding: 2px 5px;
+            font-size: 10px;
+        }
+
+        main .catalog__sorted .quantity__goods {
+            font-size: 13px
+        }
+
+        main section.sale__catalog {
+            flex-wrap: wrap
+        }
+
+        main .pagination,
+        section.sale__catalog .filter,
+        section.sale__catalog aside.w25,
+        section.sale__catalog .product__type,
+        section.sale__catalog .quality,
+        section.sale__catalog .manufacturers,
+        section.sale__catalog .storag {
+            width: 100%
+        }
+
+        main section.sale__catalog .sale__wrrap {
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card {
+            width: 50%
+        }
+
+        main.cars__manufacturers section.catalog__name div a figure img {
+            width: 80px;
+            height: 80px
+        }
+
+        /*               catalog                 */
+        /*                detal                */
+        main.detal section.detal__info {
+            flex-wrap: wrap;
+        }
+
+        main.detal section.detal__info .info__img {
+            width: 100%;
+        }
+
+        main.detal section.detal__info .info__bonus {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        main.detal section.detal__info .info__bonus .bonus__send,
+        main.detal section.detal__info .info__bonus .bonus__guarantee,
+        main.detal section.detal__info .info__bonus .bonus__return,
+        main.detal section.detal__info .info__bonus .bonus__extra {
+            width: 50%;
+        }
+
+        main.detal section.detal__info .info__bonus .bonus__send .send__img,
+        main.detal section.detal__info .info__bonus .bonus__guarantee .guarantee__img,
+        main.detal section.detal__info .info__bonus .bonus__return .return__img,
+        main.detal section.detal__info .info__bonus .bonus__extra .extra__img {
+            width: 60px;
+            height: 60px;
+        }
+
+        main.detal section.detal__info .info__price {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        main.detal section.detal__info .info__price button.detal__cart {
+            width: 100%;
+        }
+
+        main.detal section.detal__info .info__price button.detal__bay {
+            width: 100%;
+        }
+
+        main.detal .detal__menu nav a {
+            font-size: 12px;
+        }
+
+        main.detal .detal__menu nav a::before {
+            display: none;
+        }
+
+        main.detal .detal__menu .menu__info ul li {
+            font-size: 13px;
+        }
+
+        main.detal .detal__menu .menu__info ul li span {
+            letter-spacing: -1px;
+        }
+
+        main.detal .detal__cart {
+            flex-wrap: wrap;
+        }
+
+        main.detal .detal__cart .sale__card,
+        section.sale .sale__wrrap .sale__card {
+            width: 50%;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty button.cart__order {
+            margin-top: 11px;
+        }
+
+        main.detal .detal__cart .sale__card .card__price button.cart__buy:hover:after,
+        main.detal .detal__cart .sale__card.no_availabilaty button.cart__order:hover:after {
+            display: none;
+        }
+
+
+        /*                 model                 */
+        main.cars__accessories .model__menu,
+        main.cars__liquids .model__menu,
+        main.cars__light .model__menu,
+        main.cars__models .model__menu {
+            flex-direction: column;
+        }
+
+        main.cars__accessories .model__menu a:before,
+        main.cars__liquids .model__menu a:before,
+        main.cars__light .model__menu a:before,
+        main.cars__models .model__menu a:before {
+            width: 100%;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        main.cars__accessories .model__menu a,
+        main.cars__liquids .model__menu a,
+        main.cars__light .model__menu a,
+        main.cars__models .model__menu a {
+            display: block;
+            width: 90%;
+        }
+
+        main.cars__models .models__geely,
+        main.cars__models .models__chery,
+        main.cars__models .models__wall,
+        main.cars__models .models__lifan,
+        main.cars__models .models__byd {
+            padding-left: 15px;
+        }
+
+        main.cars__models .models__geely span,
+        main.cars__models .models__chery span,
+        main.cars__models .models__wall span,
+        main.cars__models .models__lifan span,
+        main.cars__models .models__byd span {
+            font-size: 16px;
+        }
+
+        /*                   model                       */
+        /*                   accessories         */
+        main.cars__accessories .accessories__list a {
+            width: 25%;
+            margin-bottom: 35px;
+        }
+
+        /*                   accessories           */
+        /*                       liquids, light          */
+        main.cars__light .light__list a,
+        main.cars__liquids .liquids__list a {
+            width: 25%;
+            margin-bottom: 30px;
+        }
+
+        main.cars__light .light__list a figure figcaption,
+        main.cars__liquids .liquids__list a figure figcaption {
+            font-size: 13px;
+        }
+    }
+
+    /*                       liquids, light              */
+    @media screen and (max-width: 376px) {
+
+        section.sale__catalog .sale__wrrap .sale__card .card__check .check__pieces p,
+        section.sale .sale__wrrap .sale__card .card__check .check__pieces p {
+            font-size: 10px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal,
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {
+            height: 440px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal h5,
+        main.detal .detal__cart .sale__card.no_availabilaty .cart__modal h5,
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {
+            font-size: 28px;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal p,
+        main.detal .detal__cart .sale__card.no_availabilaty .cart__modal p,
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal p {
+            font-size: 13px;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a,
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a,
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {
+            font-size: 15px;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__name,
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__name {
+            font-size: 16px;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__name {
+            font-size: 15px;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__product {
+            margin-top: 5px;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty .cart__modal {
+            height: 480px;
+        }
+
+        main.detal .detal__cart .sale__card .card__price .price__text {
+            font-size: 22px;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty button.cart__order {
+            margin-top: 0px;
+        }
+
+        /*         model          */
+        main.cars__models .geely__cars .base__detal,
+        main.cars__models .chery__cars .base__detal,
+        main.cars__models .wall__cars .base__detal,
+        main.cars__models .lifan__cars .base__detal,
+        main.cars__models .byd__cars .base__detal {
+            width: 25%;
+        }
+
+        /*         model          */
+        /*                       liquids, light             */
+        main.cars__light .light__list a,
+        main.cars__liquids .liquids__list a {
+            width: 33%;
+        }
+
+        /*                       liquids, light              */
+    }
+
+    @media screen and (max-width: 370px) {
+        header .header__phone div {
+            font-size: 12px;
+        }
+
+        header .header__phone .header__login .header__user-in {
+            font-size: 12px;
+        }
+
+        header img.header__logo {
+            width: 185px;
+            margin-right: 20px;
+        }
+
+        header div.flex .fa-bars {
+            width: 30px;
+            height: 30px;
+        }
+
+        header .mobile__shoping .header__cart img {
+            padding: 8px;
+        }
+
+        main h1 {
+            font-size: 21px;
+            letter-spacing: 0px;
+        }
+
+        main .main__logo a img {
+            height: 30px;
+        }
+
+        main div.flex.w66.main__logo {
+            align-items: flex-start;
+        }
+
+        main .logo__text {
+            white-space: pre-wrap
+        }
+
+        main.cars__models .cars__model {
+            height: 60px;
+            padding-left: 15px;
+        }
+
+        main.cars__models .cars__model .model_info>div {
+            width: 100px
+        }
+
+        main.cars__models .cars__model .model_info>div img {
+            height: 40px
+        }
+
+        main.cars__models .cars__model button {
+            width: 30px;
+            height: 30px
+        }
+
+        main.cars__models .cars__model button img {
+            width: 60%
+        }
+
+        main section.cars__base .base__detal .detal__text {
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        main #main__slick .slick-dots li {
+            width: 13px;
+            height: 13px;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty .cart__modal {
+            height: 453px;
+        }
+
+        section.sale .sale__wrrap .sale__card {
+            width: 90%;
+        }
+
+        section.sale .sale__wrrap {
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        /*       catalog           */
+        main .auto__detal a img {
+            height: 40px;
+        }
+
+        main .auto__detal a .detal__text {
+            font-size: 13px;
+        }
+
+        main .auto__detal a .fa-chevron-down {
+            font-size: 20px;
+            margin-top: 8px;
+        }
+
+        main .catalog__detal a div {
+            font-size: 11px;
+            margin-top: 10px;
+        }
+
+        main .catalog__info a {
+            font-size: 10px;
+        }
+
+        section.sale__catalog aside {
+            margin-top: 10px;
+        }
+
+        main .catalog__sorted {
+            flex-wrap: wrap;
+        }
+
+        main .catalog__sorted .quantity__goods {
+            margin: 10px 0 0 0;
+        }
+
+        main section.sale__catalog .sale__wrrap {
+            justify-content: center;
+        }
+
+        section.sale__catalog .sale__wrrap .sale__card {
+            width: 80%;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a,
+        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a,
+        section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {
+            font-size: 23px;
+        }
+
+        /*       catalog          */
+        /*         detal             */
+
+        main.detal section.detal__info .info__bonus {
+            margin-top: 10px;
+        }
+
+        main.detal section.detal__info .info__bonus {
+            display: none;
+        }
+
+        main.detal .detal__menu nav {
+            flex-direction: column;
+        }
+
+        main.detal .detal__menu nav a::before {
+            width: 100%;
+            margin: 5px auto;
+            display: block;
+        }
+
+        main.detal .detal__menu .menu__info ul li span {
+            font-size: 8px;
+        }
+
+        main.detal .detal__cart {
+            justify-content: center;
+        }
+
+        main.detal .detal__cart .sale__card,
+        section.sale .sale__wrrap .sale__card {
+            width: 90%;
+        }
+
+        main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a {
+            font-size: 23px;
+        }
+
+        /*         detal             */
+        /*            accessories       */
+        main.cars__accessories .accessories__list a {
+            width: 33%;
+            margin-bottom: 35px;
+        }
+
+        /*             accessories      */
+    }
+
 }
-main.detal section.detal__info .info__img .img__small .small__img img {width: 100%;}
-main.detal section.detal__info .img__big i.img__discount,
-main.detal section.detal__info .img__big i.img__new,
-main.detal section.detal__info .img__big i.img__hit {left: -10px;}
-main.detal section.detal__info .info__bonus .bonus__send .send__img,
-main.detal section.detal__info .info__bonus .bonus__guarantee .guarantee__img,
-main.detal section.detal__info .info__bonus .bonus__return .return__img,
-main.detal section.detal__info .info__bonus .bonus__extra .extra__img {
-    width: 60px;
-	height: 60px;
-	margin-right: 5px;
-    margin-bottom: 5px;
-}
-main.detal section.detal__info .info__bonus .bonus__send p,
-main.detal section.detal__info .info__bonus .bonus__guarantee p,
-main.detal section.detal__info .info__bonus .bonus__return p,
-main.detal section.detal__info .info__bonus .bonus__extra p {font-size: 12px; padding-bottom: 5px;}
-main.detal section.detal__info .info__price .old__price p { font-size: 20px;}
-main.detal section.detal__info .info__price .new__price { 
-	font-size: 35px;
-	margin-left: 5px;
-}
-main.detal section.detal__info .info__price .discount .discount__procent {
-    width: 40px;
-    height: 17px;
-    font-size: 12px;
-}
-main.detal section.detal__info .info__price .card__check.detal__check .fa-check-circle {
-	font-size: 20px;
-	margin-right: 5px;
-}
-main.detal section.detal__info .info__price .discount p {font-size: 11px;}
-main.detal section.detal__info .info__price .discount .discount__price {
-    margin-left: 5px;
-	font-size: 22px;
-}
-main.detal section.detal__info .info__price .card__check.detal__check p {font-size: 12px;}
-main.detal section.detal__info .info__price .card__check.detal__check span.minus {
-    width: 20px;
-    height: 17px;
-    font-size: 19px;
-}
-main.detal section.detal__info .info__price .card__check.detal__check input {
-    width: 35px;
-	height: 17px;
-	font-size: 15px;
-}
-main.detal section.detal__info .info__price .card__check.detal__check span.plus {
-    width: 20px;
-    height: 17px;
-    font-size: 19px;
-}main.detal section.detal__info .info__price button.detal__cart {
-    width: 210px;
-    height: 50px;
-    font-size: 16px;
-}
-main.detal section.detal__info .info__price button.detal__bay {
-    width: 210px;
-    height: 30px;
-    font-size: 16px;
-}
-main.detal .detal__menu nav a::before { width: 180px;}
-main.detal .detal__menu nav a {font-size: 17px;}
-main.detal .detal__cart .sale__card .card__info .info__article p {font-size: 13px;}
-main.detal .detal__cart .sale__card .card__info .info__name p {font-size: 13px;}
-main.detal .detal__cart .sale__card .card__check .check__pieces p {font-size: 11px;}
-main.detal .detal__cart .sale__card .check__number { width: 60px;}
-main.detal .detal__cart .sale__card .check__number input {width: 30px;}
-main.detal .detal__cart .sale__card.no_availabilaty button.cart__order {
-	margin-top: 9px;
-	width: 75px;
-    height: 35px;
-}
-main.detal .detal__cart .sale__card .card__price button.cart__buy { 
-	width: 75px;
-    height: 35px;
-}
-main.detal .detal__cart .sale__card.no_availabilaty .card__price .price__text {font-size: 14px;}
-main.detal .detal__cart .sale__card .card__price .price__text {font-size: 25px;}
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__btn,
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal button.modal__request {font-size: 17px;}
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a {font-size: 20px;}
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__product {margin-bottom: 10px;}
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__name {font-size: 16px;}
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__product {margin-top: 10px;}
-/*         model             */
-main.cars__models .geely__cars .base__detal img,
-main.cars__models .chery__cars .base__detal img,
-main.cars__models .wall__cars .base__detal img,
-main.cars__models .lifan__cars .base__detal img,
-main.cars__models .byd__cars .base__detal img {width: 90%;}
-
-main.cars__models .geely__cars .base__detal .detal__text,
-main.cars__models .chery__cars .base__detal .detal__text,
-main.cars__models .wall__cars .base__detal .detal__text
-main.cars__models .lifan__cars .base__detal .detal__text,
-main.cars__models .byd__cars .base__detal .detal__text {font-size: 16px;}
-
-main.cars__models .models__geely,
-main.cars__models .models__chery,
-main.cars__models .models__wall,
-main.cars__models .models__lifan,
-main.cars__models .models__byd {height: 65px;}
-
-main.cars__models .models__geely .geely__info > div,
-main.cars__models .models__chery .chery__info > div,
-main.cars__models .models__wall .wall__info > div,
-main.cars__models .models__lifan .lifan__info > div,
-main.cars__models .models__byd .byd__info > div {width: 70px;}
-
-main.cars__models .models__geely .geely__info > div img,
-main.cars__models .models__chery .chery__info > div img,
-main.cars__models .models__wall .wall__info > div img,
-main.cars__models .models__lifan .lifan__info > div img,
-main.cars__models .models__byd .byd__info > div img{width: 100%;}
-
-main.cars__models .models__geely button,
-main.cars__models .models__chery button,
-main.cars__models .models__wall button,
-main.cars__models .models__lifan button,
-main.cars__models .models__byd button {
-    width: 40px;
-	height: 40px;
-}
-/*          model           */
-
-   /*                   detal                          */
-}
-@media screen and (max-width: 769px) {
-	header form select,
-	header form .fa-chevron-down,
-	header .header__shoping .header__user { display: none;}
-	header nav a:before { width: 100%; }
-	main h1 {
-		font-size: 32px;
-		letter-spacing: 1px;
-	}
-	main .catalog__sorted {padding-left: 148px;}
-	main section.sale .sale__nav a:before { min-width: 135px; }
-	section.sale .sale__wrrap .sale__card { width:25%; }
-	section.sale .sale__wrrap .sale__card .card__img { height: 200px; }
-	.card__rating .rating:not(:checked) > label {font-size: 17px;}
-	section.sale .sale__wrrap .sale__card .card__info .info__article { margin-right: 15px; }
-	section.sale .sale__wrrap .sale__card .card__price .price__text {font-size: 25px;}
-	section.sale .sale__wrrap .sale__card .card__price button.cart__buy {
-		width: 70px;
-		height: 30px;
-	}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {font-size: 14px; }
-	section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order {
-		width: 70px;
-		height: 30px;
-		margin-top: -3px;
-	}
-	section.sale .sale__wrrap .sale__card .card__price button.cart__buy:hover:after,
-	section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:hover:after {display: none;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {font-size: 25px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal p { margin-top: 10px; }
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__name {margin-top: 10px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__product {margin-bottom: 10px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {font-size: 17px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal span {font-size: 16px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {font-size: 16px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {height: 427px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {padding: 5px 10px 31px 10px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product {margin-top: 10px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {margin-top: 10px;}
-	footer .footer__info .footer__contacts address {margin-left: 7px;}
-	footer .footer__info .footer__contacts .contacts__phone a { margin-left: 7px;}
-	footer .footer__info div.w20 { width: 25%; }
-	footer .footer__info .footer__account { display: none;}
-	footer .footer__subtitle div.w50 {width: 100%;}
-	footer .footer__subtitle .subtitle__text { text-align: center;}
-	footer .footer__subtitle .subtitle__link { justify-content: center;}
-
-	/*                catalog               */
-	main .catalog__info a {font-size: 11px;}
-	main .catalog__info {margin: 15px 0 20px 0;}
-	section.sale__catalog .sale__wrrap .sale__card {width: 33%;}
-	section.sale__catalog .product__type,
-	section.sale__catalog .quality,
-	section.sale__catalog .manufacturers,
-	section.sale__catalog .storag {
-		padding: 15px 5px;
-		font-size: 13px;
-	}
-	main section.sale__catalog aside .product__type input[type=checkbox] + label:before,
-	main section.sale__catalog aside .quality input[type=checkbox] + label:before,
-	main section.sale__catalog aside .manufacturers input[type=checkbox] + label:before,
-	main section.sale__catalog aside .storag input[type=checkbox] + label:before {width: 11px; height: 11px;}
-
-	main section.sale__catalog aside .product__type input[type=checkbox]:checked + label,
-	main section.sale__catalog aside .quality input[type=checkbox]:checked + label,
-	main section.sale__catalog aside .manufacturers input[type=checkbox]:checked + label,
-	main section.sale__catalog aside .storag input[type=checkbox]:checked + label {height: 18px;}
-	section.sale__catalog .sale__wrrap .sale__card {padding: 6px;}
-	main .pagination button {
-		width: 30px;
-		height: 30px;
-	}
-	main .pagination button img { height: 14px;}
-	main .pagination a:nth-child(2),
-	main .pagination a:nth-child(6) {
-		width: 40px;
-		height: 18px;
-	}
-	main .pagination a:nth-child(3),
-	main .pagination a:nth-child(5) {
-		width: 40px;
-		height: 18px;
-	}
-	main .pagination a:nth-child(4) {
-		width: 40px;
-		height: 27px;
-		font-size: 14px;
-	}
-
-	/*                catalog                 */
-
-	/*                 detal                 */
-	main.detal section.detal__info .img__big {
-		width: 190px;
-		height: 190px;
-	}
-	main.detal section.detal__info .img__big i.img__discount {
-		width: 40px;
-		height: 17px;
-		font-size: 12px;
-	}
-	main.detal section.detal__info .img__big i.img__new {
-		width: 40px;
-		height: 17px;
-		font-size: 12px;
-		top: 40px;
-	}
-	main.detal section.detal__info .img__big i.img__hit {
-		width: 40px;
-		height: 17px;
-		font-size: 12px;
-		top: 60px;
-	}
-	main.detal section.detal__info .info__img .img__small .small__img {
-		width: 60px;
-		height: 50px;
-	}
-	
-	main.detal section.detal__info .info__bonus .bonus__send p,
-	main.detal section.detal__info .info__bonus .bonus__guarantee p,
-	main.detal section.detal__info .info__bonus .bonus__return p,
-	main.detal section.detal__info .info__bonus .bonus__extra p {font-size: 9px;}
-	main.detal section.detal__info .info__price .old__price p {font-size: 18px;}
-	main.detal section.detal__info .info__price .new__price {font-size: 30px;}
-	main.detal section.detal__info .info__price .card__check.detal__check {margin-top: 15px;}
-	main.detal .detal__menu .menu__info ul li span {letter-spacing: 0px;}
-	main.detal .detal__menu .menu__info {margin: 20px 0 30px 0;}
-	main.detal .detal__menu .menu__info ul li {font-size: 14px; margin-bottom: 5px;}
-	main.detal .detal__cart .sale__card:nth-child(5) { display: none;}
-	main.detal .detal__cart .sale__card, section.sale .sale__wrrap .sale__card  { width: 25%;}
-	main.detal .detal__cart .sale__card .card__info .info__name p {font-size: 12px;}
-	main.detal .detal__cart .sale__card .card__info .info__article p {font-size: 12px;}
-	main.detal .detal__cart .sale__card.no_availabilaty button.cart__order {margin-top: 0px;}
-	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a {font-size: 17px;}
-	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__name {font-size: 15px;}
-	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form input::placeholder {font-size: 12px;}
 
 
-	main.detal .detal__menu nav a::before {width: 140px;}
-	/*                  detal                  */
-	/*             model                 */
-	main.cars__accessories .model__menu a:before,
-	main.cars__liquids .model__menu a:before,
-	main.cars__light .model__menu a:before,
-	main.cars__models .model__menu a:before {width: 130px;}
-	main.cars__models .geely__cars .base__detal,
-	main.cars__models .chery__cars .base__detal,
-	main.cars__models .wall__cars .base__detal,
-	main.cars__models .lifan__cars .base__detal,
-	main.cars__models .byd__cars .base__detal {width: 20%;}
-
-	/*             model                  */
-	/*             accessories           */
-	main.cars__accessories .accessories__list a {
-		width: 16%;
-		margin-bottom: 50px;
-	}
-	main.cars__accessories .accessories__list a figure figcaption {font-size: 14px;}
-	/*             accessories          */
-	/*              liquids, light           */
-	main.cars__light .light__list a,
-	main.cars__liquids .liquids__list a {width: 16%;}
-	main.cars__light .light__list a figure img,
-	main.cars__liquids .liquids__list a figure img {
-		width: 80px;
-		height: 80px;
-		padding: 20px 16px;
-	}
-	/*              liquids, light          */
-}
-
-@media screen and (max-width: 426px) {
-	#top_header { padding: 2px }
-	header  { padding: 0 0 30px 0 }
-	header > div { flex-direction: column }
-	header .header__shoping { display: none }
-	header .nav__mobile {
-		width: 100%;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-	header img.header__logo {
-		width: 230px;
-		margin-right: 22px;
-	}
-	header .header__phone div {font-size: 13px;}
-	header form button { top: 26px }
-	header .mobile__shoping a.header__cart {
-		background-color: #fff;
-		border-radius: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	
-	header .mobile__shoping {
-		position: relative;
-		display: flex;
-			}
-	header .mobile__shoping i.label {
-		display: block;
-		position: absolute;
-		top: 50%;
-		transform: translateY(-50%);
-		left: -19px;
-		font-weight: 600;
-		color: #fff;
-		font-size: 12px;
-		line-height: 1.2;
-		font-style: normal;
-		text-align: center;
-		height: 15px;
-		width: 30px;
-		border-radius: 0 50px 50px 0;
-		background-color: #82C166;
-	}
-	header .mobile__shoping .header__cart img { padding: 10px; }
-	header div.flex .fa-bars { 
-		display: block;
-		width: 35px;
-		height: 35px;
-		font-size: 30px;
-		float: left;
-		color: #8c8c8c;
-	}
-	header .header__address .fa-map-marker-alt, header .header__phone .fa-phone-alt { display: none;}
-	header nav.flex { display: none;}
-	header form { width: 100%;}
-	header form input { 
-		width: 100%;
-		margin-top: 10px;
-		margin-left: 0;
-	}
-	header .header__phone {
-		order: -1;
-		width: calc(100% + 30px);
-		padding: 5px 15px 5px 15px;
-		margin: 0px;
-		margin-bottom: 10px;
-		background: #8c8c8c;
-		justify-content: center
-	}
-	header .header__phone .header__login .header__user-in {
-		background: transparent;
-		border: none;
-		font-size: 13px;
-		font-weight: 600;
-		text-align: left;
-	}
-	header .header__phone div {
-		color: #F2F2F2;
-		display: flex;
-	}
-	header .header__phone div a { margin-right: 15px;}
-	header .header__phone .header__login {
-		 display: flex;
-		 flex-direction: column;
-	}
-	main .catalog__sorted {padding-left: 0px;}
-	main section.sale .sale__nav { display: none;}
-	section.sale .sale__wrrap .sale__card { width: 50%; }
-	main .main__logo a img {max-height: 30px; max-width: 50px;}
-	main h1 {
-		font-size: 23px;
-		letter-spacing: 1px;
-	}
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order {margin-top: 15px;}
-	main section.sale {padding: 30px 0 0 0;}
-
-	main section.cars__catalog .base__detal,
-	main section.cars__base .base__detal {width: 95px;}
-
-	main section.cars__catalog .base__detal .detal__text,
-	main section.cars__base .base__detal .detal__text {font-size: 15px;}
-
-	main .logo__text {font-size: 13px;}
-	section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order { margin-top: 11px; }
-	footer .footer__info .footer__shop,
-	footer .footer__info .footer__information { display: none;}
-	footer .footer__info .footer__contacts .contacts__address,
-	footer .footer__info .footer__contacts .contacts__phone { justify-content: center;}
-	footer .footer__info div.w20 {
-		width: 100%;
-	}
-	footer .footer__info {padding: 10px 15px;}
-	footer .footer__info h5 { 
-		margin-top: 10px;
-    	margin-bottom: 5px;
-		text-align: center; 
-	}
-	footer .footer__info .footer__payments .payments__img { 
-		text-align: center;
-		margin-top: 10px;
-	}
-	footer .footer__subtitle .subtitle__link { display: none; }
-	footer .footer__subtitle {
-		min-height: 40px;
-		padding: 10px 0;
-	}
-	header div.mob__menu {
-		display: block;
-    	position: fixed;
-		z-index: 1002;
-		margin-left: -15px;
-    	top: 0;
-    	width: 100vw;
-    	background: rgba(0,0,0,.8);
-	}
-	header div.mob__menu .close__menu {
-		transition: .54s;
-    	width: 100%;
-		height: 100vh;
-		display: none;
-    	position: fixed;
-    	background: rgba(0,0,0,.8);
-	}
-	header div.mob__menu .close__menu .fa-times {
-		position: absolute;
-		right: 20px;
-		top: 20px;
-		font-size: 24px;
-		color: #fff;
-	}
-	header div.mob__menu .mob__nav {
-		transition: .54s;
-		left: -281px;
-		position: absolute;
-		background: #3c3c3a;
-		width: 280px;
-		min-height: 100vh;
-	}
-	header div.mob__menu .mob__nav a {
-		font-size: 15px;
-    	padding: 8px 10px;
-    	margin: -1px 15px;
-    	color: #fff;
-    	width: calc(100% - 30px);
-   		display: block;
-	}
-	header div.mob__menu .mob__nav a img { height: 15px }
-	header div.mob__menu .mob__nav a img.mob__logo {
-		width: calc(100% - 30px);
-		height: auto;
-    	max-width: 200px;
-		margin: 15px 0;
-	}
-	header div.mob__menu .mob__nav .mob__border {
-		margin: 3px 0;
-    	height: 1px;
-    	background: #777;
-    	width: 100%;
-    	display: block;
-	}
-	header div.nav__mobile.default {
-		position: fixed;
-		top: 0;
-		padding: 15px;
-		background: #777;
-		z-index: 11;
-	}
-	/*               catalog               */
-	main .catalog__detal {margin: 10px 0;}
-	main .catalog__detal a img {height: 40px;}
-	main div.flex.wrap.catalog__detal a {
-		text-align: center;
-		width: 25%;
-		margin-bottom: 10px;
-	}
-	main .catalog__info {margin: 15px 0 15px 0;}
-	main .catalog__sorted div a {
-		width: 50px;
-		height: 20px;
-		margin-right: 5px;
-		padding: 2px 5px;
-		font-size: 10px;
-	}
-	main .catalog__sorted .quantity__goods { font-size: 13px }
-	main section.sale__catalog {flex-wrap: wrap }
-	main .pagination,
-	section.sale__catalog .filter,
-	section.sale__catalog aside.w25,
-	section.sale__catalog .product__type,
-	section.sale__catalog .quality,
-	section.sale__catalog .manufacturers,
-	section.sale__catalog .storag { width: 100% }
-	main section.sale__catalog .sale__wrrap {
-		margin-top: 10px;
-		width: 100%;
-	}
-	section.sale__catalog .sale__wrrap .sale__card {width: 50%}
-	main.cars__manufacturers section.catalog__name div a figure img { width: 80px; height: 80px }
-
-	/*               catalog                 */
-	/*                detal                */
-main.detal section.detal__info{ flex-wrap: wrap;}
-main.detal section.detal__info .info__img {width: 100%;}
-main.detal section.detal__info .info__bonus {
-	 width: 100%;
-	 display: flex;
-	 justify-content: space-between;
-	 align-items: center;
-	 flex-wrap: wrap;
-}
-main.detal section.detal__info .info__bonus .bonus__send,
-main.detal section.detal__info .info__bonus .bonus__guarantee,
-main.detal section.detal__info .info__bonus .bonus__return,
-main.detal section.detal__info .info__bonus .bonus__extra {width: 50%;}
-main.detal section.detal__info .info__bonus .bonus__send .send__img,
-main.detal section.detal__info .info__bonus .bonus__guarantee .guarantee__img,
-main.detal section.detal__info .info__bonus .bonus__return .return__img,
-main.detal section.detal__info .info__bonus .bonus__extra .extra__img {width: 60px; height: 60px;}
-main.detal section.detal__info .info__price {width: 100%; margin-top: 15px;}
-main.detal section.detal__info .info__price button.detal__cart {width: 100%;}
-main.detal section.detal__info .info__price button.detal__bay {width: 100%;}
-main.detal .detal__menu nav a {font-size: 12px;}
-main.detal .detal__menu nav a::before {display: none;}
-main.detal .detal__menu .menu__info ul li {font-size: 13px;}
-main.detal .detal__menu .menu__info ul li span {letter-spacing: -1px;}
-main.detal .detal__cart { flex-wrap: wrap;}
-main.detal .detal__cart .sale__card, section.sale .sale__wrrap .sale__card {width: 50%;}
-main.detal .detal__cart .sale__card.no_availabilaty button.cart__order { margin-top: 11px;}
-main.detal .detal__cart .sale__card .card__price button.cart__buy:hover:after,
- main.detal .detal__cart .sale__card.no_availabilaty button.cart__order:hover:after {display: none;}
-
-
-	/*                 detal                 */
-	/*                 model                 */
-main.cars__accessories .model__menu,
-main.cars__liquids .model__menu,
-main.cars__light .model__menu,
-main.cars__models .model__menu {flex-direction: column;}
-
-main.cars__accessories .model__menu a:before,
-main.cars__liquids .model__menu a:before,
-main.cars__light .model__menu a:before,
-main.cars__models .model__menu a:before {
-	width: 100%;
-	margin-top: 5px;
-    margin-bottom: 5px;
-}
-main.cars__accessories .model__menu a,
-main.cars__liquids .model__menu a,
-main.cars__light .model__menu a,
-main.cars__models .model__menu a {
-    display: block;
-	width: 90%;
-}
-
-main.cars__models .models__geely,
-main.cars__models .models__chery,
-main.cars__models .models__wall,
-main.cars__models .models__lifan,
-main.cars__models .models__byd {padding-left: 15px;}
-
-main.cars__models .models__geely span,
-main.cars__models .models__chery span,
-main.cars__models .models__wall span,
-main.cars__models .models__lifan span,
-main.cars__models .models__byd span {font-size: 16px;}
-	/*                   model                       */
-	/*                   accessories         */
-	main.cars__accessories .accessories__list a {
-		width: 25%;
-		margin-bottom: 35px;
-	}
-	/*                   accessories           */
-/*                       liquids, light          */
-main.cars__light .light__list a,
-main.cars__liquids .liquids__list a {width: 25%; margin-bottom: 30px;}
-main.cars__light .light__list a figure figcaption,
-main.cars__liquids .liquids__list a figure figcaption {font-size: 13px;}
-/*                       liquids, light              */
-@media screen and (max-width: 376px) {
-	section.sale__catalog .sale__wrrap .sale__card .card__check .check__pieces p,
-	section.sale .sale__wrrap .sale__card .card__check .check__pieces p {font-size: 10px;}
-
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal,
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal {height: 440px;}
-
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal h5,
-	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal h5,
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {font-size: 28px;}
-
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal p,
-	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal p,
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal p {font-size: 13px;}
-
-	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a,
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a,
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {font-size: 15px;}
-
-	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__name,
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__name {font-size: 16px;}
-	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__name {font-size: 15px;}
-	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__product {margin-top: 5px;}
-	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal {height: 480px;}
-	main.detal .detal__cart .sale__card .card__price .price__text {font-size: 22px;}
-	main.detal .detal__cart .sale__card.no_availabilaty button.cart__order {margin-top: 0px;}
-	/*         model          */
-	main.cars__models .geely__cars .base__detal,
-	main.cars__models .chery__cars .base__detal,
-	main.cars__models .wall__cars .base__detal,
-	main.cars__models .lifan__cars .base__detal,
-	main.cars__models .byd__cars .base__detal {width: 25%;}
-
-	/*         model          */
-	/*                       liquids, light             */
-	main.cars__light .light__list a,
-	main.cars__liquids .liquids__list a {width: 33%;}
-
-/*                       liquids, light              */
-}
-@media screen and (max-width: 370px) {
-	header .header__phone div {font-size: 12px;}
-	header .header__phone .header__login .header__user-in {font-size: 12px;}
-	header img.header__logo {
-		width: 185px;
-		margin-right: 20px;
-	}
-	header div.flex .fa-bars {
-		width: 30px;
-		height: 30px;
-	}
-
-	header .mobile__shoping .header__cart img {padding: 8px;}
-	main h1 {
-		font-size: 21px;
-		letter-spacing: 0px;
-	}
-	main .main__logo a img {height: 30px;}
-	main div.flex.w66.main__logo { align-items: flex-start;}
-	main .logo__text { white-space: pre-wrap }
-	main.cars__models .cars__model {
-		height: 60px;
-		padding-left: 15px;
-	}
-	main.cars__models .cars__model .model_info > div { width: 100px }
-	main.cars__models .cars__model .model_info > div img { height: 40px }
-	main.cars__models .cars__model button { width: 30px; height: 30px }
-	main.cars__models .cars__model button img { width: 60% }
-	main section.cars__base .base__detal .detal__text {
-		font-size: 13px;
-		margin-bottom: 20px;
-	}
-	main #main__slick .slick-dots li {
-		width: 13px;
-		height: 13px;
-	}
-	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal {
-		height: 453px;
-	}
-	section.sale .sale__wrrap .sale__card {width: 90%;}
-	section.sale .sale__wrrap {
-		margin-top: 15px;
-		justify-content: center;
-	}
-	/*       catalog           */
-	main .auto__detal a img {height: 40px;}
-	main .auto__detal a .detal__text {font-size: 13px;}
-	main .auto__detal a .fa-chevron-down {
-		font-size: 20px;
-		margin-top: 8px;
-	}
-	main .catalog__detal a div {font-size: 11px; margin-top: 10px;}
-	main .catalog__info a {font-size: 10px;}
-	section.sale__catalog aside {margin-top: 10px;}
-	main .catalog__sorted { flex-wrap: wrap;}
-	main .catalog__sorted .quantity__goods { margin: 10px 0 0 0;}
-	main section.sale__catalog .sale__wrrap {justify-content: center;}
-	section.sale__catalog .sale__wrrap .sale__card {width: 80%;}
-	main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a,
-	section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a,
-	section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a{font-size: 23px;}
-
-/*       catalog          */
-/*         detal             */
-
-main.detal section.detal__info .info__bonus {margin-top: 10px;}
-main.detal section.detal__info .info__bonus {display: none;}
-main.detal .detal__menu nav { flex-direction: column;}
-main.detal .detal__menu nav a::before {
-	width: 100%;
-	margin: 5px auto;
-	display: block;
-}
-main.detal .detal__menu .menu__info ul li span { font-size: 8px; }
-main.detal .detal__cart {justify-content: center;}
-main.detal .detal__cart .sale__card, section.sale .sale__wrrap .sale__card { width: 90%;}
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a {font-size: 23px;}
-/*         detal             */
-	/*            accessories       */
-	main.cars__accessories .accessories__list a {
-		width: 33%;
-		margin-bottom: 35px;
-	}
-	/*             accessories      */
-}
-
-}
-
-
-#contacts{
+#contacts {
     margin-top: 60px;
 }
-#contacts .contactsText div{
-	margin: 14px 0;
+
+#contacts .contactsText div {
+    margin: 14px 0;
 }
-#contacts h2{
-	font-size: 24px;
+
+#contacts h2 {
+    font-size: 24px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -2756,63 +4100,72 @@ main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a
     color: #666666;
     margin: 0 auto 30px;
 }
-#contacts .contactsText p{
-	font-size: 18px;
+
+#contacts .contactsText p {
+    font-size: 18px;
     font-weight: 600;
     color: #8c8c8c;
-	text-align: center;
-}
-#contacts .contactsText p i{
-    color: #82C166;
-	margin-right: 5px;
-}
-i.fas.iNone::before{
-	color: transparent;
-}
-#contacts .contactsText p a{
-	font-size: 18px;
-    font-weight: 600;
-    color: #8c8c8c;
-	text-align: center;
-}
-#contacts .contactsText p a:hover{
-    color: #82C166;
-}
-#contacts .contactsMap iframe{
-	width: 80%;
-	height: 300px;
-	margin: 30px 10% 0;
+    text-align: center;
 }
 
-#contacts .contactsForm form{
+#contacts .contactsText p i {
+    color: #82C166;
+    margin-right: 5px;
+}
+
+i.fas.iNone::before {
+    color: transparent;
+}
+
+#contacts .contactsText p a {
+    font-size: 18px;
+    font-weight: 600;
+    color: #8c8c8c;
+    text-align: center;
+}
+
+#contacts .contactsText p a:hover {
+    color: #82C166;
+}
+
+#contacts .contactsMap iframe {
+    width: 80%;
+    height: 300px;
+    margin: 30px 10% 0;
+}
+
+#contacts .contactsForm form {
     padding-left: 40px;
     padding-bottom: 60px;
 }
+
 #contacts .contactsForm form input,
-#contacts .contactsForm form textarea{
-    box-shadow: 0 0 0 0 rgba(140,140,140,.5);
+#contacts .contactsForm form textarea {
+    box-shadow: 0 0 0 0 rgba(140, 140, 140, .5);
     background-color: transparent;
     color: #000;
-	font-family: 'Segoe UI', Arial;
+    font-family: 'Segoe UI', Arial;
     font-size: 16px;
     font-weight: 400;
     margin: 7px 5%;
-	border: solid 1px #82C166;
-	border-radius: 10px;
-	padding: 14px 30px;
-	width: 90%;
-	background-color: #fff;
+    border: solid 1px #82C166;
+    border-radius: 10px;
+    padding: 14px 30px;
+    width: 90%;
+    background-color: #fff;
 }
+
 #contacts .contactsForm form input:focus,
 #contacts .contactsForm form textarea:focus,
-textarea:active{
+textarea:active {
     outline: none;
-	border-color: #82C166;
-	box-shadow: 2px 2px 8px #82C166;
+    border-color: #82C166;
+    box-shadow: 2px 2px 8px #82C166;
 }
-#contacts .contactsForm form input[type="submit"]{
+
+#contacts .contactsForm form input[type="submit"] {
     background: #82C166;
-	font-family: 'Segoe UI', Arial;
+    font-family: 'Segoe UI', Arial;
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 4px;
@@ -2825,8 +4178,22 @@ textarea:active{
     width: 240px;
     text-transform: uppercase;
 }
-#contacts .contactsForm form input[type="submit"]:hover{
+
+#contacts .contactsForm form input[type="submit"]:hover {
     background: #fff;
-	color: #82C166;
-	box-shadow: 2px 2px 8px #82C166;
+    color: #82C166;
+    box-shadow: 2px 2px 8px #82C166;
+}
+
+.alert h4 { font-size: 16px }
+.alert a {
+	display: inline-block;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #00ad00;
+    color: #fff;
+    outline: none;
+    text-align: center;
+    cursor: pointer;
 }
