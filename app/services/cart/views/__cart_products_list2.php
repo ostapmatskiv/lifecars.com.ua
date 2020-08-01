@@ -1,8 +1,8 @@
 <div class="table__cart_products_list2 w100">
 	<div class="thead">
-		<div class="th photo"><?=$this->text('Фото')?></div>
+		<div class="th photo m-hide"><?=$this->text('Фото')?></div>
 		<div class="th name <?=($actions)?'':'no_actions'?>"><?=$this->text('Назва')?></div>
-		<div class="th price"><?=$this->text('Ціна')?></div>
+		<div class="th price m-hide"><?=$this->text('Ціна')?></div>
 		<div class="th amount"><?=$this->text('К-сть')?></div>
 		<div class="th sum"><?=$this->text('Сума')?></div>
 		<?php if($actions) { ?>
@@ -11,7 +11,7 @@
 	</div>
 	<?php if($products) foreach($products as $i => $product) { ?>
 	<div class="tr <?=($product->active)?'':'disabled'?>" id="product-<?=$product->key?>" <?=($product->active)?'':'title="Товар відкладено"'?>">
-		<div class="td photo"><a href="<?=SITE_URL.$product->info->link?>">
+		<div class="td photo m-hide"><a href="<?=SITE_URL.$product->info->link?>">
 			<?php if($product->info->photo) { ?>
 				<img src="<?=IMG_PATH?><?=$product->info->cart_photo ?? $product->info->admin_photo ?>" alt="<?=$product->info->name ?>">
 			<?php } else
@@ -31,7 +31,7 @@
 			echo "<p>{$p}</p>";
 			} ?>
 		</div>
-		<div class="td price" id="pricePerOne-<?= $product->key ?>"><?=$product->info->price_format ?></div>
+		<div class="td price m-hide" id="pricePerOne-<?= $product->key ?>"><?=$product->info->price_format ?></div>
 		<div class="td amount">
 				<span class="minusInCart">-</span>
 				<input type="number" id="productQuantity-<?= $product->key?>" value="<?= $product->quantity?>" data-key="<?= $product->key?>" data-max="<?= $product->storage->amount_free ?? $product->info->availability?>" placeholder="1">

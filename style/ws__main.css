@@ -95,7 +95,7 @@ input:focus { outline: none }
 	.t-hide { display: none !important }
 	.container {
 		width: 100%;
-		padding: 0 15px;
+		padding: 0 10px;
 	}
 }
 @media screen and (max-width: 576px) {

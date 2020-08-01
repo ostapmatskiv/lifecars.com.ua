@@ -95,7 +95,7 @@ main img {
     }
 
     #modal-add_success .flex {
-        width: 300px;
+        width: 100%;
         flex-direction: column;
         align-items: center;
     }
@@ -3672,7 +3672,7 @@ main.cars__manufacturers section.catalog__name div a figure img {
         }
 
         section.sale__catalog .sale__wrrap .sale__card {
-            width: 50%
+            width: calc(50% - 2px)
         }
 
         main.cars__manufacturers section.catalog__name div a figure img {
@@ -3696,6 +3696,7 @@ main.cars__manufacturers section.catalog__name div a figure img {
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            margin-top: 30px;
         }
 
         main.detal section.detal__info .info__bonus .bonus__send,
@@ -3718,10 +3719,7 @@ main.cars__manufacturers section.catalog__name div a figure img {
             margin-top: 15px;
         }
 
-        main.detal section.detal__info .info__price button.detal__cart {
-            width: 100%;
-        }
-
+        main.detal section.detal__info .info__price button.detal__cart,
         main.detal section.detal__info .info__price button.detal__bay {
             width: 100%;
         }
@@ -3748,7 +3746,7 @@ main.cars__manufacturers section.catalog__name div a figure img {
 
         main.detal .detal__cart .sale__card,
         section.sale .sale__wrrap .sale__card {
-            width: 50%;
+            width: calc(50% - 3px);
         }
 
         main.detal .detal__cart .sale__card.no_availabilaty button.cart__order {
@@ -3820,6 +3818,11 @@ main.cars__manufacturers section.catalog__name div a figure img {
         main.cars__light .light__list a figure figcaption,
         main.cars__liquids .liquids__list a figure figcaption {
             font-size: 13px;
+        }
+
+        #modal-add_success .bg-white {
+            width: 90%;
+            padding: 20px;
         }
     }
 

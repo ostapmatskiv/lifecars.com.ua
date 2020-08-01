@@ -108,7 +108,7 @@
             <button type="submit" class="hexa"><?=$this->text('Увійти', 4)?></button>
         </form>
     </div>
-    <div class="overlay-container hideMobile">
+    <div class="overlay-container m-hide">
         <div class="overlay">
             <div class="overlay-panel overlay-left">
                 <h1><?=$this->text('Вже зареєстровані?', 4)?></h1>

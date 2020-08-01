@@ -300,3 +300,21 @@ table.__cart_products_list .amount button.plusInCart i { margin-left: -4px }
 .table__cart_products_list2 .product-active:hover { background: #FB9006; color: #fff }
 .table__cart_products_list2 .product-active.postpone { background: #7cbe49; color: #fff }
 .table__cart_products_list2 .product-active.postpone:hover { background: #6ba53e; color: #fff }
+
+@media screen and (max-width: 600px) {
+	.table__cart_products_list2 .name { width: 42% }
+	.table__cart_products_list2 .amount { width: 20% }
+	.table__cart_products_list2 .sum, .table__cart_products_list2 .actions { width: 18% }
+	main.detal section.detal__info .info__price .card__check.detal__check input, .table__cart_products_list2 .amount input { width: 35px }
+	.table__cart_products_list2 .product-active {
+		margin-right: 0;
+		width: 65px;
+		height: 21px;
+	}
+	.table__cart_products_list2 .product-active span { padding-left: 0 }
+	.table__cart_products_list2 .delete {
+		height: 20px;
+    	width: 25px;
+    	margin-bottom: 2px;
+	}
+}
