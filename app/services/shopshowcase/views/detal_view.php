@@ -3,7 +3,7 @@
     <section class="flex detal__info">
         <div class="flex h-start info__img"> 
             <div class="m__right">
-                <div class="flex h-center v-center img__big">
+                <div class="flex h-center v-center img__big <?=(empty($product->photo)) ? 'm-hide':''?>">
                     <?php if(!empty($product->photo)) { ?>
                         <img src="<?=IMG_PATH.$product->detal_photo?>" alt="<?=$product->article_show.' '.$product->name?>">
                     <?php } if($product->old_price > $product->price) { ?>
@@ -37,9 +37,9 @@
             <div class="img__small">
                 <?php if(!empty($_SESSION['alias']->images)) {
                     for ($i = 0; $i < count($_SESSION['alias']->images); $i++) {  ?>
-                            <div class="flex h-center v-center small__img">
-                                <a href="<?=IMG_PATH.$_SESSION['alias']->images[$i]->path?>" class="small__item"><img src="<?=IMG_PATH.$_SESSION['alias']->images[$i]->thumb_path?>"></a> 
-                            </div>
+                        <div class="flex h-center v-center small__img">
+                            <a href="<?=IMG_PATH.$_SESSION['alias']->images[$i]->path?>" class="small__item"><img src="<?=IMG_PATH.$_SESSION['alias']->images[$i]->thumb_path?>"></a> 
+                        </div>
                 <?php } } ?>
             </div>
         </div>
@@ -48,25 +48,25 @@
                <div class="send__img">
                     <img src="/style/icons/detal/shipped.svg" alt="shipped">
                </div>
-                <p>Відправимо Вам товару<br><u>день замовлення</u></p>
+                <p><?=$this->text('Відправимо Вам товару')?><br><u><?=$this->text('день замовлення')?></u></p>
             </div>
             <div class=" flex h-start v-center bonus__guarantee">
                 <div class="guarantee__img">
                     <img src="/style/icons/detal/guarantee.svg" alt="guarantee">
                 </div>
-                <p>Надійна <u>гарантія</u> товару</p>
+                <p><?=$this->text('Надійна')?> <u><?=$this->text('гарантія')?></u><?=$this->text('товару')?></p>
             </div>
             <div class="flex h-start v-center bonus__return">
                 <div class="return__img">
                     <img src="/style/icons/detal/return.svg" alt="return">
                 </div>
-                <p>Безпроблемне <u>повернення</u><br>товару</p>
+                <p><?=$this->text('Безпроблемне')?> <u><?=$this->text('повернення')?></u><br><?=$this->text('товару')?></p>
             </div>
             <div class="flex h-start v-center bonus__extra">
                 <div class="extra__img">
                     <img src="/style/icons/detal/extra.svg" alt="extra">
                 </div>
-                <p class="etra__text">Нараховуваєм Вам 5% від суми замовлення, при наявності бонусної картки обо за зроблене замовленняпри реєстрації на нашому сайті</p>
+                <p class="etra__text"><?=$this->text('Нараховуваєм Вам 5% від суми замовлення, при наявності бонусної картки обо за зроблене замовлення при реєстрації на нашому сайті')?></p>
             </div>
         </div>
         <div class="text-right info__price">
@@ -85,14 +85,14 @@
                 <div class="discount__procent">
                     -<?=100-ceil($product->price / ($product->old_price / 100))?>%
                 </div>
-                <p>Економія за<br>рахунок знижки</p>
+                <p><?=$this->text('Економія за')?><br><?=$this->text('рахунок знижки')?></p>
                 <div class="discount__price"><?=number_format($product->old_price - $product->price, 2, '.', ' ') ?> ₴</div>
             </div>
             <?php } ?>
             <div class="flex h-end v-center card__check detal__check">
                 <div class="flex v-center check__pieces">
                     <i class="fas <?=$product->availability > 0 ? 'fa-check-circle' : 'fa-times-circle'?>"></i>
-                    <p>В наявності <span class="pieces"><?=$product->availability?></span> шт.</p>
+                    <p><?=$this->text('В наявності')?> <span class="pieces"><?=$product->availability?></span> шт.</p>
                 </div>
                 <?php if($product->active && $product->availability > 0) { ?>
                 <div class="flex check__number">
@@ -105,7 +105,7 @@
             <?php if($product->active && $product->availability > 0) { ?>
             <button class="detal__cart" data-product_key="<?="{$product->wl_alias}-{$product->id}"?>" data-product_name="<?="{$product->options['1-manufacturer']->value} {$product->article_show} {$product->name}"?>">
                 <img src="/style/icons/detal/shopping-cart.svg" alt="cart">
-                Додати до кошика
+                <?=$this->text('Додати до кошика')?>
             </button>
             <?php }
             /*
@@ -118,13 +118,15 @@
     </section>
     <div id="tabs" class="detal__menu">
         <nav class="flex tabs-nav">
-            <a href="#tab-1">Характеристики</a>
+            <a href="#tab-1"><?=$this->text('Характеристики')?></a>
         </nav>
         <div id="tab-1" class="menu__info">
             <h4><?=$_SESSION['alias']->list?></h4><hr><br>
-            <ul>
-                <li>
-                    <?=$this->text('Застосовується до')?> <span>.............................................................................</span> <?php 
+
+            <div class="flex w50 m100">
+                <div><?=$this->text('Застосовується до')?></div>
+                <div class="dots"></div>
+                <div><?php 
                     if(!empty($product->parents)){
                         $name = [];
                         foreach ($product->parents as $group) {
@@ -133,31 +135,40 @@
                         $link = SITE_URL.$product->group_link;
                         $name = implode(' ', $name);
                         echo "<a href='{$link}'>{$name}</a> ";
-                    } ?>
-                </li>
-                <li>
-                    Група запчастин <span>................................................................................</span> <?php 
+                    } ?></div>
+            </div>
+            <div class="flex w50 m100">
+                <div><?=$this->text('Група запчастин')?></div>
+                <div class="dots"></div>
+                <div><?php 
                     if(!empty($product->options['2-part']->value)){
                         $part = [];
                         foreach ($product->options['2-part']->value as $value) {
                             $part[] = $value->name;
                         }
                         echo implode(', ', $part);
-                    } ?>
-                </li>
-                <li>
-                    Артикул <span>..............................................................................................</span> <?=$product->article_show?>
-                </li>
-                <li>
-                    Виробник <span>...........................................................................................</span> <?=$product->options['1-manufacturer']->value?>
-                </li>
-                <li>
-                    Країна виробник <span>...............................................................................</span> Китай
-                </li>
-                <li>
-                    Код товара <span>.........................................................................................</span> <?=$product->id?>
-                </li>
-            </ul>
+                    } ?></div>
+            </div>
+            <div class="flex w50 m100">
+                <div><?=$this->text('Артикул')?></div>
+                <div class="dots"></div>
+                <div><?=$product->article_show?></div>
+            </div>
+            <div class="flex w50 m100">
+                <div><?=$this->text('Виробник')?></div>
+                <div class="dots"></div>
+                <div><?=$product->options['1-manufacturer']->value?></div>
+            </div>
+            <div class="flex w50 m100">
+                <div><?=$this->text('Країна виробник')?></div>
+                <div class="dots"></div>
+                <div><?=$this->text('Китай')?></div>
+            </div>
+            <div class="flex w50 m100">
+                <div><?=$this->text('Код товару')?></div>
+                <div class="dots"></div>
+                <div><?=$product->id?></div>
+            </div>
         </div>
         <div id="tab-2" class="menu__info">
             <?=html_entity_decode($_SESSION['alias']->text)?>

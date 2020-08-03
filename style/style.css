@@ -2040,18 +2040,17 @@ main.detal .detal__menu .menu__info {
     margin: 40px 0 60px 0;
 }
 
-main.detal .detal__menu .menu__info ul li {
-    list-style: none;
-    font-size: 16px;
+main.detal .detal__menu .flex { margin-bottom: 10px; max-width: 500px }
+main.detal .detal__menu .flex div {
+    width: fit-content;
+    white-space: nowrap;
+    padding: 0 5px;
+    font-size: 15px;
     font-weight: 400;
-    text-align: left;
     color: #262626;
-    margin-bottom: 10px;
 }
+main.detal .detal__menu div.dots { border-bottom: 1px dotted #262626; width: 100% }
 
-main.detal .detal__menu .menu__info ul li span {
-    letter-spacing: 3px;
-}
 
 main.detal .detal__menu .detal__line {
     width: 100%;

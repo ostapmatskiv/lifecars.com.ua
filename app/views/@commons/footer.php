@@ -20,9 +20,9 @@
        </div>
        <div class="w20 footer__shop">
            <h5><?=$this->text('Магазин', 0)?></h5>
-           <a href="<?=SITE_URL?>exchange-and-return">Повернення та гарантія</a>
-          <a href="<?=SITE_URL?>delivery-and-payments">Оплата та доставка</a>
-          <a href="<?=SITE_URL?>oferta">Договір оферти</a>
+           <a href="<?=SITE_URL?>exchange-and-return"><?=$this->text('Повернення та гарантія', 0)?></a>
+          <a href="<?=SITE_URL?>delivery-and-payments"><?=$this->text('Оплата та доставка', 0)?></a>
+          <a href="<?=SITE_URL?>oferta"><?=$this->text('Договір оферти', 0)?></a>
        </div>
        <div class="w20 footer__contacts">
             <h5><?=$this->text('Контакти', 0)?></h5>
@@ -52,16 +52,16 @@
        
     </div>
     <div class="footer__subtitle">
-    <div class="flex wrap container">
-        <div class="w50 subtitle__text">
-         <p>&#169; Life Cars <?=date('Y')?> <span>Всі права захищені</span></p>
-        </div>
-        <div class="flex h-start v-center w50 subtitle__link">
-            <img class="webspirit__img" src="/style/icons/WebSpirit_logo_mini.png" alt="webspirit">
-            <p>Розробка сайту: <a href="https://webspirit.com.ua/">WebSpirit</a> creative agensy</p>
-            <img class="genetka" src="/style/icons/genekta.png" alt="genekta">
-            <p>Дизайн сайту: <a href="#">Genekta</a> visual communication studio</p>
-        </div>
-    </div>
-</div>
+      <div class="flex wrap container">
+          <div class="w50 subtitle__text">
+           <p>&#169; Life Cars 2013 - <?=date('Y')?> <span><?=$this->text('Всі права захищені', 0)?></span></p>
+          </div>
+          <div class="flex h-start v-center w50 subtitle__link">
+              <img class="webspirit__img" src="/style/icons/WebSpirit_logo_mini.png" alt="webspirit">
+              <p><?=$this->text('Розробка сайту', 0)?>: <a href="https://webspirit.com.ua/">WebSpirit</a> creative agensy</p>
+              <img class="genetka" src="/style/icons/genekta.png" alt="genekta">
+              <p><?=$this->text('Дизайн сайту', 0)?>: <a href="#">Genekta</a> visual communication studio</p>
+          </div>
+      </div>
+  </div>
 </footer>
