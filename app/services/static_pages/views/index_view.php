@@ -1,4 +1,4 @@
-<main>
+<main class="static_pages">
     <h1><?=$_SESSION['alias']->name?></h1>
 
     <?php

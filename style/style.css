@@ -4200,3 +4200,8 @@ textarea:active {
     text-align: center;
     cursor: pointer;
 }
+
+.static_pages p { margin-top: 10px }
+.static_pages ol, .static_pages ul { margin: 10px 30px }
+.static_pages h3 { color: #666; font-size: 18px }
+.static_pages h2 { color: #666; font-size: 25px }
