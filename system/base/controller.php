@@ -38,6 +38,12 @@ class Controller extends Loader {
                         $this->load->function_in_alias($action->alias2, '__page_before_init');
                     }
                 }
+
+            // fix for lifecars
+            if(empty($_SESSION['currency']))
+            {
+                $this->load->function_in_alias('currency', '__page_before_init');
+            }
         }
 	}
 	
