@@ -40,3 +40,39 @@ main table tfoot tr:last-child td { background: #ddd; border-color: #fff !import
 @media(max-width: 320px){
 	main article table th:nth-child(3), main article table td:nth-child(3){ display: none }
 }
+
+/* ------ v2 -------- */
+.table__cart_products_list2 { margin: 20px 0 }
+.table__cart_products_list2 .thead,
+.table__cart_products_list2 .tfoot,
+.table__cart_products_list2 .tr {
+	background: #fff;
+	color: #000;
+	margin-bottom: 5px;
+    border-radius: 2px;
+	width: 100%;
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.table__cart_products_list2 .th { font-weight: 600 }
+.table__cart_products_list2 .th,
+.table__cart_products_list2 .td { padding: 5px; text-align: center }
+.table__cart_products_list2 .photo { width: 11%; max-width: 150px }
+.table__cart_products_list2 .name { width: 54%; text-align: left }
+.table__cart_products_list2 .price,
+.table__cart_products_list2 .sum { width: 10%; max-width: 120px; font-weight: 600 }
+.table__cart_products_list2 .amount { width: 18%; max-width: 200px }
+.table__cart_products_list2 .tfoot { text-align: right; padding: 5px; display: block }
+.table__cart_products_list2 .tfoot p.total { font-size: 13px }
+
+@media screen and (max-width: 600px) {
+	.table__cart_products_list2 .name { width: 50% }
+	.table__cart_products_list2 .amount { width: 12% }
+	.table__cart_products_list2 .price,
+	.table__cart_products_list2 .sum { width: 18% }
+}

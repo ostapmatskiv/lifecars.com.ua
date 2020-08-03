@@ -17,6 +17,67 @@ if(!$showPayment &&  $cart->action == 'closed') {
 	    	<a href="<?=SITE_URL.$returns->alias.'?cart='.$cart->id?>" class="btn btn-info"><i class="fas <?=$returns->ico?>"></i> <?=$this->text('Повернення')?></a>
 <?php } } ?>
 
+<div class="table__cart_products_list2 w100">
+	<div class="thead">
+		<div class="th photo m-hide"><?=$this->text('Фото')?></div>
+		<div class="th name"><?=$this->text('Назва')?></div>
+		<div class="th price"><?=$this->text('Ціна')?></div>
+		<div class="th amount"><?=$this->text('К-сть')?></div>
+		<div class="th sum"><?=$this->text('Сума')?></div>
+	</div>
+	<?php if($cart->products) foreach($cart->products as $i => $product) { ?>
+	<div class="tr">
+		<div class="td photo m-hide"><a href="<?=SITE_URL.$product->info->link?>">
+			<?php if($product->info->photo) { ?>
+				<img src="<?=IMG_PATH?><?=$product->info->cart_photo ?? $product->info->admin_photo ?>" alt="<?=$product->info->name ?>">
+			<?php } else
+						echo '<img src="/style/images/no_image2.png">'; ?>
+			</a>
+		</div>
+		<div class="td name">
+			<a href="<?=SITE_URL.$product->info->link?>"><?=$product->info->name ?></a>
+			<p>Артикул: <strong><?=$product->info->article_show ?></strong></p>
+			<?php if(!empty($product->product_options))
+			{
+				$product->product_options = unserialize($product->product_options);
+				foreach ($product->product_options as $option) {
+					echo "<p>{$option->name}: <strong>{$option->value_name}</strong></p>";
+				}
+			}
+			if(!empty($product->info->options))
+			{
+				$myInfo = ['1-manufacturer'];
+				foreach ($myInfo as $info) {
+					if(isset($product->info->options[$info]) && !empty($product->info->options[$info]->value))
+						echo "<p>{$product->info->options[$info]->name}: <strong>{$product->info->options[$info]->value}</strong></p>";
+				}
+			} ?>
+		</div>
+		<div class="td price"><?=$product->price_format?></div>
+		<div class="td amount">
+			<?=$product->quantity?>
+			<?php if(!empty($product->quantity_returned))
+				echo "<br>Повернено: {$product->quantity_returned} од."; ?>
+		</div>
+		<div class="td sum">
+			<?=!empty($product->sum_before_format) ? '<del>'.$product->sum_before_format.'</del><br>':''?>	
+			<?=$product->sum_format?>	
+		</div>
+	</div>
+	<?php } ?>
+	<div class="tfoot">
+		<?php if ($cart->subTotal != $cart->total) { ?>
+			<p><?=$this->text('Сума')?>: <strong><?= $cart->subTotalFormat ?></strong></p>
+		<?php } if ($cart->discount) { ?>
+			<p><?=$this->text('Знижка')?>: <strong><?= $cart->discountFormat ?></strong></p>
+		<?php } if ($cart->shippingPrice) { ?>
+			<p><?=$this->text('Доставка')?>: <strong><?= $cart->shippingPriceFormat ?></strong></p>
+		<?php } ?>
+		<p class="total"><?=$this->text('До сплати')?>: <strong><?= $cart->totalFormat ?></strong></p>
+	</div>
+</div>
+
+<?php /*
 <table class="products_list">
 	<thead>
 		<tr>
@@ -95,7 +156,7 @@ if(!$showPayment &&  $cart->action == 'closed') {
 </table>
 
 
-<?php if($cart->shipping_id) {
+<?php */ if($cart->shipping_id) {
 	echo "<h4>{$this->text('Доставка')}</h4>";
 	if(!empty($cart->shipping->name))
 		echo "<p><strong>{$cart->shipping->name}</strong>";

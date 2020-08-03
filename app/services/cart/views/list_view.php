@@ -4,11 +4,11 @@
 		<thead>
 			<tr>
 				<?php /*<th></th>*/ ?>
-				<th><?=$this->text('Замовлення')?></th>
-				<th><?=$this->text('Статус')?></th>
-				<th><?=$this->text('Сума')?></th>
-				<th><?=$this->text('Оплата')?></th>
-				<th><?=$this->text('Доставка')?></th>
+				<td><?=$this->text('Замовлення')?></td>
+				<td><?=$this->text('Статус')?></td>
+				<td><?=$this->text('Сума')?></td>
+				<td><?=$this->text('Оплата')?></td>
+				<td><?=$this->text('Доставка')?></td>
 			</tr>
 		</thead>
 		<tbody>
@@ -37,8 +37,10 @@
 
 <style>
 	table.cart_list { width: 100%; max-width: 100%; border-collapse: collapse; }
-	table.cart_list th, table.cart_list td {
-	    border: 1px solid #ddd !important;
-	    padding: 10px;
+	table.cart_list td { background: #fff; color: #000; padding: 10px; border: none }
+	table.cart_list tr {
+	    border: 3px solid #f2f2f2 !important;
+    	border-radius: 2px;
 	}
+	table.cart_list .btn { display: inline-block }
 </style>
