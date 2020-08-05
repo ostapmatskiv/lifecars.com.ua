@@ -1,6 +1,6 @@
 <link rel="stylesheet" type="text/css" href="<?=SERVER_URL.'style/'.$_SESSION['alias']->alias.'/order.css'?>">
-
-<h2><?=$this->text('Замовлення')?> #<?= $cart->id?> <?=$this->text('від')?> <?= date('d.m.Y H:i', $cart->date_edit)?></h2>
+<main>
+<h1><?=$this->text('Замовлення')?> #<?= $cart->id?> <?=$this->text('від')?> <?= date('d.m.Y H:i', $cart->date_edit)?></h1>
 <p><?=$this->text('Статус замовлення')?>: <strong><?= $cart->status_name ?></strong>. <?=$this->text('Статус оплати')?>: <strong><?= empty($cart->payed) ? 'Очікує оплати' : 'Оплачено' ?></strong></p>
 
 <a href="<?=SITE_URL.$_SESSION['alias']->alias?>/my" class="btn btn-success"><i class="fas fa-undo"></i> <?=$this->text('До всіх замовлень')?></a>
@@ -194,12 +194,12 @@ if(!empty($cart->payment)) {
 } ?>
 
 <h4><?=$this->text('Історія замовлення')?></h4>
-<table>
+<table class="history">
     <thead>
     	<tr>
-    		<th><?=$this->text('Дата')?></th>
-	    	<th><?=$this->text('Статус')?></th>
-	    	<th><?=$this->text('Додатково')?></th>
+    		<td><?=$this->text('Дата')?></td>
+	    	<td><?=$this->text('Статус')?></td>
+	    	<td><?=$this->text('Додатково')?></td>
     	</tr>
     </thead>
     <tbody>
@@ -219,3 +219,4 @@ if(!empty($cart->payment)) {
 </table>
 
 <!-- <pre><?php //print_r($cart) ?></pre> -->
+</main>

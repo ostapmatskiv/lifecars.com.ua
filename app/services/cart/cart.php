@@ -152,7 +152,7 @@ class cart extends Controller {
                                         $showPayment = true;
                                 if(!empty($_SESSION['notify']->meta))
                                     $_SESSION['alias']->meta = $_SESSION['notify']->meta;
-                                $this->load->profile_view('detal_view', array('cart' => $cart, 'showPayment' => $showPayment, 'controls' => true));
+                                $this->load->page_view('detal_view', array('cart' => $cart, 'showPayment' => $showPayment, 'controls' => true));
                             }
                             exit;
                         }
