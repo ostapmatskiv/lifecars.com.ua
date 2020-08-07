@@ -149,7 +149,7 @@
             </div>
             <div class="overlay-panel overlay-right">
                 <h1><?=$this->text('Реєстрація', 5)?></h1>
-                <p><?=$this->text('Вкажіть свої персональні дані (емейл, телефон, назву компанії) і розпочнімо співпрацю з Dinmark!', 5)?></p>
+                <p><?=$this->text('Вкажіть свої персональні дані (емейл, телефон, назву компанії) і розпочнімо співпрацю з Life Cars!', 5)?></p>
                 <button class="ghost hexa" id="signUp"><?=$this->text('Зареєструватися', 5)?></button>
             </div>
         </div>
