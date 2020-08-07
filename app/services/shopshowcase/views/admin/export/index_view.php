@@ -79,7 +79,7 @@
             	<div class="panel-heading-btn">
             		<a href="<?=SITE_URL?>admin/wl_aliases/<?=$_SESSION['alias']->alias?>" class="btn btn-xs btn-info"><i class="fa fa-cogs"></i> Налаштування</a>
                 </div>
-                <h4 class="panel-title">Автоматизований експорт товарів у форматі <span class="label label-info">xml для Google Merchant Center</span></h4>
+                <h4 class="panel-title">Автоматизований експорт товарів у форматі <span class="label label-info">xml для Facebook Merchant</span></h4>
             </div>
 			<div class="panel-body">
 				<?php if(empty($_SESSION['option']->exportKey)) { ?>

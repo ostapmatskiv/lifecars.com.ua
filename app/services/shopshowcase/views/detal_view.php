@@ -54,7 +54,7 @@
                 <div class="guarantee__img">
                     <img src="/style/icons/detal/guarantee.svg" alt="guarantee">
                 </div>
-                <p><?=$this->text('Надійна')?> <u><?=$this->text('гарантія')?></u><?=$this->text('товару')?></p>
+                <p><?=$this->text('Надійна')?> <u><?=$this->text('гарантія')?></u> <?=$this->text('товару')?></p>
             </div>
             <div class="flex h-start v-center bonus__return">
                 <div class="return__img">
