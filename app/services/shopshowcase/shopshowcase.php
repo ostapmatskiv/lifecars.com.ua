@@ -81,6 +81,7 @@ class shopshowcase extends Controller {
 				$_GET['article'] = $product->article;
 				if($otherProductsByGroup = $this->shop_model->getProducts($product->group, $product->id))
 					$this->setProductsPrice($otherProductsByGroup);
+				$_SESSION['option']->paginator_per_page = 20;
 
 				$this->load->page_view('detal_view', array('product' => $product, 'otherProductsByGroup' => $otherProductsByGroup));
 			}
