@@ -43,6 +43,7 @@ class import_1c extends Controller
 			echo "param file required!";
 	}
 
+	private $update_VygruzkaNomenklatury = 0;
 	private function parse_VygruzkaNomenklatury($file, $all)
 	{
 		// echo "<pre>";
@@ -56,7 +57,8 @@ class import_1c extends Controller
 		if(!empty($file->ПодчиненнаяНоменклатуры) && !empty($file->ПодчиненнаяНоменклатуры))
 			$this->parse_products($file->ПодчиненнаяНоменклатуры, $all);
 
-		$this->db->cache_delete_all(false, 'parts');
+		if($this->update_VygruzkaNomenklatury > 0)
+			$this->db->cache_delete_all(false, 'parts');
 	}
 
 	private function parse_manufacturers($manufacturers)
@@ -93,9 +95,15 @@ class import_1c extends Controller
 								$this->site_manufactures_alias[$my_manufacturer->id] = $this->prepareArticleKey($xml_manufacturers[$key]['uk']);
 							}
 							if($my_manufacturer->name_uk != $xml_manufacturers[$key]['uk'])
+							{
 								$this->db->updateRow('s_shopshowcase_options_name', ['name' => $xml_manufacturers[$key]['uk']], $my_manufacturer->name_id_uk);
+								$this->update_VygruzkaNomenklatury++;
+							}
 							if($my_manufacturer->name_ru != $xml_manufacturers[$key]['ru'])
+							{
 								$this->db->updateRow('s_shopshowcase_options_name', ['name' => $xml_manufacturers[$key]['ru']], $my_manufacturer->name_id_ru);
+								$this->update_VygruzkaNomenklatury++;
+							}
 							$find = true;
 							break;
 						}
@@ -119,6 +127,7 @@ class import_1c extends Controller
 	private function parse_groups($manufacturers, $cars)
 	{
 		// print_r($manufacturers);
+		$update_allGroups = false;
 		$searchKeys = $xml_manufacturers = [];
 		if(isset($manufacturers->Марка))
 			foreach ($manufacturers->Марка as $manufacturer) {
@@ -147,9 +156,15 @@ class import_1c extends Controller
 						{
 							$xml_manufacturers[$key]['id'] = $my_manufacturer->id;
 							if($my_manufacturer->name_uk != $xml_manufacturers[$key]['uk'])
+							{
 								$this->db->updateRow('wl_ntkd', ['name' => $xml_manufacturers[$key]['uk']], $my_manufacturer->name_id_uk);
+								$this->load->function_in_alias($this->shop_wl_alias, '__after_edit', -$my_manufacturer->id, true);
+							}
 							if($my_manufacturer->name_ru != $xml_manufacturers[$key]['ru'])
+							{
 								$this->db->updateRow('wl_ntkd', ['name' => $xml_manufacturers[$key]['ru']], $my_manufacturer->name_id_ru);
+								$this->load->function_in_alias($this->shop_wl_alias, '__after_edit', -$my_manufacturer->id, true);
+							}
 							$find = true;
 							break;
 						}
@@ -166,9 +181,13 @@ class import_1c extends Controller
 					$xml_manufacturers[$key]['id'] = $id;
 					$this->db->insertRow('wl_ntkd', ['alias' => $this->shop_wl_alias, 'content' => -$id, 'language' => 'uk', 'name' => $xml_manufacturers[$key]['uk']]);
 					$this->db->insertRow('wl_ntkd', ['alias' => $this->shop_wl_alias, 'content' => -$id, 'language' => 'ru', 'name' => $xml_manufacturers[$key]['ru']]);
+					$update_allGroups = true;
 				}
 			}
 		}
+
+		if($update_allGroups)
+			$this->db->cache_delete('allGroups', 'parts');
 
 		// print_r($cars);
 		$searchKeys = $xml_cars = [];
@@ -204,11 +223,20 @@ class import_1c extends Controller
 						if($my_car->id_1c == $key)
 						{
 							if($my_car->parent != $parent)
+							{
 								$this->db->updateRow('s_shopshowcase_groups', ['parent' => $xml_cars[$key]['parent']], $my_car->id);
+								$this->load->function_in_alias($this->shop_wl_alias, '__after_edit', -$my_car->id, true);
+							}
 							if($my_car->name_uk != $xml_cars[$key]['uk'])
+							{
 								$this->db->updateRow('wl_ntkd', ['name' => $xml_cars[$key]['uk']], $my_car->name_id_uk);
+								$this->load->function_in_alias($this->shop_wl_alias, '__after_edit', -$my_car->id, true);
+							}
 							if($my_car->name_ru != $xml_cars[$key]['ru'])
+							{
 								$this->db->updateRow('wl_ntkd', ['name' => $xml_cars[$key]['ru']], $my_car->name_id_ru);
+								$this->load->function_in_alias($this->shop_wl_alias, '__after_edit', -$my_car->id, true);
+							}
 							$find = true;
 							break;
 						}
@@ -227,6 +255,7 @@ class import_1c extends Controller
 					$this->site_cars[$key] = $id;
 					$this->db->insertRow('wl_ntkd', ['alias' => $this->shop_wl_alias, 'content' => -$id, 'language' => 'uk', 'name' => $xml_cars[$key]['uk']]);
 					$this->db->insertRow('wl_ntkd', ['alias' => $this->shop_wl_alias, 'content' => -$id, 'language' => 'ru', 'name' => $xml_cars[$key]['ru']]);
+					$this->load->function_in_alias($this->shop_wl_alias, '__after_edit', -$parent, true);
 				}
 			}
 		}
@@ -325,17 +354,30 @@ class import_1c extends Controller
 					foreach ($my_products as $my_product) {
 						if($my_product->id_1c == $key)
 						{
+							$update_product = false;
 							if($my_product->article_show != $xml_product->Артикул)
+							{
 								$this->db->updateRow('s_shopshowcase_products', ['article_show' => $xml_product->Артикул, 'article' => $this->prepareArticleKey($xml_product->Артикул)], $my_product->id);
+								$update_product = true;
+							}
 							if($my_product->name_uk != $xml_product->ЗаголовокТайтл || $my_product->text_uk != $xml_product->Описание)
+							{
 								$this->db->updateRow('wl_ntkd', ['name' => $xml_product->ЗаголовокТайтл, 'text' => $xml_product->Описание], $my_product->name_id_uk);
+								$update_product = true;
+							}
 							if($my_product->name_ru != $xml_product->ЗаголовокТайтлРос || $my_product->text_ru != $xml_product->ОписаниеРос)
+							{
 								$this->db->updateRow('wl_ntkd', ['name' => $xml_product->ЗаголовокТайтлРос, 'text' => $xml_product->ОписаниеРос], $my_product->name_id_ru);
+								$update_product = true;
+							}
 							if(!empty($xml_product->Авто))
 							{
 								$xml_car = (string) $xml_product->Авто;
 								if($my_product->group_id_1c != $xml_car && isset($this->site_cars[$xml_car]))
+								{
 									$this->db->updateRow('s_shopshowcase_products', ['group' => $this->site_cars[$xml_car]], $my_product->id);
+									$update_product = true;
+								}
 							}
 							if(!empty($xml_product->Производитель))
 							{
@@ -343,6 +385,7 @@ class import_1c extends Controller
 								if(!empty($this->site_manufactures[$manufacturer]))
 									if($my_product->manufacturer_id != $this->site_manufactures[$manufacturer])
 									{
+										$update_product = true;
 										if($my_product->row_manufacturer_id)
 											$this->db->updateRow('s_shopshowcase_product_options', ['value' => $this->site_manufactures[$manufacturer]], $my_product->row_manufacturer_id);
 										else
@@ -397,6 +440,7 @@ class import_1c extends Controller
 											$this->checkImagePath('images/parts/'.$my_product->id);
 											$path_to = 'images/parts/'.$my_product->id.'/'.$image_path;
 											if(copy('import/photos/'.$image_path, $path_to))
+											{
 												$this->db->insertRow('wl_images', ['alias' => $this->shop_wl_alias, 
 																					'content' => $my_product->id,
 																					'file_name' => $image_path,
@@ -406,6 +450,8 @@ class import_1c extends Controller
 																					'position' => $position,
 																					'id_1c' => $image_id_1c
 																				]);
+												$update_product = true;
+											}
 										}
 									}
 								}
@@ -429,6 +475,7 @@ class import_1c extends Controller
 										{
 											$my_product_CatUseIn[$my_product->id][] = $cat_id;
 											$this->db->insertRow('s_shopshowcase_product_options', ['product' => $my_product->id, 'option' => $this->category_option_id, 'language' => '', 'value' => $cat_id]);
+											$update_product = true;
 										}
 									}
 								if(!empty($my_product_CatUseIn[$my_product->id]))
@@ -437,9 +484,12 @@ class import_1c extends Controller
 										{
 											$this->db->deleteRow('s_shopshowcase_product_options', ['product' => $my_product->id, 'option' => $this->category_option_id, 'value' => $cat_id]);
 											unset($my_product_CatUseIn[$my_product->id][$cat_index]);
+											$update_product = true;
 										}
 									}
 							}
+							if($update_product)
+								$this->load->function_in_alias($this->shop_wl_alias, '__after_edit', $my_product->id, true);
 							$find = true;
 							break;
 						}
@@ -488,7 +538,10 @@ class import_1c extends Controller
 					{
 						$xml_car = (string) $xml_product->Авто;
 						if(isset($this->site_cars[$xml_car]))
+						{
 							$insert['group'] = $this->site_cars[$xml_car];
+							$this->load->function_in_alias($this->shop_wl_alias, '__after_edit', -$insert['group'], true);
+						}
 					}
 
 					$id = $this->db->insertRow('s_shopshowcase_products', $insert);
@@ -576,9 +629,15 @@ class import_1c extends Controller
 						if($category->alias == $key)
 						{
 							if($category->name_uk != $xml_category[$key]['uk'])
+							{
 								$this->db->updateRow('s_shopshowcase_options_name', ['name' => $xml_category[$key]['uk']], $category->name_id_uk);
+								$this->update_VygruzkaNomenklatury++;
+							}
 							if($category->name_ru != $xml_category[$key]['ru'])
+							{
 								$this->db->updateRow('s_shopshowcase_options_name', ['name' => $xml_category[$key]['ru']], $category->name_id_ru);
+								$this->update_VygruzkaNomenklatury++;
+							}
 							$find = true;
 							break;
 						}
@@ -594,6 +653,9 @@ class import_1c extends Controller
 					$this->db->insertRow('s_shopshowcase_options_name', ['option' => $id, 'language' => 'ru', 'name' => $xml_category[$key]['ru']]);
 				}
 			}
+
+			if($this->update_VygruzkaNomenklatury > 0)
+				$this->db->cache_delete_all(false, 'parts');
 		}
 	}
 
@@ -703,7 +765,7 @@ class import_1c extends Controller
 						$update['date_edit'] = $time;
 						$update['author_edit'] = 0;
 						$this->db->updateRow('s_shopshowcase_products', $update, $site_product->id);
-						$this->load->function_in_alias($this->shop_wl_alias, '__after_edit', $site_product->id, true);
+						// $this->load->function_in_alias($this->shop_wl_alias, '__after_edit', $site_product->id, true);
 					}
 					break;
 				}

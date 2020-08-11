@@ -1476,7 +1476,8 @@ class shopshowcase_admin extends Controller {
 	    			$parent_to = 0;
 	    	}
 	    	
-			$this->db->cache_delete('allGroups');
+	    	if ($content < 0)
+				$this->db->cache_delete('allGroups');
     		$this->shop_model->allGroups = false;
 			$this->shop_model->init();
     		while ($parent_to > 0) {
