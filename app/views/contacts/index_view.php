@@ -28,6 +28,12 @@ $this->load->js_init('init__main()'); ?>
                 <input type="email" name="mail" placeholder="E-mail:">
                 <input type="tel" name="tel" required placeholder="Телефон:">
                 <textarea placeholder="Ваше питання:" required  id="" cols="30" rows="8" name="mess"></textarea>
+                <?php if(!$this->userIs()) {
+                    echo '<div class="flex h-center">';
+                    $this->load->library('recaptcha');
+                    $this->recaptcha->form();
+                    echo "</div>";
+                } ?>
                 <input type="submit" value="Надіслати">
             </form>
         </div>
