@@ -1346,6 +1346,7 @@ main .catalog__detal a div {
     margin-top: 15px;
 }
 
+main .catalog__detal a.active div,
 main .catalog__detal a:hover div {
     color: #82C166;
 }

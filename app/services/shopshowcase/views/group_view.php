@@ -68,12 +68,12 @@
     	foreach ($filters as $filter) {
     		if($filter->id == 2) { ?>
     		<div class="flex h-center wrap catalog__detal">
-                <a href="<?=$this->data->get_link($filter->alias)?>">
+                <a href="<?=$this->data->get_link($filter->alias)?>" <?=empty($_GET[$filter->alias])?'class="active"':''?>>
                     <img src="/style/icons/catalog/component.svg" alt="all">
                     <div><?=$this->text('Всі запчастини')?></div>
                 </a>
     			<?php foreach ($filter->values as $value) { ?>
-    				<a href="<?=$this->data->get_link($filter->alias, $value->id)?>">
+    				<a href="<?=$this->data->get_link($filter->alias, $value->id)?>" <?=isset($_GET[$filter->alias]) && $_GET[$filter->alias] == $value->id ?'class="active"':''?>>
     					<?php if(!empty($value->photo)) { ?>
 				            <img src="<?=$value->photo?>" alt="<?=$value->name?>">
 				        <?php } ?>
