@@ -266,12 +266,21 @@ class import_1c extends Controller
 		// $this->db->shopDBdump = true;
 		// print_r($file_products);
 		$searchKeys = $site_CatUseIn = $my_product_CatUseIn = $my_product_images = $my_analog_groups = $inserted_products_link = [];
-		if(isset($file_products->Номенклатура) && !$all)
-			foreach ($file_products->Номенклатура as $product) {
+		if(isset($file_products->ПодчиненнаяНоменклатура) && !$all)
+		{
+			foreach ($file_products->ПодчиненнаяНоменклатура as $product) {
 				$key = $this->xml_attribute($product, 'Код');
 				if(!empty($key))
 					$searchKeys[] = $key;
 			}
+			$all_in_db = $this->db->getCount('s_shopshowcase_products');
+			$hulf_in_db = ceil($all_in_db / 2);
+			if(count($searchKeys) > $hulf_in_db)
+			{
+				echo "in xml: ".count($searchKeys)."; in db: {$all_in_db} products. use all mode (more 50%)";
+				$all = true;
+			}
+		}
 		$s_shopshowcase_options = $this->db->select('s_shopshowcase_options', 'id, alias', ['group' => -$this->category_option_id])->get('array');
 		if($s_shopshowcase_options)
 			foreach ($s_shopshowcase_options as $option) {
@@ -391,7 +400,7 @@ class import_1c extends Controller
 										else
 											$this->db->insertRow('s_shopshowcase_product_options', ['product' => $my_product->id, 'option' => $this->manufacturer_option_id, 'value' => $this->site_manufactures[$manufacturer]]);
 										$my_product->manufacturer_id = $this->site_manufactures[$manufacturer];
-										$alias = $this->site_manufactures_alias[$my_product->manufacturer_id].'-'.$this->latterUAtoEN($xml_product->Артикул);
+										$alias = $this->site_manufactures_alias[$my_product->manufacturer_id].'-'.$this->data->latterUAtoEN($xml_product->Артикул);
 										if($all)
 										{
 											if(in_array($alias, $inserted_products_link))

@@ -659,19 +659,20 @@ class shop_model {
 		if(!isset($_GET['edit']) && $key == 'id' && $product = $this->db->cache_get($cache_key))
 			if($product !== NULL)
 			{
-				$this->db->select($this->table('_products').' as p', 'price, old_price', $product->id)
+				$this->db->select($this->table('_products').' as p', 'price, old_price, currency, availability', $product->id)
 							->join($this->table('_promo'), 'percent as promo_percent, from as promo_from, to as promo_to', ['id' => '#p.promo', 'status' => 1]);
 				if($_SESSION['option']->useMarkUp > 0)
 					$this->db->join($this->table('_markup'), 'value as markup', array('from' => '<p.price', 'to' => '>=p.price'));
 				$row = $this->db->get();
 				$product->price = $row->price;
 				$product->old_price = $row->old_price;
+				$product->currency = $row->currency;
 				if($_SESSION['option']->useMarkUp > 0)
 					$product->markup = $row->markup;
 				$product->promo_percent = $row->promo_percent;
 				$product->promo_from = $row->promo_from;
 				$product->promo_to = $row->promo_to;
-
+				$product->availability = $row->availability;
 				return $product;
 			}
 
