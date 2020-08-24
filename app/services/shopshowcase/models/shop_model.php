@@ -277,7 +277,7 @@ class shop_model {
 		if(count($_GET) > 1)
 		{
 			foreach ($_GET as $key => $value) {
-				if($key != 'request' && $key != 'page' && $key != 'sale' && is_array($_GET[$key]))
+				if($key != 'request' && $key != 'page' && $key != 'sale')
 				{
 					$option = $this->db->getAllDataById($this->table('_options'), array('wl_alias' => $_SESSION['alias']->id, 'alias' => $key, 'filter' => 1));
 					if($option)
@@ -286,24 +286,35 @@ class shop_model {
 						if(!empty($where['id']))
 							$list_where['product'] = $where['id'];
 						$where['id'] = array();
-						foreach ($_GET[$key] as $value) if(is_numeric($value)) {
-							if($option->type == 8 || $option->type == 12) //checkbox || checkbox-select2
-							{
-								$list_where['value'] = '%'.$value;
-								if($list = $this->db->getAllDataByFieldInArray($this->table('_product_options'), $list_where))
-									foreach ($list as $p) {
-										$p->value = explode(',', $p->value);
-										if(in_array($value, $p->value)) array_push($where['id'], $p->product);
-									}
+						if(is_array($_GET[$key]))
+						{
+							foreach ($_GET[$key] as $value) if(is_numeric($value)) {
+								if($option->type == 8 || $option->type == 12) //checkbox || checkbox-select2
+								{
+									$list_where['value'] = '%'.$value;
+									if($list = $this->db->getAllDataByFieldInArray($this->table('_product_options'), $list_where))
+										foreach ($list as $p) {
+											$p->value = explode(',', $p->value);
+											if(in_array($value, $p->value)) array_push($where['id'], $p->product);
+										}
+								}
+								else
+								{
+									$list_where['value'] = $value;
+									if($list = $this->db->getAllDataByFieldInArray($this->table('_product_options'), $list_where))
+										foreach ($list as $p) {
+											array_push($where['id'], $p->product);
+										}
+								}
 							}
-							else
-							{
-								$list_where['value'] = $value;
-								if($list = $this->db->getAllDataByFieldInArray($this->table('_product_options'), $list_where))
-									foreach ($list as $p) {
-										array_push($where['id'], $p->product);
-									}
-							}
+						}
+						else if(is_numeric($_GET[$key]))
+						{
+							$list_where['value'] = $_GET[$key];
+							if($list = $this->db->getAllDataByFieldInArray($this->table('_product_options'), $list_where))
+								foreach ($list as $p) {
+									array_push($where['id'], $p->product);
+								}
 						}
 						if(empty($where['id']))
 							return false;
