@@ -180,3 +180,12 @@ function init__parts() {
         $(this).closest('form').submit();
     });
 }
+
+var recaptchaVerifyCallback_saveOrders = function(response) {
+    $('form.save_orders button').attr('disabled', false);
+    $('form.save_orders button').attr('title', '');
+};
+var recaptchaExpiredCallback_saveOrders = function(response) {
+    $('form.save_orders button').attr('disabled', true);
+    $('form.save_orders button').attr('title', 'Заповніть "Я не робот"');
+};
