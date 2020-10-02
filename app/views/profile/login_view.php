@@ -101,6 +101,11 @@
             <input name="re-password" type="password" class="form-control" placeholder="<?=$this->text('Повторіть пароль', 5)?>" required />
             <span><?=$this->text('*пороль має містити від 5 до 20 символів', 5)?></span>
             <br>
+            <?php
+                $this->load->library('recaptcha');
+                $this->recaptcha->form();
+            ?>
+            <br>
             <button type="submit" class="hexa"><?=$this->text('Зареєструватися', 5)?></button>
         </form>
     </div>

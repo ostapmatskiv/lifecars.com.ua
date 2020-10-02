@@ -25,7 +25,7 @@ class Signup extends Controller {
     	{
     		if($_SESSION['option']->userSignUp)
     		{
-    			$this->wl_alias_model->setContent();
+    			$this->wl_alias_model->setContent(0, 202);
     			$this->load->library('facebook');
     			$this->load->library('googlesignin');
 	        	if($this->googlesignin->clientId)
@@ -70,61 +70,69 @@ class Signup extends Controller {
 		{
 			$_SESSION['notify'] = new stdClass();
 
-	        $this->load->library('validator');
-	        if($this->name == 'name')
-				$this->validator->setRules($this->text("Ім'я"), $this->data->post('name'), 'required');
+	    	$this->load->library('recaptcha');
+			if($this->recaptcha->check($this->data->post('g-recaptcha-response')) == false)
+			{
+				$_SESSION['notify']->errors = $this->text('Заповніть "Я не робот"');
+			}
 			else
 			{
-				$this->validator->setRules($this->text("Ім'я"), $this->data->post('first_name'), 'required');
-				$this->validator->setRules($this->text("Прізвище"), $this->data->post('last_name'), 'required');
-			}
-			$email = '';
-	    	if($email = $this->data->post('email'))
-	    		$email = strtolower($email);
-			$this->validator->setRules('E-mail', $email, 'required|email');
-			if(in_array('phone', $this->additionall))
-				$this->validator->setRules($this->text('Контактний номер'), $this->data->post('phone'), 'phone');	
-			$this->validator->setRules($this->text('Пароль'), $this->data->post('password'), 'required|5..20');
-			$this->validator->password($this->data->post('password'), $this->data->post('re-password'));
-	        if($this->validator->run())
-	        {
-	            $this->load->model('wl_user_model');
-	            $info['email'] = $email;
-		    	$info['name'] = $this->data->post('name');
-		    	$info['password'] = $_POST['password'];
-		    	$info['photo'] = '';
-		    	if(isset($_POST['first_name']) && isset($_POST['last_name']))
-		    		$info['name'] = $this->data->post('first_name') .' '. $this->data->post('last_name');
-		    	$additionall = array();
-		    	if(!empty($this->additionall))
+		        $this->load->library('validator');
+		        if($this->name == 'name')
+					$this->validator->setRules($this->text("Ім'я"), $this->data->post('name'), 'required');
+				else
 				{
-					foreach ($this->additionall as $key) {
-						if($value = $this->data->post($key))
-						{
-							if($key == 'phone')
-								$value = $this->validator->getPhone($value);
-							$additionall[$key] = $value;
+					$this->validator->setRules($this->text("Ім'я"), $this->data->post('first_name'), 'required');
+					$this->validator->setRules($this->text("Прізвище"), $this->data->post('last_name'), 'required');
+				}
+				$email = '';
+		    	if($email = $this->data->post('email'))
+		    		$email = strtolower($email);
+				$this->validator->setRules('E-mail', $email, 'required|email');
+				if(in_array('phone', $this->additionall))
+					$this->validator->setRules($this->text('Контактний номер'), $this->data->post('phone'), 'phone');	
+				$this->validator->setRules($this->text('Пароль'), $this->data->post('password'), 'required|5..20');
+				$this->validator->password($this->data->post('password'), $this->data->post('re-password'));
+		        if($this->validator->run())
+		        {
+		            $this->load->model('wl_user_model');
+		            $info['email'] = $email;
+			    	$info['name'] = $this->data->post('name');
+			    	$info['password'] = $_POST['password'];
+			    	$info['photo'] = '';
+			    	if(isset($_POST['first_name']) && isset($_POST['last_name']))
+			    		$info['name'] = $this->data->post('first_name') .' '. $this->data->post('last_name');
+			    	$additionall = array();
+			    	if(!empty($this->additionall))
+					{
+						foreach ($this->additionall as $key) {
+							if($value = $this->data->post($key))
+							{
+								if($key == 'phone')
+									$value = $this->validator->getPhone($value);
+								$additionall[$key] = $value;
+							}
 						}
 					}
-				}
-                if($user = $this->wl_user_model->add($info, $additionall, $this->new_user_type))
-                {
-                	$this->load->library('mail');
-					$info['auth_id'] = $user->auth_id;
-					if($this->mail->sendTemplate('signup/user_signup', $user->email, $info, true))
-					{
-						$_SESSION['notify']->title = $this->text('Реєстрація пройшла успішно!');
-						$_SESSION['notify']->success = $this->text('На поштову скриньку відправлено лист з <b>кодом підтвердження</b> та подальшими інструкціями. <br><br> <b>УВАГА!</b> Лист може знаходитися у папці <b>СПАМ!</b>');
-					}
-					else 
-						$_SESSION['notify']->errors = $this->text('Виникла помилка при додаванні нового користувача (відправка емейл)');
-                }
-                else
-                	$_SESSION['notify']->errors = $this->wl_user_model->user_errors;
-	        }
-	        else
-	            $_SESSION['notify']->errors = '<ul>'.$this->validator->getErrors('<li>', '</li>').'</ul>';
-	        $this->redirect('signup');
+	                if($user = $this->wl_user_model->add($info, $additionall, $this->new_user_type))
+	                {
+	                	$this->load->library('mail');
+						$info['auth_id'] = $user->auth_id;
+						if($this->mail->sendTemplate('signup/user_signup', $user->email, $info))
+						{
+							$_SESSION['notify']->title = $this->text('Реєстрація пройшла успішно!');
+							$_SESSION['notify']->success = $this->text('На поштову скриньку відправлено лист з <b>кодом підтвердження</b> та подальшими інструкціями. <br><br> <b>УВАГА!</b> Лист може знаходитися у папці <b>СПАМ!</b>');
+						}
+						else 
+							$_SESSION['notify']->errors = $this->text('Виникла помилка при додаванні нового користувача');
+	                }
+	                else
+	                	$_SESSION['notify']->errors = $this->wl_user_model->user_errors;
+		        }
+		        else
+		            $_SESSION['notify']->errors = '<ul>'.$this->validator->getErrors('<li>', '</li>').'</ul>';
+		    }
+	        $this->redirect();
 		}
 		$this->redirect('profile');
     }
