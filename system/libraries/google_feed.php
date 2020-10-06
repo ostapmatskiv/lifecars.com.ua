@@ -66,9 +66,6 @@ class google_feed
 					}
 				}
 				$xml .= "<g:google_product_category>Hardware &gt; Hardware Accessories &gt; Hardware Fasteners</g:google_product_category>
-				   <g:unit_pricing_base_measure>1 ct</g:unit_pricing_base_measure>
-				   <g:unit_pricing_measure>100 ct</g:unit_pricing_measure>
-				   <g:multipack>{$product->box}</g:multipack>
 				</item>";
 			}
 		$xml .= "</channel>
