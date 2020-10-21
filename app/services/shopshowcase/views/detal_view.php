@@ -74,11 +74,11 @@
                 <a href="/admin/<?=$product->link?>">Редагувати Admin</a>
             <?php } if($product->old_price > $product->price) { ?>
             <div class="old__price">
-                <p><strike><?=number_format($product->old_price, 2, '.', ' ') ?></strike> ₴</p>
+                <p><strike><?=round($product->old_price) ?></strike> ₴</p>
             </div>
             <?php } ?>
             <div class="new__price">
-                <?=number_format($product->price, 2, '.', ' ') ?> ₴
+                <?=round($product->price) ?> ₴
             </div>
             <?php if($product->old_price > $product->price) { ?>
             <div class="flex h-end v-center discount">
@@ -86,7 +86,7 @@
                     -<?=100-ceil($product->price / ($product->old_price / 100))?>%
                 </div>
                 <p><?=$this->text('Економія за')?><br><?=$this->text('рахунок знижки')?></p>
-                <div class="discount__price"><?=number_format($product->old_price - $product->price, 2, '.', ' ') ?> ₴</div>
+                <div class="discount__price"><?=round($product->old_price - $product->price) ?> ₴</div>
             </div>
             <?php } ?>
             <div class="flex h-end v-center card__check detal__check">
