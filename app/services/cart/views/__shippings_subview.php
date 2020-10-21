@@ -7,9 +7,9 @@ if(count($shippings) > 1) {
     $selected = $this->data->re_post('shipping-method');
     if(empty($selected) && $userShipping && $userShipping->method)
         $selected = $userShipping->method;
-    foreach ($shippings as $method) { ?>
+    foreach ($shippings as $i => $method) { ?>
         <label>
-            <input type="radio" name="shipping-method" value="<?=$method->id?>" <?php if($selected == $method->id) { echo 'checked'; $shippingType = $method->type; $shippingInfo = $method->info; $shippingWlAlias = $method->wl_alias; } ?> onchange="changeShipping(this)">
+            <input type="radio" name="shipping-method" value="<?=$method->id?>" <?php if($selected == $method->id) { echo 'checked'; $shippingType = $method->type; $shippingInfo = $method->info; $shippingWlAlias = $method->wl_alias; } ?> onchange="changeShipping(this)" <?=$i == 0?'required':''?>>
             <?=$method->name?>
         </label>
         <?php }

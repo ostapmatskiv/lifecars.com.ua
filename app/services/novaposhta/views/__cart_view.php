@@ -118,7 +118,12 @@ if(empty($novaposhta_selected) && $userShipping && $userShipping->department)
             var option = $(this).find(':selected');
             $('input[name="nova-poshta-warehouse-ref"]').val(option.data('id'));
             $("#nova-poshta-warehouse .info").html(option.data('info')).removeClass('hide')
+            if (typeof setPercents === "function")
+                setPercents();
         });
+
+        if (typeof setPercents === "function")
+            setPercents();
     }
 </script>
 
