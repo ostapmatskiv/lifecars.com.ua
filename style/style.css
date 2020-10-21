@@ -2359,11 +2359,23 @@ main.cars__manufacturers section.catalog__name div a {
     text-align: center;
 }
 
+main.cars__manufacturers section.catalog__name div a figure {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    margin-bottom: 3px;
+}
 main.cars__manufacturers section.catalog__name div a figure img {
     width: 100px;
-    height: 100px;
+    height: auto;
+    max-height: 100px;
     background: white;
     border-radius: 4px;
+}
+main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.png"]
+{
+    width: 80px;
 }
 
 /*                        cars__manufacturers                */
