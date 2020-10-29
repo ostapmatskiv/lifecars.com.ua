@@ -619,6 +619,8 @@ class shopshowcase extends Controller {
 			$product->discount *= $_SESSION['currency'][$product->currency];
 		}
 		
+		$product->price = $this->shop_model->formatPrice($product->price, true);
+		$product->old_price = $this->shop_model->formatPrice($product->old_price, true);
 		$product->price_format = $this->shop_model->formatPrice($product->price);
 		$product->old_price_format = $this->shop_model->formatPrice($product->old_price);
 		if(!empty($product->quantity))
@@ -656,6 +658,8 @@ class shopshowcase extends Controller {
 					$product->discount *= $_SESSION['currency'][$product->currency];
 				}
 				
+				$product->price = $this->shop_model->formatPrice($product->price, true);
+				$product->old_price = $this->shop_model->formatPrice($product->old_price, true);
 				$product->price_format = $this->shop_model->formatPrice($product->price);
 				$product->old_price_format = $this->shop_model->formatPrice($product->old_price);
 			}

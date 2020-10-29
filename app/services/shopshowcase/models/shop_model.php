@@ -455,7 +455,13 @@ class shop_model {
 		else if($_SESSION['option']->useGroups && $_SESSION['option']->ProductMultiGroup && !is_array($Group))
 			$this->db->order($_SESSION['option']->productOrder, 'pg');
 		else
-			$this->db->order($_SESSION['option']->productOrder);
+		{
+			$order = explode(' ', $_SESSION['option']->productOrder);
+			if($order[0] == 'name')
+				$this->db->order($_SESSION['option']->productOrder, 'n');
+			else
+				$this->db->order($_SESSION['option']->productOrder);
+		}
 
 
 		if(isset($_SESSION['option']->paginator_per_page) && $_SESSION['option']->paginator_per_page > 0)
@@ -1922,7 +1928,7 @@ class shop_model {
 		}
 	}
 
-	public function formatPrice($price)
+	public function formatPrice($price, $return_price_number = false)
 	{
 		if(!is_array($_SESSION['option']->price_format) && !empty($_SESSION['option']->price_format))
 			$_SESSION['option']->price_format = unserialize($_SESSION['option']->price_format);
@@ -1938,6 +1944,8 @@ class shop_model {
 		if(isset($_SESSION['option']->price_format['penny']))
 			$penny = $_SESSION['option']->price_format['penny'];
 		$price = round($price, $round);
+		if($return_price_number)
+			return $price;
 		// $price = round($price * 20) / 20;
 		if($penny == 0 || $penny == 2)
 			$price = number_format($price, $penny, ',', '&nbsp;');

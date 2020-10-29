@@ -78,7 +78,7 @@
             </div>
             <?php } ?>
             <div class="new__price">
-                <?=round($product->price) ?> ₴
+                <?=$product->price_format ?> ₴
             </div>
             <?php if($product->old_price > $product->price) { ?>
             <div class="flex h-end v-center discount">

@@ -64,7 +64,7 @@
 		<?php } } ?>
     </section>
    
-	<?php if(!empty($filters))
+	<?php if(false && !empty($filters))
     	foreach ($filters as $filter) {
     		if($filter->id == 2) { ?>
     		<div class="flex h-center wrap catalog__detal">
@@ -125,7 +125,7 @@
                     echo "<input type='hidden' name='sort' value='{$value}' >";
                 if(!empty($filters))
                 	foreach ($filters as $filter) {
-                		if($filter->id == 2)
+                		if(false && $filter->id == 2)
                         {
                             if($value = $this->data->get($filter->alias))
                                 echo "<input type='hidden' name='{$filter->alias}' value='{$value}' >";
@@ -141,7 +141,7 @@
                                     $checked = (!empty($_GET[$filter->alias]) && is_array($_GET[$filter->alias]) && in_array($value->id, $_GET[$filter->alias])) ? 'checked' : '';
                                     ?>
     		                		<input type="checkbox" name="<?=$filter->alias?>[]" value="<?=$value->id?>" id="value__id-<?=$value->id?>" <?=$checked?>>
-    		                    	<label for="value__id-<?=$value->id?>"><?=$value->name?><span><?=$value->count?></span></label>
+    		                    	<label for="value__id-<?=$value->id?>"><?=$value->name?> <span>(<?=$value->count?>)</span></label>
     		                	<?php } ?>
                             </div>
     		            </div>
@@ -151,7 +151,12 @@
         <div class="flex w75 wrap sale__wrrap">
             <?php if($products) {
                 foreach ($products as $product) {
-                     require APP_PATH.'views/@commons/__product_subview.php';
+                    if($product->availability > 0)
+                        require APP_PATH.'views/@commons/__product_subview.php';
+                 }
+                foreach ($products as $product) {
+                    if($product->availability <= 0)
+                        require APP_PATH.'views/@commons/__product_subview.php';
                  }
                  $add_block = 5 - count($products) % 5;
                  if($add_block < 5)

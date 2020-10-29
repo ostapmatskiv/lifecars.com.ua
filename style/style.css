@@ -472,6 +472,7 @@ main section.cars__catalog .base__detal img,
 main section.cars__base .base__detal img {
     display: block;
     margin: 0 auto;
+    width: 75%;
 }
 
 main section.cars__catalog .base__detal .detal__text,
@@ -1409,7 +1410,7 @@ main section.sale__catalog aside .filter .values {
 
 main section.sale__catalog aside .filter .values input[type=checkbox]+label {
     display: block;
-    margin-bottom: 2px
+    margin-bottom: 5px
 }
 
 main section.sale__catalog aside .filter .values input[type=checkbox] {
@@ -1441,8 +1442,9 @@ main section.sale__catalog aside .filter input[type=checkbox]:checked+label::bef
 }
 
 main section.sale__catalog aside .filter label span {
-    float: right;
-    margin-right: 10px
+    /*float: right;
+    margin-right: 10px*/
+    color: #b9b7b7;
 }
 
 /*                        aside                                 */
@@ -1619,15 +1621,12 @@ section.sale__catalog aside {
 }
 
 section.sale__catalog .filter {
-    width: 85%;
+    width: 92%;
     height: auto;
-    padding: 20px;
+    padding: 15px;
     margin-bottom: 5px;
     border-radius: 5px;
     background-color: #fefefe;
-}
-
-section.sale__catalog .filter {
     font-size: 13px;
     font-weight: 600;
     color: #666;
