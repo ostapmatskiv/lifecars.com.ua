@@ -26,7 +26,7 @@ $this->load->js_init('init__main()'); ?>
             <form action="<?=SERVER_URL?>save/contactus" method="POST">
                 <input type="text" name="name" required placeholder="<?=$this->text('Ваше ім\'я')?>:">
                 <input type="email" name="mail" placeholder="E-mail:">
-                <input type="tel" name="tel" required placeholder="<?=$this->text('Телефон')?>:">
+                <input type="tel" name="tel" required placeholder="<?=$this->text('Телефон', 0)?>:">
                 <textarea placeholder="<?=$this->text('Ваше питання')?>:" required  id="" cols="30" rows="8" name="mess"></textarea>
                 <?php if(!$this->userIs()) {
                     echo '<div class="flex h-center">';

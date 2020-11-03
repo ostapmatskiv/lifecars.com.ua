@@ -35,7 +35,7 @@
 				<div id="new-buyer">
 					<h4><?=$this->text('Покупець')?></h4>
 					<input type="text" id="email" placeholder="email*" value="<?=$this->data->re_post('email')?>">
-					<input type="text" id="phone" placeholder="<?=$this->text('Телефон')?>*" value="<?=$this->data->re_post('phone')?>">
+					<input type="text" id="phone" placeholder="<?=$this->text('Телефон', 0)?>*" value="<?=$this->data->re_post('phone')?>">
 					<input type="text" id="name" placeholder="<?=$this->text("Ім'я Прізвище")?>*" value="<?=$this->data->re_post('name')?>">
 				</div>
 

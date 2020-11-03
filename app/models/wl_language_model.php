@@ -23,17 +23,18 @@ class wl_language_model
 		}
 		else
 		{
-			$this->add($word, $alias);
-			if($this->words[$word] != '')
-				return $this->words[$word];
+			if($this->add($word, $alias))
+				if($this->words[$word] != '')
+					return $this->words[$word];
 		}
 		return $word;
 	}
 
 	public function add($word, $alias = -1)
 	{
-		if(empty(trim($word)))
-			return true;
+		if(empty(trim($word)) || empty($_SESSION['user']->id) || empty($_SESSION['user']->admin))
+			return false;
+		
 		$this->words[$word] = $word;
 		$data['word'] = $word;
 		$data['alias'] = $_SESSION['alias']->id;
@@ -51,7 +52,7 @@ class wl_language_model
 				$from = $_SESSION['all_languages'][0];
 				foreach ($_SESSION['all_languages'] as $language) {
 					$value = NULL;
-					if($language != $from && isset($_SESSION['user']->id) && $_SESSION['user']->id > 0 && $_SESSION['user']->admin)
+					if($language != $from)
 					{
 						$translate_word = $google->translate($from, $language, $word);
 						fwrite($file_log, date('d.m.Y H:i')." {$from} ==> {$language}: {$word} => {$translate_word} " . PHP_EOL);
