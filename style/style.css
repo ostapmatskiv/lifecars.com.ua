@@ -1369,10 +1369,6 @@ main .catalog__info a:hover {
     color: #82C166;
 }
 
-main .catalog__sorted div {
-    margin: 0 auto;
-}
-
 main .catalog__sorted div a {
     width: 72px;
     height: 28px;
@@ -1386,10 +1382,10 @@ main .catalog__sorted div a {
 }
 
 main .catalog__sorted {
-    padding-left: 55px;
     margin-top: 50px;
 }
 
+main .catalog__sorted div a.active,
 main .catalog__sorted div a:hover {
     background-color: #82C166;
     color: #fff;
@@ -1410,7 +1406,7 @@ main section.sale__catalog aside .filter .values {
 
 main section.sale__catalog aside .filter .values input[type=checkbox]+label {
     display: block;
-    margin-bottom: 5px
+    margin-bottom: 8px
 }
 
 main section.sale__catalog aside .filter .values input[type=checkbox] {
@@ -1421,7 +1417,7 @@ main section.sale__catalog aside .filter .values input[type=checkbox]+label:befo
     content: "";
     width: 14px;
     height: 14px;
-    background-color: #f2f2f2;
+    background-color: #fff;
     border-radius: 100%;
     display: inline-block;
     margin: 0 10px 0 10px;
@@ -1444,7 +1440,7 @@ main section.sale__catalog aside .filter input[type=checkbox]:checked+label::bef
 main section.sale__catalog aside .filter label span {
     /*float: right;
     margin-right: 10px*/
-    color: #b9b7b7;
+    /*color: #b9b7b7;*/
 }
 
 /*                        aside                                 */
@@ -1625,8 +1621,8 @@ section.sale__catalog .filter {
     height: auto;
     padding: 15px;
     margin-bottom: 5px;
-    border-radius: 5px;
-    background-color: #fefefe;
+    /*border-radius: 5px;
+    background-color: #fefefe;*/
     font-size: 13px;
     font-weight: 600;
     color: #666;
