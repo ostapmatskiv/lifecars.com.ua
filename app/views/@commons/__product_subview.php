@@ -31,8 +31,8 @@
     </div>
     <div class="card__info">
         <div class="w33 info__article">
-            <p>Виробник</p>
-            <p>Артикул</p>
+            <p><?=$this->text('Виробник', 0)?></p>
+            <p><?=$this->text('Артикул', 0)?></p>
         </div>
         <div class="w66 info__name">
             <p><?=$product->manufacturer?></p>
@@ -42,7 +42,7 @@
     <div class="flex v-center card__check">
         <div class="flex v-center check__pieces">
             <i class="fas <?=$product->availability > 0 ? 'fa-check-circle' : 'fa-times-circle'?>"></i>
-            <p>В наявності <span class="pieces"><?=$product->availability?></span> шт.</p>
+            <p><?=$this->text('В наявності', 0)?> <span class="pieces"><?=$product->availability?></span> шт.</p>
         </div>
         <?php if($product->availability > 0) { ?>
         <div class="flex check__number">
@@ -63,7 +63,7 @@
     </div>
     <?php } else { ?>
         <div class="flex v-center card__price">
-            <div class="price__text">Під замовлення</div>
+            <div class="price__text"><?=$this->text('Під замовлення', 0)?></div>
             <div class="price__cart">
                 <button class="cart__order">
                     <img src="/style/icons/telephone-2.svg" alt="telephone">
@@ -71,8 +71,8 @@
             </div>
         </div>
         <div class="cart__modal">
-            <h5>Зв'яжіться з нами</h5>
-            <p>і ми проінформуємо Вас про можливість замовлення та оптимальну ціну на цей товар:</p>
+            <h5><?=$this->text('Зв\'яжіться з нами', 0)?></h5>
+            <p><?=$this->text('і ми проінформуємо Вас про можливість замовлення та оптимальну ціну на цей товар:', 0)?></p>
             <div class="modal__name">
                 <?=$product->name?>
             </div>
@@ -80,11 +80,11 @@
                 <?=$product->manufacturer?> <?=$product->article_show?>
             </div>
             <div class="modal__phone">
-                <a href="tel:+380930000943">+38 093 0000 943</a>
-                <a href="tel:+380960000946">+38 096 0000 946</a>
+                <a href="tel:<?=str_replace(' ', '', $site_tel_1)?>"><?=$site_tel_1?></a>
+                <a href="tel:<?=str_replace(' ', '', $site_tel_2)?>"><?=$site_tel_2?></a>
             </div>
             <span>або</span>
-            <button class="modal__request">Залишити заявку</button>
+            <button class="modal__request"><?=$this->text('Залишити заявку', 0)?></button>
 
             <div class="cart__form">
                 <div class="form__name">
@@ -95,20 +95,20 @@
                 </div>
                 <form method="POST" action="<?=SITE_URL?>save/orders" class="save_orders">
                     <input type="hidden" name="product" value="<?=$product->manufacturer?> <?=$product->article_show?> <?=$product->name?>">
-                    <input required name="city" list="city__select" type="text" placeholder="Місто">
+                    <input required name="city" list="city__select" type="text" placeholder="<?=$this->text('Місто', 0)?>">
                     <datalist id="city__select">
-                        <option>Львів</option>
-                        <option>Київ</option>
-                        <option>Харків</option>
-                        <option>Одеса</option>
-                        <option>Дніпро</option>
-                        <option>Івано-Франківськ</option>
-                        <option>Тернопіль</option>
-                        <option>Запоріжжя</option>
+                        <option><?=$this->text('Львів', 0)?></option>
+                        <option><?=$this->text('Київ', 0)?></option>
+                        <option><?=$this->text('Харків', 0)?></option>
+                        <option><?=$this->text('Одеса', 0)?></option>
+                        <option><?=$this->text('Дніпро', 0)?></option>
+                        <option><?=$this->text('Івано-Франківськ', 0)?></option>
+                        <option><?=$this->text('Тернопіль', 0)?></option>
+                        <option><?=$this->text('Запоріжжя', 0)?></option>
                     </datalist>
-                    <input required name="name" type="text" placeholder="Ім'я">
-                    <input required name="phone" type="tel" placeholder="Телефон">
-                    <input required name="email" type="email" placeholder="Електронна адреса">
+                    <input required name="name" type="text" placeholder="<?=$this->text('Ім\'я', 0)?>">
+                    <input required name="phone" type="tel" placeholder="<?=$this->text('Телефон', 0)?>">
+                    <input required name="email" type="email" placeholder="<?=$this->text('Електронна адреса', 0)?>">
                     <?php if(!$this->userIs()) { ?>
                         <br>
                         <br>
@@ -117,7 +117,7 @@
                             $this->recaptcha->form('recaptchaVerifyCallback_saveOrders', 'recaptchaExpiredCallback_saveOrders');
                         ?>
                     <?php } ?>
-                    <button class="form__btn" <?=$this->userIs() ? '':'disabled title=\'Заповніть "Я не робот"\''?>>Надіслати запит</button>
+                    <button class="form__btn" <?=$this->userIs() ? '':'disabled title=\'Заповніть "Я не робот"\''?>><?=$this->text('Надіслати запит', 0)?></button>
                 </form>
             </div>
 

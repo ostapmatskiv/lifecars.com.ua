@@ -3,13 +3,13 @@
     <?php if($products) { ?>
     <div class="flex h-evenly catalog__sorted">
         <div>
-            <a href="<?=$this->data->get_link('sort', 'price_down')?>">Спершу дешеві</a>
-            <a href="<?=$this->data->get_link('sort', 'price_up')?>">Спершу дорожчі</a>
-            <a href="<?=$this->data->get_link('sort', 'name')?>">А &mdash; Я</a>
-            <a href="<?=$this->data->get_link('sort', 'name_desc')?>">Я &mdash; А</a>
+            <a href="<?=$this->data->get_link('sort', 'price_down')?>" <?=($this->data->get('sort') == 'price_down')?'class="active"':''?>><?=$this->text('Спершу дешеві')?></a>
+            <a href="<?=$this->data->get_link('sort', 'price_up')?>" <?=($this->data->get('sort') == 'price_up')?'class="active"':''?>><?=$this->text('Спершу дорожчі')?></a>
+            <a href="<?=$this->data->get_link('sort', 'name')?>" <?=($this->data->get('sort') == 'name')?'class="active"':''?>>А &mdash; Я</a>
+            <a href="<?=$this->data->get_link('sort', 'name_desc')?>" <?=($this->data->get('sort') == 'name_desc')?'class="active"':''?>>Я &mdash; А</a>
         </div>
         <div class="quantity__goods">
-            Кількість товарів &mdash; <span><?=$_SESSION['option']->paginator_total?></span>
+            <?=$this->text('Кількість товарів', 0)?> &mdash; <span><?=$_SESSION['option']->paginator_total?></span>
         </div>
     </div>
     <?php } ?>

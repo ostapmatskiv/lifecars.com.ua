@@ -6,13 +6,13 @@ $this->load->js_init('init__main()'); ?>
     <h1><?=$_SESSION['alias']->name?></h1>
     <section id="contacts" class="flex m-column container">
         <div class="w50 m100 contactsText">
-            <h2>Зв'яжіться з нами:</h2>
+            <h2><?=$this->text('Зв\'яжіться з нами')?>:</h2>
             <div>
                 <p><i class="fas fa-map-marker-alt"></i> <?=$this->text('м. Львів, вул. Виговського, 49')?></p>
             </div>
             <div>
-                <p><i class="fas fa-phone-alt"></i> <a href="telto:+38 096 0000 943">+38 096 0000 943</a></p>
-                <p><i class="fas fa-phone-alt iNone"></i> <a href="telto:+38 093 0000 943">+38 093 0000 943</a></p>
+                <p><i class="fas fa-phone-alt"></i> <a href="tel:<?=str_replace(' ', '', $site_tel_1)?>"><?=$site_tel_1?></a></p>
+                <p><i class="fas fa-phone-alt iNone"></i> <a href="tel:<?=str_replace(' ', '', $site_tel_2)?>"><?=$site_tel_2?></a></p>
             </div>
             <div>
                 <p><i class="fas fa-envelope"></i> <a href="mailto:manager@lifecars.com.ua">manager@lifecars.com.ua</a></p>
@@ -22,20 +22,21 @@ $this->load->js_init('init__main()'); ?>
             </div>
         </div>
         <div class="w50 m100 contactsForm">
-            <h2>Залишились питання?<br>Напишіть нам:</h2>
+            <h2><?=$this->text('Залишились питання?')?><br><?=$this->text('Напишіть нам')?>:</h2>
             <form action="<?=SERVER_URL?>save/contactus" method="POST">
-                <input type="text" name="name" required placeholder="Ваше ім'я:">
+                <input type="text" name="name" required placeholder="<?=$this->text('Ваше ім\'я')?>:">
                 <input type="email" name="mail" placeholder="E-mail:">
-                <input type="tel" name="tel" required placeholder="Телефон:">
-                <textarea placeholder="Ваше питання:" required  id="" cols="30" rows="8" name="mess"></textarea>
+                <input type="tel" name="tel" required placeholder="<?=$this->text('Телефон')?>:">
+                <textarea placeholder="<?=$this->text('Ваше питання')?>:" required  id="" cols="30" rows="8" name="mess"></textarea>
                 <?php if(!$this->userIs()) {
                     echo '<div class="flex h-center">';
                     $this->load->library('recaptcha');
                     $this->recaptcha->form();
                     echo "</div>";
                 } ?>
-                <input type="submit" value="Надіслати">
+                <input type="submit" value="<?=$this->text('Надіслати')?>">
             </form>
         </div>
     </section>
 </main>
+<br>

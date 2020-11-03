@@ -10,7 +10,7 @@
 		<h1><?=$_SESSION['alias']->name?></h1>
 
 		<div id="cart_notify" class="alert alert-danger hide">
-			<p>Корзина пуста</p>
+			<p><?=$this->text('Корзина пуста')?></p>
 		</div>
 
 		<?php if(!empty($_SESSION['notify']->success)) { ?>

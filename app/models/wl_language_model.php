@@ -22,7 +22,11 @@ class wl_language_model
 				return $this->words[$word];
 		}
 		else
+		{
 			$this->add($word, $alias);
+			if($this->words[$word] != '')
+				return $this->words[$word];
+		}
 		return $word;
 	}
 
@@ -40,9 +44,30 @@ class wl_language_model
 		if($id = $this->db->insertRow('wl_language_words', $data))
 		{
 			if($_SESSION['language'])
+			{
+				$file_log = fopen('google_translate_free.log', 'a');
+				require_once SYS_PATH.'libraries'.DIRSEP.'google_translate_free.php';
+				$google = new google_translate_free();
+				$from = $_SESSION['all_languages'][0];
 				foreach ($_SESSION['all_languages'] as $language) {
-					$this->db->insertRow('wl_language_values', array('word' => $id, 'language' => $language));
+					$value = NULL;
+					if($language != $from && isset($_SESSION['user']->id) && $_SESSION['user']->id > 0 && $_SESSION['user']->admin)
+					{
+						$translate_word = $google->translate($from, $language, $word);
+						fwrite($file_log, date('d.m.Y H:i')." {$from} ==> {$language}: {$word} => {$translate_word} " . PHP_EOL);
+						if($translate_word != $word)
+						{
+							$value = $translate_word;
+							if($_SESSION['language'] == $language)
+								$this->words[$word] = $translate_word;
+						}
+					}
+					$this->db->insertRow('wl_language_values', array('word' => $id, 'language' => $language, 'value' => $value));
+					// timeout 0.5 sec
+            		usleep(500000);
 				}
+				fclose($file_log);
+			}
 			else
 				$this->db->insertRow('wl_language_values', array('word' => $id));
 			$this->clearSessionCacheForAlias($alias);

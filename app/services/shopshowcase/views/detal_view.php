@@ -48,7 +48,7 @@
                <div class="send__img">
                     <img src="/style/icons/detal/shipped.svg" alt="shipped">
                </div>
-                <p><?=$this->text('Відправимо Вам товару')?><br><u><?=$this->text('день замовлення')?></u></p>
+                <p><?=$this->text('Відправимо Вам товар у')?><br><u><?=$this->text('день замовлення')?></u></p>
             </div>
             <div class=" flex h-start v-center bonus__guarantee">
                 <div class="guarantee__img">

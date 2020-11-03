@@ -30,7 +30,10 @@
 </head>
 <body>
 	<?php
+		$site_tel_1 = $this->text('+38 096 0000 943', 0);
+		$site_tel_2 = $this->text('+38 093 0000 943', 0);
 		require_once '@commons/__all_groups.php';
+		
 		echo('<div class="container">');
 
 		include "@commons/header.php";

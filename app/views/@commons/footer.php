@@ -1,7 +1,7 @@
 <footer>
     <div class="flex wrap footer__info container">
        <div class="w20 footer__account">
-           <h5>Мій акаунт</h5>
+           <h5><?=$this->text('Мій акаунт', 0)?></h5>
             <a href="<?=SITE_URL?>cart"><?=$this->text('Мій кошик', 0)?></a>
            <?php if($this->userIs()) { ?>
              <a href="<?=SITE_URL?>profile/<?=$_SESSION['user']->alias?>"><?=$this->text('Мої замовлення', 0)?></a>
@@ -16,7 +16,7 @@
        <div class="w20 footer__information">
            <h5><?=$this->text('Інформація', 0)?></h5>
            <a href="<?=SITE_URL?>about"><?=$this->text('Про нас', 0)?></a>
-           <a href="#">Інформація для покупця</a>
+           <a href="#"><?=$this->text('Інформація для покупця', 0)?></a>
        </div>
        <div class="w20 footer__shop">
            <h5><?=$this->text('Магазин', 0)?></h5>
@@ -35,8 +35,8 @@
             <div class="flex h-start v-center contacts__phone">
                 <img src="/style/icons/telephone-5.svg" alt="telephone">
                 <div>
-                    <a href="tel:+380960000943">+38 096 0000 943</a><br>
-                    <a href="tel:+380930000943">+38 093 0000 943</a>
+                    <a href="tel:<?=str_replace(' ', '', $site_tel_1)?>"><?=$site_tel_1?></a><br>
+                    <a href="tel:<?=str_replace(' ', '', $site_tel_2)?>"><?=$site_tel_2?></a>
                 </div>
             </div>
        </div>

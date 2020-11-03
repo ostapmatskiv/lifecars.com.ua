@@ -28,7 +28,7 @@
 			</tr>
 			<?php } } else { ?>
 				<tr>
-					<td colspan="5">Замовлення відсутні</td>
+					<td colspan="5"><?=$this->text('Замовлення відсутні')?></td>
 				</tr>
 			<?php } ?>
 		</tbody>

@@ -9,7 +9,7 @@
         </div>
         <div class="profile">
             <?php if($this->userIs()) { ?>
-                Вітаємо, 
+                <?=$this->text('Вітаємо', 0)?>, 
                 <a href="<?=SITE_URL?>profile/<?=$_SESSION['user']->alias?>" class="active" title="Мій кабінет">
                     <img src="<?=SERVER_URL?>style/icons/user.png" alt="user">
                     <?=$_SESSION['user']->name?>
@@ -44,7 +44,7 @@
                 $selected_id = $this->data->get('group');
                 ?>
                 <select name="group">
-                    <option value="0">Де шукати?</option>
+                    <option value="0"><?=$this->text('Де шукати?', 0)?></option>
                     <?php foreach ($catalogAllGroups as $h_group) {
                         if($h_group->parent == 0) {
                             $selected = $selected_id == $h_group->id ? 'selected' : '';
@@ -60,21 +60,21 @@
                 </select>
                 <i class="fas fa-chevron-down"></i>
             <?php } ?>
-            <input required="required" type="search" name="name" value="<?=$this->data->get('name')?>" placeholder="Пошук за артикулом або назвою товару">
+            <input required="required" type="search" name="name" value="<?=$this->data->get('name')?>" placeholder="<?=$this->text('Пошук за артикулом або назвою товару', 0)?>">
             <button><i class="fas fa-search"></i></button>
         </form>
         <div class="flex v-center header__address">
             <i class="fas fa-map-marker-alt"></i>
             <address>
-                <a href="https://goo.gl/maps/ZVp3Y1JQkubKnLBR9" target="_blank">Львів, вул.<br>
-                Виговського, 49</a>
+                <a href="https://goo.gl/maps/ZVp3Y1JQkubKnLBR9" target="_blank"><?=$this->text('Львів, вул.', 0)?><br>
+                <?=$this->text('Виговського, 49', 0)?></a>
             </address>
         </div>
         <div class="flex v-center header__phone">
             <i class="fas fa-phone-alt"></i>
             <div>
-                <a href="tel:+380960000943">+38 096 0000 943</a><br>
-                <a href="tel:+380930000943">+38 093 0000 943</a>
+                <a href="tel:<?=str_replace(' ', '', $site_tel_1)?>"><?=$site_tel_1?></a><br>
+                <a href="tel:<?=str_replace(' ', '', $site_tel_2)?>"><?=$site_tel_2?></a>
             </div>
          </div>
         <div class="flex header__shoping">
@@ -83,28 +83,28 @@
                 <img src="<?=SERVER_URL?>style/icons/shopping-cart-16.png" alt="cart">
             </a>
             <?php /* if($this->userIs()) { ?>
-                <a href="<?=SITE_URL?>profile" class="header__user" title="Мій кабінет">
+                <a href="<?=SITE_URL?>profile" class="header__user" title="<?=$this->text('Мій кабінет', 0)?>">
                     <img src="<?=SERVER_URL?>style/icons/user.png" alt="user">
                 </a>
             <?php } else { ?>
-                <a href="<?=SITE_URL?>signup" class="header__user" title="Реєстрація">
+                <a href="<?=SITE_URL?>signup" class="header__user" title="<?=$this->text('Реєстрація', 0)?>">
                     <img src="<?=SERVER_URL?>style/icons/user.png" alt="user">
                 </a>
             <?php } */ ?>
         </div>
     </div>
     <nav class="flex v-center">
-        <a href="<?=SITE_URL?>parts" <?=($_SESSION['alias']->alias == 'parts') ? 'class="active"' : ''?>>Каталог запчастин</a>
-        <a href="<?=SITE_URL?>manufacturers" <?=($_SESSION['alias']->alias == 'manufacturers') ? 'class="active"' : ''?>>Виробники</a>
-        <a href="<?=SITE_URL?>exchange-and-return" <?=($_SESSION['alias']->alias == 'exchange-and-return') ? 'class="active"' : ''?>>Повернення та гарантія</a>
-        <a href="<?=SITE_URL?>delivery-and-payments" <?=($_SESSION['alias']->alias == 'delivery-and-payments') ? 'class="active"' : ''?>>Оплата та доставка</a>
-        <a href="<?=SITE_URL?>contacts" <?=($_SESSION['alias']->alias == 'contacts') ? 'class="active"' : ''?>>Контакти</a>
+        <a href="<?=SITE_URL?>parts" <?=($_SESSION['alias']->alias == 'parts') ? 'class="active"' : ''?>><?=$this->text('Каталог запчастин', 0)?></a>
+        <a href="<?=SITE_URL?>manufacturers" <?=($_SESSION['alias']->alias == 'manufacturers') ? 'class="active"' : ''?>><?=$this->text('Виробники', 0)?></a>
+        <a href="<?=SITE_URL?>exchange-and-return" <?=($_SESSION['alias']->alias == 'exchange-and-return') ? 'class="active"' : ''?>><?=$this->text('Повернення та гарантія', 0)?></a>
+        <a href="<?=SITE_URL?>delivery-and-payments" <?=($_SESSION['alias']->alias == 'delivery-and-payments') ? 'class="active"' : ''?>><?=$this->text('Оплата та доставка', 0)?></a>
+        <a href="<?=SITE_URL?>contacts" <?=($_SESSION['alias']->alias == 'contacts') ? 'class="active"' : ''?>><?=$this->text('Контакти', 0)?></a>
         <?php /* if($this->userIs()) { if($this->userCan()) { ?>
             <a href="<?=SITE_URL?>admin">Admin</a>
         <?php } else { ?>
-            <a href="<?=SITE_URL?>profile" <?=($_SESSION['alias']->alias == 'profile') ? 'class="active"' : ''?>>Мій кабінет</a>
+            <a href="<?=SITE_URL?>profile" <?=($_SESSION['alias']->alias == 'profile') ? 'class="active"' : ''?>><?=$this->text('Мій кабінет', 0)?></a>
         <?php } } else { ?>
-            <a href="<?=SITE_URL?>login" <?=(in_array($_SESSION['alias']->alias, ['login', 'signup'])) ? 'class="active"' : ''?>>Увійти / Реєстрація</a>
+            <a href="<?=SITE_URL?>login" <?=(in_array($_SESSION['alias']->alias, ['login', 'signup'])) ? 'class="active"' : ''?>><?=$this->text('Увійти / Реєстрація', 0)?></a>
         <?php } */ ?>
     </nav>
     <div class="mob__menu">
@@ -116,7 +116,7 @@
                 <img class="mob__logo" src="/style/images/logo.png" alt="logo">
             </a>
             <?php if($this->userIs()) { ?>
-                <a href="<?=SITE_URL?>profile/<?=$_SESSION['user']->alias?>" title="Мій кабінет">
+                <a href="<?=SITE_URL?>profile/<?=$_SESSION['user']->alias?>" title="<?=$this->text('Мій кабінет', 0)?>">
                     <img src="<?=SERVER_URL?>style/icons/user.png" alt="user">
                     <?=$_SESSION['user']->name?>
                 </a>
@@ -130,17 +130,17 @@
                 <a href="<?=SITE_URL?>signup"><?=$this->text('Реєстрація', 0)?></a>
             <?php } ?>
             <div class="mob__border"></div>
-            <a href="<?=SITE_URL?>parts" <?=($_SESSION['alias']->alias == 'parts') ? 'class="active"' : ''?>>Каталог запчастин</a>
-            <a href="<?=SITE_URL?>manufacturers" <?=($_SESSION['alias']->alias == 'manufacturers') ? 'class="active"' : ''?>>Виробники</a>
-            <a href="<?=SITE_URL?>exchange-and-return" <?=($_SESSION['alias']->alias == 'exchange-and-return') ? 'class="active"' : ''?>>Повернення та гарантія</a>
-            <a href="<?=SITE_URL?>delivery-and-payments" <?=($_SESSION['alias']->alias == 'delivery-and-payments') ? 'class="active"' : ''?>>Оплата та доставка</a>
-            <a href="<?=SITE_URL?>contacts" <?=($_SESSION['alias']->alias == 'contacts') ? 'class="active"' : ''?>>Контакти</a>
+            <a href="<?=SITE_URL?>parts" <?=($_SESSION['alias']->alias == 'parts') ? 'class="active"' : ''?>><?=$this->text('Каталог запчастин', 0)?></a>
+            <a href="<?=SITE_URL?>manufacturers" <?=($_SESSION['alias']->alias == 'manufacturers') ? 'class="active"' : ''?>><?=$this->text('Виробники', 0)?></a>
+            <a href="<?=SITE_URL?>exchange-and-return" <?=($_SESSION['alias']->alias == 'exchange-and-return') ? 'class="active"' : ''?>><?=$this->text('Повернення та гарантія', 0)?></a>
+            <a href="<?=SITE_URL?>delivery-and-payments" <?=($_SESSION['alias']->alias == 'delivery-and-payments') ? 'class="active"' : ''?>><?=$this->text('Оплата та доставка', 0)?></a>
+            <a href="<?=SITE_URL?>contacts" <?=($_SESSION['alias']->alias == 'contacts') ? 'class="active"' : ''?>><?=$this->text('Контакти', 0)?></a>
             <div class="mob__border"></div>
-            <a href="<?=SITE_URL?>cart">Мій кошик</a>
+            <a href="<?=SITE_URL?>cart"><?=$this->text('Мій кошик', 0)?></a>
             <?php if (!empty($_SESSION['cart'])) { ?>
-                <a href="<?=SITE_URL?>cart/checkout">Оформлення замовлення</a>
+                <a href="<?=SITE_URL?>cart/checkout"><?=$this->text('Оформлення замовлення', 0)?></a>
             <?php } ?>
-            <a href="<?=SITE_URL?>about">Про нас</a>
+            <a href="<?=SITE_URL?>about"><?=$this->text('Про нас', 0)?></a>
         </div>
     </div>
 </header>
