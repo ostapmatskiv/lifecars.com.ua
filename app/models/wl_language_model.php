@@ -32,9 +32,14 @@ class wl_language_model
 
 	public function add($word, $alias = -1)
 	{
-		if(empty(trim($word)) || empty($_SESSION['user']->id) || empty($_SESSION['user']->admin))
-			return false;
-		
+		if(!in_array($_SESSION['alias']->alias, ['login', 'signup', 'reset']))
+		{
+			if(empty(trim($word)) || empty($_SESSION['user']->id) || empty($_SESSION['user']->admin))
+				return false;
+			if($_SESSION['language'] && $_SESSION['language'] == $_SESSION['all_languages'][0])
+				return false;
+		}
+
 		$this->words[$word] = $word;
 		$data['word'] = $word;
 		$data['alias'] = $_SESSION['alias']->id;

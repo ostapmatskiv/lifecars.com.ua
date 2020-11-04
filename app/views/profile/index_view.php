@@ -36,19 +36,19 @@
                 <a href="<?=SITE_URL?>admin"><i class="fas fa-cogs"></i> Панель керування</a>
             <?php } ?>
 
-            <a href="<?=SITE_URL?>logout"><i class="fas fa-sign-out-alt"></i> Вийти</a>
+            <a href="<?=SITE_URL?>logout"><i class="fas fa-sign-out-alt"></i> <?=$this->text('Вийти')?></a>
         </aside>
         <article class="w80-5 m100">
             <?php if(!empty($_SESSION['notify']->errors)) { ?>
                <div class="alert alert-danger">
                     <span class="close" data-dismiss="alert">×</span>
-                    <h4><i class="fas fa-exclamation-triangle"></i> <?=(isset($_SESSION['notify']->title)) ? $_SESSION['notify']->title : 'Помилка!'?></h4>
+                    <h4><i class="fas fa-exclamation-triangle"></i> <?=(isset($_SESSION['notify']->title)) ? $_SESSION['notify']->title : $this->text('Помилка!', 0)?></h4>
                     <p><?=$_SESSION['notify']->errors?></p>
                 </div>
             <?php } elseif(!empty($_SESSION['notify']->success)) { ?>
                 <div class="alert alert-success">
                     <span class="close" data-dismiss="alert">×</span>
-                    <h4><i class="fas fa-check"></i> <?=(isset($_SESSION['notify']->title)) ? $_SESSION['notify']->title : 'Успіх!'?></h4>
+                    <h4><i class="fas fa-check"></i> <?=(isset($_SESSION['notify']->title)) ? $_SESSION['notify']->title : $this->text('Успіх!', 0)?></h4>
                     <p><?=$_SESSION['notify']->success?></p>
                 </div>
             <?php } unset($_SESSION['notify']);
