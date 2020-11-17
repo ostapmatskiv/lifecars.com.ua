@@ -170,6 +170,277 @@ form button:hover,
     background: #68a03d
 }
 
+/*                                                          Sale Card                                           */
+
+
+
+section.sale .sale__wrrap {
+    margin-top: 35px;
+}
+
+.sale__card {
+    width: calc(20% - 5px);
+    padding: 8px 8px 12px;
+    min-height: auto;
+    margin-bottom: 20px;
+    border: 2px solid #fefefe;
+    border-radius: 10px;
+    position: relative;
+    background: #fff
+}
+.sale__card.empty {
+    border: none !important;
+    background: none !important
+}
+.sale__card:hover { border-color: #7cbe49 }
+.sale__card.no_availabilaty:hover { border-color: #ffc505 }
+
+.sale__card .card__img img { width: 100% }
+.sale__card .card__img i.card__label {
+    position: absolute;
+    top: 26px;
+    left: -16px;
+    transform: translateY(50%);
+    font-weight: 600;
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.4;
+    font-style: normal;
+    text-align: center;
+    height: 20px;
+    width: 45px;
+    border-radius: 0 50px 50px 0;
+    background-color: #7cbe49;
+}
+.sale__card .card__img i.new__label {
+    position: absolute;
+    top: 50px;
+    left: -16px;
+    transform: translateY(50%);
+    font-weight: 600;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 15px;
+    line-height: 1.4;
+    font-style: normal;
+    text-align: center;
+    height: 20px;
+    width: 45px;
+    border-radius: 0 50px 50px 0;
+    background-color: #ff5205;
+}
+.sale__card .card__img {
+    width: 100%;
+    height: 180px;
+    background-color: transparent;
+    overflow: hidden;
+    border-radius: 5px;
+}
+.sale__card .card__img.empty_photo {
+    background-color: #fff;
+    background-image: url(images/no_image2.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 50%;
+}
+
+.sale__card .rating__comment {
+    flex-grow: 1;
+    margin-left: 30px;
+    display: flex;
+    flex-grow: 1;
+    margin-left: 30px;
+    align-items: flex-end;
+    margin-top: 5px;
+}
+.sale__card .rating__comment i.rating__lebel {
+    font-size: 13px;
+    font-weight: normal;
+    letter-spacing: normal;
+    color: #8c8c8c;
+    margin-right: 11px;
+    font-style: normal;
+}
+
+.sale__card .card__text {
+    height: 70px;
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 14px;
+    /*font-weight: 700;*/
+    text-align: left;
+    color: #000;
+}
+.sale__card .card__info {
+    /* margin-top: 15px; */
+    display: flex;
+}
+.sale__card .card__info .info__article {
+    margin-right: 5px
+}
+.sale__card .card__info .info__article p {
+    font-size: 12px;
+    padding-top: 5px;
+    color: #a6a6a6;
+}
+.sale__card .card__info .info__name p {
+    font-size: 12px;
+    padding-top: 5px;
+    color: #262626;
+}
+
+.sale__card .card__check { margin-top: 15px }
+.sale__card .card__check .check__pieces .fa-check-circle {
+    font-size: 16px;
+    color: #7cbe49;
+}
+.sale__card .card__check .check__pieces .fa-times-circle {
+    font-size: 16px;
+    color: #FFC505;
+}
+.sale__card .card__check .check__pieces p {
+    font-size: 14px;
+    color: #262626;
+    margin-left: 6px;
+}
+
+.sale__card .check__number {
+    width: 100px;
+}
+.sale__card .check__number span.minus,
+.sale__card .check__number span.plus {
+    display: inline-block;
+    width: 50px;
+    height: 30px;
+    text-align: center;
+    font-size: 19px;
+    color: #fff;
+    border-radius: 7px 0 0 7px;
+    background-color: #d9d9d9;
+    cursor: pointer;
+}
+.sale__card .check__number input {
+    width: 45px;
+    text-align: center;
+    font-size: 15px;
+    color: #666;
+    border: 1px solid #d9d9d9;
+}
+.sale__card .check__number span.plus {
+    border-radius: 0 7px 7px 0
+}
+
+.sale__card .card__price { margin: 5px 0 }
+
+.sale__card .price__text {
+    font-size: 30px;
+    font-weight: 400;
+    color: #262626;
+    text-align: right;
+}
+.sale__card.no_availabilaty .card__price .price__text {
+    font-size: 14px;
+    font-weight: 400
+}
+
+.sale__card .card__price button.cart__buy {
+    position: relative;
+    width: 130px;
+    height: 35px;
+    border: none;
+    border-radius: 5px;
+    background-color: #7cbe49;
+    color: #fff;
+    outline: none;
+    text-align: center;
+    cursor: pointer;
+    font-size: 20px;
+    text-transform: uppercase;
+}
+.sale__card button img { width: 16px }
+.sale__card .card__price button.cart__buy:hover {
+    background-color: rgb(63, 121, 21);
+}
+.sale__card .card__price button.cart__buy:after {
+    content: "Додати до кошика";
+    position: absolute;
+    display: none;
+    width: 100%;
+    bottom: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    font-weight: normal;
+    text-align: center;
+    color: #a6a6a6;
+}
+.sale__card.no_availabilaty button.cart__order {
+    position: relative;
+    width: 85px;
+    height: 35px;
+    margin-top: 5px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: #FFC505;
+    text-align: center;
+    cursor: pointer;
+}
+.sale__card.no_availabilaty button.cart__order:hover {
+    background-color: rgb(216, 166, 3);
+}
+.sale__card.no_availabilaty button.cart__order:after {
+    content: "Звязатися з нами";
+    position: absolute;
+    display: none;
+    width: 100%;
+    bottom: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    font-weight: normal;
+    text-align: center;
+    color: #a6a6a6;
+}
+.sale__card.no_availabilaty button.cart__order:hover:after { display: block }
+
+/*                                                                   Sale Card                              */
+
+.card__rating .rating:not(:checked)>input {
+    position: absolute;
+    top: -9999px;
+}
+
+.card__rating .rating:not(:checked)>label {
+    float: right;
+    width: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 20px;
+    color: #fff;
+}
+
+.card__rating .rating:not(:checked)>label:before {
+    content: '★ ';
+}
+
+.card__rating .rating>input:checked~label {
+    color: #ffc505;
+}
+
+.card__rating .rating:not(:checked)>label:hover,
+.card__rating .rating:not(:checked)>label:hover~label {
+    color: #deb217;
+}
+
+.card__rating .rating>input:checked+label:hover,
+.card__rating .rating>input:checked+label:hover~label,
+.card__rating .rating>input:checked~label:hover,
+.card__rating .rating>input:checked~label:hover~label,
+.card__rating .rating>label:hover~input:checked~label {
+    color: #c59b08;
+}
 
 /*      Header        */
 #top_header {
@@ -594,278 +865,6 @@ main section.sale .sale__nav a:active::before {
 }
 
 
-/*                                                          Sale Card                                           */
-
-
-
-section.sale .sale__wrrap {
-    margin-top: 35px;
-}
-
-main.detal .detal__cart .sale__card,
-section.sale .sale__wrrap .sale__card,
-section.sale__catalog .sale__wrrap .sale__card {
-    width: calc(20% - 5px);
-    padding: 8px;
-    min-height: auto;
-    margin-bottom: 20px;
-    border: 2px solid #fefefe;
-    border-radius: 10px;
-    position: relative;
-    background: #fff
-}
-
-.sale__card.empty {
-    border: none !important;
-    background: none !important
-}
-
-main.detal .detal__cart .sale__card:hover,
-section.sale .sale__wrrap .sale__card:hover,
-section.sale__catalog .sale__wrrap .sale__card:hover {
-    border-color: #7cbe49;
-}
-
-main.detal .detal__cart .sale__card.no_availabilaty:hover,
-section.sale .sale__wrrap .sale__card.no_availabilaty:hover,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty:hover {
-    border-color: #ffc505;
-}
-
-main.detal .detal__cart .sale__card .card__img img,
-section.sale .sale__wrrap .sale__card .card__img img,
-section.sale__catalog .sale__wrrap .sale__card .card__img img {
-    width: 100%;
-}
-
-main.detal .detal__cart .sale__card .card__img i.card__label,
-section.sale .sale__wrrap .sale__card .card__img i.card__label {
-    position: absolute;
-    top: 26px;
-    left: -16px;
-    transform: translateY(50%);
-    font-weight: 600;
-    color: #fff;
-    font-size: 14px;
-    line-height: 1.4;
-    font-style: normal;
-    text-align: center;
-    height: 20px;
-    width: 45px;
-    border-radius: 0 50px 50px 0;
-    background-color: #7cbe49;
-}
-
-main.detal .detal__cart .sale__card .card__img i.new__label,
-section.sale .sale__wrrap .sale__card .card__img i.new__label {
-    position: absolute;
-    top: 50px;
-    left: -16px;
-    transform: translateY(50%);
-    font-weight: 600;
-    color: #fff;
-    text-transform: uppercase;
-    font-size: 15px;
-    line-height: 1.4;
-    font-style: normal;
-    text-align: center;
-    height: 20px;
-    width: 45px;
-    border-radius: 0 50px 50px 0;
-    background-color: #ff5205;
-}
-
-main.detal .detal__cart .sale__card .card__img,
-section.sale .sale__wrrap .sale__card .card__img,
-section.sale__catalog .sale__wrrap .sale__card .card__img {
-    width: 100%;
-    height: 180px;
-    background-color: transparent;
-    overflow: hidden;
-    border-radius: 5px;
-}
-
-main.detal .detal__cart .sale__card .card__img.empty_photo,
-section.sale .sale__wrrap .sale__card .card__img.empty_photo,
-section.sale__catalog .sale__wrrap .sale__card .card__img.empty_photo {
-    background-color: #fff;
-    background-image: url(images/no_image2.png);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 50%;
-}
-
-.card__rating .rating:not(:checked)>input {
-    position: absolute;
-    top: -9999px;
-}
-
-.card__rating .rating:not(:checked)>label {
-    float: right;
-    width: 1em;
-    overflow: hidden;
-    white-space: nowrap;
-    cursor: pointer;
-    font-size: 20px;
-    color: #fff;
-}
-
-.card__rating .rating:not(:checked)>label:before {
-    content: '★ ';
-}
-
-.card__rating .rating>input:checked~label {
-    color: #ffc505;
-}
-
-.card__rating .rating:not(:checked)>label:hover,
-.card__rating .rating:not(:checked)>label:hover~label {
-    color: #deb217;
-}
-
-.card__rating .rating>input:checked+label:hover,
-.card__rating .rating>input:checked+label:hover~label,
-.card__rating .rating>input:checked~label:hover,
-.card__rating .rating>input:checked~label:hover~label,
-.card__rating .rating>label:hover~input:checked~label {
-    color: #c59b08;
-}
-
-main.detal .detal__cart .sale__card .rating__comment,
-section.sale .sale__wrrap .sale__card .rating__comment,
-section.sale__catalog .sale__wrrap .sale__card .rating__comment {
-    flex-grow: 1;
-    margin-left: 30px;
-    display: flex;
-    flex-grow: 1;
-    margin-left: 30px;
-    align-items: flex-end;
-    margin-top: 5px;
-}
-
-main.detal .detal__cart .sale__card .rating__comment i.rating__lebel,
-section.sale .sale__wrrap .sale__card .rating__comment i.rating__lebel,
-section.sale__catalog .sale__wrrap .sale__card .rating__comment i.rating__lebel {
-    font-size: 13px;
-    font-weight: normal;
-    letter-spacing: normal;
-    color: #8c8c8c;
-    margin-right: 11px;
-    font-style: normal;
-}
-
-main.detal .detal__cart .sale__card .card__text,
-section.sale .sale__wrrap .sale__card .card__text,
-section.sale__catalog .sale__wrrap .sale__card .card__text {
-    height: 70px;
-    display: table-cell;
-    vertical-align: middle;
-    font-size: 14px;
-    font-weight: 700;
-    text-align: left;
-    color: #000;
-}
-
-main.detal .detal__cart .sale__card .card__info,
-section.sale .sale__wrrap .sale__card .card__info,
-section.sale__catalog .sale__wrrap .sale__card .card__info {
-    /* margin-top: 15px; */
-    display: flex;
-}
-
-main.detal .detal__cart .sale__card .card__info .info__article,
-section.sale .sale__wrrap .sale__card .card__info .info__article,
-section.sale__catalog .sale__wrrap .sale__card .card__info .info__article {
-    margin-right: 5px
-}
-
-main.detal .detal__cart .sale__card .card__info .info__article p,
-section.sale .sale__wrrap .sale__card .card__info .info__article p,
-section.sale__catalog .sale__wrrap .sale__card .card__info .info__article p {
-    font-size: 12px;
-    padding-top: 5px;
-    color: #a6a6a6;
-}
-
-main.detal .detal__cart .sale__card .card__info .info__name p,
-section.sale .sale__wrrap .sale__card .card__info .info__name p,
-section.sale__catalog .sale__wrrap .sale__card .card__info .info__name p {
-    font-size: 12px;
-    padding-top: 5px;
-    color: #262626;
-}
-
-main.detal .detal__cart .sale__card .card__check,
-section.sale .sale__wrrap .sale__card .card__check,
-section.sale__catalog .sale__wrrap .sale__card .card__check {
-    margin-top: 15px;
-}
-
-main.detal .detal__cart .sale__card .card__check .check__pieces .fa-check-circle,
-section.sale .sale__wrrap .sale__card .card__check .check__pieces .fa-check-circle,
-section.sale__catalog .sale__wrrap .sale__card .card__check .check__pieces .fa-check-circle {
-    font-size: 16px;
-    color: #7cbe49;
-}
-
-main.detal .detal__cart .sale__card .card__check .check__pieces .fa-times-circle,
-section.sale .sale__wrrap .sale__card .card__check .check__pieces .fa-times-circle,
-section.sale__catalog .sale__wrrap .sale__card .card__check .check__pieces .fa-times-circle {
-    font-size: 16px;
-    color: #FFC505;
-}
-
-main.detal .detal__cart .sale__card .card__check .check__pieces p,
-section.sale .sale__wrrap .sale__card .card__check .check__pieces p,
-section.sale__catalog .sale__wrrap .sale__card .card__check .check__pieces p {
-    font-size: 14px;
-    color: #262626;
-    margin-left: 6px;
-}
-
-main.detal .detal__cart .sale__card .check__number,
-section.sale .sale__wrrap .sale__card .check__number,
-section.sale__catalog .sale__wrrap .sale__card .check__number {
-    width: 80px;
-}
-
-main.detal .detal__cart .sale__card .check__number span.minus,
-section.sale .sale__wrrap .sale__card .check__number span.minus,
-section.sale__catalog .sale__wrrap .sale__card .check__number span.minus {
-    display: inline-block;
-    width: 30px;
-    height: 20px;
-    text-align: center;
-    color: #fff;
-    border-radius: 50px 0 0 50px;
-    background-color: #d9d9d9;
-    cursor: pointer;
-}
-
-main.detal .detal__cart .sale__card .check__number input,
-section.sale .sale__wrrap .sale__card .check__number input,
-section.sale__catalog .sale__wrrap .sale__card .check__number input {
-    width: 40px;
-    text-align: center;
-    font-size: 16px;
-    color: #666666;
-    border: none;
-}
-
-main.detal .detal__cart .sale__card .check__number span.plus,
-section.sale .sale__wrrap .sale__card .check__number span.plus,
-section.sale__catalog .sale__wrrap .sale__card .check__number span.plus {
-    display: inline-block;
-    width: 30px;
-    height: 20px;
-    text-align: center;
-    color: #fff;
-    border-radius: 0 50px 50px 0;
-    background-color: #d9d9d9;
-    cursor: pointer;
-}
-
-
 /*                                                 cart modal                                                   */
 main.detal .detal__cart .sale__card.no_availabilaty .cart__modal,
 section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal,
@@ -1060,115 +1059,6 @@ section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .car
 }
 
 /*                                           cart form                                            */
-
-
-/*                                 cart modal                                               */
-
-main.detal .detal__cart .sale__card .card__price,
-section.sale .sale__wrrap .sale__card .card__price {
-    margin-top: 18px;
-    margin-bottom: 10px
-}
-
-main.detal .detal__cart .sale__card .card__price .price__text,
-section.sale .sale__wrrap .sale__card .card__price .price__text {
-    font-size: 27px;
-    font-weight: 500;
-    color: #262626;
-}
-
-main.detal .detal__cart .sale__card.no_availabilaty .card__price .price__text,
-section.sale .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {
-    font-size: 14px;
-    font-weight: 400;
-    color: #262626;
-}
-
-main.detal .detal__cart .sale__card .card__price button.cart__buy,
-section.sale .sale__wrrap .sale__card .card__price button.cart__buy {
-    position: relative;
-    width: 85px;
-    height: 35px;
-    border: none;
-    border-radius: 5px;
-    background-color: #7cbe49;
-    color: #fff;
-    outline: none;
-    text-align: center;
-    cursor: pointer;
-}
-
-section.sale .sale__wrrap .sale__card .card__price button.cart__buy img,
-section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order img {
-    width: 20px
-}
-
-main.detal .detal__cart .sale__card .card__price button.cart__buy:hover,
-section.sale .sale__wrrap .sale__card .card__price button.cart__buy:hover,
-section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy:hover {
-    background-color: rgb(63, 121, 21);
-}
-
-main.detal .detal__cart .sale__card .card__price button.cart__buy:after,
-section.sale .sale__wrrap .sale__card .card__price button.cart__buy:after {
-    content: "Додати до кошика";
-    position: absolute;
-    display: none;
-    width: 100%;
-    bottom: -13px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 10px;
-    font-weight: normal;
-    text-align: center;
-    color: #a6a6a6;
-}
-
-main.detal .detal__cart .sale__card.no_availabilaty button.cart__order,
-section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order {
-    position: relative;
-    width: 85px;
-    height: 35px;
-    margin-top: 5px;
-    border: none;
-    outline: none;
-    border-radius: 5px;
-    background-color: #FFC505;
-    text-align: center;
-    cursor: pointer;
-}
-
-main.detal .detal__cart .sale__card.no_availabilaty button.cart__order:hover,
-section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:hover,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order:hover {
-    background-color: rgb(216, 166, 3);
-}
-
-main.detal .detal__cart .sale__card.no_availabilaty button.cart__order:after,
-section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:after {
-    content: "Звязатися з нами";
-    position: absolute;
-    display: none;
-    width: 100%;
-    bottom: -13px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 10px;
-    font-weight: normal;
-    text-align: center;
-    color: #a6a6a6;
-}
-
-main.detal .detal__cart .sale__card .card__price button.cart__buy:hover:after,
-main.detal .detal__cart .sale__card.no_availabilaty button.cart__order:hover:after,
-section.sale .sale__wrrap .sale__card .card__price button.cart__buy:hover:after,
-section.sale .sale__wrrap .sale__card.no_availabilaty button.cart__order:hover:after {
-    display: block;
-}
-
-/*                                                                   Sale Card                              */
-
-/*                                                         Sale                                    */
 
 /*                                  Footer     */
 
@@ -1526,90 +1416,6 @@ section.sale__catalog .sale__wrrap .sale__card .card__img i.new__label {
     color: #c59b08;
 }
 
-
-/*                               catalog----  cart modal                                               */
-
-
-section.sale__catalog .sale__wrrap .sale__card .card__price {
-    margin-top: 18px;
-    margin-bottom: 10px;
-}
-
-section.sale__catalog .sale__wrrap .sale__card .card__price .price__text {
-    font-size: 30px;
-    font-weight: 400;
-    color: #262626;
-}
-
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {
-    font-size: 14px;
-    font-weight: 400;
-    color: #262626;
-}
-
-section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy {
-    position: relative;
-    width: 85px;
-    height: 35px;
-    border: none;
-    border-radius: 5px;
-    background-color: #7cbe49;
-    color: #fff;
-    outline: none;
-    text-align: center;
-    cursor: pointer;
-}
-
-section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy:after {
-    content: "Додати до кошика";
-    position: absolute;
-    display: none;
-    width: 100%;
-    bottom: -13px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 10px;
-    font-weight: normal;
-    text-align: center;
-    color: #a6a6a6;
-}
-
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order {
-    position: relative;
-    width: 85px;
-    height: 35px;
-    margin-top: 3px;
-    border: none;
-    outline: none;
-    border-radius: 5px;
-    background-color: #FFC505;
-    text-align: center;
-    cursor: pointer;
-}
-
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order:after {
-    content: "Звязатися з нами";
-    position: absolute;
-    display: none;
-    width: 100%;
-    bottom: -13px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 10px;
-    font-weight: normal;
-    text-align: center;
-    color: #a6a6a6;
-}
-
-section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy:hover:after,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order:hover:after {
-    display: block;
-}
-
-section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy img,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order img {
-    width: 20px
-}
 
 /*                 aside checkbox               */
 section.sale__catalog aside {
@@ -2393,7 +2199,7 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
         width: 70px;
     }
 
-    section.sale .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {
+    section.sale .sale__wrrap .sale__card.no_availabilaty .price__text {
         font-size: 16px;
     }
 
@@ -2563,7 +2369,7 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
             margin-right: 15px;
         }
 
-        section.sale .sale__wrrap .sale__card .card__price .price__text {
+        section.sale .sale__wrrap .sale__card .price__text {
             font-size: 25px;
         }
 
@@ -2684,7 +2490,7 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
             margin-right: 15px;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card .card__price .price__text {
+        section.sale__catalog .sale__wrrap .sale__card .price__text {
             font-size: 25px;
         }
 
@@ -2908,7 +2714,7 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
             font-size: 14px;
         }
 
-        main.detal .detal__cart .sale__card .card__price .price__text {
+        main.detal .detal__cart .sale__card .price__text {
             font-size: 25px;
         }
 
@@ -3028,7 +2834,7 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
             margin-right: 15px;
         }
 
-        section.sale .sale__wrrap .sale__card .card__price .price__text {
+        section.sale .sale__wrrap .sale__card .price__text {
             font-size: 25px;
         }
 
@@ -3882,7 +3688,7 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
             height: 480px;
         }
 
-        main.detal .detal__cart .sale__card .card__price .price__text {
+        main.detal .detal__cart .sale__card .price__text {
             font-size: 22px;
         }
 

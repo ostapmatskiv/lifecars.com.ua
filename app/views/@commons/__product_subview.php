@@ -8,24 +8,7 @@
             <i class="new__label">new</i>
         <?php } ?>
     </a>
-    <?php /*<div class="flex v-center card__rating">
-       <div class="rating">
-        <input type="radio" id="star5" name="rate" value="5" />
-        <label for="star5" title="text">5 stars</label>
-        <input type="radio" id="star4" name="rate" value="4" />
-        <label for="star4" title="text">4 stars</label>
-        <input type="radio" id="star3" name="rate" value="3" />
-        <label for="star3" title="text">3 stars</label>
-        <input type="radio" id="star2" name="rate" value="2" />
-        <label for="star2" title="text">2 stars</label>
-        <input type="radio" id="star1" name="rate" value="1" />
-        <label for="star1" title="text">1 star</label>
-       </div>
-     <div class="rating__comment">
-        <i class="rating__lebel">25</i>
-        <img src="../../style/icons/comment.png" alt="comment">
-     </div>
-    </div>*/ ?>
+   
     <div class="card__text">
         <?=$product->name?>
     </div>
@@ -39,25 +22,17 @@
             <p><?=$product->article_show?></p>
         </div>
     </div>
-    <div class="flex v-center card__check">
-        <div class="flex v-center check__pieces">
-            <i class="fas <?=$product->availability > 0 ? 'fa-check-circle' : 'fa-times-circle'?>"></i>
-            <p><?=$this->text('В наявності', 0)?> <span class="pieces"><?=$product->availability?></span> шт.</p>
-        </div>
-        <?php if($product->availability > 0) { ?>
+    <?php if($product->availability > 0) { ?>
+    <div class="price__text"><?=$product->price_format ?></div>
+    <div class="flex v-center card__price">
         <div class="flex check__number">
             <span class="minus">-</span>
             <input type="number" value="1" min="1" max="<?=$product->availability?>" />
             <span class="plus">+</span>
         </div>
-        <?php } ?>
-    </div>
-    <?php if($product->availability > 0) { ?>
-    <div class="flex v-center card__price">
-        <div class="price__text"><?=$product->price_format ?> ₴</div>
         <div class="price__cart">
             <button class="cart__buy" data-product_key="<?="{$product->wl_alias}-{$product->id}"?>" data-product_name="<?="{$product->manufacturer} {$product->article_show} {$product->name}"?>">
-                <img src="/style/icons/shopping-cart.png" alt="">
+                <img src="/style/icons/shopping-cart.png"> Купити
             </button>
         </div>
     </div>
@@ -126,4 +101,17 @@
             </button>
         </div>
     <?php } ?>
+    <div class="flex v-center card__check">
+        <div class="flex v-center check__pieces">
+            <i class="fas <?=$product->availability > 0 ? 'fa-check-circle' : 'fa-times-circle'?>"></i>
+            <p><?=$this->text('В наявності', 0)?> <span class="pieces"><?=$product->availability?></span> шт.</p>
+        </div>
+        <div class="flex v-center card__rating">
+            <div class="rating">
+                <?php for ($i=0; $i < 5; $i++) { 
+                    echo "<span>★ </span>";
+                } ?>
+            </div>
+        </div>
+    </div>
 </div>

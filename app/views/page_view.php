@@ -34,7 +34,7 @@
 	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>style/ws__main.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
 	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>assets/magnific-popup/magnific-popup.css">
-	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>style/style.css?v=0.0.7">
+	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>style/style.css?v=0.0.8">
 </head>
 <body>
 	<!-- Google Tag Manager (noscript) -->
