@@ -1,5 +1,11 @@
 /* @import url(fonts/miriadpro/font.css); */
 @import url(fonts/segoeui/font_s.css);
+@font-face {
+    font-family: Exo2;
+    src: url('fonts/exo2/Exo2-VariableFont_wght.ttf');
+    font-weight: 100 1000;
+    font-stretch: 25% 151%;
+}
 
 body {
     font-family: 'Segoe UI', Arial;
@@ -186,6 +192,7 @@ section.sale .sale__wrrap {
     border: 2px solid #fefefe;
     border-radius: 10px;
     position: relative;
+    font-family: Exo2;
     background: #fff
 }
 .sale__card.empty {
@@ -267,17 +274,11 @@ section.sale .sale__wrrap {
     display: table-cell;
     vertical-align: middle;
     font-size: 14px;
-    /*font-weight: 700;*/
     text-align: left;
     color: #000;
 }
-.sale__card .card__info {
-    /* margin-top: 15px; */
-    display: flex;
-}
-.sale__card .card__info .info__article {
-    margin-right: 5px
-}
+.sale__card .card__info { display: flex }
+.sale__card .card__info .info__article { margin-right: 5px }
 .sale__card .card__info .info__article p {
     font-size: 12px;
     padding-top: 5px;
@@ -304,9 +305,7 @@ section.sale .sale__wrrap {
     margin-left: 6px;
 }
 
-.sale__card .check__number {
-    width: 100px;
-}
+.sale__card .check__number { width: 90px }
 .sale__card .check__number span.minus,
 .sale__card .check__number span.plus {
     display: inline-block;
@@ -320,7 +319,7 @@ section.sale .sale__wrrap {
     cursor: pointer;
 }
 .sale__card .check__number input {
-    width: 45px;
+    width: 40px;
     text-align: center;
     font-size: 15px;
     color: #666;
@@ -337,6 +336,7 @@ section.sale .sale__wrrap {
     font-weight: 400;
     color: #262626;
     text-align: right;
+    margin: 5px 0;
 }
 .sale__card.no_availabilaty .card__price .price__text {
     font-size: 14px;
@@ -345,7 +345,7 @@ section.sale .sale__wrrap {
 
 .sale__card .card__price button.cart__buy {
     position: relative;
-    width: 130px;
+    width: 125px;
     height: 35px;
     border: none;
     border-radius: 5px;
@@ -354,6 +354,7 @@ section.sale .sale__wrrap {
     outline: none;
     text-align: center;
     cursor: pointer;
+    font-family: Exo2;
     font-size: 20px;
     text-transform: uppercase;
 }
@@ -403,6 +404,18 @@ section.sale .sale__wrrap {
     color: #a6a6a6;
 }
 .sale__card.no_availabilaty button.cart__order:hover:after { display: block }
+
+@media screen and (max-width: 1400px) {
+    .sale__card .check__number { width: 80px }
+    .sale__card .check__number input { width: 35px }
+    .sale__card .card__price button.cart__buy {
+        height: 33px;
+        width: 120px;
+    }
+}
+@media screen and (max-width: 1025px) {
+    .sale__card .card__price button.cart__buy span { display: none }
+}
 
 /*                                                                   Sale Card                              */
 
@@ -2470,101 +2483,101 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
         }
 
         /*     catalog---sale---card         */
-        section.sale__catalog .sale__wrrap .sale__card .card__img {
+        .sale__card .card__img {
             height: 200px;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card .card__text {
+        .sale__card .card__text {
             font-size: 16px;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card .card__info .info__article p {
+        .sale__card .card__info .info__article p {
             font-size: 14px;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card .card__info .info__name p {
+        .sale__card .card__info .info__name p {
             font-size: 14px;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card .card__info .info__article {
+        .sale__card .card__info .info__article {
             margin-right: 15px;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card .price__text {
+        .sale__card .price__text {
             font-size: 25px;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy {
+        .sale__card .card__price button.cart__buy {
             width: 70px;
             height: 30px;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order {
+        .sale__card.no_availabilaty button.cart__order {
             width: 70px;
             height: 30px;
             margin-top: 0px;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal {
+        .sale__card.no_availabilaty .cart__modal {
             height: 427px;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .card__price .price__text {
+        .sale__card.no_availabilaty .card__price .price__text {
+            margin: 12px 0 0 0;
             font-size: 14px;
             line-height: 1;
+            text-align: left;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order img {
-            width: 23px;
+        .sale__card.no_availabilaty button.cart__order img
+        .sale__card .card__price button.cart__buy img {
+            width: 20px;
+            margin-top: 5px;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy img {
-            width: 23px;
-        }
-
-        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {
+        .sale__card.no_availabilaty .cart__modal h5 {
             font-size: 25px;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal p {
+        .sale__card.no_availabilaty .cart__modal p {
             margin-top: 10px;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__name {
+        .sale__card.no_availabilaty .cart__modal .modal__name {
             margin-top: 10px;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__product {
+        .sale__card.no_availabilaty .cart__modal .modal__product {
             margin: 10px 0;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {
+        .sale__card.no_availabilaty .cart__modal .modal__phone a {
             font-size: 17px;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal span {
+        .sale__card.no_availabilaty .cart__modal span {
             font-size: 16px;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {
+        .sale__card.no_availabilaty .cart__modal button.modal__request {
             font-size: 16px;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card .card__price button.cart__buy:after,
-        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty button.cart__order:after {
+        .sale__card .card__price button.cart__buy:after,
+        .sale__card.no_availabilaty button.cart__order:after {
             content: "";
         }
 
-        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {
+        .sale__card.no_availabilaty .cart__modal .cart__form {
             padding: 5px 10px 31px 10px;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product,
-        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {
+        .sale__card.no_availabilaty .cart__modal .cart__form .form__product,
+        .sale__card.no_availabilaty .cart__modal .cart__form input {
             margin-top: 10px;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__btn {
+        .sale__card.no_availabilaty .cart__modal .cart__form .form__btn {
             font-size: 17px;
         }
 
@@ -3473,6 +3486,7 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
         main .pagination,
         section.sale__catalog .filter,
         section.sale__catalog aside.w25,
+        section.sale__catalog > aside.w25 + .w75,
         section.sale__catalog .product__type,
         section.sale__catalog .quality,
         section.sale__catalog .manufacturers,
