@@ -72,6 +72,12 @@ else
 		if($multilanguage_type == 'main domain')
 		{
 			$REQUEST_URI = explode('/', $_SERVER["REQUEST_URI"]);
+			if(isset($REQUEST_URI[1]))
+			{
+				$last = substr($REQUEST_URI[1], -1, 1);
+				if($last == '?')
+					$REQUEST_URI[1] = substr($REQUEST_URI[1], 0, -1);
+			}
 			if(isset($REQUEST_URI[1]) && in_array($REQUEST_URI[1], $_SESSION['all_languages']) && $REQUEST_URI[1] != $_SESSION['all_languages'][0])
 			{
 				$_SESSION['language'] = $REQUEST_URI[1];
