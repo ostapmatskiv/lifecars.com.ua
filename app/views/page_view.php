@@ -19,7 +19,15 @@
 	<?=html_entity_decode($_SESSION['option']->global_MetaTags, ENT_QUOTES)?>
     <?=html_entity_decode($_SESSION['alias']->meta, ENT_QUOTES)?>
 
-	<link rel="canonical" href="">
+    <!-- Google Tag Manager -->
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-MD3SRS2');</script>
+	<!-- End Google Tag Manager -->
+
+	<link rel="canonical" href="<?=SITE_URL_UK?>">
 	<link rel="alternate" hreflang="uk-UA" href="<?=SITE_URL_UK?>">
 	<link rel="alternate" hreflang="ru-UA" href="<?=SITE_URL_RU?>">
 	<link rel="shortcut icon" type="image/x-icon" href="<?=SERVER_URL?>favicon.ico">
@@ -29,6 +37,11 @@
 	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>style/style.css?v=0.0.7">
 </head>
 <body>
+	<!-- Google Tag Manager (noscript) -->
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MD3SRS2"
+	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	<!-- End Google Tag Manager (noscript) -->
+	
 	<?php
 		$site_tel_1 = $this->text('+38 096 0000 943', 0);
 		$site_tel_2 = $this->text('+38 093 0000 943', 0);
