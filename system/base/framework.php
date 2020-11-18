@@ -74,6 +74,11 @@ else
 			$REQUEST_URI = explode('/', $_SERVER["REQUEST_URI"]);
 			if(isset($REQUEST_URI[1]))
 			{
+				$r_uri = explode('?', $REQUEST_URI[1]);
+				$REQUEST_URI[1] = $r_uri[0];
+			}
+			if(isset($REQUEST_URI[1]))
+			{
 				$last = substr($REQUEST_URI[1], -1, 1);
 				if($last == '?')
 					$REQUEST_URI[1] = substr($REQUEST_URI[1], 0, -1);
