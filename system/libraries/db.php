@@ -34,6 +34,7 @@
  * Версія 2.7 (19.06.2020) - оновлено sitemap_*() - зміни системної таблиці wl_sitemap:link_sha1
                             оновлено getAliasImageSizes(), sitemap_cache_clear() => html_cache_clear() - робота з файловим кешем
                             додано getHTMLCacheKey(), getCacheContentKey(), $this->version
+   Версія 2.8 (05.08.2020) - додано redis_set(), redis_get(), redis_del(), redis_delByKey(), redis_ping(), redis_do(), $this->html_cache_in_redis
  */
 
 class Db {
@@ -41,7 +42,9 @@ class Db {
     private $connects = array();
     private $current = 0;
     private $result;
-    public $version = '2.7';
+    public $redis = false;
+    public $html_cache_in_redis = false;
+    public $version = '2.8';
     public $imageReSizes = array();
     public $count_db_queries = 0;
     public $showDBdump = false;
@@ -53,6 +56,16 @@ class Db {
     function __construct($cfg)
     {
         $this->newConnect($cfg['host'], $cfg['user'], $cfg['password'], $cfg['database']);
+
+        if(!empty($cfg['redis_host']))
+        {
+            $this->redis = new Redis();
+            $this->redis->connect($cfg['redis_host'], $cfg['redis_port']);
+            if(!empty($cfg['redis_auth']))
+                $this->redis->auth($cfg['redis_auth']);
+            if(!empty($cfg['html_cache_in_redis']))
+                $this->html_cache_in_redis = true;
+        }
     }
 
     /**
@@ -87,7 +100,9 @@ class Db {
 
             $this->count_db_queries++;
         }
-        if ($this->showDBdump || $this->saveDBlog) {
+
+        if ($this->showDBdump || $this->saveDBlog)
+        {
             $this->time_start = microtime(true);
             $this->mem_start = memory_get_usage();
             
@@ -707,18 +722,15 @@ class Db {
         $this->query_limit = false;
     }
 
+    // $do - `name` (register do command) from `wl_user_register_do`
     public function register($do, $additionally = '', $user = 0)
     {
-        $register = $this->getAllDataById('wl_user_register_do', $do, 'name');
-        if($register)
+        if($register = $this->getAllDataById('wl_user_register_do', $do, 'name'))
         {
+            $data = ['do' => $register->id, 'additionally' => $additionally, 'user' => $user];
             $data['date'] = time();
-            $data['do'] = $register->id;
             if($user == 0)
                 $data['user'] = $_SESSION['user']->id;
-            else
-                $data['user'] = $user;
-            $data['additionally'] = $additionally;
             if($this->insertRow('wl_user_register', $data))
                 return true;
         }
@@ -875,6 +887,68 @@ class Db {
         return true;
     }
 
+
+    public function redis_set($key, $data)
+    {
+        if(is_object($this->redis))
+        {
+            $key = str_replace('/', DIRSEP, $key);
+            $this->redis->set($key, $data);
+            return true;
+        }
+        return false;
+    }
+
+    public function redis_get($key)
+    {
+        if(is_object($this->redis))
+        {
+            $key = str_replace('/', DIRSEP, $key);
+            if($this->redis->exists($key) > 0)
+                return $this->redis->get($key);
+        }
+        return NULL;
+    }
+
+    public function redis_del($key)
+    {
+        if(is_object($this->redis))
+        {
+            $key = str_replace('/', DIRSEP, $key);
+            $this->redis->del($key);
+            return true;
+        }
+        return false;
+    }
+
+    public function redis_delByKey($key = '')
+    {
+        if(is_object($this->redis))
+        {
+            $key = str_replace('/', DIRSEP, $key);
+            if($allKeys = $this->redis->keys($key.'*'))
+            {
+                $this->redis->del($allKeys);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function redis_ping()
+    {
+        if(is_object($this->redis))
+            return $this->redis->ping();
+        return false;
+    }
+
+    public function redis_do($command = false, $value = NULL)
+    {
+        if(is_object($this->redis) && $command)
+            return $this->redis->$command($value);
+        return false;
+    }
+
     public function cache_add($key, $data, $alias = false, $json = true)
     {
         if(!$alias)
@@ -883,6 +957,18 @@ class Db {
             $alias = 'page_404';
         if($_SESSION['language'] && $_SESSION['language'] != $_SESSION['all_languages'][0])
             $alias .= '_'.$_SESSION['language'];
+
+        if(($json || $this->html_cache_in_redis) && is_object($this->redis))
+        {
+            $redis_key = $alias . DIRSEP . $key . '.json';
+            if($json)
+                $data = serialize($data);
+            else
+                $redis_key = $alias . DIRSEP . $key . '.html';
+            $this->redis_set($redis_key, $data);
+            return true;
+        }
+
         $key = str_replace('/', DIRSEP, $key);
         $path = $alias . DIRSEP . $key . '.json';
         $dirs = explode(DIRSEP, $path);
@@ -914,18 +1000,29 @@ class Db {
     {
         if(!$alias)
             $alias = $_SESSION['alias']->alias;
-        if($_SESSION['alias']->code >= 300)
-            $alias = 'page_404';
+        // if($_SESSION['alias']->code >= 300)
+        //     $alias = 'page_404';
         if($_SESSION['language'] && $_SESSION['language'] != $_SESSION['all_languages'][0])
             $alias .= '_'.$_SESSION['language'];
         if($json)
         {
+            if(is_object($this->redis))
+            {
+                $data = $this->redis_get($alias . DIRSEP . $key . '.json');
+                if($data === NULL)
+                    return NULL;
+                return unserialize($data);
+            }
+
             $path = CACHE_PATH . $alias . DIRSEP . $key . '.json';
             if(file_exists($path))
                 return unserialize(file_get_contents($path));
         }
         else
         {
+            if($this->html_cache_in_redis && is_object($this->redis))
+                return $this->redis_get($alias . DIRSEP . $key . '.html');
+
             $path = CACHE_PATH . $alias . DIRSEP . $key . '.html';
             if(file_exists($path))
                 return file_get_contents($path);
@@ -943,21 +1040,42 @@ class Db {
                 $alias_lang = $alias;
                 if($language != $_SESSION['all_languages'][0])
                     $alias_lang = $alias .'_'.$language;
-                $path = CACHE_PATH . $alias_lang . DIRSEP . $key . '.json';
-                if(!$json)
-                    $path = CACHE_PATH . $alias_lang . DIRSEP . $key . '.html';
-                if(file_exists($path))
-                    unlink($path);
+
+                if(($json || $this->html_cache_in_redis) && is_object($this->redis))
+                {
+                    if($json)
+                        $this->redis_del($alias_lang . DIRSEP . $key . '.json');
+                    else
+                        $this->redis_del($alias_lang . DIRSEP . $key . '.html');
+                }
+                else
+                {
+                    $path = CACHE_PATH . $alias_lang . DIRSEP . $key . '.json';
+                    if(!$json)
+                        $path = CACHE_PATH . $alias_lang . DIRSEP . $key . '.html';
+                    if(file_exists($path))
+                        unlink($path);
+                }
             }
             return true;
         }
         else
         {
-            $path = CACHE_PATH . $alias . DIRSEP . $key . '.json';
-            if(!$json)
-                $path = CACHE_PATH . $alias_lang . DIRSEP . $key . '.html';
-            if(file_exists($path))
-                return unlink($path);
+            if(($json || $this->html_cache_in_redis) && is_object($this->redis))
+            {
+                if($json)
+                    $this->redis_del($alias . DIRSEP . $key . '.json');
+                else
+                    $this->redis_del($alias . DIRSEP . $key . '.html');
+            }
+            else
+            {
+                $path = CACHE_PATH . $alias . DIRSEP . $key . '.json';
+                if(!$json)
+                    $path = CACHE_PATH . $alias_lang . DIRSEP . $key . '.html';
+                if(file_exists($path))
+                    return unlink($path);
+            }
         }
         
         return false;
@@ -973,9 +1091,17 @@ class Db {
                 $alias_lang = $alias;
                 if($language != $_SESSION['all_languages'][0])
                     $alias_lang = $alias .'_'.$language;
+                $path = $alias_lang;
+                if($key)
+                    $path .= DIRSEP . $key;
+
+                if(is_object($this->redis))
+                    $this->redis_delByKey($path);
+
                 $path = CACHE_PATH . $alias_lang;
                 if($key)
                     $path .= DIRSEP . $key;
+
                 if(is_dir($path))
                 {
                     $data = new data();
@@ -989,6 +1115,10 @@ class Db {
             $path = CACHE_PATH . $alias;
             if($key)
                 $path .= DIRSEP . $key;
+
+            if(is_object($this->redis))
+                $this->redis_delByKey($path);
+
             if(is_dir($path))
             {
                 $data = new data();
@@ -1052,22 +1182,27 @@ class Db {
         }
     }
 
-    private function showTime($return = false)
+    public function showTime($return = false)
     {
         $mem_end = memory_get_usage();
         $time_end = microtime(true);
-        $time = $time_end - $this->time_start;
-        $mem = $mem_end - $this->mem_start;
+
+        if ($this->showDBdump || $this->saveDBlog)
+        {
+            $time = $time_end - $this->time_start;
+            $mem = $mem_end - $this->mem_start;
+            $mem = round($mem/1024, 5);
+            if($mem > 1024)
+            {
+                $mem = round($mem/1024, 5);
+                $mem = (string) $mem . ' Мб';
+            }
+            else
+                $mem = (string) $mem . ' Кб';
+        }
+
         $timeGlobe = $time_end - $GLOBALS['time_start'];
         $memGlobe = $mem_end - $GLOBALS['mem_start'];
-        $mem = round($mem/1024, 5);
-        if($mem > 1024)
-        {
-            $mem = round($mem/1024, 5);
-            $mem = (string) $mem . ' Мб';
-        }
-        else
-            $mem = (string) $mem . ' Кб';
         $memGlobe = round($memGlobe/1024, 5);
         if($memGlobe > 1024)
         {
@@ -1076,6 +1211,7 @@ class Db {
         }
         else
             $memGlobe = (string) $memGlobe . ' Кб';
+
         if($return)
         {
             $text = '';
@@ -1086,11 +1222,14 @@ class Db {
         }
         else
         {
-            if(isset($this->result->num_rows))
+            if($this->showDBdump && isset($this->result->num_rows))
                 echo "<br> Результатів: ".$this->result->num_rows;
             else
                 echo '<br>';
-            echo ' Час виконання: '.round($time, 5).' сек. Використано памяті: '.$mem.'. Від старту: Час виконання: '.round($timeGlobe, 5).' сек. Використано памяті: '.$memGlobe.' <hr>';
+            if ($this->showDBdump || $this->saveDBlog)
+                echo ' Час виконання: '.round($time, 5).' сек. Використано памяті: '.$mem.'. Від старту: Час виконання: '.round($timeGlobe, 5).' сек. Використано памяті: '.$memGlobe.' <hr>';
+            else
+                echo ' Від старту: Час виконання: '.round($timeGlobe, 5).' сек. Використано памяті: '.$memGlobe.'. Запитів до БД: '.$this->count_db_queries.' <hr>';
         }
     }
 
