@@ -24,6 +24,8 @@
  * Версія 1.4 (16.10.2019) Додано formatPhone() - форматний вивід номеру телефону
  * Версія 1.4.1 (18.11.2019) Додано parse_size() - отримати розмір у байтах
  * Версія 1.4.2 (19.11.2019) Додано get_file_path() - сформувати шлях до файлу для wl_files, wl_images..
+ * Версія 1.4.3 (05.08.2020) До url() додано $as_text - як текст а не масив
+ * Версія 1.4.4 (22.09.2020) xss_clean() може обробляти масиви, private => public
  */
 
 class Data {
@@ -98,8 +100,10 @@ class Data {
 		return null;
 	}
 
-	public function url()
+	public function url($as_text = false)
 	{
+		if($as_text)
+			return implode('/', $this->uri_data);
 		return $this->uri_data;
 	}
 
@@ -277,9 +281,16 @@ class Data {
 	/**
 	 * Очищуємо від xss
 	 */
-	private function xss_clean($value)
+	public function xss_clean($value)
     {
-		return htmlspecialchars(trim($value), ENT_QUOTES);
+    	if(is_array($value))
+    		foreach ($value as $key => &$v) {
+    			$v = $this->xss_clean($v);
+    		}
+    	else if(is_string($value))
+			return htmlspecialchars(trim($value), ENT_QUOTES);
+		else
+			return $value;
 	}
 
 	public function latterUAtoEN($text)
@@ -290,8 +301,7 @@ class Data {
         for ($i = 0; $i < count($ua); $i++) {
             $text = mb_eregi_replace($ua[$i], $en[$i], $text);
         }
-        $text = mb_eregi_replace("[-]{2,}", '-', $text);
-        return $text;
+        return mb_eregi_replace("[-]{2,}", '-', $text);
     }
 
     public function removeDirectory($dir)
