@@ -1,6 +1,6 @@
 <div id="nova-poshta-method" class="flex">
-    <div data-tab="warehouse" class="w50<?=(!empty($userShipping) && $userShipping->method == 'courier') ? '':' active'?>"><?=$this->text('На відділення')?></div>
-    <div data-tab="courier" class="w50<?=(!empty($userShipping) && $userShipping->method == 'courier') ? ' active':''?>"><?=$this->text("Кур'єром")?></div>
+    <div data-tab="warehouse" class="w50<?=(!empty($userShipping->method) && $userShipping->method == 'courier') ? '':' active'?>"><?=$this->text('На відділення')?></div>
+    <div data-tab="courier" class="w50<?=(!empty($userShipping->method) && $userShipping->method == 'courier') ? ' active':''?>"><?=$this->text("Кур'єром")?></div>
 </div>
 
 <input type="hidden" name="nova-poshta-method" value="warehouse">
