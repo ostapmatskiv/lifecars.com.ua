@@ -10,9 +10,9 @@
  <!-- <label><?=$this->text('Місто')?></label> -->
 <input type="text" name="novaposhta-city" placeholder="<?=$this->text('Місто')?>" value="<?=$userShipping->city ?? ''?>" autocomplete="off" class="form-control" required>
 
-<div id="nova-poshta-warehouse" <?=(!empty($userShipping) && $userShipping->method == 'courier') ? 'class="hide"':''?>>
+<div id="nova-poshta-warehouse" <?=(!empty($userShipping->method) && $userShipping->method == 'courier') ? 'class="hide"':''?>>
     <!-- <label><?=$this->text('Відділення')?></label> -->
-    <select name="nova-poshta-warehouse" class="form-control" <?=(!empty($userShipping) && $userShipping->method == 'courier') ? '':'required'?>>
+    <select name="nova-poshta-warehouse" class="form-control" <?=(!empty($userShipping->method) && $userShipping->method == 'courier') ? '':'required'?>>
         <?php $info = '';
         if (!empty($userShipping->city_ref) && !empty($userShipping->warehouse_ref)) {
             if($warehouses = $this->getWarehouses($userShipping->city_ref))
@@ -33,10 +33,10 @@
     <div class="info <?=empty($info) ? 'hide' : ''?>"><?=$info?></div>
 </div>
 
-<div id="nova-poshta-courier" <?=(!empty($userShipping) && $userShipping->method == 'courier') ? '':'class="hide"'?>>
+<div id="nova-poshta-courier" <?=(!empty($userShipping->method) && $userShipping->method == 'courier') ? '':'class="hide"'?>>
     <!-- <label><?=$this->text('Вулиця')?></label> -->
-    <input type="text" name="novaposhta-address-street" class="form-control" placeholder="<?=$this->text('Вулиця')?>" value="<?=$userShipping->address_street ?? ''?>" <?=(!empty($userShipping) && $userShipping->method == 'courier') ? 'required':''?>>
-    <input type="text" name="novaposhta-address-house" class="form-control" placeholder="<?=$this->text('Номер будинку/та квартри')?>" value="<?=$userShipping->address_house ?? ''?>" <?=(!empty($userShipping) && $userShipping->method == 'courier') ? 'required':''?>>
+    <input type="text" name="novaposhta-address-street" class="form-control" placeholder="<?=$this->text('Вулиця')?>" value="<?=$userShipping->address_street ?? ''?>" <?=(!empty($userShipping->method) && $userShipping->method == 'courier') ? 'required':''?>>
+    <input type="text" name="novaposhta-address-house" class="form-control" placeholder="<?=$this->text('Номер будинку/та квартри')?>" value="<?=$userShipping->address_house ?? ''?>" <?=(!empty($userShipping->method) && $userShipping->method == 'courier') ? 'required':''?>>
 </div>
 
 
