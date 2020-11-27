@@ -1,6 +1,6 @@
-<div id="nova-poshta-method" class="flex hide">
-    <div data-tab="warehouse" class="w50 active"><?=$this->text('На відділення')?></div>
-    <div data-tab="courier" class="w50"><?=$this->text("Кур'єром")?></div>
+<div id="nova-poshta-method" class="flex">
+    <div data-tab="warehouse" class="w50<?=(!empty($userShipping) && $userShipping->method == 'courier') ? '':' active'?>"><?=$this->text('На відділення')?></div>
+    <div data-tab="courier" class="w50<?=(!empty($userShipping) && $userShipping->method == 'courier') ? ' active':''?>"><?=$this->text("Кур'єром")?></div>
 </div>
 
 <input type="hidden" name="nova-poshta-method" value="warehouse">
@@ -10,9 +10,9 @@
  <!-- <label><?=$this->text('Місто')?></label> -->
 <input type="text" name="novaposhta-city" placeholder="<?=$this->text('Місто')?>" value="<?=$userShipping->city ?? ''?>" autocomplete="off" class="form-control" required>
 
-<div id="nova-poshta-warehouse">
+<div id="nova-poshta-warehouse" <?=(!empty($userShipping) && $userShipping->method == 'courier') ? 'class="hide"':''?>>
     <!-- <label><?=$this->text('Відділення')?></label> -->
-    <select name="nova-poshta-warehouse" class="form-control" required>
+    <select name="nova-poshta-warehouse" class="form-control" <?=(!empty($userShipping) && $userShipping->method == 'courier') ? '':'required'?>>
         <?php $info = '';
         if (!empty($userShipping->city_ref) && !empty($userShipping->warehouse_ref)) {
             if($warehouses = $this->getWarehouses($userShipping->city_ref))
@@ -33,18 +33,19 @@
     <div class="info <?=empty($info) ? 'hide' : ''?>"><?=$info?></div>
 </div>
 
-<div id="nova-poshta-courier" class="hide">
+<div id="nova-poshta-courier" <?=(!empty($userShipping) && $userShipping->method == 'courier') ? '':'class="hide"'?>>
     <!-- <label><?=$this->text('Вулиця')?></label> -->
-    <input type="text" name="novaposhta-address-street" class="form-control" placeholder="<?=$this->text('Вулиця')?>" value="<?=$userShipping->address_street ?? ''?>">
-    <input type="text" name="novaposhta-address-house" class="form-control" placeholder="<?=$this->text('Номер будинку/та квартри')?>" value="<?=$userShipping->address_house ?? ''?>">
+    <input type="text" name="novaposhta-address-street" class="form-control" placeholder="<?=$this->text('Вулиця')?>" value="<?=$userShipping->address_street ?? ''?>" <?=(!empty($userShipping) && $userShipping->method == 'courier') ? 'required':''?>>
+    <input type="text" name="novaposhta-address-house" class="form-control" placeholder="<?=$this->text('Номер будинку/та квартри')?>" value="<?=$userShipping->address_house ?? ''?>" <?=(!empty($userShipping) && $userShipping->method == 'courier') ? 'required':''?>>
 </div>
 
 
 
 <?php $novaposhta_selected = $this->data->re_post('shipping-novaposhta');
 if(empty($novaposhta_selected) && $userShipping && $userShipping->department)
-    $novaposhta_selected = $userShipping->department; 
-//$this->load->js_init('initShipping()'); ?>
+    $novaposhta_selected = $userShipping->department;
+if($userShipping && $userShipping->initShipping)
+    $this->load->js_init('initShipping()'); ?>
 <script>
     window.onload = function ( ) {
         
@@ -118,6 +119,10 @@ if(empty($novaposhta_selected) && $userShipping && $userShipping->department)
             var option = $(this).find(':selected');
             $('input[name="nova-poshta-warehouse-ref"]').val(option.data('id'));
             $("#nova-poshta-warehouse .info").html(option.data('info')).removeClass('hide')
+            if (typeof setPercents === "function")
+                setPercents();
+        });
+        $('input[name="novaposhta-address-street"], input[name="novaposhta-address-house"]').change(function() {
             if (typeof setPercents === "function")
                 setPercents();
         });

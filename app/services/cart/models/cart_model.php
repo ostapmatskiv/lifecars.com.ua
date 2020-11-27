@@ -563,7 +563,7 @@ class cart_model
 		{
 			if($user == 0)
 				$user = $_SESSION['user']->id;
-			$this->db->select($this->table(), 'shipping_id as method, shipping_info as info, payment_alias, payment_id', $user, 'user')
+			$this->db->select($this->table(), 'shipping_id as method_id, shipping_info as info, payment_alias, payment_id', $user, 'user')
 					->join('wl_users', 'name as userName', $user)
 					->join('wl_user_info', 'value as userPhone', array('user' => $user, 'field' => 'phone'))
 					->order('id DESC')

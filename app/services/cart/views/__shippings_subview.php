@@ -5,8 +5,8 @@ $shippingInfo = $shippings[0]->info;
 $shippingWlAlias = $shippings[0]->wl_alias;
 if(count($shippings) > 1) {
     $selected = $this->data->re_post('shipping-method');
-    if(empty($selected) && $userShipping && $userShipping->method)
-        $selected = $userShipping->method;
+    if(empty($selected) && $userShipping && $userShipping->method_id)
+        $selected = $userShipping->method_id;
     foreach ($shippings as $i => $method) { ?>
         <label>
             <input type="radio" name="shipping-method" value="<?=$method->id?>" <?php if($selected == $method->id) { echo 'checked'; $shippingType = $method->type; $shippingInfo = $method->info; $shippingWlAlias = $method->wl_alias; } ?> onchange="changeShipping(this)" <?=$i == 0?'required':''?>>
@@ -48,8 +48,10 @@ if(empty($address) && $userShipping && $userShipping->address)
 </div>
 
 <div id="Shipping_to_cart">
-	<?php if(false && $shippingWlAlias != $_SESSION['alias']->id)
-		$this->load->function_in_alias($shippingWlAlias, '__get_Shipping_to_cart', $userShipping); ?>
+	<?php if(!empty($userShipping) && $shippingWlAlias != $_SESSION['alias']->id) {
+        $userShipping->initShipping = true;
+		$this->load->function_in_alias($shippingWlAlias, '__get_Shipping_to_cart', $userShipping);
+    } ?>
 </div>
 
 <h4><?=$this->text('Отримувач')?></h4>

@@ -1,4 +1,19 @@
 <link rel="stylesheet" type="text/css" href="<?=SERVER_URL.'style/'.$_SESSION['alias']->alias.'/order.css'?>">
+
+<?php if(!empty($_SESSION['notify']->errors)) { ?>
+   <div class="alert alert-danger">
+        <span class="close" data-dismiss="alert">×</span>
+        <h4><i class="fas fa-exclamation-triangle"></i> <?=(isset($_SESSION['notify']->title)) ? $_SESSION['notify']->title : $this->text('Помилка!', 0)?></h4>
+        <p><?=$_SESSION['notify']->errors?></p>
+    </div>
+<?php } elseif(!empty($_SESSION['notify']->success)) { ?>
+    <div class="alert alert-success">
+        <span class="close" data-dismiss="alert">×</span>
+        <h4><i class="fas fa-check"></i> <?=(isset($_SESSION['notify']->title)) ? $_SESSION['notify']->title : $this->text('Успіх!', 0)?></h4>
+        <p><?=$_SESSION['notify']->success?></p>
+    </div>
+<?php } unset($_SESSION['notify']); ?>
+
 <main>
 <h1><?=$this->text('Замовлення')?> #<?= $cart->id?> <?=$this->text('від')?> <?= date('d.m.Y H:i', $cart->date_edit)?></h1>
 <p><?=$this->text('Статус замовлення')?>: <strong><?= $cart->status_name ?></strong>. <?=$this->text('Статус оплати')?>: <strong><?= empty($cart->payed) ? 'Очікує оплати' : 'Оплачено' ?></strong></p>

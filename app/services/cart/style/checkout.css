@@ -88,3 +88,38 @@
 #cart #oferta a { display: inline; text-decoration: underline }
 @media(max-width: 1023px){#cart .price-box { position: inherit !important; margin-bottom: 15px }}
 @media(max-width: 767px){ #cart > a.right { width: 100%; text-align: center } }
+
+
+@-webkit-keyframes grow
+{
+    0%{-webkit-transform:scale(1);}
+    50%{-webkit-transform:scale(1.5);}
+    100%{-webkit-transform:scale(1);}
+}
+@-moz-keyframes grow
+{
+    0%{-moz-transform:scale(1);}
+    50%{-moz-transform:scale(1.5);}
+    100%{-moz-transform:scale(1);}
+}
+@-ms-keyframes grow
+{
+    0%{-ms-transform:scale(1);}
+    50%{-ms-transform:scale(1.5);}
+    100%{-ms-transform:scale(1);}
+}
+#cart #oferta i.far.fa-check-circle {
+    color: #f52323;
+    -webkit-animation-name: grow;
+    -webkit-animation-duration: 3s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-name: grow;
+    -moz-animation-duration: 3s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
+    -ms-animation-name: grow;
+    -ms-animation-duration: 3s;
+    -ms-animation-iteration-count: infinite;
+    -ms-animation-timing-function: linear;
+}

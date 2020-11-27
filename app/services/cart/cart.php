@@ -986,7 +986,11 @@ class cart extends Controller {
             $this->load->smodel('cart_model');
             $userShipping = $this->cart_model->getUserShipping();
             if($shipping = $this->cart_model->getShippings(array('id' => $id, 'active' => 1)))
+            {
+                if($userShipping)
+                    $userShipping->initShipping = false;
                 $this->load->function_in_alias($shipping[0]->wl_alias, '__get_Shipping_to_cart', $userShipping);
+            }
         }
     }
 
