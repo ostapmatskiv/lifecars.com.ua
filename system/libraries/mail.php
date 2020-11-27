@@ -4,6 +4,8 @@
  * Версія 2.0 (05.03.2019) підключено smtp через Swift_Mailer
  * Версія 2.1 (22.10.2019) додано fromName(, addAttach() для Swift_Mailer
  * Версія 2.2 (10.05.2020) додано addToSchedule() - відкладену відправку листів
+ * Версія 2.2.1 (17.11.2020) змінено $this->to() - мультиемейл відправка
+ * Версія 2.2.2 (27.11.2020) fix $this->to()
  */
 
 class Mail extends Controller {
@@ -62,7 +64,13 @@ class Mail extends Controller {
 
     public function to($send_to)
     {
-        $this->to = $send_to;
+        $this->to = [];
+        $send_to = str_replace([',', ' ', ';'], ',', $send_to);
+        foreach (explode(',', $send_to) as $to) {
+            $to = trim($to);
+            if(!empty($to))
+                $this->to[] = $to;
+        }
     }
 
     public function replyTo($replyTo)
@@ -121,7 +129,7 @@ class Mail extends Controller {
             $sent_mail->from = $this->fromName .' '.$this->from;
         else
             $sent_mail->from = $this->from;
-        $sent_mail->to = $this->to;
+        $sent_mail->to = implode(', ', $this->to);
         $sent_mail->replyTo = $this->replyTo;
         $sent_mail->subject = $this->subject;
         $sent_mail->message = $this->message;
@@ -136,7 +144,7 @@ class Mail extends Controller {
                     $from = [$this->from => $this->fromName];
                 $message = (new Swift_Message($this->subject))
                           ->setFrom($from)
-                          ->setTo(explode(', ', $this->to))
+                          ->setTo($this->to)
                           ->setBody($this->message, 'text/html');
                 if($this->replyTo)
                     $message->setReplyTo($this->replyTo);
@@ -162,7 +170,7 @@ class Mail extends Controller {
                     $this->addToSchedule(true);
                 if($_SERVER["SERVER_NAME"] == 'localhost')
                     return $sent_mail;
-                mail($this->to, $this->subject, $this->message, $headers);
+                mail(implode(', ', $this->to), $this->subject, $this->message, $headers);
             }
         }
         else
@@ -273,7 +281,7 @@ class Mail extends Controller {
         $mail['date'] = time();
         $mail['from'] = $this->from;
         $mail['fromName'] = $this->fromName;
-        $mail['to'] = $this->to;
+        $mail['to'] = implode(', ', $this->to);
         $mail['replyTo'] = $this->replyTo;
         $mail['subject'] = $this->subject;
         $mail['message'] = $this->message;
