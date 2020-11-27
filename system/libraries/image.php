@@ -15,6 +15,7 @@
  * Версія 1.3 (24.11.2018) - додано можливість (якщо сервер дозволяє php.ini)/повідомлення про молку для заливки фотографій великого розміру
  * Версія 1.3.1 (11.12.2019) - виправлено збереження файлів у jpeg форматі
  * Версія 1.4 (30.06.2020) - додано підтримку svg
+ * Версія 1.4.1 (15.10.2020) - додано setName(), getName(). return upload/uploadArray()
  */
 
 class Image {
@@ -30,6 +31,20 @@ class Image {
     private $max_size = 52428;
     private $errors = array();
 	
+	/*
+     * Примусове задання назви зображення
+	 * Задавати перед save()
+     */
+	public function setName($name)
+	{
+		if(!empty($name))
+			$this->name = $name;
+	}
+
+	public function getName()
+	{
+		return $this->name;
+	}
 	
 	/*
      * Примусове задання розширення зображення
@@ -197,7 +212,7 @@ class Image {
 							if($name == '') $name = stripslashes(substr($_FILES[$img_in]['name'], 0, $pos - 1));
                             $path = $img_out.$name.'.'.$ext;
                             move_uploaded_file($_FILES[$img_in]['tmp_name'], $path);
-                            $this->loadImage($img_out, $name, $ext);
+                            return $this->loadImage($img_out, $name, $ext);
                         }
                         else
                         {
@@ -251,7 +266,7 @@ class Image {
 							if($name == '') $name = stripslashes(substr($_FILES[$img_in]['name'], 0, $pos - 1));
                             $path = $img_out.$name.'.'.$ext;
                             move_uploaded_file($_FILES[$img_in]['tmp_name'][$i], $path);
-                            $this->loadImage($img_out, $name, $ext);
+                            return $this->loadImage($img_out, $name, $ext);
                         }
                         else
                         {
