@@ -789,9 +789,11 @@ class cart extends Controller {
                     if(!empty($delivery['price']))
                         $cart['delivery_price'] = $this->load->function_in_alias($products[0]->product_alias, '__formatPrice', $delivery['price']);
                     $cart['payment'] = $payment ?? '';
+
+                    $email_manager_notify = $_SESSION['option']->email_manager ?? SITE_EMAIL;
                     
                     $this->mail->sendTemplate('checkout', $_SESSION['user']->email, $cart);
-                    $this->mail->sendTemplate('checkout_manager', SITE_EMAIL, $cart);
+                    $this->mail->sendTemplate('checkout_manager', $email_manager_notify, $cart);
 
                     if($payment && $payment->wl_alias > 0)
                     {
