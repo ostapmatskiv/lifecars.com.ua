@@ -44,23 +44,25 @@ class wl_comments_model {
 		if(empty($_POST['alias']))
 			return false;
 
-		$_SESSION['notify']->success = 'Thanks for your review. <br>Travelers will be happy to read it!';
+		$_SESSION['notify']->success = 'Thanks for your review.';
 
 		$inputs = array('content', 'alias', 'rating', 'comment');
 		$data = $this->data->prepare($inputs);
-		$data['parent'] = 0;
+		$data['parent'] = $data['reply'] = 0;
 		$data['user'] = $user;
 		$data['date_add'] = time();
 
 		$data['status'] = 2;
 		if(preg_match("~(http|https|ftp|ftps|href)~", $data['comment']))
+		{
+			$_SESSION['notify']->success = 'Thanks for your review. <br>The review will be published after verification';
 			$data['status'] = 3;
+		}
 
 		if(!empty($_FILES['images']['name'][0]))
 		{
-			$_SESSION['notify']->success = 'Thanks for your review. <br>We will email you as soon as it is published.';
-			if(empty($_SESSION['user']->id))
-				$data['status'] = 3;
+			// if(empty($_SESSION['user']->id))
+			// 	$data['status'] = 3;
 			if($image_name = $this->data->post('image_name'))
 			{
 				if(count($_FILES['images']['name']) > 1)
@@ -109,6 +111,7 @@ class wl_comments_model {
 			}
 		}
 
+		unset($_SESSION['_POST']);
 		return $this->db->insertRow('wl_comments', $data);
 	}
 

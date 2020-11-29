@@ -43,11 +43,22 @@ class wl_Comments extends Controller {
     {
         if(isset($_POST['id']) && is_numeric($_POST['id']))
         {
-            $inputs = array('status', 'images', 'rating', 'comment');
+            $inputs = array('status', 'images', 'rating', 'comment', 'date_add' => 'date');
             $data = $this->data->prepare($inputs);
+            if($time = $this->data->post('time_add'))
+            {
+                $time = explode(':', $time);
+                if(count($time) == 2)
+                {
+                    $h = (int) $time[0];
+                    $i = (int) $time[1];
+                    $data['date_add'] += $h * 3600 + $i * 60;
+                }
+            }
             if($data['images'])
                 $data['images'] = str_replace(array("\r\n", "\n", "\r"), '|||', $data['images']);
-
+            $data['manager'] = $_SESSION['user']->id;
+            $data['date_manage'] = time();
             $this->db->updateRow('wl_comments', $data, $_POST['id']);
         }
         $this->redirect();
@@ -90,9 +101,11 @@ class wl_Comments extends Controller {
         $inputs = array('alias', 'content', 'parent', 'comment');
         $data = $this->data->prepare($inputs);
         $data['status'] = 1;
+        $data['reply'] = 0;
         $data['user'] = $data['manager'] = $_SESSION['user']->id;
         $data['date_add'] = $data['date_manage'] = time();
-        $this->db->insertRow('wl_comments', $data);
+        if($this->db->insertRow('wl_comments', $data))
+            $this->db->executeQuery("UPDATE `wl_comments` SET `reply` = `reply` + 1, `manager` = '{$_SESSION['user']->id}', `date_manage` = '{$data['date_manage']}' WHERE `id` = ".$data['parent']);
         $this->redirect();
     }
 

@@ -38,7 +38,7 @@
                                             <input type="checkbox" name="row[]" value="<?=$comment->id?>">
                                         </td>
                                         <td>
-                                            <a href="<?=SITE_URL?>admin/wl_comments/<?=$comment->id?>"><i class="fa fa-pencil"></i></a> <?=$comment->id?>
+                                            <a href="<?=SITE_URL?>admin/wl_comments/<?=$comment->id?>"><i class="fa fa-pencil"></i> <?=$comment->id?></a>
                                         </td>
                                         <td>
                                             <a href="<?=SITE_URL.$comment->link?>#comment-<?=$comment->id?>" target="_blank" style="text-decoration: none;">
@@ -48,9 +48,9 @@
                                                 <?=$this->data->getShortText($comment->page_name, 30); ?>
                                             </a>                                
                                         </td>
-                                        <td><?=$this->db->getCount('wl_comments', $comment->id, 'parent'); ?></td>
-                                        <td><?=$comment->user_name?></td>
-                                        <td><div><?=$this->data->getShortText($comment->comment, 40) ?>..</div></td>
+                                        <td><?=$comment->reply?></td>
+                                        <td><?=$comment->user_name?> / <?=$comment->user_email?></td>
+                                        <td><a href="<?=SITE_URL?>admin/wl_comments/<?=$comment->id?>"><?=$this->data->getShortText($comment->comment, 40) ?>..</a></td>
                                         <td><?php switch ($comment->status) {
                                             case 1:
                                                 echo('Активний');

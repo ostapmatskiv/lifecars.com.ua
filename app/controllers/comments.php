@@ -1,6 +1,8 @@
 ﻿<?php 
 
 class Comments extends Controller {
+
+    private $mail_notify_to = 'SITE_EMAIL';
 				
     function _remap($method)
     {
@@ -14,7 +16,7 @@ class Comments extends Controller {
     {
         $this->wl_alias_model->setContent();
         $this->load->model('wl_comments_model');
-        $comments = $this->wl_comments_model->get(array('status' => array(1, 2)));
+        $comments = $this->wl_comments_model->get(array('status' => array(1, 2), 'parent' => 0));
     	$this->load->page_view('comments_view', array('comments' => $comments, 'showAddForm' => false));
     }
 
@@ -58,6 +60,8 @@ class Comments extends Controller {
                     $name = trim($this->data->post('name'));
                     if($user = $this->db->getAllDataById('wl_users', $this->data->post('email'), 'email'))
                     {
+                        if(!empty($user->password))
+                            $this->redirect('login');
                         if($name != $user->name)
                         {
                             $this->db->updateRow('wl_users', array('name' => $name), $user->id);
@@ -76,7 +80,7 @@ class Comments extends Controller {
                             $userId = $user->id;
                     }
                 }
-$anchor = '#comments';
+$anchor = '#comments'; 
                 if($userId > 0)
                 {
                     $this->load->model('wl_comments_model');
@@ -132,6 +136,15 @@ $anchor = '#comments';
                                     }
                                 }
                             }
+                        }
+
+                        if($this->mail_notify_to)
+                        {
+                        	if ($this->mail_notify_to == 'SITE_EMAIL')
+                        		$this->mail_notify_to = SITE_EMAIL;
+                            $comment = $this->wl_comments_model->get(array('id' => $id), 'single');
+                            $this->load->library('mail');
+                            $this->mail->sendTemplate('comment_add', $this->mail_notify_to, $comment);
                         }
                     }
                 }
