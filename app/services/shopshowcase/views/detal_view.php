@@ -13,7 +13,6 @@
                     <?php } ?>
                     <!-- <i class="img__hit">ХІТ</i> -->
                 </div>
-                <?php /*
                 <div class="flex h-evenly v-center card__rating detal__rating">
                     <div class="rating">
                         <input type="radio" id="star5" name="rate" value="5" />
@@ -29,10 +28,9 @@
                     </div>
                     <div class="rating__comment">
                         <i class="rating__lebel">25</i>
-                        <img src="style/icons/comment.png" alt="comment">
+                        <img src="/style/icons/comment.png" alt="comment">
                     </div>
                 </div>
-                */ ?>
             </div>
             <div class="img__small">
                 <?php if(!empty($_SESSION['alias']->images)) {
@@ -118,91 +116,109 @@
     </section>
     <div id="tabs" class="detal__menu">
         <nav class="flex tabs-nav">
-            <a href="#tab-1"><?=$this->text('Характеристики')?></a>
+            <a href="#tab-info" class="active"><?=$this->text('Характеристики')?></a>
+            <?php if($product->similarProducts || $otherProductsByGroup) { ?>
+                <a href="#tab-similar"><?=$this->text('Аналоги')?></a>
+            <?php } else { ?>
+                <a href="#" class="empty"></a>
+            <?php } ?>
+            <a href="#tab-guarantie"><?=$this->text('Гарантія')?></a>
+            <a href="#tab-reviews"><?=$this->text('Відгуки')?></a>
         </nav>
-        <div id="tab-1" class="menu__info">
-            <h4><?=$_SESSION['alias']->list?></h4><hr><br>
 
-            <div class="flex w50 m100">
-                <div><?=$this->text('Застосовується до')?></div>
-                <div class="dots"></div>
-                <div><?php 
-                    if(!empty($product->parents)){
-                        $name = [];
-                        foreach ($product->parents as $group) {
-                            $name[] = $group->name;
-                        }
-                        $link = SITE_URL.$product->group_link;
-                        $name = implode(' ', $name);
-                        echo "<a href='{$link}'>{$name}</a> ";
-                    } ?></div>
-            </div>
-            <div class="flex w50 m100">
-                <div><?=$this->text('Група запчастин')?></div>
-                <div class="dots"></div>
-                <div><?php 
-                    if(!empty($product->options['2-part']->value)){
-                        $part = [];
-                        foreach ($product->options['2-part']->value as $value) {
-                            $part[] = $value->name;
-                        }
-                        echo implode(', ', $part);
-                    } ?></div>
-            </div>
-            <div class="flex w50 m100">
-                <div><?=$this->text('Артикул')?></div>
-                <div class="dots"></div>
-                <div><?=$product->article_show?></div>
-            </div>
-            <div class="flex w50 m100">
-                <div><?=$this->text('Виробник')?></div>
-                <div class="dots"></div>
-                <div><?=$product->options['1-manufacturer']->value?></div>
-            </div>
-            <div class="flex w50 m100">
-                <div><?=$this->text('Країна виробник')?></div>
-                <div class="dots"></div>
-                <div><?=$this->text('Китай')?></div>
-            </div>
-            <div class="flex w50 m100">
-                <div><?=$this->text('Код товару')?></div>
-                <div class="dots"></div>
-                <div><?=$product->id?></div>
+        <div id="tab-info" class="menu__info active">
+            <div class="flex">
+                <div class="w50 m100">
+                    <h4><?=$_SESSION['alias']->list?></h4><hr>
+
+                    <br>
+
+                    <div class="flex">
+                        <div><?=$this->text('Застосовується до')?></div>
+                        <div class="dots"></div>
+                        <div><?php 
+                            if(!empty($product->parents)){
+                                $name = [];
+                                foreach ($product->parents as $group) {
+                                    $name[] = $group->name;
+                                }
+                                $link = SITE_URL.$product->group_link;
+                                $name = implode(' ', $name);
+                                echo "<a href='{$link}'>{$name}</a> ";
+                            } ?></div>
+                    </div>
+                    <div class="flex">
+                        <div><?=$this->text('Група запчастин')?></div>
+                        <div class="dots"></div>
+                        <div><?php 
+                            if(!empty($product->options['2-part']->value)){
+                                $part = [];
+                                foreach ($product->options['2-part']->value as $value) {
+                                    $part[] = $value->name;
+                                }
+                                echo implode(', ', $part);
+                            } ?></div>
+                    </div>
+                    <div class="flex">
+                        <div><?=$this->text('Артикул')?></div>
+                        <div class="dots"></div>
+                        <div><?=$product->article_show?></div>
+                    </div>
+                    <div class="flex">
+                        <div><?=$this->text('Виробник')?></div>
+                        <div class="dots"></div>
+                        <div><?=$product->options['1-manufacturer']->value?></div>
+                    </div>
+                    <div class="flex">
+                        <div><?=$this->text('Країна виробник')?></div>
+                        <div class="dots"></div>
+                        <div><?=$this->text('Китай')?></div>
+                    </div>
+                    <div class="flex w50 m100">
+                        <div><?=$this->text('Код товару')?></div>
+                        <div class="dots"></div>
+                        <div><?=$product->id?></div>
+                    </div>
+                </div>
+                <div class="w50 m100">
+                    <?=html_entity_decode($_SESSION['alias']->text)?>
+                </div>
             </div>
         </div>
-        <div id="tab-2" class="menu__info">
-            <?=html_entity_decode($_SESSION['alias']->text)?>
-        </div>
-
         <?php if($product->similarProducts || $otherProductsByGroup) { ?>
-            <div class="detal__line"></div>
-            <p><?=$this->text('Аналоги')?></p>
-        <?php } ?>
+        <div id="tab-similar" class="menu__info">
+            <?php if(false && $product->similarProducts) { ?>
+                <div class="flex detal__cart">
+                    <?php $add_block = 5 - count($product->similarProducts) % 5;
+                    foreach ($product->similarProducts as $product) {
+                            $product->wl_alias = $_SESSION['alias']->id;
+                             require APP_PATH.'views/@commons/__product_subview.php';
+                         }
+                    if($add_block < 5)
+                        for ($i=0; $i < $add_block; $i++) { 
+                            echo "<div class='sale__card empty'></div>";
+                        } ?>
+                </div>
+            <?php }
+            if($otherProductsByGroup) { ?>
+                <div class="flex sale__wrrap">
+                    <?php foreach ($otherProductsByGroup as $product) {
+                             require APP_PATH.'views/@commons/__product_subview.php';
+                         }
+                    $add_block = 5 - count($otherProductsByGroup) % 5;
+                    if($add_block < 5)
+                        for ($i=0; $i < $add_block; $i++) { 
+                            echo "<div class='sale__card empty'></div>";
+                        } ?>
+                </div>
+            <?php } ?>
+        </div>
+        <?php } $this->load->js_init('init__p_detal()'); ?>
+        <div id="tab-guarantie" class="menu__info">
+            
+        </div>
+        <div id="tab-reviews" class="menu__info">
+            
+        </div>
     </div>
-    
-    <?php if(false && $product->similarProducts) { ?>
-        <div class="flex detal__cart">
-            <?php $add_block = 5 - count($product->similarProducts) % 5;
-            foreach ($product->similarProducts as $product) {
-                    $product->wl_alias = $_SESSION['alias']->id;
-                     require APP_PATH.'views/@commons/__product_subview.php';
-                 }
-            if($add_block < 5)
-                for ($i=0; $i < $add_block; $i++) { 
-                    echo "<div class='sale__card empty'></div>";
-                } ?>
-        </div>
-    <?php } ?>
-    <?php if($otherProductsByGroup) { ?>
-        <div class="flex detal__cart">
-            <?php foreach ($otherProductsByGroup as $product) {
-                     require APP_PATH.'views/@commons/__product_subview.php';
-                 }
-            $add_block = 5 - count($otherProductsByGroup) % 5;
-            if($add_block < 5)
-                for ($i=0; $i < $add_block; $i++) { 
-                    echo "<div class='sale__card empty'></div>";
-                } ?>
-        </div>
-    <?php } ?>
 </main>

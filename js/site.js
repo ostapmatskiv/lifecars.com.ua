@@ -181,6 +181,16 @@ function init__parts() {
     });
 }
 
+function init__p_detal() {
+    $('#tabs nav a').on('click', function() {
+        if(!$(this).hasClass('active'))
+            $(this)
+                .addClass('active').siblings().removeClass('active')
+                .closest('#tabs').find('.menu__info').removeClass('active').eq($(this).index()).addClass('active');
+        return false;
+    });
+}
+
 var recaptchaVerifyCallback_saveOrders = function(response) {
     $('form.save_orders button').attr('disabled', false);
     $('form.save_orders button').attr('title', '');

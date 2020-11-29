@@ -77,7 +77,7 @@
 		var SITE_URL = '<?=SITE_URL?>';
 		var ALIAS_URL = '<?=SITE_URL.$_SESSION['alias']->alias?>/';
 	</script>
-	<script type="text/javascript" src="<?=SERVER_URL?>js/site.js?v1"></script>
+	<script type="text/javascript" src="<?=SERVER_URL?>js/site.js?v1.1"></script>
 	<?php if(!empty($_SESSION['alias']->js_load))
 		foreach ($_SESSION['alias']->js_load as $js) {
 			echo '<script type="text/javascript" src="'.SERVER_URL.$js.'"></script> ';

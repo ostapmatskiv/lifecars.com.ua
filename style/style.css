@@ -1824,39 +1824,39 @@ main.detal .detal__menu nav a {
     font-weight: 600;
     text-align: center;
     color: #8c8c8c;
+    width: calc(25% - 5px)
 }
 
 main.detal .detal__menu nav a::before {
     content: "";
     display: block;
     height: 5px;
-    width: 280px;
     margin-bottom: 10px;
     background: #fff;
 }
 
-main.detal .detal__menu nav a:hover::before {
-    background: #82C166;
-}
-
+main.detal .detal__menu nav a.active::before,
+main.detal .detal__menu nav a:hover::before,
 main.detal .detal__menu nav a:active::before {
     background: #82C166;
 }
 
-main.detal .detal__menu nav a:hover {
-    color: #82C166;
-}
-
+main.detal .detal__menu nav a:hover,
+main.detal .detal__menu nav a.active,
 main.detal .detal__menu nav a:active {
     color: #82C166;
 }
 
 main.detal .detal__menu .menu__info {
     margin: 40px 0 60px 0;
+    display: none;
+}
+main.detal .detal__menu .menu__info.active {
+    display: block;
 }
 
-main.detal .detal__menu .flex { margin-bottom: 10px; max-width: 500px }
-main.detal .detal__menu .flex div {
+#tab-info .flex { margin-bottom: 10px }
+#tab-info .flex div {
     width: fit-content;
     white-space: nowrap;
     padding: 0 5px;
@@ -1864,7 +1864,7 @@ main.detal .detal__menu .flex div {
     font-weight: 400;
     color: #262626;
 }
-main.detal .detal__menu div.dots { border-bottom: 1px dotted #262626; width: 100% }
+#tab-info div.dots { border-bottom: 1px dotted #262626; width: 100% }
 
 
 main.detal .detal__menu .detal__line {
