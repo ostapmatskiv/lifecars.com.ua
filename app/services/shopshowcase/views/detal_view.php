@@ -129,11 +129,11 @@
         <div id="tab-info" class="menu__info active">
             <div class="flex">
                 <div class="w50 m100">
+                    <?php if(!empty($_SESSION['alias']->list)) { ?>
                     <h4><?=$_SESSION['alias']->list?></h4><hr>
-
                     <br>
-
-                    <div class="flex">
+                    <?php } ?>
+                    <div class="flex row">
                         <div><?=$this->text('Застосовується до')?></div>
                         <div class="dots"></div>
                         <div><?php 
@@ -147,7 +147,7 @@
                                 echo "<a href='{$link}'>{$name}</a> ";
                             } ?></div>
                     </div>
-                    <div class="flex">
+                    <div class="flex row">
                         <div><?=$this->text('Група запчастин')?></div>
                         <div class="dots"></div>
                         <div><?php 
@@ -159,22 +159,22 @@
                                 echo implode(', ', $part);
                             } ?></div>
                     </div>
-                    <div class="flex">
+                    <div class="flex row">
                         <div><?=$this->text('Артикул')?></div>
                         <div class="dots"></div>
                         <div><?=$product->article_show?></div>
                     </div>
-                    <div class="flex">
+                    <div class="flex row">
                         <div><?=$this->text('Виробник')?></div>
                         <div class="dots"></div>
                         <div><?=$product->options['1-manufacturer']->value?></div>
                     </div>
-                    <div class="flex">
+                    <div class="flex row">
                         <div><?=$this->text('Країна виробник')?></div>
                         <div class="dots"></div>
                         <div><?=$this->text('Китай')?></div>
                     </div>
-                    <div class="flex w50 m100">
+                    <div class="flex row">
                         <div><?=$this->text('Код товару')?></div>
                         <div class="dots"></div>
                         <div><?=$product->id?></div>

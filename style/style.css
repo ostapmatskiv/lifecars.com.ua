@@ -1856,7 +1856,7 @@ main.detal .detal__menu .menu__info.active {
 }
 
 #tab-info .flex { margin-bottom: 10px }
-#tab-info .flex div {
+#tab-info .flex.row div {
     width: fit-content;
     white-space: nowrap;
     padding: 0 5px;
@@ -1864,7 +1864,7 @@ main.detal .detal__menu .menu__info.active {
     font-weight: 400;
     color: #262626;
 }
-#tab-info div.dots { border-bottom: 1px dotted #262626; width: 100% }
+#tab-info .flex.row div.dots { border-bottom: 1px dotted #262626; width: 100% }
 
 
 main.detal .detal__menu .detal__line {
