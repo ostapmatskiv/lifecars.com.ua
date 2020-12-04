@@ -279,16 +279,15 @@ section.sale .sale__wrrap {
 }
 .sale__card .card__info { display: flex }
 .sale__card .card__info .info__article { margin-right: 5px }
-.sale__card .card__info .info__article p {
-    font-size: 12px;
-    padding-top: 5px;
-    color: #a6a6a6;
-}
+.sale__card .card__info .info__article p,
 .sale__card .card__info .info__name p {
     font-size: 12px;
     padding-top: 5px;
-    color: #262626;
+    color: #a6a6a6;
+    text-align: left;
+    margin-bottom: 0;
 }
+.sale__card .card__info .info__name p { color: #262626 }
 
 .sale__card .card__check { margin-top: 15px }
 .sale__card .card__check .check__pieces .fa-check-circle {
@@ -303,6 +302,7 @@ section.sale .sale__wrrap {
     font-size: 14px;
     color: #262626;
     margin-left: 6px;
+    margin-bottom: 0;
 }
 
 .sale__card .check__number { width: 90px }
@@ -454,6 +454,160 @@ section.sale .sale__wrrap {
 .card__rating .rating>label:hover~input:checked~label {
     color: #c59b08;
 }
+
+/*                                                 cart modal                                                   */
+.sale__card.no_availabilaty .cart__modal {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    border-radius: 10px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    display: none;
+    padding: 15px;
+    background-color: #ffc505;
+}
+.sale__card.no_availabilaty .cart__modal h5 {
+    font-size: 28px;
+    margin-top: 5px;
+    font-weight: bold;
+    line-height: 0.93;
+    text-align: left;
+    color: #2d3b40;
+}
+.sale__card.no_availabilaty .cart__modal p {
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    color: #ffffff;
+    margin-top: 15px;
+}
+.sale__card.no_availabilaty .cart__modal .modal__name {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: left;
+    color: #2d3b40;
+    margin-top: 15px;
+}
+.sale__card.no_availabilaty .cart__modal .modal__product {
+    font-size: 14px;
+    font-weight: normal;
+    text-align: left;
+    color: #2d3b40;
+    margin-top: 10px;
+    margin-bottom: 20px;
+
+}
+.sale__card.no_availabilaty .cart__modal .modal__phone a {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+    color: #2d3b40;
+    display: block;
+}
+.sale__card.no_availabilaty .cart__modal span {
+    display: block;
+    font-size: 16px;
+    font-weight: normal;
+    text-align: center;
+    color: #2d3b40;
+    margin-top: 8px;
+}
+.sale__card.no_availabilaty .cart__modal button.modal__request {
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    background-color: #e0ad04;
+    border: none;
+    outline: none;
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: normal;
+    text-align: center;
+    color: #ffffff;
+    cursor: pointer;
+}
+.sale__card.no_availabilaty .cart__modal button.cart__hiden {
+    width: 34px;
+    height: 34px;
+    position: absolute;
+    bottom: -17px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffc505;
+    border: none;
+    outline: none;
+    border-radius: 100%;
+}
+.sale__card.no_availabilaty .cart__modal button.cart__hiden .fa-chevron-circle-up {
+    font-size: 25px;
+    text-align: center;
+    opacity: 0.4;
+}
+
+.cart__modal-show {
+    display: block;
+}
+
+/*                                                cart form                                           */
+
+.sale__card.no_availabilaty .cart__modal .cart__form {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-radius: 5px;
+    width: 100%;
+    padding: 5px 21px 31px 21px;
+    background-color: #ffc505;
+    display: none;
+}
+.sale__card.no_availabilaty .cart__modal .cart__form .form__name {
+    font-size: 23px;
+    font-weight: bold;
+    text-align: left;
+    color: #2d3b40;
+}
+.sale__card.no_availabilaty .cart__modal .cart__form .form__product {
+    font-size: 16px;
+    font-weight: normal;
+    text-align: left;
+    color: #2d3b40;
+    margin-top: 15px;
+}
+.sale__card.no_availabilaty .cart__modal .cart__form input {
+    width: 100%;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffffff;
+    margin-top: 15px;
+    padding-left: 15px;
+}
+.sale__card.no_availabilaty .cart__modal .cart__form input::placeholder {
+    font-size: 14px;
+    font-weight: 400;
+    color: #a6a6a6;
+}
+.sale__card.no_availabilaty .cart__modal .cart__form .form__btn {
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2d3b40;
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center;
+    color: #ffffff;
+    outline: none;
+    margin-top: 30px;
+}
+
+/*                                           cart form                                            */
+
+
+
+
+
 
 /*      Header        */
 #top_header {
@@ -876,202 +1030,6 @@ main section.sale .sale__nav a:hover::before,
 main section.sale .sale__nav a:active::before {
     background: #82C166;
 }
-
-
-/*                                                 cart modal                                                   */
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal,
-section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal {
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    border-radius: 10px;
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
-    display: none;
-    padding: 15px;
-    background-color: #ffc505;
-}
-
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal h5,
-section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal h5,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal h5 {
-    font-size: 28px;
-    margin-top: 5px;
-    font-weight: bold;
-    line-height: 0.93;
-    text-align: left;
-    color: #2d3b40;
-}
-
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal p,
-section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal p,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal p {
-    font-size: 13px;
-    font-weight: 600;
-    text-align: left;
-    color: #ffffff;
-    margin-top: 15px;
-}
-
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__name,
-section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__name,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__name {
-    font-size: 14px;
-    font-weight: bold;
-    text-align: left;
-    color: #2d3b40;
-    margin-top: 15px;
-}
-
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__product,
-section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__product,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__product {
-    font-size: 14px;
-    font-weight: normal;
-    text-align: left;
-    color: #2d3b40;
-    margin-top: 10px;
-    margin-bottom: 20px;
-
-}
-
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .modal__phone a,
-section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .modal__phone a {
-    font-size: 20px;
-    font-weight: bold;
-    text-align: left;
-    color: #2d3b40;
-    display: block;
-}
-
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal span,
-section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal span,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal span {
-    display: block;
-    font-size: 16px;
-    font-weight: normal;
-    text-align: center;
-    color: #2d3b40;
-    margin-top: 8px;
-}
-
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal button.modal__request,
-section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal button.modal__request {
-    width: 100%;
-    height: 40px;
-    border-radius: 5px;
-    background-color: #e0ad04;
-    border: none;
-    outline: none;
-    margin-top: 10px;
-    font-size: 18px;
-    font-weight: normal;
-    text-align: center;
-    color: #ffffff;
-    cursor: pointer;
-}
-
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal button.cart__hiden,
-section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.cart__hiden,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal button.cart__hiden {
-    width: 34px;
-    height: 34px;
-    position: absolute;
-    bottom: -17px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #ffc505;
-    border: none;
-    outline: none;
-    border-radius: 100%;
-}
-
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal button.cart__hiden .fa-chevron-circle-up,
-section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal button.cart__hiden .fa-chevron-circle-up,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal button.cart__hiden .fa-chevron-circle-up {
-    font-size: 25px;
-    text-align: center;
-    opacity: 0.4;
-}
-
-.cart__modal-show {
-    display: block;
-}
-
-/*                                                cart form                                           */
-
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form,
-section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    border-radius: 5px;
-    width: 100%;
-    padding: 5px 21px 31px 21px;
-    background-color: #ffc505;
-    display: none;
-}
-
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__name,
-section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__name,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__name {
-    font-size: 23px;
-    font-weight: bold;
-    text-align: left;
-    color: #2d3b40;
-}
-
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__product,
-section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__product {
-    font-size: 16px;
-    font-weight: normal;
-    text-align: left;
-    color: #2d3b40;
-    margin-top: 15px;
-}
-
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form input,
-section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input {
-    width: 100%;
-    height: 30px;
-    border: none;
-    border-radius: 5px;
-    background-color: #ffffff;
-    margin-top: 15px;
-    padding-left: 15px;
-}
-
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form input::placeholder,
-section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input::placeholder,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form input::placeholder {
-    font-size: 14px;
-    font-weight: 400;
-    color: #a6a6a6;
-}
-
-main.detal .detal__cart .sale__card.no_availabilaty .cart__modal .cart__form .form__btn,
-section.sale .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__btn,
-section.sale__catalog .sale__wrrap .sale__card.no_availabilaty .cart__modal .cart__form .form__btn {
-    width: 100%;
-    height: 40px;
-    border: none;
-    border-radius: 5px;
-    background-color: #2d3b40;
-    font-size: 20px;
-    font-weight: 400;
-    text-align: center;
-    color: #ffffff;
-    outline: none;
-    margin-top: 30px;
-}
-
-/*                                           cart form                                            */
 
 /*                                  Footer     */
 
