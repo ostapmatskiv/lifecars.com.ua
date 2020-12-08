@@ -463,10 +463,9 @@ class shop_model {
 				$this->db->order($_SESSION['option']->productOrder);
 		}
 
-
+		$start = 0;
 		if(isset($_SESSION['option']->paginator_per_page) && $_SESSION['option']->paginator_per_page > 0)
 		{
-			$start = 0;
 			if(isset($_GET['per_page']) && is_numeric($_GET['per_page']) && $_GET['per_page'] > 0)
 				$_SESSION['option']->paginator_per_page = $_GET['per_page'];
 			if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 1)
@@ -474,9 +473,44 @@ class shop_model {
 			$this->db->limit($start, $_SESSION['option']->paginator_per_page);
 		}
 
-		if($products = $this->db->get('array', false))
+		$products = $set_paginator_total = false;
+		if($_SESSION['option']->useAvailability && empty($_GET['availability']))
+		{
+			$set_paginator_total = true;
+			$_SESSION['option']->paginator_total = $this->db->get('count', false);
+			if($_SESSION['option']->paginator_total)
+			{
+				$where['#p.availability'] = '>0';
+				$this->db->select($this->table('_products').' as p', '*', $where, 'id', false);
+				if($products_availability = $this->db->get('array', false))
+				{
+					$products = $products_availability;
+					$count_products_availability = count($products_availability);
+					if($count_products_availability < $_SESSION['option']->paginator_per_page)
+					{
+						$where['#p.availability'] = 0;
+						$paginator_per_page = $_SESSION['option']->paginator_per_page - $count_products_availability;
+						$this->db->select($this->table('_products').' as p', '*', $where, 'id', false);
+						$this->db->limit(0, $paginator_per_page);
+						if($products_no_availability = $this->db->get('array', false))
+							$products = array_merge($products_availability, $products_no_availability);						
+					}
+				}
+				else
+				{
+					$count_products_availability = $this->db->get('count', false);
+					$where['#p.availability'] = 0;
+					$this->db->select($this->table('_products').' as p', '*', $where, 'id', false);
+					$this->db->limit($start - $count_products_availability, $_SESSION['option']->paginator_per_page);
+					$products = $this->db->get('array', false);
+				}
+			}
+		}
+		else
+			$products = $this->db->get('array', false);
+		if($products)
         {
-        	if(empty($_SESSION['option']->paginator_total) || count($_GET) > 1)
+        	if(!$set_paginator_total && (empty($_SESSION['option']->paginator_total) || count($_GET) > 1))
         	{
         		if(count($products) < $_SESSION['option']->paginator_per_page && empty($_GET['page']))
 					$_SESSION['option']->paginator_total = count($products);

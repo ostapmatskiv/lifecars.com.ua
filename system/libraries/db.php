@@ -514,9 +514,10 @@ class Db {
             exit('Work with DB. Prefix of table name has to be set before function select!');
     }
 
-    public function select($table, $fields = '*', $key = '', $row_key = 'id')
+    public function select($table, $fields = '*', $key = '', $row_key = 'id', $clear = true)
     {
-        $this->clear();
+        if($clear)
+            $this->clear();
         $table = preg_replace("|[\s]+|", " ", $table);
         $table = explode(' ', $table);
         if(count($table) == 3 && ($table[1] == 'as' || $table[1] == 'AS' || $table[1] == 'As'))
