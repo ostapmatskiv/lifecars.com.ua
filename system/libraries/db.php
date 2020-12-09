@@ -35,6 +35,7 @@
                             оновлено getAliasImageSizes(), sitemap_cache_clear() => html_cache_clear() - робота з файловим кешем
                             додано getHTMLCacheKey(), getCacheContentKey(), $this->version
    Версія 2.8 (05.08.2020) - додано redis_set(), redis_get(), redis_del(), redis_delByKey(), redis_ping(), redis_do(), $this->html_cache_in_redis
+   2.8.1 (09.12.2020) - updateRow() values can set NULL, numeric format. select(.., .., .., clear = true) add default clear param
  */
 
 class Db {
@@ -138,8 +139,15 @@ class Db {
         {
             $update = "UPDATE `".$table."` SET ";
             foreach ($changes as $key => $value) {
-                $value = $this->sanitizeString($value);
-                $update .= "`{$key}` = '{$value}',";
+                if($value === NULL)
+                    $update .= "`{$key}` = NULL,";
+                elseif(is_numeric($value))
+                    $update .= "`{$key}` = {$value},";
+                else
+                {
+                    $value = $this->sanitizeString($value);
+                    $update .= "`{$key}` = '{$value}',";
+                }
             }
             $update = substr($update, 0, -1);
             $update .= " WHERE ".$where;
