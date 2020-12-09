@@ -11,6 +11,12 @@
 	max-width: 1400px;
 	margin: auto;
 }
+.d-block, .show { display: block }
+.d-none, .hide { display: none }
+.show1 { display: block !important }
+.hide1 { display: none !important }
+.d-inline { display: inline }
+.d-iblock { display: inline-block }
 .flex {
 	display: -webkit-flex;
 	display: -moz-flex;
@@ -36,6 +42,8 @@
 .w70 { width: 70% }
 .w66 { width: 66% }
 .w50 { width: 50% }
+.w60 { width: 50% }
+.w40 { width: 33% }
 .w33 { width: 33% }
 .w30 { width: 30% }
 .w25 { width: 25% }

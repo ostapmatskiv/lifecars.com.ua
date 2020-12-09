@@ -1,22 +1,22 @@
-<?php if(!empty($_SESSION['notify']->errors)) { ?>
-   <div id="comment_add_error" class="alert alert-danger">
-        <span class="close" data-dismiss="alert">×</span>
-        <h4><?=(isset($_SESSION['notify']->title)) ? $_SESSION['notify']->title : 'Error!'?></h4>
-        <p><?=$_SESSION['notify']->errors?></p>
-    </div>
-<?php } unset($_SESSION['notify']); ?>
+<div class="add-your-review w40">
+    <?php if(!empty($_SESSION['notify']->errors)) { ?>
+       <div id="comment_add_error" class="alert alert-danger">
+            <span class="close" data-dismiss="alert">×</span>
+            <h4><?=(isset($_SESSION['notify']->title)) ? $_SESSION['notify']->title : 'Error!'?></h4>
+            <p><?=$_SESSION['notify']->errors?></p>
+        </div>
+    <?php } unset($_SESSION['notify']); ?>
 
-<div class="add-your-review mb-3 mb-md-5">
-    <h5 class="reviews-block-title font-weight-bold mb-3" id="addreview"><?=$this->text('Add your own review')?></h5>
+    <h3><?=$this->text('Додати відгук')?></h3>
     <form action="<?=SITE_URL?>comments/add" method="POST" class="review-form" enctype="multipart/form-data">
         <input type="hidden" name="content" value="<?= $content?>">
         <input type="hidden" name="alias" value="<?= $alias?>">
         <input type="hidden" name="image_name" value="<?= $image_name?>">
 
-        <div class="form-group row">
-            <div class="col-md-6 rating">
-                <span class="mb-0 align-middle"><?=$this->text('Rating')?></span>
-                <div class="d-inline-block align-middle">
+        <div class="flex">
+            <div class="w50 rating">
+                <span class="mb-0 align-middle"><?=$this->text('Оцінка')?></span>
+                <div class="d-iblock align-middle">
                     <label <?=$this->data->re_post('rating') == 5 ? 'class="checked"':''?>><input type="radio" name="rating" value="5" <?=$this->data->re_post('rating') == 5 ? 'selected':''?>></label>
                     <label <?=$this->data->re_post('rating') == 5 ? 'class="checked"':''?>><input type="radio" name="rating" value="4" <?=$this->data->re_post('rating') == 5 ? 'selected':''?>></label>
                     <label <?=$this->data->re_post('rating') == 5 ? 'class="checked"':''?>><input type="radio" name="rating" value="3" <?=$this->data->re_post('rating') == 5 ? 'selected':''?>></label>
@@ -24,19 +24,19 @@
                     <label <?=$this->data->re_post('rating') == 5 ? 'class="checked"':''?>><input type="radio" name="rating" value="1" <?=$this->data->re_post('rating') == 5 ? 'selected':''?>></label>
                 </div>
             </div>
-            <div class="col-md-6 text-md-right mt-2 mt-md-0">
-                <label class="image-review-style mb-0" for="image-review"><?=$this->text('Choose a image')?> <i class="fa fa-download" aria-hidden="true"></i></label>
+            <div class="w50">
+                <label class="image-review-style mb-0" for="image-review"><?=$this->text('Додати зображення')?> <i class="fa fa-download" aria-hidden="true"></i></label>
                 <input type="file" name="images[]" accept="image/jpg,image/jpeg,image/png" multiple id="image-review">
                 <div class="review-gallery"></div>
             </div>
         </div>
         <div class="form-group">
-            <textarea class="form-control rounded-0" name="comment" id="review-text" rows="6" placeholder="<?=$this->text('Review')?>" required><?=$this->data->re_post('comment')?></textarea>
+            <textarea class="form-control rounded-0" name="comment" id="review-text" rows="6" placeholder="<?=$this->text('Відгук')?>" required><?=$this->data->re_post('comment')?></textarea>
         </div>
         <?php if($this->userIs()) { ?>
             <div class="form-group row">
                 <div class="col-12 col-md-4 mt-md-0 mt-3">
-                    <input class="review-btn btn w-100 rounded-0" type="submit" value="<?=$this->text('Add review')?>">
+                    <input class="review-btn btn w-100 rounded-0" type="submit" value="<?=$this->text('Додати відгук')?>">
                 </div>
             </div>
         <?php } else { ?>
@@ -52,7 +52,7 @@
                     <input class="form-control rounded-0" type="email" name="email" placeholder="Email*" value="<?=$this->data->re_post('email')?>" required>
                 </div>
                 <div class="col-12 col-md-4 mt-md-0 mt-3">
-                    <input class="review-btn btn w-100 rounded-0" type="submit" value="<?=$this->text('Add review')?>" title='<?=$this->text('Заповніть "Я не робот"')?>' disabled>
+                    <input class="review-btn btn w-100 rounded-0" type="submit" value="<?=$this->text('Додати відгук')?>" title='<?=$this->text('Заповніть "Я не робот"')?>' disabled>
                 </div>
             </div>
         <?php } ?>

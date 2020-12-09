@@ -27,7 +27,7 @@
                         <label for="star1" title="text">1 star</label>
                     </div>
                     <div class="rating__comment">
-                        <i class="rating__lebel">25</i>
+                        <i class="rating__lebel">0</i>
                         <img src="/style/icons/comment.png" alt="comment">
                     </div>
                 </div>
@@ -117,13 +117,13 @@
     <div id="tabs" class="detal__menu">
         <nav class="flex tabs-nav">
             <a href="#tab-info" class="active"><?=$this->text('Характеристики')?></a>
+            <a href="#tab-guarantie"><?=$this->text('Гарантія')?></a>
+            <a href="#tab-reviews"><?=$this->text('Відгуки')?></a>
             <?php if($product->similarProducts || $otherProductsByGroup) { ?>
                 <a href="#tab-similar"><?=$this->text('Аналоги')?></a>
             <?php } else { ?>
                 <a href="#" class="empty"></a>
             <?php } ?>
-            <a href="#tab-guarantie"><?=$this->text('Гарантія')?></a>
-            <a href="#tab-reviews"><?=$this->text('Відгуки')?></a>
         </nav>
 
         <div id="tab-info" class="menu__info active">
@@ -185,7 +185,16 @@
                 </div>
             </div>
         </div>
-        <?php if($product->similarProducts || $otherProductsByGroup) { ?>
+        <div id="tab-guarantie" class="menu__info">
+            <?php echo $this->load->function_in_alias('exchange-and-return', '__get_Text'); ?>
+            <style>#tab-guarantie p { text-align: left }</style>
+        </div>
+        <div id="tab-reviews" class="menu__info">
+            <div class="flex">
+                <?php $this->load->library('comments');
+                $this->comments->show(); ?>
+            </div>
+        </div>
         <div id="tab-similar" class="menu__info">
             <?php if(false && $product->similarProducts) { ?>
                 <div class="flex detal__cart">
@@ -213,12 +222,6 @@
                 </div>
             <?php } ?>
         </div>
-        <?php } $this->load->js_init('init__p_detal()'); ?>
-        <div id="tab-guarantie" class="menu__info">
-            
-        </div>
-        <div id="tab-reviews" class="menu__info">
-            
-        </div>
+        <?php $this->load->js_init('init__p_detal()'); ?>
     </div>
 </main>

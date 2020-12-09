@@ -1,8 +1,7 @@
-<?php if($comments) { ?>
+<div class="reviews-block w60">
+<?php if($comments) {
 
-<div class="reviews-block mb-4">
-
-	<?php if(!empty($_SESSION['notify']->success)): ?>
+	if(!empty($_SESSION['notify']->success)): ?>
 	    <div id="comment_add_success" class="alert alert-success">
 	        <span class="close" data-dismiss="alert">×</span>
 	        <h4><?=(isset($_SESSION['notify']->title)) ? $_SESSION['notify']->title : $this->text('Success!')?></h4>
@@ -10,7 +9,7 @@
 	    </div>
 	<?php endif; ?>
 
-	<ul class="reviews-list list-unstyled mb-0" id="reviews-list">
+	<ul id="reviews-list">
 		<?php foreach ($comments as $comment) { ?>
 			<li class="row" id="comment-<?=$comment->id?>">
 				<div class="col-12 col-xl-2">
@@ -53,11 +52,16 @@
 			</li>
 		<?php } ?>
 	</ul>
-</div>
 
-<link rel="stylesheet" href="<?=SERVER_URL?>assets/lightgallery-140/css/lightgallery.min.css">
-<link rel="stylesheet" href="<?=SERVER_URL?>assets/lightgallery-140/css/lg-transitions.min.css">
+	<?php
+    $this->load->library('paginator');
+    echo $this->paginator->get();
+    ?>
+
+	<link rel="stylesheet" href="<?=SERVER_URL?>assets/lightgallery-140/css/lightgallery.min.css">
+	<link rel="stylesheet" href="<?=SERVER_URL?>assets/lightgallery-140/css/lg-transitions.min.css">
 
 <?php $_SESSION['alias']->js_load[] = "assets/lightgallery-140/js/lightgallery.js";
 	$_SESSION['alias']->js_init[] = "lightGallery(document.getElementById('reviews-list'), { selector: 'a.lightgallery' })";
-} ?>
+} else echo "<p>".$this->text('Відгуки відсутні. Будьте першим! Залиште відгук про товар')."</p>"; ?>
+</div>
