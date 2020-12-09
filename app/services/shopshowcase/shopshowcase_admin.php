@@ -1445,6 +1445,8 @@ class shopshowcase_admin extends Controller {
     	if($_SESSION['cache'])
     		$this->db->cache_delete($this->db->getHTMLCacheKey($content));
 
+		$this->db->updateRow('wl_ntkd', ['get_ivafc' => NULL], ['alias' => $_SESSION['alias']->id, 'content' => $content]);
+
     	$this->load->smodel('shop_model');
     	$parent_to = 0;
     	if($content > 0)

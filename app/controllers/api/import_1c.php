@@ -24,6 +24,10 @@ class import_1c extends Controller
 			{
 				if($file = simplexml_load_file($this->folder.$file_name))
 				{
+					ini_set('max_execution_time', 1800);
+					ini_set('max_input_time', 1800);
+					ini_set('memory_limit', '1024M');
+			
 					$file_name = explode('_', $file_name);
 					$all = end($file_name);
 					$all = strtolower($all);
