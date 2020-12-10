@@ -1,4 +1,4 @@
-<div class="add-your-review w40">
+<div class="add-your-review w40-5">
     <?php if(!empty($_SESSION['notify']->errors)) { ?>
        <div id="comment_add_error" class="alert alert-danger">
             <span class="close" data-dismiss="alert">×</span>
@@ -24,37 +24,31 @@
                     <label <?=$this->data->re_post('rating') == 5 ? 'class="checked"':''?>><input type="radio" name="rating" value="1" <?=$this->data->re_post('rating') == 5 ? 'selected':''?>></label>
                 </div>
             </div>
-            <div class="w50">
+            <div class="w50 text-right">
                 <label class="image-review-style mb-0" for="image-review"><?=$this->text('Додати зображення')?> <i class="fa fa-download" aria-hidden="true"></i></label>
                 <input type="file" name="images[]" accept="image/jpg,image/jpeg,image/png" multiple id="image-review">
                 <div class="review-gallery"></div>
             </div>
         </div>
         <div class="form-group">
-            <textarea class="form-control rounded-0" name="comment" id="review-text" rows="6" placeholder="<?=$this->text('Відгук')?>" required><?=$this->data->re_post('comment')?></textarea>
+            <textarea name="comment" id="review-text" rows="6" placeholder="<?=$this->text('Відгук')?>" required><?=$this->data->re_post('comment')?></textarea>
         </div>
         <?php if($this->userIs()) { ?>
-            <div class="form-group row">
-                <div class="col-12 col-md-4 mt-md-0 mt-3">
-                    <input class="review-btn btn w-100 rounded-0" type="submit" value="<?=$this->text('Додати відгук')?>">
-                </div>
-            </div>
+            <button><?=$this->text('Додати відгук')?></button>
         <?php } else { ?>
-            <div class="form-group">
+            <div class="flex h-center">
                 <?php $this->load->library('recaptcha');
                     $this->recaptcha->form('recaptchaVerifyCallback', 'recaptchaExpiredCallback'); ?>
             </div>
-            <div class="form-group row">
-                <div class="col-6 col-md-4">
-                    <input class="form-control rounded-0" type="text" name="name" placeholder="<?=$this->text('Name')?>*" value="<?=$this->data->re_post('name')?>" required>
+            <div class="flex">
+                <div class="w50-5 m100">
+                    <input type="text" name="name" placeholder="<?=$this->text("Ім'я")?>*" value="<?=$this->data->re_post('name')?>" required>
                 </div>
-                <div class="col-6 col-md-4">
-                    <input class="form-control rounded-0" type="email" name="email" placeholder="Email*" value="<?=$this->data->re_post('email')?>" required>
-                </div>
-                <div class="col-12 col-md-4 mt-md-0 mt-3">
-                    <input class="review-btn btn w-100 rounded-0" type="submit" value="<?=$this->text('Додати відгук')?>" title='<?=$this->text('Заповніть "Я не робот"')?>' disabled>
+                <div class="w50-5 m100">
+                    <input type="email" name="email" placeholder="Email*" value="<?=$this->data->re_post('email')?>" required>
                 </div>
             </div>
+            <button class="review-btn" title='<?=$this->text('Заповніть "Я не робот"')?>' disabled><?=$this->text('Додати відгук')?></button>
         <?php } ?>
     </form>
 </div>

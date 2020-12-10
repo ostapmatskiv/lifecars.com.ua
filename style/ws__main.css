@@ -41,9 +41,9 @@
 .w75 { width: 75% }
 .w70 { width: 70% }
 .w66 { width: 66% }
+.w60 { width: 60% }
 .w50 { width: 50% }
-.w60 { width: 50% }
-.w40 { width: 33% }
+.w40 { width: 40% }
 .w33 { width: 33% }
 .w30 { width: 30% }
 .w25 { width: 25% }
@@ -52,7 +52,9 @@
 .w75-5 { width: calc(75% - 5px) }
 .w70-5 { width: calc(70% - 5px) }
 .w66-5 { width: calc(66% - 5px) }
+.w60-5 { width: calc(60% - 5px) }
 .w50-5 { width: calc(50% - 5px) }
+.w40-5 { width: calc(40% - 5px) }
 .w33-5 { width: calc(33% - 5px) }
 .w25-5 { width: calc(25% - 5px) }
 .w20-5 { width: calc(20% - 5px) }

@@ -24,7 +24,7 @@ class wl_comments_model {
 			$this->db->limit($start, $_SESSION['option']->paginator_per_page);
 		}
 
-		$wl_ntkd = $wl_images = array('alias' => '#c.alias', 'content' => '#c.content');
+		$wl_sitemap = $wl_ntkd = $wl_images = array('alias' => '#c.alias', 'content' => '#c.content');
 		if($_SESSION['language'])
 			$wl_ntkd['language'] = $_SESSION['language'];
 		$wl_images['position'] = 1;
@@ -33,7 +33,7 @@ class wl_comments_model {
 				->join('wl_users', 'name as user_name, email as user_email', '#c.user')
 				->join('wl_ntkd', 'name as page_name', $wl_ntkd)
 				->join('wl_images', 'file_name as page_image', $wl_images)
-				->join('wl_sitemap', 'link', $wl_images)
+				->join('wl_sitemap', 'link', $wl_sitemap)
 				->order('date_add DESC');
 
 		return $this->db->get($type);

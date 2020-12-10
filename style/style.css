@@ -12,9 +12,8 @@ body {
     background-color: #F2F2F2;
 }
 
-a {
-    text-decoration: none
-}
+a { text-decoration: none }
+ul, ol { padding-inline-start: 40px }
 
 main {
     margin-bottom: 50px
@@ -1824,23 +1823,6 @@ main.detal .detal__menu .menu__info.active {
 }
 #tab-info .flex.row div.dots { border-bottom: 1px dotted #262626; width: 100% }
 
-
-main.detal .detal__menu .detal__line {
-    width: 100%;
-    height: 3px;
-    border-radius: 5px;
-    background-color: #fefefe;
-    margin-bottom: 5px;
-}
-
-main.detal .detal__menu p {
-    font-size: 20px;
-    font-weight: 400;
-    text-align: center;
-    color: #8c8c8c;
-    margin-bottom: 25px;
-}
-
 /*                          detal            */
 
 /*                         model                */
@@ -2258,10 +2240,6 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
         width: 320px;
         height: 35px;
         font-size: 22px;
-    }
-
-    main.detal .detal__menu nav a::before {
-        width: 220px;
     }
 
     main.detal .detal__menu .menu__info ul li span {

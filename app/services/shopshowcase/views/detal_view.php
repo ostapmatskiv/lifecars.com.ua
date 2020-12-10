@@ -1,5 +1,21 @@
 <main class="detal">
     <h1 class="detal__heading"><?=$product->options['1-manufacturer']->value.' '.$product->name?></h1>
+
+    <?php if(!empty($_SESSION['notify']->success)): ?>
+        <div id="comment_add_success" class="alert alert-success">
+            <span class="close" data-dismiss="alert">×</span>
+            <h4><?=(isset($_SESSION['notify']->title)) ? $_SESSION['notify']->title : $this->text('Success!')?></h4>
+            <p><?=$this->text($_SESSION['notify']->success)?></p>
+        </div>
+    <?php endif;
+    if(!empty($_SESSION['notify']->errors)) { ?>
+       <div id="comment_add_error" class="alert alert-danger">
+            <span class="close" data-dismiss="alert">×</span>
+            <h4><?=(isset($_SESSION['notify']->title)) ? $_SESSION['notify']->title : 'Error!'?></h4>
+            <p><?=$_SESSION['notify']->errors?></p>
+        </div>
+    <?php } unset($_SESSION['notify']); ?>
+
     <section class="flex detal__info">
         <div class="flex h-start info__img"> 
             <div class="m__right">
@@ -115,15 +131,13 @@
         </div>
     </section>
     <div id="tabs" class="detal__menu">
-        <nav class="flex tabs-nav">
-            <a href="#tab-info" class="active"><?=$this->text('Характеристики')?></a>
-            <a href="#tab-guarantie"><?=$this->text('Гарантія')?></a>
-            <a href="#tab-reviews"><?=$this->text('Відгуки')?></a>
+        <nav class="flex tabs-nav <?=($product->similarProducts || $otherProductsByGroup)?'tabs-3':''?>">
+            <a href="#tab-info" class="active"><?=$this->text('Опис')?></a>
             <?php if($product->similarProducts || $otherProductsByGroup) { ?>
                 <a href="#tab-similar"><?=$this->text('Аналоги')?></a>
-            <?php } else { ?>
-                <a href="#" class="empty"></a>
             <?php } ?>
+            <a href="#tab-guarantie"><?=$this->text('Гарантія')?></a>
+            <a href="#tab-reviews"><?=$this->text('Відгуки')?></a>
         </nav>
 
         <div id="tab-info" class="menu__info active">
@@ -181,20 +195,11 @@
                     </div>
                 </div>
                 <div class="w50 m100">
-                    <?=html_entity_decode($_SESSION['alias']->text)?>
+                    <?=$_SESSION['alias']->text?>
                 </div>
             </div>
         </div>
-        <div id="tab-guarantie" class="menu__info">
-            <?php echo $this->load->function_in_alias('exchange-and-return', '__get_Text'); ?>
-            <style>#tab-guarantie p { text-align: left }</style>
-        </div>
-        <div id="tab-reviews" class="menu__info">
-            <div class="flex">
-                <?php $this->load->library('comments');
-                $this->comments->show(); ?>
-            </div>
-        </div>
+        <?php if($product->similarProducts || $otherProductsByGroup) { ?>
         <div id="tab-similar" class="menu__info">
             <?php if(false && $product->similarProducts) { ?>
                 <div class="flex detal__cart">
@@ -222,6 +227,18 @@
                 </div>
             <?php } ?>
         </div>
+        <?php } ?>
+        <div id="tab-guarantie" class="menu__info">
+            <?php echo $this->load->function_in_alias('exchange-and-return', '__get_Text'); ?>
+            <style>#tab-guarantie p { text-align: left }</style>
+        </div>
+        <div id="tab-reviews" class="menu__info">
+            <div class="flex">
+                <?php $this->load->library('comments');
+                $this->comments->show(); ?>
+            </div>
+        </div>
+        
         <?php $this->load->js_init('init__p_detal()'); ?>
     </div>
 </main>
