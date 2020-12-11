@@ -413,6 +413,8 @@ class Db {
                         $where = substr($where, 0, -2);
                         $where .= ') AND ';
                     }
+                    elseif(is_numeric($value))
+                        $where .= " = {$value} AND ";
                     elseif($value != '' || $value == 0)
                     {
                         $value = $this->sanitizeString($value);
@@ -496,6 +498,8 @@ class Db {
                     $data = substr($data, 1);
                     $where = "{$row_key} = {$data}";
                 }
+                elseif(is_numeric($data))
+                    $where .= "{$row_key} = {$data}";
                 else
                     $where = "{$row_key} = '{$data}'";
             }
