@@ -105,11 +105,10 @@
                 }
                 echo('</p>'); ?>
 
-                <link rel="stylesheet" href="/assets/lightgallery-140/css/lightgallery.min.css">
-                <link rel="stylesheet" href="/assets/lightgallery-140/css/lg-transitions.min.css">
+                <link rel="stylesheet" type="text/css" href="/assets/lightGallery/css/lightgallery.css">
 
-                <?php $_SESSION['alias']->js_load[] = "/assets/lightgallery-140/js/lightgallery.js";
-                    $_SESSION['alias']->js_init[] = "lightGallery(document.getElementById('lightgallery'));";
+                <?php $_SESSION['alias']->js_load[] = "assets/lightGallery/js/lightgallery.js";
+                    $_SESSION['alias']->js_init[] = "$('#lightgallery').lightGallery();";
             } ?>
         </div>
     </div>

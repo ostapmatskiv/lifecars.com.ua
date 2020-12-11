@@ -14,7 +14,7 @@
         <input type="hidden" name="image_name" value="<?= $image_name?>">
 
         <div class="flex">
-            <div class="w50 rating">
+            <div class="rating">
                 <span class="mb-0 align-middle"><?=$this->text('Оцінка')?></span>
                 <div class="d-iblock align-middle">
                     <label <?=$this->data->re_post('rating') == 5 ? 'class="checked"':''?>><input type="radio" name="rating" value="5" <?=$this->data->re_post('rating') == 5 ? 'selected':''?>></label>
@@ -24,12 +24,12 @@
                     <label <?=$this->data->re_post('rating') == 5 ? 'class="checked"':''?>><input type="radio" name="rating" value="1" <?=$this->data->re_post('rating') == 5 ? 'selected':''?>></label>
                 </div>
             </div>
-            <div class="w50 text-right">
+            <div>
                 <label class="image-review-style mb-0" for="image-review"><?=$this->text('Додати зображення')?> <i class="fa fa-download" aria-hidden="true"></i></label>
                 <input type="file" name="images[]" accept="image/jpg,image/jpeg,image/png" multiple id="image-review">
-                <div class="review-gallery"></div>
             </div>
         </div>
+        <div class="review-gallery"></div>
         <div class="form-group">
             <textarea name="comment" id="review-text" rows="6" placeholder="<?=$this->text('Відгук')?>" required><?=$this->data->re_post('comment')?></textarea>
         </div>

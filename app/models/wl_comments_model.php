@@ -4,6 +4,7 @@ class wl_comments_model {
 
 	private $allowed_ext = array('png', 'jpg', 'jpeg');
 	public $paginator = true;
+	public $get_wl_sitemap = true;
 
 	public function get($where = array(), $type = 'array')
 	{
@@ -33,9 +34,11 @@ class wl_comments_model {
 				->join('wl_users', 'name as user_name, email as user_email', '#c.user')
 				->join('wl_ntkd', 'name as page_name', $wl_ntkd)
 				->join('wl_images', 'file_name as page_image', $wl_images)
-				->join('wl_sitemap', 'link', $wl_sitemap)
 				->order('date_add DESC');
-
+		if($this->get_wl_sitemap)
+			$this->db->join('wl_sitemap', 'link', $wl_sitemap);
+		if($type == 'single')
+			$this->db->limit(1);
 		return $this->db->get($type);
 	}
 
@@ -104,7 +107,7 @@ class wl_comments_model {
 					for ($i=0; $i < count($_FILES['images']['name']); $i++) {
 						$image_names[] = $this->data->latterUAtoEN($_FILES['images']['name'][$i]);
 					}
-					$data['images'] = implode(', ', $image_names);
+					$data['images'] = implode('|||', $image_names);
 				}
 				else
 					$data['images'] = $image_names = $this->data->latterUAtoEN($_FILES['images']['name'][0]);

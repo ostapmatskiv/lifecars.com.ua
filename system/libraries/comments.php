@@ -23,6 +23,7 @@ class comments extends Controller
 			elseif($content >= 0 && is_numeric($content))
 				$where['content'] = $content;
 		}
+		$this->wl_comments_model->get_wl_sitemap = false;
 		$comments = $this->wl_comments_model->get($where);
 
 		$showAddForm = $this->showAddForm;

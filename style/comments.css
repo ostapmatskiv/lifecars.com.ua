@@ -58,6 +58,7 @@
     padding: 5px 10px;
  }
 
+.review-gallery { padding: 5px }
 .review-gallery img {
 	width: 100px;
 	padding: 2px;

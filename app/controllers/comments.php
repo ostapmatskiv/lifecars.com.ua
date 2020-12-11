@@ -2,7 +2,13 @@
 
 class Comments extends Controller {
 
-    private $mail_notify_to = 'SITE_EMAIL';
+    private $mail_notify_to = SITE_EMAIL;
+
+    private function anchorAfter($id)
+    {
+        return '#comments'; // #comment-$id;
+        // '#comment_add_success';
+    }
 				
     function _remap($method)
     {
@@ -80,16 +86,13 @@ class Comments extends Controller {
                             $userId = $user->id;
                     }
                 }
-$anchor = '#comments'; 
+
                 if($userId > 0)
                 {
                     $this->load->model('wl_comments_model');
                     $image_names = false;
                     if($id = $this->wl_comments_model->add($userId, $image_names))
                     {
-                        // $anchor = '#comment-'.$id;
-                        // $anchor = '#comment_add_success';
-
                         $name_field = 'images';
                         if($image_names && !empty($_FILES[$name_field]['name']))
                         {
@@ -142,10 +145,14 @@ $anchor = '#comments';
                         {
                         	if ($this->mail_notify_to == 'SITE_EMAIL')
                         		$this->mail_notify_to = SITE_EMAIL;
-                            $comment = $this->wl_comments_model->get(array('id' => $id), 'single');
+                            $this->wl_comments_model->paginator = false;
+                            $comment = $this->wl_comments_model->get($id, 'single');
+                            var_dump($comment);
                             $this->load->library('mail');
                             $this->mail->sendTemplate('comment_add', $this->mail_notify_to, $comment);
                         }
+
+                        $this->redirect($this->anchorAfter($id));
                     }
                 }
             }
@@ -153,9 +160,9 @@ $anchor = '#comments';
                 $_SESSION['notify']->errors = '<ul>'.$this->validator->getErrors('<li>', '</li>').'</ul>';
         }
         
-        // if(isset($_SESSION['notify']->errors))
-        //     $anchor = '#comment_add_error';
-        $this->redirect($anchor);
+        if(isset($_SESSION['notify']->errors))
+            $this->redirect('#comment_add_error');
+        $this->redirect();
     }
 
 }
