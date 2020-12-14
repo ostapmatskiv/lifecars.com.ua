@@ -117,7 +117,14 @@ class wl_comments_model {
 		}
 
 		unset($_SESSION['_POST']);
-		return $this->db->insertRow('wl_comments', $data);
+		if($id = $this->db->insertRow('wl_comments', $data))
+			return $id;
+		else
+		{
+			unset($_SESSION['notify']->success);
+			$_SESSION['notify']->errors = 'Error add row to 2l_comments';
+			return false;
+		}
 	}
 
 }
