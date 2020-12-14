@@ -49,7 +49,7 @@ class wl_comments_model {
 		if(empty($_POST['alias']))
 			return false;
 
-		$_SESSION['notify']->success = 'Thanks for your review.';
+		$_SESSION['notify']->success = 'Дякуємо за відгук!';
 
 		$inputs = array('content', 'alias', 'rating', 'comment');
 		$data = $this->data->prepare($inputs);
@@ -60,7 +60,7 @@ class wl_comments_model {
 		$data['status'] = 2;
 		if(preg_match("~(http|https|ftp|ftps|href)~", $data['comment']))
 		{
-			$_SESSION['notify']->success = 'Thanks for your review. <br>The review will be published after verification';
+			$_SESSION['notify']->success = 'Дякуємо за відгук! <br>Враховуючи політику безпеки сайту, Ваш відгук підлягає перевірці та буде опублікований після затвердження адміністрацією';
 			$data['status'] = 3;
 		}
 
@@ -122,7 +122,7 @@ class wl_comments_model {
 		else
 		{
 			unset($_SESSION['notify']->success);
-			$_SESSION['notify']->errors = 'Error add row to 2l_comments';
+			$_SESSION['notify']->errors = 'Error add row to wl_comments';
 			return false;
 		}
 	}
