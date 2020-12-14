@@ -103,16 +103,22 @@ class wl_comments_model {
 			}
 			else
 			{
-				if(count($_FILES['images']['name']) > 1)
-				{
-					$image_names = array();
-					for ($i=0; $i < count($_FILES['images']['name']); $i++) {
-						$image_names[] = $this->data->latterUAtoEN($_FILES['images']['name'][$i]);
+				$image_names = $names = array();
+				for ($i=0; $i < count($_FILES['images']['name']); $i++) { 
+					$image_names[$i] = false;
+					if($pos = strrpos($_FILES['images']['name'][$i], '.'))
+					{
+            			$ext = strtolower(substr($_FILES['images']['name'][$i], $pos + 1));
+            			if(in_array($ext, $this->allowed_ext))
+            			{
+            				$ext_len = strlen($ext) + 1;
+            				$image_name = $this->data->latterUAtoEN(substr($_FILES['images']['name'][$i], 0, -$ext_len));
+                			$names[$i] = $image_name.'.'.$ext;
+                			$image_names[$i] = $image_name;
+                		}
 					}
-					$data['images'] = implode('|||', $image_names);
 				}
-				else
-					$data['images'] = $image_names = $this->data->latterUAtoEN($_FILES['images']['name'][0]);
+				$data['images'] = implode('|||', $names);
 			}
 		}
 

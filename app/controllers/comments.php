@@ -128,23 +128,32 @@ class Comments extends Controller {
                             $path .= '/';
 
                             $this->load->library('image');
-                            for ($i=0; $i < count($_FILES['images']['name']); $i++) { 
+                            for ($i=0; $i < count($_FILES['images']['name']); $i++) {
                                 if(is_array($image_names))
                                     $name = $image_names[$i];
                                 else
                                     $name = $image_names;
-                                $this->image->uploadArray($name_field, $i, $path, $name);
-                                $extension = $this->image->getExtension();
-                                $this->image->resize(1280, 1280);
-                                $this->image->save();
-                                if($this->image->getErrors() == '')
+                                if(empty($name))
+                                    continue;
+                                $this->image->setExtension();
+                                if($this->image->uploadArray($name_field, $i, $path, $name))
                                 {
-                                    if($this->image->loadImage($path, $name, $extension))
+                                    $extension = $this->image->getExtension();
+                                    $this->image->resize(1280, 1280);
+                                    $this->image->save();
+                                    if($this->image->getErrors() == '')
                                     {
-                                        $this->image->preview(130, 90);
-                                        $this->image->save('m');
+                                        if($this->image->loadImage($path, $name, $extension))
+                                        {
+                                            $this->image->preview(130, 90);
+                                            $this->image->save('m');
+                                        }
                                     }
+                                    else
+                                        $_SESSION['notify']->errors = '<ul>'.$this->image->getErrors('<li>', '</li>').'</ul>';
                                 }
+                                else
+                                    $_SESSION['notify']->errors = '<ul>'.$this->image->getErrors('<li>', '</li>').'</ul>';
                             }
                         }
 
@@ -158,7 +167,8 @@ class Comments extends Controller {
                             $this->mail->sendTemplate('comment_add', $this->mail_notify_to, $comment);
                         }
 
-                        $this->redirect($this->anchorAfter($id));
+                        if(empty($_SESSION['notify']->errors))
+                            $this->redirect($this->anchorAfter($id));
                     }
                 }
             }

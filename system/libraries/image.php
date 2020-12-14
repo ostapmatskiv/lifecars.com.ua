@@ -50,8 +50,13 @@ class Image {
      * Примусове задання розширення зображення
 	 * Задавати перед upload(), uploadArray(), save(), перед/після loadImage()
      */
-	public function setExtension($ext)
+	public function setExtension($ext = NULL)
 	{
+		if($ext === NULL)
+		{
+			$this->extension = false;
+			return true;
+		}
 		if(in_array($ext, $this->allowed_ext))
 		{
 			$this->extension = $ext;
@@ -249,9 +254,9 @@ class Image {
      */
 	public function uploadArray($img_in, $i, $img_out, $name = '')
 	{
-        if(is_uploaded_file($_FILES[$img_in]['tmp_name'][$i])){
-            $pos = strrpos($_FILES[$img_in]['name'][$i], '.');
-            if($pos)
+        if(is_uploaded_file($_FILES[$img_in]['tmp_name'][$i]))
+        {
+            if($pos = strrpos($_FILES[$img_in]['name'][$i], '.'))
             {
                 $name_length = strlen($_FILES[$img_in]['name'][$i]) - $pos;
                 $ext = strtolower(substr($_FILES[$img_in]['name'][$i], $pos + 1, $name_length));
@@ -276,7 +281,7 @@ class Image {
                     }
                     else
                     {
-                        array_push($this->errors, 'Такий тип файлу  не підтримується.');
+                        array_push($this->errors, 'Такий тип файлу не підтримується.');
                         return false;
                     }
                 }
