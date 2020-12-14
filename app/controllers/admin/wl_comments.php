@@ -105,7 +105,7 @@ class wl_Comments extends Controller {
         $data['user'] = $data['manager'] = $_SESSION['user']->id;
         $data['date_add'] = $data['date_manage'] = time();
         if($this->db->insertRow('wl_comments', $data))
-            $this->db->executeQuery("UPDATE `wl_comments` SET `reply` = `reply` + 1, `manager` = '{$_SESSION['user']->id}', `date_manage` = '{$data['date_manage']}' WHERE `id` = ".$data['parent']);
+            $this->db->executeQuery("UPDATE `wl_comments` SET `reply` = `reply` + 1, `status` = 1, `manager` = '{$_SESSION['user']->id}', `date_manage` = '{$data['date_manage']}' WHERE `id` = ".$data['parent']);
         $this->redirect();
     }
 

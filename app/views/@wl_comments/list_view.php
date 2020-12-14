@@ -24,27 +24,28 @@
 			</div>
 			<p class="reviews-article mb-0">
 				<?=nl2br($comment->comment)?>
-				<?php if($comment->images) {
-					echo('<p>');
-					$comment->images = explode('|||', $comment->images);
-					foreach ($comment->images as $image) {
-						echo '<a href="'.IMG_PATH.'comments/'.$comment->id.'/'.$image.'" class="lightgallery"><img src="'.IMG_PATH.'comments/'.$comment->id.'/m_'.$image.'"></a>';
-					}
-					echo('</p>');
-				} ?>
 			</p>
+			<?php if($comment->images) {
+				echo('<p>');
+				$comment->images = explode('|||', $comment->images);
+				foreach ($comment->images as $image) {
+					echo '<a href="'.IMG_PATH.'comments/'.$comment->id.'/'.$image.'" class="lightgallery"><img src="'.IMG_PATH.'comments/'.$comment->id.'/m_'.$image.'"></a>';
+				}
+				echo('</p>');
+			} ?>
 			<?php if($comment->reply) {
 				$this->wl_comments_model->paginator = false;
 			if($replys = $this->wl_comments_model->get(array('parent' => $comment->id, 'status' => '<3')))
 				foreach ($replys as $reply) { ?>
-					<hr>
-					<div class="reviews-author-date">
-						<span><?=$reply->user_name?></span>
-						<time><?=date('d.m.Y H:i', $reply->date_add)?></time>
+					<div class="reply">
+						<div class="reviews-author-date">
+							<span><?=$reply->user_name?></span>
+							<time><?=date('d.m.Y H:i', $reply->date_add)?></time>
+						</div>
+						<p class="reviews-article mb-0">
+							<?=nl2br($reply->comment)?>
+						</p>
 					</div>
-					<p class="reviews-article mb-0">
-						<?=nl2br($reply->comment)?>
-					</p>
 			<?php } } ?>
 		</div>
 	<?php }

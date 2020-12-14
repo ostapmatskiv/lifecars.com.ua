@@ -6,7 +6,7 @@ class Comments extends Controller {
 
     private function anchorAfter($id)
     {
-        return '#comments'; // #comment-$id;
+        return '#reviews'; // #comment-$id;
         // '#comment_add_success';
     }
 				
@@ -30,7 +30,6 @@ class Comments extends Controller {
     {
         $add = false;
         $_SESSION['notify'] = new stdClass();
-        $anchor = '';
 
         if($this->userIs())
             $add = true;
@@ -147,7 +146,6 @@ class Comments extends Controller {
                         		$this->mail_notify_to = SITE_EMAIL;
                             $this->wl_comments_model->paginator = false;
                             $comment = $this->wl_comments_model->get($id, 'single');
-                            var_dump($comment);
                             $this->load->library('mail');
                             $this->mail->sendTemplate('comment_add', $this->mail_notify_to, $comment);
                         }

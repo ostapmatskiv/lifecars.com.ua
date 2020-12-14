@@ -189,6 +189,13 @@ function init__p_detal() {
                 .closest('#tabs').find('.menu__info').removeClass('active').eq($(this).index()).addClass('active');
         return false;
     });
+
+    if(window.location.hash == '#reviews')
+    {
+        $('#tabs nav a, #tabs .menu__info').removeClass('active');
+        $('#tabs nav a[href$="reviews"]').addClass('active');
+        $('#tab-reviews').addClass('active');
+    }
 }
 
 var recaptchaVerifyCallback_saveOrders = function(response) {

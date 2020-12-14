@@ -8,21 +8,20 @@ class wl_comments_model {
 
 	public function get($where = array(), $type = 'array')
 	{
-		if($this->paginator)
+		if($this->paginator && $type != 'single')
 		{
 			$_SESSION['option']->paginator_total = $this->db->getCount('wl_comments', $where);
 			if(empty($_SESSION['option']->paginator_total))
 				return false;
-		}
-
-		if($this->paginator && isset($_SESSION['option']->paginator_per_page) && $_SESSION['option']->paginator_per_page > 0 && $_SESSION['option']->paginator_total > 1)
-		{
-			$start = 0;
-			if(isset($_GET['per_page']) && is_numeric($_GET['per_page']) && $_GET['per_page'] > 0)
-				$_SESSION['option']->paginator_per_page = $_GET['per_page'];
-			if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 1)
-				$start = ($_GET['page'] - 1) * $_SESSION['option']->paginator_per_page;
-			$this->db->limit($start, $_SESSION['option']->paginator_per_page);
+			if(isset($_SESSION['option']->paginator_per_page) && $_SESSION['option']->paginator_per_page > 0 && $_SESSION['option']->paginator_total > 1)
+			{
+				$start = 0;
+				if(isset($_GET['per_page']) && is_numeric($_GET['per_page']) && $_GET['per_page'] > 0)
+					$_SESSION['option']->paginator_per_page = $_GET['per_page'];
+				if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 1)
+					$start = ($_GET['page'] - 1) * $_SESSION['option']->paginator_per_page;
+				$this->db->limit($start, $_SESSION['option']->paginator_per_page);
+			}
 		}
 
 		$wl_sitemap = $wl_ntkd = $wl_images = array('alias' => '#c.alias', 'content' => '#c.content');
@@ -31,14 +30,17 @@ class wl_comments_model {
 		$wl_images['position'] = 1;
 
 		$this->db->select('wl_comments as c', '*', $where)
-				->join('wl_users', 'name as user_name, email as user_email', '#c.user')
+				->join('wl_users as u', 'name as user_name, email as user_email', '#c.user')
 				->join('wl_ntkd', 'name as page_name', $wl_ntkd)
 				->join('wl_images', 'file_name as page_image', $wl_images)
 				->order('date_add DESC');
 		if($this->get_wl_sitemap)
 			$this->db->join('wl_sitemap', 'link', $wl_sitemap);
 		if($type == 'single')
+		{
+			$this->db->join('wl_users as m', 'name as manager_name, email as manager_email', '#c.manager');
 			$this->db->limit(1);
+		}
 		return $this->db->get($type);
 	}
 
