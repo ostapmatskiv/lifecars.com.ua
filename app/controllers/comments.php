@@ -39,7 +39,7 @@ class Comments extends Controller {
             if($this->recaptcha->check($this->data->post('g-recaptcha-response')))
                 $add = true;
             else
-                $_SESSION['notify']->errors = $this->text('Please fill in the captcha');
+                $_SESSION['notify']->errors = $this->text('Please fill in the captcha', 0);
         }
 
         if($add)
@@ -88,10 +88,15 @@ class Comments extends Controller {
 
                 if($userId > 0)
                 {
+                    if(empty($_POST['rating']))
+                        $_POST['rating'] = 5;
                     $this->load->model('wl_comments_model');
                     $image_names = false;
                     if($id = $this->wl_comments_model->add($userId, $image_names))
                     {
+                        if(!empty($_SESSION['notify']->success))
+                            $_SESSION['notify']->success = $this->text($_SESSION['notify']->success, 0);
+
                         $this->load->function_in_alias($_POST['alias'], '__set_rating', $_POST['content'], true);
 
                         $name_field = 'images';
