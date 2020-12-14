@@ -107,10 +107,13 @@
             <p><?=$this->text('В наявності', 0)?> <span class="pieces"><?=$product->availability?></span> шт.</p>
         </div>
         <div class="flex v-center card__rating">
-            <div class="rating">
-                <?php for ($i=0; $i < 5; $i++) { 
-                    echo "<span>★ </span>";
-                } ?>
+            <?php if(empty($product->rating)) $product->rating = 0; ?>
+            <div class="rating <?=empty($product->rating)?'empty':''?>" title="<?=empty($product->rating)?$this->text('Оцінка відсутня'):$this->text('Оцінка товару ').' '.$product->rating?>">
+                <?php for($i = 0; $i < round($product->rating); $i++) { ?>
+                    <i class="fas fa-star" aria-hidden="true"></i>
+                <?php } for($i = round($product->rating); $i < 5; $i++) { ?>
+                    <i class="far fa-star" aria-hidden="true"></i>
+                <?php } ?>
             </div>
         </div>
     </div>

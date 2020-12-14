@@ -92,6 +92,8 @@ class Comments extends Controller {
                     $image_names = false;
                     if($id = $this->wl_comments_model->add($userId, $image_names))
                     {
+                        $this->load->function_in_alias($_POST['alias'], '__set_rating', $_POST['content'], true);
+
                         $name_field = 'images';
                         if($image_names && !empty($_FILES[$name_field]['name']))
                         {

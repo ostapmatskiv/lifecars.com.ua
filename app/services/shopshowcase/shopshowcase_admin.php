@@ -1440,6 +1440,16 @@ class shopshowcase_admin extends Controller {
     	$this->redirect();
     }
 
+    public function __set_rating($product_id)
+	{
+		$rating = $this->db->getQuery("SELECT SUM(`rating`) as rating, count(`rating`) as votes FROM `wl_comments` WHERE `alias` = {$_SESSION['alias']->id} AND `content` = {$product_id} AND `parent` = 0 AND `status` < 3");
+		if(!empty($rating->votes))
+		{
+			$this->db->updateRow('s_shopshowcase_products', ['rating' => round($rating->rating / $rating->votes, 3), 'rating_votes' => $rating->votes], $product_id);
+			$this->__after_edit($product_id);
+		}
+	}
+
     public function __after_edit($content)
     {
     	if($_SESSION['cache'])

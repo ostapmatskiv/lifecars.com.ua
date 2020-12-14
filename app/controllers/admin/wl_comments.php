@@ -60,6 +60,8 @@ class wl_Comments extends Controller {
             $data['manager'] = $_SESSION['user']->id;
             $data['date_manage'] = time();
             $this->db->updateRow('wl_comments', $data, $_POST['id']);
+            $comment = $this->db->getAllDataById('wl_comments', $_POST['id']);
+            $this->load->function_in_alias($comment->alias, '__set_rating', $comment->content, true);
         }
         $this->redirect();
     }

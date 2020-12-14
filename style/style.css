@@ -304,6 +304,10 @@ section.sale .sale__wrrap {
     margin-bottom: 0;
 }
 
+.sale__card .rating:not(.empty) i.fa-star {
+    color: #b59759;
+}
+
 .sale__card .check__number { width: 90px }
 .sale__card .check__number span.minus,
 .sale__card .check__number span.plus {
@@ -414,44 +418,6 @@ section.sale .sale__wrrap {
 }
 @media screen and (max-width: 1025px) {
     .sale__card .card__price button.cart__buy span { display: none }
-}
-
-/*                                                                   Sale Card                              */
-
-.card__rating .rating:not(:checked)>input {
-    position: absolute;
-    top: -9999px;
-}
-
-.card__rating .rating:not(:checked)>label {
-    float: right;
-    width: 1em;
-    overflow: hidden;
-    white-space: nowrap;
-    cursor: pointer;
-    font-size: 20px;
-    color: #fff;
-}
-
-.card__rating .rating:not(:checked)>label:before {
-    content: '★ ';
-}
-
-.card__rating .rating>input:checked~label {
-    color: #ffc505;
-}
-
-.card__rating .rating:not(:checked)>label:hover,
-.card__rating .rating:not(:checked)>label:hover~label {
-    color: #deb217;
-}
-
-.card__rating .rating>input:checked+label:hover,
-.card__rating .rating>input:checked+label:hover~label,
-.card__rating .rating>input:checked~label:hover,
-.card__rating .rating>input:checked~label:hover~label,
-.card__rating .rating>label:hover~input:checked~label {
-    color: #c59b08;
 }
 
 /*                                                 cart modal                                                   */
@@ -1350,42 +1316,6 @@ section.sale__catalog .sale__wrrap .sale__card .card__img i.new__label {
     background-color: #ff5205;
 }
 
-.card__rating .rating:not(:checked)>input {
-    position: absolute;
-    top: -9999px;
-}
-
-.card__rating .rating:not(:checked)>label {
-    float: right;
-    width: 1em;
-    overflow: hidden;
-    white-space: nowrap;
-    cursor: pointer;
-    font-size: 20px;
-    color: #fff;
-}
-
-.card__rating .rating:not(:checked)>label:before {
-    content: '★ ';
-}
-
-.card__rating .rating>input:checked~label {
-    color: #ffc505;
-}
-
-.card__rating .rating:not(:checked)>label:hover,
-.card__rating .rating:not(:checked)>label:hover~label {
-    color: #deb217;
-}
-
-.card__rating .rating>input:checked+label:hover,
-.card__rating .rating>input:checked+label:hover~label,
-.card__rating .rating>input:checked~label:hover,
-.card__rating .rating>input:checked~label:hover~label,
-.card__rating .rating>label:hover~input:checked~label {
-    color: #c59b08;
-}
-
 
 /*                 aside checkbox               */
 section.sale__catalog aside {
@@ -1545,23 +1475,26 @@ main.detal section.detal__info .img__big img {
     width: 100%;
 }
 
-main.detal section.detal__info div.flex.h-evenly.v-center.card__rating.detal__rating {
-    max-width: 350px
-}
-
-main.detal section.detal__info .card__rating.detal__rating .rating:not(:checked)>label {
-    font-size: 24px;
-}
-
 main.detal section.detal__info .info__img div.m__right {
     margin-right: 10px;
 }
 
-main.detal section.detal__info .info__img .rating__comment .rating__lebel {
+main.detal section.detal__info .info__img .card__rating {
+    margin-top: 10px;
+}
+
+main.detal section.detal__info .info__img .rating:not(.empty) i.fa-star {
+    color: #b59759;
+}
+
+main.detal section.detal__info .info__img .rating__comment img {
+    margin-bottom: -3px;
+}
+
+main.detal section.detal__info .info__img .rating__comment i {
     font-size: 16px;
     font-weight: normal;
     font-style: normal;
-    line-height: 1.31;
     color: #8c8c8c;
 }
 
@@ -2136,10 +2069,6 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
 
 
 @media (max-width: 1441px) {
-    .card__rating .rating:not(:checked)>label {
-        font-size: 22px
-    }
-
     section.sale .sale__wrrap .sale__card .card__check .check__pieces p {
         font-size: 11px
     }
@@ -2308,10 +2237,6 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
 
         section.sale .sale__wrrap .sale__card .card__img {
             height: 200px;
-        }
-
-        .card__rating .rating:not(:checked)>label {
-            font-size: 17px;
         }
 
         section.sale .sale__wrrap .sale__card .card__info .info__article {
@@ -2773,10 +2698,6 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
 
         section.sale .sale__wrrap .sale__card .card__img {
             height: 200px;
-        }
-
-        .card__rating .rating:not(:checked)>label {
-            font-size: 17px;
         }
 
         section.sale .sale__wrrap .sale__card .card__info .info__article {

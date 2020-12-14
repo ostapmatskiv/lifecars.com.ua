@@ -11,11 +11,11 @@
 
 	<?php foreach ($comments as $comment) { ?>
 		<div id="comment-<?=$comment->id?>">
-			<div>
+			<div class="rating">
 				<?php for($i = 0; $i < $comment->rating; $i++) { ?>
-					<i class="fa fa-star" aria-hidden="true"></i>
+					<i class="fas fa-star" aria-hidden="true"></i>
 				<?php } for($i = $comment->rating; $i < 5; $i++) { ?>
-					<i class="fa fa-star-o" aria-hidden="true"></i>
+					<i class="far fa-star" aria-hidden="true"></i>
 				<?php } ?>
 				<div class="pull-right">
 					<span><?=$comment->user_name?></span>

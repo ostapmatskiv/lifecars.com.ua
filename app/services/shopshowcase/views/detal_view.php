@@ -14,7 +14,10 @@
             <h4><?=(isset($_SESSION['notify']->title)) ? $_SESSION['notify']->title : 'Error!'?></h4>
             <p><?=$_SESSION['notify']->errors?></p>
         </div>
-    <?php } unset($_SESSION['notify']); ?>
+    <?php } unset($_SESSION['notify']); 
+
+    if(empty($product->rating)) $product->rating = 0;
+    ?>
 
     <section class="flex detal__info">
         <div class="flex h-start info__img"> 
@@ -29,22 +32,17 @@
                     <?php } ?>
                     <!-- <i class="img__hit">ХІТ</i> -->
                 </div>
-                <div class="flex h-evenly v-center card__rating detal__rating">
-                    <div class="rating">
-                        <input type="radio" id="star5" name="rate" value="5" />
-                        <label for="star5" title="text">5 stars</label>
-                        <input type="radio" id="star4" name="rate" value="4" />
-                        <label for="star4" title="text">4 stars</label>
-                        <input type="radio" id="star3" name="rate" value="3" />
-                        <label for="star3" title="text">3 stars</label>
-                        <input type="radio" id="star2" name="rate" value="2" />
-                        <label for="star2" title="text">2 stars</label>
-                        <input type="radio" id="star1" name="rate" value="1" />
-                        <label for="star1" title="text">1 star</label>
+                <div class="flex h-evenly v-center card__rating">
+                    <div class="rating <?=empty($product->rating)?'empty':''?>" title="<?=empty($product->rating)?$this->text('Оцінка відсутня'):$this->text('Оцінка товару ').' '.$product->rating?>">
+                        <?php for($i = 0; $i < round($product->rating); $i++) { ?>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                        <?php } for($i = round($product->rating); $i < 5; $i++) { ?>
+                            <i class="far fa-star" aria-hidden="true"></i>
+                        <?php } ?>
                     </div>
                     <div class="rating__comment">
-                        <i class="rating__lebel">0</i>
                         <img src="/style/icons/comment.png" alt="comment">
+                        <i><?=$product->rating_votes ?? 0?></i>
                     </div>
                 </div>
             </div>
@@ -88,11 +86,11 @@
                 <a href="/admin/<?=$product->link?>">Редагувати Admin</a>
             <?php } if($product->old_price > $product->price) { ?>
             <div class="old__price">
-                <p><strike><?=round($product->old_price) ?></strike> ₴</p>
+                <p><strike><?=round($product->old_price) ?></strike></p>
             </div>
             <?php } ?>
             <div class="new__price">
-                <?=$product->price_format ?> ₴
+                <?=$product->price_format ?>
             </div>
             <?php if($product->old_price > $product->price) { ?>
             <div class="flex h-end v-center discount">
