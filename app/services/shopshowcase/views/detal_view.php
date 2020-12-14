@@ -5,7 +5,7 @@
         <div id="comment_add_success" class="alert alert-success">
             <span class="close" data-dismiss="alert">×</span>
             <h4><?=(isset($_SESSION['notify']->title)) ? $_SESSION['notify']->title : $this->text('Success!')?></h4>
-            <p><?=$this->text($_SESSION['notify']->success)?></p>
+            <p><?=$_SESSION['notify']->success?></p>
         </div>
     <?php endif;
     if(!empty($_SESSION['notify']->errors)) { ?>

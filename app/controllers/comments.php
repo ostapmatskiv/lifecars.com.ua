@@ -30,6 +30,7 @@ class Comments extends Controller {
     {
         $add = false;
         $_SESSION['notify'] = new stdClass();
+        $_SESSION['notify']->title = $this->text('Відгуки', 0);
 
         if($this->userIs())
             $add = true;
