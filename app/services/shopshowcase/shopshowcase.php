@@ -501,7 +501,10 @@ class shopshowcase extends Controller {
 		if(isset($data['limit']) && is_numeric($data['limit'])) $_SESSION['option']->paginator_per_page = $data['limit'];
 		if(isset($data['sort']) && $data['sort'] != '') $_SESSION['option']->productOrder = $data['sort'];
 		if(isset($data['sale']) && $data['sale'] == 1) $_GET['sale'] = 1;
-		if(isset($data['availability']) && $data['availability'] == 1) $_GET['availability'] = 1;
+		if(isset($data['availability']) && $data['availability'] == 1) {
+			$_GET['availability'] = 1;
+			$_GET['price_min'] = 1;
+		}
 		if(isset($data['noInclude']) && $data['noInclude'] > 0) $noInclude = $data['noInclude'];
 		if(isset($data['active']) && $data['active'] == false) $active = false;
 		if(isset($data['getProductOptions']) && $data['getProductOptions'] == true) $getProductOptions = true;

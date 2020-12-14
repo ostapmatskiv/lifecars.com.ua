@@ -358,7 +358,7 @@ class shop_model {
 			$where['#p.old_price'] = '>0';
 			$where['+#p.old_price'] = '> p.price';
 		}
-		if(isset($_GET['price_min']) && is_numeric($_GET['price_min']) && $_GET['price_min'] > 1)
+		if(isset($_GET['price_min']) && is_numeric($_GET['price_min']) && $_GET['price_min'] >= 1)
 		{
 			$price_min = $this->data->get('price_min');
 			// if(isset($_SESSION['option']->currency) &&  $_SESSION['option']->currency)
