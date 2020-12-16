@@ -95,7 +95,11 @@
     
     <section class="flex sale__catalog">
         <aside class="w25">
-            <form>
+            <div class="hide m-flex">
+                <button class="btn w50-5" onclick="$(this).closest('aside').find('form').toggleClass('m-hide')"><?=$this->text('Фільтр')?></button>
+                <button class="btn w50-5" onclick="$(this).closest('section.sale__catalog').find('.catalog__sorted').toggleClass('m-hide')"><?=$this->text('Сортувати')?></button>
+            </div>
+            <form class="m-hide">
             	<?php /*
                 <div class="product__type">
                     <div class="flex v-center">
@@ -139,7 +143,7 @@
             </form>
         </aside>
         <div class="w75">
-            <div class="flex catalog__sorted">
+            <div class="flex catalog__sorted m-hide">
                 <div>
                     <a href="<?=$this->data->get_link('sort', 'price_down')?>" <?=($this->data->get('sort') == 'price_down')?'class="active"':''?>><?=$this->text('Спершу дешеві')?></a>
                     <a href="<?=$this->data->get_link('sort', 'price_up')?>" <?=($this->data->get('sort') == 'price_up')?'class="active"':''?>><?=$this->text('Спершу дорожчі')?></a>

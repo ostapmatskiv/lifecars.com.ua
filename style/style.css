@@ -237,7 +237,7 @@ section.sale .sale__wrrap {
 }
 .sale__card .card__img {
     width: 100%;
-    height: 210px;
+    height: 255px;
     background-color: transparent;
     overflow: hidden;
     border-radius: 5px;
@@ -3350,6 +3350,9 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
         section.sale__catalog .storag {
             width: 100%
         }
+
+        section.sale__catalog aside,
+        main .catalog__sorted { margin: 10px 0 0 }
 
         main section.sale__catalog .sale__wrrap {
             margin-top: 10px;
