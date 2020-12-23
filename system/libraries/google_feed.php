@@ -38,9 +38,21 @@ class google_feed
 						else
 							$xml .= "<g:additional_image_link>{$image}</g:additional_image_link>";
 					}
-				   
-				$xml .= "<g:availability>in stock</g:availability>
-				   <g:price>{$product->price} UAH</g:price>
+				if($_SESSION['option']->useAvailability)
+				{
+					if($product->availability > 0)
+						$xml .= "<g:availability>in_stock</g:availability>";
+					else
+						$xml .= "<g:availability>out_of_stock</g:availability>";
+				}
+				else
+				{
+					if($product->availability == 1)
+						$xml .= "<g:availability>in_stock</g:availability>";
+					else
+						$xml .= "<g:availability>out_of_stock</g:availability>";
+				}
+				$xml .= "<g:price>{$product->price} UAH</g:price>
 				   <g:mpn>{$product->article_show}</g:mpn>";
 				if(!empty($product->group) && $groups)
 				{

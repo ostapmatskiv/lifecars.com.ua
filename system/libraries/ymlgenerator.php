@@ -93,15 +93,20 @@ class ymlgenerator extends Controller {
                     if($product->old_price > 0 && $product->old_price > $product->price)
                         $offerSimple->setOldPrice($product->old_price);
 
-                    if($product->useAvailability)
+                    if($_SESSION['option']->useAvailability)
                     {
-                        if($product->availability == 1)
+                        if($product->availability > 0)
                             $offerSimple->setAvailable(true);
-                        if($product->availability == 2)
+                        else
                             $offerSimple->setAvailable(false);
                     }
                     else
-                        $offerSimple->setAvailable(true);
+                    {
+                        if($product->availability == 1)
+                            $offerSimple->setAvailable(true);
+                        else
+                            $offerSimple->setAvailable(false);
+                    }
 
                     if(isset($product->quantity_in_stock))
                         $offerSimple->setQuantity_in_stock($product->quantity_in_stock);
