@@ -92,22 +92,21 @@ if($cooperation = $this->db->getAllDataByFieldInArray('wl_aliases_cooperation', 
         if($c->type == 'storage') $storages[] = $c->alias2;
         if($c->type == 'marketing') $marketing[] = $this->load->function_in_alias($c->alias2, '__tab_product', $product, true);
     }
+
+$url = $this->data->url();
+array_shift($url);
+array_pop ($url);
+$url = implode('/', $url); 
 ?>
 <div class="row">
   <div class="col-md-12">
     <div class="panel panel-inverse">
       <div class="panel-heading">
         <div class="panel-heading-btn">
-          <a href="<?=SITE_URL.$_SESSION['alias']->alias.'/'.$product->alias?>" class="btn btn-info btn-xs"><i class="fa fa-eye"></i> <?=$_SESSION['admin_options']['word:product_to']?></a>
-          <?php $url = $this->data->url();
-              array_shift($url);
-              array_pop ($url);
-              $url = implode('/', $url);
-            if(!$_SESSION['option']->ProductMultiGroup) { ?>
-            <a href="<?=SITE_URL.'admin/'.$url?>" class="btn btn-success btn-xs"><i class="fa fa-cubes"></i> До каталогу</a>
-          <?php } ?>
-          <button onClick="showUninstalForm()" class="btn btn-danger btn-xs"><i class="fa fa-window-close" aria-hidden="true"></i> Видалити <?=$_SESSION['admin_options']['word:product_to_delete']?></button>
+          <a href="<?=SITE_URL.$_SESSION['alias']->alias.'/'.$product->alias?>" class="btn btn-info btn-xs"><i class="fa fa-eye"></i> Дивитися як клієнт</a>
+          <a href="<?=SITE_URL.'admin/'.$product->link?>" class="btn btn-success btn-xs"><i class="fa fa-undo"></i> Швидкий перегляд</a>
           <a href="<?=SITE_URL.'admin/'.$_SESSION['alias']->alias.'/clear_cache?id='.$product->id?>" class="btn btn-warning btn-xs"><i class="fa fa-trash" aria-hidden="true"></i> Очистити КЕШ</a>
+          <button onClick="showUninstalForm()" class="btn btn-danger btn-xs m-l-10"><i class="fa fa-window-close" aria-hidden="true"></i> Видалити <?=$_SESSION['admin_options']['word:product_to_delete']?></button>
         </div>
 
           <h5 class="panel-title">

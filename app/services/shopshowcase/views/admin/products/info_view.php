@@ -62,16 +62,8 @@ if($cooperation = $this->db->getAllDataByFieldInArray('wl_aliases_cooperation', 
     <div class="panel panel-inverse">
       <div class="panel-heading">
         <div class="panel-heading-btn">
-          <a href="<?=SITE_URL.$product->link?>" class="btn btn-info btn-xs"><i class="fa fa-eye"></i> <?=$_SESSION['admin_options']['word:product_to']?></a>
-          <?php $url = $this->data->url();
-              array_shift($url);
-              array_pop ($url);
-              $url = implode('/', $url);
-            if(!$_SESSION['option']->ProductMultiGroup) { ?>
-            <a href="<?=SITE_URL.'admin/'.$url?>" class="btn btn-success btn-xs"><i class="fa fa-cubes"></i> До каталогу</a>
-          <?php } ?>
-          <button onClick="showUninstalForm()" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Видалити <?=$_SESSION['admin_options']['word:product_to_delete']?></button>
-          <a href="<?=SITE_URL.'admin/'.$product->link?>?edit" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i> Редагувати <?=$_SESSION['admin_options']['word:product_to_delete']?></a>
+          <a href="<?=SITE_URL.'admin/'.$_SESSION['alias']->alias.'/clear_cache?id='.$product->id?>" class="btn btn-warning btn-xs"><i class="fa fa-trash" aria-hidden="true"></i> Очистити КЕШ</a>
+          <button onClick="showUninstalForm()" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Видалити товар</button>
         </div>
 
           <h5 class="panel-title">
@@ -83,7 +75,7 @@ if($cooperation = $this->db->getAllDataByFieldInArray('wl_aliases_cooperation', 
       <div id="uninstall-form" class="alert alert-danger fade in" style="display: none;">
         <i class="fa fa-trash fa-2x pull-left"></i>
         <form action="<?=SITE_URL.'admin/'.$_SESSION['alias']->alias?>/delete" method="POST">
-          <p>Ви впевнені що бажаєте видалити <?=$_SESSION['admin_options']['word:product_to_delete']?>?</p>
+          <p>Ви впевнені що бажаєте видалити товар?</p>
           <input type="hidden" name="id" value="<?=$product->id?>">
           <input type="submit" value="Видалити" class="btn btn-danger">
           <button type="button" style="margin-left:25px" onClick="showUninstalForm()" class="btn btn-info">Скасувати</button>
@@ -95,6 +87,18 @@ if($cooperation = $this->db->getAllDataByFieldInArray('wl_aliases_cooperation', 
       } ?>
 
       <div class="panel-body">
+        <div class="m-b-5">
+          <?php $url = $this->data->url();
+              array_shift($url);
+              array_pop ($url);
+              $url = implode('/', $url);
+            if(!$_SESSION['option']->ProductMultiGroup) { ?>
+            <a href="<?=SITE_URL.'admin/'.$url?>" class="btn btn-success btn-sm"><i class="fa fa-undo"></i> До каталогу</a>
+          <?php } ?>
+          <a href="<?=SITE_URL.$product->link?>" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Дивитися як клієнт</a>
+          <a href="<?=SITE_URL.'admin/'.$product->link?>?edit" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Редагувати товар</a>
+        </div>
+
         <ul class="nav nav-tabs">
           <li class="active"><a href="#tab-main" data-toggle="tab" aria-expanded="true">Загальні дані</a></li>
           <?php if($changePriceTab) { ?>
