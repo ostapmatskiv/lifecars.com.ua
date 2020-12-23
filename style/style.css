@@ -1405,6 +1405,7 @@ main.detal h1.detal__heading {
     line-height: 1.33;
     text-align: left;
     color: #262626;
+    text-transform: none;
 }
 main.detal h1.detal__heading small {
     font-size: smaller;

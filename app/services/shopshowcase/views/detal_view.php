@@ -1,5 +1,5 @@
 <main class="detal">
-    <h1 class="detal__heading"><?=$product->name.' '.$product->options['1-manufacturer']->value.' <small>('.$product->article_show.')</small>'?></h1>
+    <h1 class="detal__heading"><?=$product->name.' '.mb_strtoupper($product->options['1-manufacturer']->value).' ('.$product->article_show.')'?></h1>
 
     <?php if(!empty($_SESSION['notify']->success)): ?>
         <div id="comment_add_success" class="alert alert-success">
