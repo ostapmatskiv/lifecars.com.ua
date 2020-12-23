@@ -1406,6 +1406,10 @@ main.detal h1.detal__heading {
     text-align: left;
     color: #262626;
 }
+main.detal h1.detal__heading small {
+    font-size: smaller;
+    letter-spacing: 1px;
+}
 
 main.detal section.detal__info {
     padding: 30px 0;
