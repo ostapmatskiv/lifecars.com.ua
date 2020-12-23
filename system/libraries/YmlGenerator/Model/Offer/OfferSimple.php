@@ -56,7 +56,7 @@ class OfferSimple extends AbstractOffer implements OfferGroupAwareInterface
      */
     public function setName($name)
     {
-        $this->name = $name;
+        $this->name = htmlentities($name, ENT_XML1);
 
         return $this;
     }
