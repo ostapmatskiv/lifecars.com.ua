@@ -13,7 +13,7 @@ class Login extends Controller {
      */
     public function index()
     {
-    	$this->wl_alias_model->setContent(0, 201);
+    	$this->wl_alias_model->setContent(0, 202);
     	
         if($this->userIs())
         	$this->redirect($this->after);

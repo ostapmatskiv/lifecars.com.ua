@@ -1,6 +1,6 @@
 <?php
 
-class wl_register extends Controller {
+class wl_register_admin extends Controller {
                 
     function _remap($method)
     {

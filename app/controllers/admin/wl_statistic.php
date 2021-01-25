@@ -1,6 +1,6 @@
 <?php
 
-class wl_statistic extends Controller {
+class wl_statistic_admin extends Controller {
 				
     public function _remap($method)
     {

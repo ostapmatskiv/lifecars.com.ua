@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-md-3"></div>
 	<div class="col-md-6">
-		<form method="POST" action="<?=SITE_URL?>admin/wl_files/save" enctype="multipart/form-data" class="form-horizontal" onsubmit="saveing.style.display = block">
+		<form method="POST" action="<?=SITE_URL?>admin/wl_files/save" enctype="multipart/form-data" class="form-horizontal" onsubmit="saveing.style.display = 'block'">
 			<input type="hidden" name="alias" value="<?=$_SESSION['alias']->id?>">
 			<input type="hidden" name="alias_folder" value="<?=$_SESSION['option']->folder?>">
 			<input type="hidden" name="content" value="<?=$_SESSION['alias']->content?>">
@@ -51,8 +51,21 @@
 				} ?>
 			</a>
 			<input type="text" id="text-file-<?=$file->id?>" value="<?=$file->text?>" class="form-control" onChange="saveFileText(<?=$file->id?>, this)" data-filename="<?=$file->name?>">
-			<span>Додано: <?=date('d.m.Y H:i', $file->date_add)?></span>
-			<?php echo(" <a class='btn btn-danger btn-xs' href=\"".SITE_URL."admin/wl_files/delete?id={$file->id}&folder={$_SESSION['option']->folder}\" onclick=\"return confirm('Видалити {$file->name}?')\" style='float: right !important; color: #fff'><i class=\"fa fa-trash\" aria-hidden=\"true\"></i> Видалити</a></li>");
+			
+			<form method="POST" action="<?=SITE_URL?>admin/wl_files/save_preview" enctype="multipart/form-data" onsubmit="saveing.style.display = 'block'">
+				<?php if(!empty($file->preview_extension)) { 
+					$file->name .= '.'.$file->preview_extension; ?>
+					<a href="<?= $this->data->get_file_path($file)?>" target="_blank" class="preview">
+						<i class="fa fa-file-image-o fa-2x" title="Дивитися"></i>
+						<!-- <img src="<?= $this->data->get_file_path($file)?>"> -->
+					</a>
+				<?php } ?>
+				<input type="hidden" name="id" value="<?=$file->id?>">
+				<input type="hidden" name="folder" value="<?=$_SESSION['option']->folder?>">
+				<input type="file" name="preview" required accept="image/*" onchange="this.form.submit()">
+			</form>
+			<span>Додано: <strong title="<?=date('d.m.Y H:i', $file->date_add)?>"><?=date('d.m.Y', $file->date_add)?></strong></span>
+			<?php echo(" <a class='btn btn-danger btn-xs' href=\"".SITE_URL."admin/wl_files/delete?id={$file->id}&folder={$_SESSION['option']->folder}\" title='Видалити' onclick=\"return confirm('Видалити {$file->name}?')\" style='float: right !important; color: #fff'><i class=\"fa fa-trash\" aria-hidden=\"true\"></i> </a></li>");
 		}
 ?>
 </ol>
@@ -65,13 +78,17 @@
 		height: 45px;
     	clear: both;
 	}
-	.ui-state-default > * {
+	.ui-state-default * {
 		float: left !important;
 	}
-	.ui-state-default input {
-		width: 50%;
+	.ui-state-default input[type="text"],
+	.ui-state-default form {
+		width: 35%;
 	    margin: 0 10px;
 	}
+	.ui-state-default input[type="file"] { width: calc(90% - 20px) }
+	.ui-state-default a.preview { width: 10% }
+	.ui-state-default a.preview img { width: 100% }
 </style>
 
 <script>

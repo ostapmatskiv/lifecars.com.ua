@@ -1,6 +1,6 @@
 ﻿<?php 
 
-class wl_Comments extends Controller {
+class wl_comments_admin extends Controller {
 				
     function _remap($method, $data = array())
     {

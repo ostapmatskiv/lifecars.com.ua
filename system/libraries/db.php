@@ -36,6 +36,7 @@
                             додано getHTMLCacheKey(), getCacheContentKey(), $this->version
    Версія 2.8 (05.08.2020) - додано redis_set(), redis_get(), redis_del(), redis_delByKey(), redis_ping(), redis_do(), $this->html_cache_in_redis
    2.8.1 (09.12.2020) - updateRow() values can set NULL, numeric format. select(.., .., .., clear = true) add default clear param
+   2.8.2 (15.01.2020) - makeWhere() масив значень з одного елементу {key} IN ({value}) => {key} = {value}
  */
 
 class Db {
@@ -406,12 +407,17 @@ class Db {
                         $where .= "`{$key}`";
                     if(is_array($value))
                     {
-                        $where .= " IN ( ";
-                        foreach ($value as $v) {
-                            $where .= "'{$v}', ";
+                        if(count($value) == 1)
+                            $where .= " = {$value[0]} AND ";
+                        else
+                        {
+                            $where .= " IN ( ";
+                            foreach ($value as $v) {
+                                $where .= "'{$v}', ";
+                            }
+                            $where = substr($where, 0, -2);
+                            $where .= ') AND ';
                         }
-                        $where = substr($where, 0, -2);
-                        $where .= ') AND ';
                     }
                     elseif(is_numeric($value))
                         $where .= " = {$value} AND ";
@@ -470,7 +476,10 @@ class Db {
                             elseif($value[0] == '!')
                             {
                                 $value = substr($value, 1);
-                                $where .= " != '{$value}' AND ";
+                                if(is_numeric($value))
+                                    $where .= " != {$value} AND ";
+                                else
+                                    $where .= " != '{$value}' AND ";
                             }
                             else
                                 $where .= " = '{$value}' AND ";

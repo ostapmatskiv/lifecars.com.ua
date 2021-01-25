@@ -4,7 +4,10 @@ class wl_search_model {
 
 	public function get($by, $all = false)
 	{
-		$by = preg_replace( "/[^a-zA-ZА-Яа-я0-9\s]/ui", '', $by);
+		if(empty($by))
+			return false;
+		
+		$by = preg_replace( "/[^a-zA-ZА-Яа-яі0-9\s]/ui", '', $by);
 		$by = str_replace('quot', '', $by);
 		$where['name'] = '%'.$by;
 		// $where['content'] = '> 0';

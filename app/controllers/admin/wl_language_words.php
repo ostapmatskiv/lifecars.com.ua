@@ -1,6 +1,6 @@
 <?php
 
-class wl_language_words extends Controller {
+class wl_language_words_admin extends Controller {
 				
     function _remap($method)
     {

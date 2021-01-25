@@ -13,15 +13,6 @@ class wl_comments_model {
 			$_SESSION['option']->paginator_total = $this->db->getCount('wl_comments', $where);
 			if(empty($_SESSION['option']->paginator_total))
 				return false;
-			if(isset($_SESSION['option']->paginator_per_page) && $_SESSION['option']->paginator_per_page > 0 && $_SESSION['option']->paginator_total > 1)
-			{
-				$start = 0;
-				if(isset($_GET['per_page']) && is_numeric($_GET['per_page']) && $_GET['per_page'] > 0)
-					$_SESSION['option']->paginator_per_page = $_GET['per_page'];
-				if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 1)
-					$start = ($_GET['page'] - 1) * $_SESSION['option']->paginator_per_page;
-				$this->db->limit($start, $_SESSION['option']->paginator_per_page);
-			}
 		}
 
 		$wl_sitemap = $wl_ntkd = $wl_images = array('alias' => '#c.alias', 'content' => '#c.content');
@@ -33,6 +24,7 @@ class wl_comments_model {
 				->join('wl_users as u', 'name as user_name, email as user_email', '#c.user')
 				->join('wl_ntkd', 'name as page_name', $wl_ntkd)
 				->join('wl_images', 'file_name as page_image', $wl_images)
+				->join('wl_aliases', 'alias as page_alias', '#c.alias')
 				->order('date_add DESC');
 		if($this->get_wl_sitemap)
 			$this->db->join('wl_sitemap', 'link', $wl_sitemap);
@@ -40,6 +32,15 @@ class wl_comments_model {
 		{
 			$this->db->join('wl_users as m', 'name as manager_name, email as manager_email', '#c.manager');
 			$this->db->limit(1);
+		}
+		if($this->paginator && $type != 'single' && isset($_SESSION['option']->paginator_per_page) && $_SESSION['option']->paginator_per_page > 0 && $_SESSION['option']->paginator_total > 1)
+		{
+			$start = 0;
+			if(isset($_GET['per_page']) && is_numeric($_GET['per_page']) && $_GET['per_page'] > 0)
+				$_SESSION['option']->paginator_per_page = $_GET['per_page'];
+			if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 1)
+				$start = ($_GET['page'] - 1) * $_SESSION['option']->paginator_per_page;
+			$this->db->limit($start, $_SESSION['option']->paginator_per_page);
 		}
 		return $this->db->get($type);
 	}

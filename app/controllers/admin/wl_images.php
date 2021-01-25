@@ -1,6 +1,6 @@
 <?php
 
-class wl_images extends Controller {
+class wl_images_admin extends Controller {
 
     function _remap($method)
     {
@@ -90,8 +90,8 @@ class wl_images extends Controller {
             $photo['quality'] = 100;
             $id = $this->db->insertRow('wl_images_sizes', $photo);
 
-            unset($this->db->imageReSizes[$photo['alias']]);
-            $this->db->cache_delete('imageReSizes', $this->data->post('alias_name'));
+            $this->db->imageReSizes = [];
+            $this->db->cache_delete_all(false, $this->data->post('alias_name'));
 
             $this->load->redirect('admin/wl_images/'.$this->data->post('alias_name').'/'.$id);
         }
@@ -110,12 +110,12 @@ class wl_images extends Controller {
             $data['quality'] = $this->data->post('quality');
             $this->db->updateRow('wl_images_sizes', $data, $_POST['id']);
 
+            $this->db->imageReSizes = [];
             $alias = $this->data->post('alias');
             if(is_numeric($alias))
             {
-                unset($this->db->imageReSizes[$alias]);
                 if($a = $this->db->getAllDataById('wl_aliases', $alias))
-                    $this->db->cache_delete('imageReSizes', $a->alias);
+                    $this->db->cache_delete_all(false, $a->alias);
             }
 
             $_SESSION['notify'] = new stdClass();

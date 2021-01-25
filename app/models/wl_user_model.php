@@ -201,7 +201,6 @@ class wl_user_model {
                 ->get();
 		if($user && $code == $user->auth_id)
 		{
-            $user->next = 1;
             $status = $this->db->getAllDataById('wl_user_status', $user->next);
 			$this->db->updateRow('wl_users', array('status' => $user->next), $user->id);
 			$user->status = $user->next;
@@ -288,28 +287,43 @@ class wl_user_model {
 		return false;
     }
 
-    public function setAdditional($user, $key, $value)
+    private $wl_userID_info = 0;
+    private $wl_user_info = false;
+    public function setAdditional($user, $key, $value = '')
     {
-    	$where['user'] = $user;
-    	$where['field'] = $key;
-    	$this->db->select('wl_user_info', 'id, value', $where);
-        if($additionall = $this->db->get())
-    	{
-    		if($additionall->value != $value){
-    			$this->db->updateRow('wl_user_info', array('value' => $value, 'date' => time()), $additionall->id);
-                $text = 'Попереднє значення ' . $key.': '.$additionall->value;
-                if($user != $_SESSION['user']->id) $text .= ' (менеджер: '. $_SESSION['user']->id. ', '.$_SESSION['user']->name.')'; 
-                $this->db->register('profile_data', $text, $user);
+        if(empty($user) || empty($key))
+            return false;
+
+        if($this->wl_userID_info != $user)
+        {
+            $this->wl_user_info = $this->db->getAllDataByFieldInArray('wl_user_info', $user, 'user');
+            $this->wl_userID_info = $user;
+        }
+
+        if($this->wl_user_info)
+        	foreach ($this->wl_user_info as $additionall) {
+                if($additionall->field == $key)
+                {
+                    if($additionall->value != $value) {
+                        $this->db->updateRow('wl_user_info', array('value' => $value, 'date' => time()), $additionall->id);
+                        $text = 'Попереднє значення ' . $key.': '.$additionall->value;
+                        if($user != $_SESSION['user']->id)
+                            $text .= ' (менеджер: '. $_SESSION['user']->id. ', '.$_SESSION['user']->name.')'; 
+                        $this->db->register('profile_data', $text, $user);
+
+                        // for lamure
+                        if($key == 'location')
+                            $this->db->executeQuery("UPDATE `s_shopshowcase_product_options` SET `value`={$value} WHERE `product` IN (SELECT `id` FROM `s_shopshowcase_products` WHERE `author_add` = {$user}) AND `option` = 8");
+                    }
+                    return true;
+                }
             }
-    		return true;
-    	}
-    	else
-    	{
-    		$where['value'] = $value;
-    		$where['date'] = time();
-			$this->db->insertRow('wl_user_info', $where);
-			return true;
-    	}
+
+        if(empty($value))
+            return true;
+
+		$this->db->insertRow('wl_user_info', ['user' => $user, 'field' => $key, 'value' => $value, 'date' => time()]);                
+		return true;
     }
 
     public function reset($email = '')

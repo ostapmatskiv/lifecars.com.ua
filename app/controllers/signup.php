@@ -132,7 +132,7 @@ class Signup extends Controller {
 		        else
 		            $_SESSION['notify']->errors = '<ul>'.$this->validator->getErrors('<li>', '</li>').'</ul>';
 		    }
-	        $this->redirect();
+	        $this->redirect('signup');
 		}
 		$this->redirect('profile');
     }

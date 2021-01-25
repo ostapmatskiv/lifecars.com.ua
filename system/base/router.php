@@ -124,7 +124,13 @@ class Router extends Loader {
 
 					if(!empty($_SESSION['option']->statictic_set_page) && !$userAdmin)
 						$this->wl_statistic_model->set_page($this->wl_cache_model->page);
-					$this->wl_cache_model->get();
+					$check_get = false;
+					if(count($_GET) < 2)
+						$check_get = true;
+					else if(count($_GET) == 2 && isset($_GET['authorization']))
+						$check_get = true;
+					if($check_get)
+						$this->wl_cache_model->get();
 				}
 				else
 					$this->wl_alias_model->init($parts[0], $this->request);
@@ -154,6 +160,10 @@ class Router extends Loader {
 		}
 		else
 		{
+			$_admin = false;
+			if($userAdmin && $parts[0] == 'admin')
+				$_admin = true;
+
 			foreach($parts as $part)
 			{
 				if(is_dir($path.$part.DIRSEP))
@@ -172,9 +182,11 @@ class Router extends Loader {
 			}
 
 			$path .= $this->class;
+			if($_admin && $this->class != 'admin')
+				$this->class .= '_admin';
 			$this->method = (empty($parts)) ? 'index' : $parts[0];
 		}
-		
+
 		if(is_readable($path.'.php'))
 		{
 			require $path.'.php';

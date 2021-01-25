@@ -50,7 +50,7 @@
 										<?php if($option->type == 'bool') { ?>
 											<input name="<?=$option->name?>" type="checkbox" data-render="switchery" <?=($option->value == 1) ? 'checked' : ''?> value="1" />
 										<?php } else { ?>
-											<input type="<?=$option->type?>" name="<?=$option->name?>" value="<?=$option->value?>" class="form-control">
+											<input type="<?=$option->type?>" name="<?=$option->name?>" value="<?=$option->value?>" <?=$option->type == 'number'?'step="0.01"':''?> class="form-control">
 										<?php } ?>
 									</td>
 								</tr>
@@ -67,7 +67,9 @@
         <!-- end panel -->
     </div>
 
-    <?php if($alias->id > 1 && $alias->service > 0){
+    <?php $cooperation = $this->db->getQuery("SELECT c.*, a1.alias as alias1_name, a2.alias as alias2_name FROM wl_aliases_cooperation as c LEFT JOIN wl_aliases as a1 ON c.alias1 = a1.id LEFT JOIN wl_aliases as a2 ON c.alias2 = a2.id WHERE c.alias1 = {$alias->id} OR c.alias2 = {$alias->id}", 'array');
+    
+    if($alias->id > 1 && $alias->service > 0){
 			$path = APP_PATH.'services'.DIRSEP.$alias->service_name.DIRSEP.'views/admin/_wl_alias_option_view.php';
 			if(file_exists($path)){
 			    require_once($path);
@@ -84,9 +86,7 @@
 	                <h4 class="panel-title">Адреси співпраці</h4>
 	            </div>
 	            <div class="panel-body">
-	            	<?php
-	            	$cooperation = $this->db->getQuery("SELECT c.*, a1.alias as alias1_name, a2.alias as alias2_name FROM wl_aliases_cooperation as c LEFT JOIN wl_aliases as a1 ON c.alias1 = a1.id LEFT JOIN wl_aliases as a2 ON c.alias2 = a2.id WHERE c.alias1 = {$alias->id} OR c.alias2 = {$alias->id}", 'array');
-					if($cooperation) {
+	            	<?php if($cooperation) {
 					?>
 						<table class="table table-striped table-bordered">
 							<thead>

@@ -1,6 +1,6 @@
 <?php
 
-class wl_photos extends Controller {
+class wl_photos_admin extends Controller {
 
 	private $extension = false;
 	private $error = false;

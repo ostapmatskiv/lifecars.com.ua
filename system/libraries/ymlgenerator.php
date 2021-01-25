@@ -24,7 +24,21 @@ use Bukashk0zzz\YmlGenerator\Generator;
 
 class ymlgenerator extends Controller {
 
+    // protected $encoding = 'windows-1251';
+    protected $encoding = 'utf-8';
     private $groupsInList = array();
+
+    public function setEncoding($encoding)
+    {
+        $this->encoding = $encoding;
+    }
+
+    public function getStringWithEncoding($string='')
+    {
+        if($this->encoding == 'utf8' || $this->encoding == 'utf-8')
+            return $string;
+        return mb_convert_encoding($string, $this->encoding);
+    }
 
     public function createYml($products, $groups)
     {
@@ -33,9 +47,11 @@ class ymlgenerator extends Controller {
         $currencies = $categories = array();
 
         $file = 'php://output';
-        $settings = (new Settings())->setOutputFile($file);
+        // $file = 'export.xml';
+        $settings = (new Settings())->setOutputFile($file)->setEncoding($this->encoding);
 
         $shopInfo = (new ShopInfo())
+            
             ->setName(SITE_NAME)
             ->setUrl(SITE_URL);
 
@@ -184,11 +200,12 @@ class ymlgenerator extends Controller {
                             ->setValue('Новое'));
 
                 $offers[] = $offerSimple;
+
+                break;
             }
         }
 
-        // header("Content-Type: text/xml");
-        header("Content-Type: text/xml; charset=windows-1251");
+        header("Content-Type: text/xml; charset={$this->encoding}");
 
         (new Generator($settings))->generate(
             $shopInfo,

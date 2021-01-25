@@ -1,6 +1,6 @@
 <?php
 
-class wl_forms extends Controller {
+class wl_forms_admin extends Controller {
 
     function _remap($method)
     {
@@ -267,10 +267,11 @@ class wl_forms extends Controller {
 
                 $sql = "CREATE TABLE IF NOT EXISTS `{$data['table']}` (
                           `id` int(11) NOT NULL AUTO_INCREMENT,
-                          {$fieldsName},
                           `date_add` int(11) NOT NULL,
+                          {$fieldsName},
                           `language` text,
                           `new` tinyint(1),
+                          `user_id` int(11) NOT NULL DEFAULT 0,
                           PRIMARY KEY (`id`),
                           KEY `new` (`new`)
                         ) ENGINE=InnoDB CHARSET=utf8;";
@@ -309,7 +310,10 @@ class wl_forms extends Controller {
                                             ->get('array');
 
                     $this->db->executeQuery("UPDATE `{$form->table}` SET `new` = 0 WHERE `new` = 1");
-                    $tableInfo = $this->db->getQuery("SELECT * FROM `{$form->table}` ORDER BY `id` DESC", 'array');
+                    $tableInfo = $this->db->select($form->table.' as f')
+                                            ->join('wl_users', 'name as user_name', '#f.user_id')
+                                            ->order('id DESC')
+                                            ->get('array');
 
                     $this->load->admin_view('wl_forms/info_view', array('form' => $form, 'formInfo' => $formInfo, 'tableInfo' => $tableInfo));
                 }

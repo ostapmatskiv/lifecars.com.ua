@@ -76,9 +76,12 @@ class wl_analytic_model {
 		$where['alias'] = ($alias > 0) ? $alias : $_SESSION['alias']->id;
 		$where['content'] = ($content !== NULL) ? $content : $_SESSION['alias']->content;
 
-		$language = $this->data->get('language');
-		if($language && $language != '*')
-			$where['language'] = $language;
+		if($_SESSION['language'])
+		{
+			$language = $this->data->get('language');
+			if($language && $language != '*')
+				$where['language'] = $language;
+		}
 		$get = array('start' => 'date', 'end' => 'date');
 		$get = $this->data->prepare($get, '_GET');
 		if(isset($get['start']))

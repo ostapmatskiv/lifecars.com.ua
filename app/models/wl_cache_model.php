@@ -88,7 +88,12 @@ class wl_cache_model extends Loader
 		if($_SESSION['alias']->code != $this->page->code)
 			$cache['code'] = $_SESSION['alias']->code;
 
-		if($_SESSION['cache'] && ($_SESSION['alias']->code == 200 || ($_SESSION['alias']->code == 201 && empty($_SESSION['user']->id))))
+		$check_get = false;
+		if(count($_GET) < 2)
+			$check_get = true;
+		else if(count($_GET) == 2 && isset($_GET['authorization']))
+			$check_get = true;
+		if($_SESSION['cache'] && ($_SESSION['alias']->code == 200 || ($_SESSION['alias']->code == 201 && empty($_SESSION['user']->id))) && $check_get)
 		{
 			$content = (string) ob_get_contents();
 

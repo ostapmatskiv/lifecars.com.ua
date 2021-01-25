@@ -14,6 +14,14 @@ class js extends Controller {
 
     public function index()
     {
+        $path = $this->data->url(true);
+        if(file_exists($path))
+        {
+            header("Content-Type: application/javascript");
+            readfile($path);
+            exit();
+        }
+
     	if(count($this->data->url()) > 2)
     	{
             $alias = $this->data->uri(1);

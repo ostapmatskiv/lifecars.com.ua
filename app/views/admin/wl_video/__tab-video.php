@@ -34,6 +34,7 @@
 						<img src="<?=$vimeo[0]['thumbnail_large']?>">
 					</a>
 				<?php } } ?>
+				<strong title="Код відео для вставки в текст">{video-<?=$video->id?>}</strong> 
 				<a href="<?=SITE_URL?>admin/wl_video/delete?id=<?=$video->id?>" class="<?=$_SESSION['alias']->alias?>">Видалити</a>
 			</div>
 <?php } } ?>

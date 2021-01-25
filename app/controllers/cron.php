@@ -25,6 +25,7 @@ class cron extends Controller {
         $this->load->library('mail');
         if($mails = $this->db->select('wl_mail_history as h', '*', ['send_email' => 0])
                                 ->join('wl_mail_templates', 'savetohistory', '#h.template')
+                                ->limit(8)
                                 ->get('array'))
         {
             $time = time();
@@ -48,6 +49,7 @@ class cron extends Controller {
                     echo "Error send mail #{$mail->id} <br>";
             }
         }
+        exit;
     }
 
     public function __get_Search($content = 0)

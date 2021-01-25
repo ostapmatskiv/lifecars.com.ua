@@ -1,11 +1,11 @@
 <?php
 
-class wl_Video extends Controller {
+class wl_video_admin extends Controller {
 				
     function _remap($method)
     {
         if (method_exists($this, $method)) {
-            $this->$method();
+            return $this->$method();
         } else {
             $this->index($method);
         }
@@ -17,9 +17,9 @@ class wl_Video extends Controller {
     	exit();
 	}
 	
-	function save()
+	function save($return = false)
 	{
-		if(isset($_POST['alias']) && is_numeric($_POST['alias']) && isset($_POST['content']) && is_numeric($_POST['content']) && $_POST['video'] != '')
+		if(isset($_POST['alias']) && is_numeric($_POST['alias']) && isset($_POST['content']) && is_numeric($_POST['content']) && !empty($_POST['video']))
 		{
 			$videolink = $this->data->post('video', true); 
 			$controler_video=parse_url($videolink);
@@ -64,6 +64,10 @@ class wl_Video extends Controller {
 									$this->db->updateRow('wl_ntkd', ['get_ivafc' => $row->get_ivafc.'v'], $row->id);
 							}
 						}
+
+					if($return)
+						return true;
+
 					$this->db->html_cache_clear($_POST['content'], $_POST['alias']);
 					$this->load->function_in_alias($_POST['alias'], '__after_edit', $_POST['content'], true);
 
@@ -74,6 +78,10 @@ class wl_Video extends Controller {
 			{
 				$_SESSION['notify'] = new stdClass();
 				$_SESSION['notify']->errors = 'Невірна адреса відео. Підтримуються сервіси youtu.be, youtube.com, vimeo.com!';
+
+				if($return)
+					return false;
+
 				$this->redirect('#tab-video');
 			}
 		}
@@ -83,7 +91,7 @@ class wl_Video extends Controller {
 
 	public function delete()
 	{
-		if($this->userCan() && isset($_GET['id']) && is_numeric($_GET['id']))
+		if(isset($_GET['id']) && is_numeric($_GET['id']))
 		{
 			if($video = $this->db->getAllDataById('wl_video', $_GET['id']))
 			{

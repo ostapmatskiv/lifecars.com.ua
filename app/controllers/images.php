@@ -14,6 +14,30 @@ class images extends Controller {
 
     public function index()
     {
+        $path = $this->data->url(true);
+        if(file_exists($path))
+        {
+            $ext = explode('.', $path);
+            switch (end($ext)) {
+                case 'jpg':
+                case 'jpeg':
+                    header("Content-type: image/jpg");
+                    break;
+                case 'png':
+                    header("Content-type: image/png");
+                    break;
+                case 'gif':
+                    header("Content-type: image/gif");
+                    break;
+                case 'svg':
+                    header("Content-type: image/svg+xml");
+                    break;
+            }
+
+            readfile($path);
+            exit();
+        }
+
     	if(count($this->data->url()) == 4)
     	{
             $folder = false;

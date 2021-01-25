@@ -1,6 +1,6 @@
 <?php
 
-class wl_files extends Controller {
+class wl_files_admin extends Controller {
 
 	private $allowed_ext = array('pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'mp4');
 
@@ -114,6 +114,39 @@ class wl_files extends Controller {
 		$this->redirect('#tab-files');
 	}
 
+	public function save_preview()
+	{
+		if (isset($_POST['folder']) && isset($_POST['id']) && is_numeric($_POST['id']) && isset($_FILES['preview']))
+			if($file = $this->db->getAllDataById('wl_files', $_POST['id']))
+			{
+				$path_info = pathinfo($_FILES['preview']['name']);
+				$extension = $path_info['extension'];
+				$folder = $this->data->post('folder');
+				
+				$_SESSION['option']->folder = $folder;
+				$filePath = $this->data->get_file_path($file);
+				$filePath = substr($filePath, strlen(SERVER_URL));
+				if(file_exists($filePath))
+				{
+					$tmp_name = $_FILES['preview']["tmp_name"];
+					$filePath .= '.'.$extension;
+					if(is_uploaded_file($tmp_name)) {
+						if(move_uploaded_file($tmp_name, $filePath))
+						{
+							if($file->preview_extension != $extension)
+							{
+								$this->db->updateRow('wl_files', ['preview_extension' => $extension], $file->id);
+							}
+
+							$this->db->html_cache_clear($file->content, $file->alias);
+							$this->load->function_in_alias($file->alias, '__after_edit', $file->content, true);
+						}
+					}
+				}
+			}
+		$this->redirect('#tab-files');
+	}
+
 	public function delete()
 	{
 		if($this->userCan() && isset($_GET['id']) && is_numeric($_GET['id']))
@@ -121,7 +154,6 @@ class wl_files extends Controller {
 			$id = $this->data->get('id');
 			if($file = $this->db->getAllDataById('wl_files', $id))
 			{
-
 				$this->db->executeQuery("UPDATE `wl_files` SET `position` = position - 1 WHERE `position` > '{$file->position}' AND `alias` = '{$file->alias}' AND `content` = '{$file->content}'");
 				$this->db->deleteRow('wl_files', $id);
 

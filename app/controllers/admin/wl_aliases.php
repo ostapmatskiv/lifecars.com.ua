@@ -1,6 +1,6 @@
 <?php
 
-class wl_aliases extends Controller {
+class wl_aliases_admin extends Controller {
 				
     public function _remap($method)
     {

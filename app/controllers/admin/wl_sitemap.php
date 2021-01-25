@@ -1,6 +1,6 @@
 <?php
 
-class wl_sitemap extends Controller {
+class wl_sitemap_admin extends Controller {
 				
     public function _remap($method)
     {
@@ -439,11 +439,12 @@ class wl_sitemap extends Controller {
         if(!file_exists('sitemap.xml'))
             return false;
         
-        $where = array();
-        $where['alias'] = '#i.alias';
-        $where['content'] = '#i.content';
+        $where = array('alias' => '#i.alias', 'content' => '#i.content');
+        $where_ntkd = array('alias' => '#i.alias', 'content' => 0);
+        if($_SESSION['language'])
+            $where_ntkd['language'] = $_SESSION['language'];
         $allImages = $this->db->select('wl_images as i', 'id, file_name as photo, content' )
-                         ->join('wl_ntkd', 'name', array('alias' => '#i.alias', 'content' => 0))
+                         ->join('wl_ntkd', 'name', $where_ntkd)
                          ->join('wl_options', 'value, alias', array('alias' => '#i.alias', 'name' => 'folder' ))
                          ->join('wl_sitemap', 'link', $where)
                          ->get('array');
@@ -552,7 +553,8 @@ class wl_sitemap extends Controller {
             }
 
             $data = array();
-            $keys = array('link', 'alias', 'content', 'code', 'data', 'time', 'changefreq', 'priority');
+            //додано link_sha1 бо це поле Not NULL в таблиці
+            $keys = array('link_sha1','link', 'alias', 'content', 'code', 'data', 'time', 'changefreq', 'priority');
             if(!empty($_POST['aliases']) && is_array($_POST['aliases']))
                 foreach ($_POST['aliases'] as $alias_id) {
                     if(is_numeric($alias_id))
@@ -561,6 +563,9 @@ class wl_sitemap extends Controller {
                             foreach ($rows as $row) {
                                 if(empty($row['alias']))
                                     $row['alias'] = $alias_id;
+                                //додано link_sha1 бо це поле Not NULL в таблиці
+                                if(empty($row['link_sha1']))
+                                    $row['link_sha1'] = sha1($row['link']);
                                 if(empty($row['code']))
                                     $row['code'] = 200;
                                 if(empty($row['time']))

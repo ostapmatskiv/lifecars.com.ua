@@ -1,6 +1,6 @@
 <?php
 
-class wl_Audio extends Controller {
+class wl_audio_admin extends Controller {
 
     function _remap($method)
     {

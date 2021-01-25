@@ -4,9 +4,6 @@ class Reset extends Controller {
 
     public function index()
     {
-    	$_SESSION['alias']->content = 0;
-        $_SESSION['alias']->code = 201;
-
 		if($this->userIs())
 		{
             header("Location: ". SITE_URL);
@@ -14,7 +11,7 @@ class Reset extends Controller {
         }
         else
         {
-        	$this->wl_alias_model->setContent();
+        	$this->wl_alias_model->setContent(0, 202);
         	$this->load->library('facebook');
         	$this->load->library('googlesignin');
         	if($this->googlesignin->clientId)

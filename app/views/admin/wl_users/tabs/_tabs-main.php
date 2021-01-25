@@ -21,7 +21,7 @@
 	                    <td class="field"></td>
 	                    <td>
 	                    	<?=$user->email?>
-	                    	<?php if(($_SESSION['user']->admin && $user->type > 1) || $user->type > 2) { ?>
+	                    	<?php if($user->type != 5 && (($_SESSION['user']->admin && $user->type > 1) || $user->type > 2)) { ?>
 	                    		<a href="<?=SITE_URL?>admin/wl_users/login_as_user?id=<?=$user->id?>" class="btn btn-xs btn-success m-l-5"><i class="fa fa-sign-in"></i> Увійти як <strong><?=$user->name?></strong></a>
 	                    	<?php }
 	                    	if(!empty($user->info['phone'])) echo "<br>".$user->info['phone']; ?>
@@ -50,7 +50,14 @@
 					</tr>
 		    		<tr>
 						<td class="field">Статус акаунта</td>
-						<td><?='<label class="label label-'.$user->status_color.'">'.$user->status_title.'</label>' ?></td>
+						<td><?='<label class="label label-'.$user->status_color.'">'.$user->status_title.'</label>' ?>
+							<?php if($user->type != 5 && $user->status != 1 && $user->status != 3) { ?>
+								<form action="<?=SITE_URL?>admin/wl_users/confirm" method="post" style="display: inline;">
+									<input type="hidden" name="id" value="<?=$user->id?>">
+									<button class="btn btn-sm btn-success"><i class="fa fa-check-square-o" aria-hidden="true"></i> Підтвердити</button>
+								</form>
+							<?php } ?>
+						</td>
 					</tr>
 		    		<tr>
 						<td class="field">Дата останнього входу</td>
@@ -69,7 +76,7 @@
 						if($key == 'phone') continue; ?>
 						<tr>
 		                    <td class="field"><?= $key ?></td>
-		                    <td><?= $value ?></td>
+		                    <td><?= nl2br($value) ?></td>
 		                </tr>
 					<?php } ?>
 	            </tbody>

@@ -16,6 +16,9 @@
  * Версія 1.3.1 (11.12.2019) - виправлено збереження файлів у jpeg форматі
  * Версія 1.4 (30.06.2020) - додано підтримку svg
  * Версія 1.4.1 (15.10.2020) - додано setName(), getName(). return upload/uploadArray()
+ * Версія 1.4.2 (14.12.2020) - setExtension($ext = NULL) => $this->extension = false; *для коректної роботи uploadArray
+ * Версія 1.4.3 (25.12.2020) - add destroy()
+ * Версія 1.5   (04.01.2021) - fix Orientation when upload (read exif data). add rotare()
  */
 
 class Image {
@@ -81,7 +84,7 @@ class Image {
 	 * $name - назва зображення (без розширення)
 	 * $extension - розширення зображення (по замовчуванню jpg)
      */
-    public function loadImage($filepath, $name = '', $extension = 'jpg')
+    public function loadImage($filepath, $name = '', $extension = 'jpg', $fixOrientation = false)
     {
         if($name != '')
 			$fullpath = $filepath.$name.'.'.$extension;
@@ -163,6 +166,7 @@ class Image {
 			
 			switch ($this->type){
 				case '1' :
+					$fixOrientation = false;
 					$this->image = imagecreatefromgif($fullpath);
 					imagealphablending($this->image, false);
 					imagesavealpha($this->image, true);
@@ -179,11 +183,23 @@ class Image {
 					}
 					break;
 				case '3' :
+					$fixOrientation = false;
 					$this->image = imagecreatefrompng($fullpath);
 					imagealphablending($this->image, false);
 					imagesavealpha($this->image, true);
 					if($this->extension == false) $this->extension = 'png';
 					break;
+			}
+
+			if($fixOrientation)
+			{
+				$exif = exif_read_data($fullpath);
+				$angles = array(8 => 90, 3 => 180, 6 => -90);
+				if(!empty($exif['Orientation']) && isset($angles[$exif['Orientation']]))
+				{
+				    $this->image = imagerotate($this->image, $angles[$exif['Orientation']], 0);
+				    $this->save('', '', false);
+				}
 			}
 			
 			return true;
@@ -217,7 +233,7 @@ class Image {
 							if($name == '') $name = stripslashes(substr($_FILES[$img_in]['name'], 0, $pos - 1));
                             $path = $img_out.$name.'.'.$ext;
                             move_uploaded_file($_FILES[$img_in]['tmp_name'], $path);
-                            return $this->loadImage($img_out, $name, $ext);
+                            return $this->loadImage($img_out, $name, $ext, true);
                         }
                         else
                         {
@@ -271,7 +287,7 @@ class Image {
 							if($name == '') $name = stripslashes(substr($_FILES[$img_in]['name'], 0, $pos - 1));
                             $path = $img_out.$name.'.'.$ext;
                             move_uploaded_file($_FILES[$img_in]['tmp_name'][$i], $path);
-                            return $this->loadImage($img_out, $name, $ext);
+                            return $this->loadImage($img_out, $name, $ext, true);
                         }
                         else
                         {
@@ -443,10 +459,20 @@ class Image {
         return false;
     }
 
+    public function rotate($angle=0, $bg = 0)
+    {
+    	if($this->image)
+    	{
+    		$this->image = imagerotate($this->image, $angle, $bg);
+    		return true;
+    	}
+    	return false;
+    }
+
     /*
      * Зберігання отриманого зображення
      */
-    public function save($prefix = '', $path = '')
+    public function save($prefix = '', $path = '', $destroy = true)
     {
 		if($this->image)
 		{
@@ -457,28 +483,42 @@ class Image {
 			if($this->extension == 'gif')
 			{
 				if(imagegif($this->image, $path.$name)){
-					imagedestroy($this->image);
+					if($destroy)
+						imagedestroy($this->image);
 					return true;
 				}
 			}
 			if($this->extension == 'jpg' || $this->extension == 'jpeg')
 			{
 				if(imagejpeg($this->image, $path.$name, $this->quality)){
-					imagedestroy($this->image);
+					if($destroy)
+						imagedestroy($this->image);
 					return true;
 				}
 			}
 			if($this->extension == 'png')
 			{
 				if(imagepng($this->image, $path.$name)){
-					imagedestroy($this->image);
+					if($destroy)
+						imagedestroy($this->image);
 					return true;
 				}
 			}
 			
-			imagedestroy($this->image);
+			if($destroy)
+				imagedestroy($this->image);
 		}
         return false;
+    }
+
+    public function destroy()
+    {
+    	if($this->image)
+    	{
+    		imagedestroy($this->image);
+    		return true;
+    	}
+    	return false;
     }
 	
 	/*

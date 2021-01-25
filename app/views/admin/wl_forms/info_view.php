@@ -15,6 +15,7 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Дата додачі</th>
                                 <?php $files_field = [];
                                 if($formInfo)
                                 {
@@ -35,7 +36,6 @@
                                             echo '<th>'.$info->title.'</th>';
                                         }
                                 } ?>
-                                <th>Дата додачі</th>
                                 <?php if($_SESSION['language']) { ?>
                                     <th>Мова сайту</th>
                                 <?php } ?>
@@ -44,9 +44,10 @@
                         <tbody>
                         	<?php if($tableInfo) foreach ($tableInfo as $info) {
                                 echo ('<tr id="row-'.$info->id.'">');
+                                $user = $info->user_id ? " <a href='/admin/wl_users/{$info->user_id}' title=\"{$info->user_id}. {$info->user_name}\"><i class=\"fa fa-user\"></i></a>" : '';
                                 foreach ($info as $key => $value)
                                     if($key == 'id' && $_SESSION['user']->type == 1)
-                                        echo '<td><button class="btn btn-xs btn-danger" data-id="'.$value.'"><i class="fa fa-trash" aria-hidden="true"></i></button> '.$value.'</td>';
+                                        echo '<td><button class="btn btn-xs btn-danger" data-id="'.$value.'"><i class="fa fa-trash" aria-hidden="true"></i></button> '.$value.$user.'</td>';
                                     elseif(in_array($key, $files_field) && !empty($value))
                                     {
                                         $path = SERVER_URL."files/form_{$form->name}/{$value}";

@@ -9,6 +9,7 @@
 class Controller extends Loader {
 	
 	public $load;
+    private $wl_aliases_cooperation = array();
 	
 	/**
 	 * Визиваємо батьківський конструктор та копіюємо ідентифікатор на обєкт
@@ -39,11 +40,28 @@ class Controller extends Loader {
                     }
                 }
         }
+
+        if(!empty($_SESSION['alias']->id))
+        {
+            $cooperation = $this->db->cache_get('wl_aliases_cooperation');
+            if($cooperation === NULL)
+            {
+                if($cooperation = $this->db->getAllDataByFieldInArray('wl_aliases_cooperation', $_SESSION['alias']->id, 'alias1'))
+                    foreach ($cooperation as $c) {
+                        if(!isset($this->wl_aliases_cooperation[$c->type]))
+                            $this->wl_aliases_cooperation[$c->type] = [$c->alias2];
+                        else
+                            $this->wl_aliases_cooperation[$c->type][] = $c->alias2;
+                    }
+                $this->db->cache_add('wl_aliases_cooperation', $this->wl_aliases_cooperation);
+            }
+            else
+                $this->wl_aliases_cooperation = $cooperation;
+        }
+
         // fix for lifecars
         if(empty($_SESSION['currency']))
-        {
             $this->load->function_in_alias('currency', '__page_before_init');
-        }
 	}
 	
 	/**
@@ -79,6 +97,33 @@ class Controller extends Loader {
     		}
     	}
     	return false;
+    }
+
+    public function get__wl_cooperation($function_name = false)
+    {
+        if(empty($function_name))
+            return $this->wl_aliases_cooperation;
+
+        if(isset($this->wl_aliases_cooperation[$function_name]))
+            return $this->wl_aliases_cooperation[$function_name];
+
+        return false;
+    }
+
+    public function init__wl_cooperation($function_name = false, $data = NULL)
+    {
+        if(empty($function_name))
+            return NULL;
+
+        if(isset($this->wl_aliases_cooperation[$function_name]))
+        {
+            foreach ($this->wl_aliases_cooperation[$function_name] as $aliasIdInit) {
+                $data = $this->function_in_alias($aliasIdInit, $function_name, $data);
+            }
+            return $data;
+        }
+
+        return false;
     }
 	
 }

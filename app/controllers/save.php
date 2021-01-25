@@ -82,6 +82,7 @@ class save extends Controller {
                             $data['date_add'] = time();
                             $data['language'] = isset($_SESSION['language']) ? $_SESSION['language'] : null;
                             $data['new'] = 1;
+                            $data['user_id'] = $this->userIs() ? $_SESSION['user']->id : 0;
                             $data['id'] = $this->db->insertRow($form->table, $data);
 
                             foreach ($fields as $field) {
@@ -186,6 +187,32 @@ class save extends Controller {
                 }
             }
         }
+    }
+
+    public function test_mail()
+    {
+        if($this->userCan())
+        {
+            $this->load->library('validator');
+            if($to = $this->data->get('to'))
+            {
+                if(!$this->validator->email('email', $to))
+                    $to = 'levso7@gmail.com';
+            }
+            else
+                $to = 'levso7@gmail.com';
+
+            echo "email to: ".$to;
+            echo "<pre>";
+            
+            if($this->validator->email('email', $to))
+            {
+                $this->load->library('mail');
+                print_r( $this->mail->sendTemplate('test_mail', $to, [], true) );
+            }
+        }
+        else
+            $this->redirect('login');
     }
 }
 

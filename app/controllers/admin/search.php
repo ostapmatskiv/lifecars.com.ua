@@ -1,6 +1,6 @@
 <?php 
 
-class Search extends Controller {
+class search_admin extends Controller {
 
 	public function index()
 	{

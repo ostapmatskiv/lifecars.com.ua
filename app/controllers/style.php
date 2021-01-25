@@ -14,6 +14,33 @@ class style extends Controller {
 
     public function index()
     {
+        $path = $this->data->url(true);
+        if(file_exists($path))
+        {
+            $ext = explode('.', $path);
+            switch (end($ext)) {
+                case 'jpg':
+                case 'jpeg':
+                    header("Content-type: image/jpg");
+                    break;
+                case 'png':
+                    header("Content-type: image/png");
+                    break;
+                case 'gif':
+                    header("Content-type: image/gif");
+                    break;
+                case 'svg':
+                    header("Content-type: image/svg+xml");
+                    break;
+                case 'css':
+                    header("Content-Type: text/css");
+                    break;
+            }
+
+            readfile($path);
+            exit();
+        }
+
     	if(count($this->data->url()) > 2)
     	{
             $alias = $this->data->uri(1);

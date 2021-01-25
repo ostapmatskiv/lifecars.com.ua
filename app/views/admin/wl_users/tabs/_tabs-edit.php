@@ -1,26 +1,26 @@
 <div class="col-md-7">
 	<div class="panel panel-inverse" data-sortable-id="form-stuff-1">
 	    <div class="panel-heading">
-	        <h4 class="panel-title">Редагувати користувача</h4>
+	        <h4 class="panel-title"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Редагувати користувача</h4>
 	    </div>
 	    <div class="panel-body">
-			<form action="<?=SITE_URL?>admin/wl_users/save" method="POST" class="form-horizontal">
+			<form autocomplete="off" action="<?=SITE_URL?>admin/wl_users/save" method="POST" class="form-horizontal">
 				<input type="hidden" name="id" value="<?=$user->id?>">
 			    <div class="form-group" title="УВАГА! Зміна email призведе до ліквідації паролю користувача (необхідно встановити заново)">
 			        <label class="col-md-3 control-label">Email користувача</label>
 			        <div class="col-md-9">
-			            <input type="email" name="email" class="form-control" value="<?=$user->email?>" required placeholder="email" />
+			            <input type="email" name="email" class="form-control" value="<?=$user->email?>" required placeholder="email"  autocomplete="off"/>
 			        </div>
 			    </div>
 			    <div class="form-group">
 			        <label class="col-md-3 control-label">Alias користувача</label>
 			        <div class="col-md-9">
-			            <input type="text" name="alias" class="form-control" value="<?=$user->alias?>" required placeholder="alias користувача" />
+			            <input type="text" name="alias" class="form-control" value="<?=$user->alias?>" required placeholder="alias користувача"  autocomplete="off"/>
 			        </div>
 			    </div><div class="form-group">
 			        <label class="col-md-3 control-label">Ім'я користувача</label>
 			        <div class="col-md-9">
-			            <input type="text" name="name" class="form-control" value="<?=$user->name?>" required placeholder="Ім'я користувача" />
+			            <input type="text" name="name" class="form-control" value="<?=$user->name?>" required placeholder="Ім'я користувача"  autocomplete="off"/>
 			        </div>
 			    </div>
 			    <div class="form-group">
@@ -96,7 +96,7 @@
 				<div class="form-group">
 			        <label class="col-md-3 control-label"><?= $key ?></label>
 			        <div class="col-md-9">
-			            <input type="text" name="info[<?= $key ?>]" class="form-control" value="<?= $value ?>" />
+			            <input type="text" name="info[<?= $key ?>]" class="form-control" value="<?= $value ?>"  autocomplete="off"/>
 			        </div>
 			    </div>
 				<?php } ?>
@@ -116,7 +116,7 @@
 			    <div class="form-group">
 			    	<div class="col-md-3"></div>
 			        <div class="col-md-9">
-			            <button type="submit" class="btn btn-sm btn-success ">Зберегти</button>
+			            <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-save"></i> Зберегти</button>
 			        </div>
 			    </div>
 			</form>
@@ -125,9 +125,9 @@
 </div>
 <?php if($_SESSION['user']->admin) { ?>
 <div class="col-md-5">
-	<div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+	<div class="panel panel-danger" data-sortable-id="form-stuff-1">
 	    <div class="panel-heading">
-	        <h4 class="panel-title">Видалити користувача</h4>
+	        <h4 class="panel-title"><i class="fa fa-trash-o"></i> Видалити користувача</h4>
 	    </div>
 	    <div class="panel-body">
 	        <form action="<?=SITE_URL?>admin/wl_users/delete" method="POST" class="form-horizontal">
@@ -141,7 +141,7 @@
 	            <div class="form-group">
 	                <div class="col-md-3"></div>
 	                <div class="col-md-9">
-	                    <button type="submit" class="btn btn-sm btn-danger ">Видалити</button>
+	                    <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash-o"></i> Видалити</button>
 	                </div>
 	            </div>
 	        </form>

@@ -1,6 +1,6 @@
 <?php
 
-class wl_mail_template extends Controller {
+class wl_mail_template_admin extends Controller {
 
     function _remap($method)
     {

@@ -1,6 +1,6 @@
 <?php
 
-class wl_ntkd extends Controller {
+class wl_ntkd_admin extends Controller {
 
     function _remap($method)
     {

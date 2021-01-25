@@ -1,6 +1,6 @@
 <?php
 
-class wl_users extends Controller {
+class wl_users_admin extends Controller {
                 
     function _remap($method)
     {
@@ -138,51 +138,55 @@ class wl_users extends Controller {
                         $user['email'] = $email;
                         if($this->db->getAllDataById('wl_users', $user['email'], 'email') == false)
                         {
+                            $this->load->model('wl_user_model');
+
                             $user['name'] = $this->data->post('name');
-                            $user['alias'] = $this->data->latterUAtoEN($user['name']);
+                            $user['alias'] = $alias = $this->data->latterUAtoEN($user['name']);
+                            $i = 2;
+                            while($this->db->getAllDataById('wl_users', $alias, 'alias'))
+                            {
+                                $alias = $user['alias'] .'-'.$i;
+                                $i++;
+                            }
+                            $user['alias'] = $alias;
 							$type = $this->data->post('type');
 							if($type > 2 || $_SESSION['user']->admin == 1)
                             	$user['type'] = $type;
                             $user['status'] = 1;
                             $user['last_login'] = 0;
                             $user['registered'] = time();
-                            if($this->db->insertRow('wl_users', $user))
+                            if($userId = $this->db->insertRow('wl_users', $user))
                             {
-                                $id = $this->db->getLastInsertedId();
-                                $do = $this->db->getAllDataById('wl_user_register_do', 'signup', 'name');
-                                $register['date'] = time();
-                                $register['do'] = $do->id;
-                                $register['user'] = $id;
-                                $register['additionally'] = 'By administrator '.$_SESSION['user']->id.' '.$_SESSION['user']->name;
-                                $this->db->insertRow('wl_user_register', $register);
+                                $this->db->register('signup', "Менеджер: #{$_SESSION['user']->id} {$_SESSION['user']->name}", $userId);
 
                                 if($type == 2 && isset($_POST['permissions']) && is_array($_POST['permissions']))
                                 {
-                                    $register['additionally'] = 'active statuses: ';
-                                    $aliases = $this->db->getAllData('wl_aliases');
-                                    $alias_list = array();
-                                    foreach ($aliases as $a) {
+                                    $alias_list = $add_p = array();
+                                    foreach ($this->db->getAllData('wl_aliases') as $a) {
                                         $alias_list[$a->id] = $a->alias;
                                     }
                                     foreach ($_POST['permissions'] as $p) {
-                                        if(is_numeric($p)){
-                                            $this->db->insertRow('wl_user_permissions', array('user' => $id, 'permission' => $p));
-                                            $register['additionally'] .= $alias_list[$p] .', ';
+                                        if(is_numeric($p) && isset($alias_list[$p]))
+                                        {
+                                            $this->db->insertRow('wl_user_permissions', array('user' => $userId, 'permission' => $p));
+                                            $add_p[] = $alias_list[$p];
                                         }
                                     }
+                                    $this->db->register('profile_type', 'Надано доступ: '.implode(', ', $add_p).". Адміністратор: #{$_SESSION['user']->id} {$_SESSION['user']->name}", $userId);
                                 }
 
                                 if($_POST['typePassword'] == 'own')
                                 {
-                                    $password = sha1($user['email'] . md5($_POST['user-password']) . SYS_PASSWORD . $id);
-                                    $this->db->updateRow('wl_users', array('password' => $password), $id);
+                                    $password = $this->wl_user_model->getPassword($userId, $user['email'], $_POST['user-password']);
+                                    $this->db->updateRow('wl_users', array('password' => $password), $userId);
                                     $_SESSION['notify']->success = 'Користувач "'.$user['name'].'" створено успішно.';
                                 }
                                 else
                                 {
                                     $password = bin2hex(openssl_random_pseudo_bytes(4));
-                                    $close_password = sha1($user['email'] . md5($password) . SYS_PASSWORD . $id);
-                                    $this->db->updateRow('wl_users', array('password' => $close_password), $id);
+                                    $close_password = $this->wl_user_model->getPassword($userId, $user['email'], $password);
+                                    $this->db->updateRow('wl_users', array('password' => $close_password), $userId);
+
                                     $this->load->library('mail');
                                     $info['email'] = $user['email'];
                                     $info['name'] = $user['name'];
@@ -209,70 +213,156 @@ class wl_users extends Controller {
                     
                     if($this->validator->run())
                     {
-                        $user['email'] = $email;
-                        $check = $this->db->getAllDataByFieldInArray('wl_users', $user['email'], 'email');
-                        if(count($check) == 0 || $check == false || (count($check) == 1 && $check[0]->id == $_POST['id']))
+                        $update = [];
+                        $user = $this->db->getAllDataById('wl_users', $_POST['id']);
+                        $this->load->model('wl_user_model');
+
+                        if($user->email != $email)
                         {
-                            $user['name'] = $this->data->post('name');
-                            if(count($check) == 1 && isset($_POST['active_password']) && $_POST['active_password'] == 1)
+                            if($check = $this->db->getAllDataByFieldInArray('wl_users', $email, 'email'))
+                                $_SESSION['notify']->errors = 'Даний email вже є у базі!';
+                            else
                             {
-                                $user['password'] = sha1($user['email'] . md5($_POST['password']) . SYS_PASSWORD . $_POST['id']);
-                                $do = $this->db->getAllDataById('wl_user_register_do', 'reset_admin', 'name');
-                                $register['date'] = time();
-                                $register['do'] = $do->id;
-                                $register['user'] = $_POST['id'];
-                                $register['additionally'] = $check[0]->password. ' by administrator '.$_SESSION['user']->id.' '.$_SESSION['user']->name;
-                                $this->db->insertRow('wl_user_register', $register);
-                            }
-                            $user['alias'] = $this->data->post('alias');
-                            $type = $this->data->post('type');
-							if($type > 2 || $_SESSION['user']->admin == 1)
-                            	$user['type'] = $type;
-                            $user['status'] = $this->data->post('status');
-                            if($this->db->updateRow('wl_users', $user, $_POST['id']))
-                            {
-                                $register = array();
-                                $this->db->deleteRow('wl_user_permissions', $_POST['id'], 'user');
-                                if($type == 2 && isset($_POST['permissions']) && is_array($_POST['permissions']))
-                                {
-                                    $register['additionally'] = 'active statuses: ';
-                                    $aliases = $this->db->getAllData('wl_aliases');
-                                    $alias_list = array();
-                                    foreach ($aliases as $a) {
-                                        $alias_list[$a->id] = $a->alias;
-                                    }
-                                    foreach ($_POST['permissions'] as $p) {
-                                        if(is_numeric($p))
-                                        {
-                                            $this->db->insertRow('wl_user_permissions', array('user' => $_POST['id'], 'permission' => $p));
-                                            $register['additionally'] .= $alias_list[$p] .', ';
-                                        }
-                                    }
-                                }
-                                if(count($check) == 1 && $user['type'] != $check[0]->type)
-                                {
-                                    $do = $this->db->getAllDataById('wl_user_register_do', 'profile_type', 'name');
-                                    $register['date'] = time();
-                                    $register['do'] = $do->id;
-                                    $register['user'] = $_POST['id'];
-                                    $register['additionally'] .= 'user: '.$_SESSION['user']->id.'. '.$_SESSION['user']->name.', old type: '.$check[0]->type.', new type: '.$user['type'];
-                                    $this->db->insertRow('wl_user_register', $register);
-                                }
-
-                                if(isset($_POST['info']))
-                                {
-                                    $this->load->model('wl_user_model');
-                                    foreach ($_POST['info'] as $key => $value) {
-                                        $this->wl_user_model->setAdditional($_POST['id'], $key, $value);
-                                    }
-                                }
-
-                                $_SESSION['notify']->success = 'Дані оновлено успішно.';
-                                $this->redirect('admin/wl_users/'.$user['email']);
+                                $update['email'] = $email;
+                                $this->db->register('profile_data', "Змінено email: {$user->email} => {$email}. Менеджер: #{$_SESSION['user']->id} {$_SESSION['user']->name}", $user->id);
+                                $user->email = $email;
                             }
                         }
-                        else
-                            $_SESSION['notify']->errors = 'Даний email вже є у базі!';
+
+                        if($post_alias = $this->data->post('alias'))
+                            if($user->alias != $post_alias)
+                            {
+                                $alias = $post_alias;
+                                $i = 2;
+                                while($this->db->getAllDataById('wl_users', $alias, 'alias'))
+                                {
+                                    $alias = $post_alias .'-'. $i;
+                                    $i++;
+                                }
+                                $_POST['alias'] = $alias;
+                            }
+
+                        foreach (['name' => "ім'я", 'alias' => "uri (alias)"] as $key => $name) {
+                            if($value = $this->data->post($key))
+                                if($user->$key != $value)
+                                {
+                                    $update[$key] = $value;
+                                    $this->db->register('profile_data', "Змінено {$name}: '{$user->$key}' => '{$value}'. Менеджер: #{$_SESSION['user']->id} {$_SESSION['user']->name}", $user->id);
+                                }
+                        }
+
+                        if(isset($_POST['active_password']) && $_POST['active_password'] == 1 && !empty($_POST['password']))
+                        {
+                            $update['password'] = $this->wl_user_model->getPassword($user->id, $user->email, $_POST['password']);
+                            $this->db->register('reset_admin', "Змінено пароль: {$user->password} => {$update['password']}. Менеджер: #{$_SESSION['user']->id} {$_SESSION['user']->name}", $user->id);
+                        }
+
+                        if($type = $this->data->post('type'))
+    						if($type > 2 || $_SESSION['user']->admin == 1)
+                                if($user->type != $type)
+                            	   $update['type'] = $type;
+                        if($status = $this->data->post('status'))
+                            if($user->status != $status)
+                               $update['status'] = $status;
+
+                        if(isset($update['type']) || isset($update['status']))
+                        {
+                            $additionally = '';
+
+                            foreach (['wl_user_types' => 'type', 'wl_user_status' => 'status'] as $table => $key) {
+                                if(empty($update[$key]))
+                                    continue;
+
+                                $data = $this->db->getAllData($table);
+                                foreach ($data as $row) {
+                                    if($row->id == $user->$key)
+                                    {
+                                        $additionally .= "#{$row->id}. {$row->title} ({$row->name}) => ";
+                                        break;
+                                    }
+                                }
+                                foreach ($data as $row) {
+                                    if($row->id == $update[$key])
+                                    {
+                                        $additionally .= "#{$row->id}. {$row->title} ({$row->name}) / ";
+                                        break;
+                                    }
+                                }
+                            }
+
+                            $additionally .= "Менеджер: #{$_SESSION['user']->id} {$_SESSION['user']->name}";
+                            $this->db->register('profile_type', $additionally, $_POST['id']);
+
+                            if(isset($update['status']) && $update['status'] == 1)
+                            {
+                                $this->load->library('mail');
+                                $this->mail->sendTemplate('signup/admin_confirm', $user->email, $user);
+                            }
+                        }
+
+                        if(!empty($update))
+                            $this->db->updateRow('wl_users', $update, $user->id);
+
+                        if($user->type == 2 || $update['type'] == 2)
+                        {
+                            $additionally = '';
+                            $alias_list = $permissions = array();
+                            if($ps = $this->db->getAllDataByFieldInArray('wl_user_permissions', $_POST['id'], 'user'))
+                                foreach ($ps as $p) {
+                                    $permissions[] = $p->permission;
+                                }
+                            
+                            if(isset($_POST['permissions']) && is_array($_POST['permissions']))
+                            {
+                                $alias_list = $add_p = $del_p = array();
+                                foreach ($this->db->getAllData('wl_aliases') as $a) {
+                                    $alias_list[$a->id] = $a->alias;
+                                }
+                                foreach ($_POST['permissions'] as $p) {
+                                    if(is_numeric($p) && isset($alias_list[$p]))
+                                        if(!in_array($p, $permissions))
+                                        {
+                                            $this->db->insertRow('wl_user_permissions', array('user' => $user->id, 'permission' => $p));
+                                            $add_p[] = $alias_list[$p];
+                                            foreach ($permissions as $i => $pp) {
+                                                if($pp == $p)
+                                                {
+                                                    unset($permissions[$i]);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                }
+                                if(!empty($add_p))
+                                    $additionally = 'Надано доступ: '.implode(', ', $add_p).'. ';
+                                if(!empty($permissions))
+                                {
+                                    foreach ($permissions as $p) {
+                                        $this->db->deleteRow('wl_user_permissions', ['user' => $user->id, 'permission' => $p]);
+                                        if(isset($alias_list[$p]))
+                                            $del_p[] = $alias_list[$p];
+                                    }
+                                    if(!empty($del_p))
+                                        $additionally .= 'Скасовано доступ: '.implode(', ', $del_p).'. ';
+                                }
+                            }
+                            else if(!empty($permissions))
+                            {
+                                $this->db->deleteRow('wl_user_permissions', $_POST['id'], 'user');
+                                $additionally = 'Скасовано всі доступи. ';
+                            }
+
+                            $additionally .= "Адміністратор: #{$_SESSION['user']->id} {$_SESSION['user']->name}";
+                            $this->db->register('profile_type', $additionally, $user->id);
+                        }
+
+                        if(isset($_POST['info']))
+                            foreach ($_POST['info'] as $key => $value) {
+                                $this->wl_user_model->setAdditional($user->id, $key, $value);
+                            }
+
+                        $_SESSION['notify']->success = 'Дані оновлено успішно.';
+                        $this->redirect('admin/wl_users/'.$user->email);
                     }
                     else
                         $_SESSION['notify']->errors = $this->validator->getErrors();
@@ -318,6 +408,21 @@ class wl_users extends Controller {
 
         header("Location: ".$_SERVER['HTTP_REFERER']);
         exit();
+    }
+
+    public function confirm()
+    {
+        if($userId = $this->data->post('id'))
+            if($user = $this->db->getAllDataById('wl_users', $userId))
+                if($user->status != 1)
+                {
+                    $this->db->updateRow('wl_users', ['status' => 1], $user->id);
+                    $this->db->register('confirmed', "Менеджер: #{$_SESSION['user']->id} {$_SESSION['user']->name}", $user->id);
+
+                    $this->load->library('mail');
+                    $this->mail->sendTemplate('signup/admin_confirm', $user->email, $user);
+                }
+        $this->redirect();
     }
 
     public function export()

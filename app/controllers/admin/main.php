@@ -1,6 +1,6 @@
 <?php
 
-class main extends Controller {
+class main_admin extends Controller {
 				
     function _remap($method, $data = array())
     {
