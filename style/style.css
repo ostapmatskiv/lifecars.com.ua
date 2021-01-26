@@ -3385,8 +3385,8 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
             width: 100%;
         }
 
-        section.sale__catalog .sale__wrrap .sale__card {
-            width: calc(50% - 2px)
+        .sale__card {
+            width: calc(50% - 2px) !important
         }
 
         main.cars__manufacturers section.catalog__name div a figure img {

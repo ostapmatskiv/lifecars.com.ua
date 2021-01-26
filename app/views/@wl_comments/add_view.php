@@ -1,4 +1,4 @@
-<div class="add-your-review w40-5">
+<div class="add-your-review w40-5 m100">
     <?php if(!empty($_SESSION['notify']->errors)) { ?>
        <div id="comment_add_error" class="alert alert-danger">
             <span class="close" data-dismiss="alert">×</span>

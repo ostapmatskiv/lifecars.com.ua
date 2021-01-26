@@ -1,4 +1,4 @@
-<div id="reviews-list" class="w60-5">
+<div id="reviews-list" class="w60-5 m100">
 <?php if($comments) {
 
 	if(!empty($_SESSION['notify']->success)): ?>

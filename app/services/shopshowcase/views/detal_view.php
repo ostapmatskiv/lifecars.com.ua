@@ -144,7 +144,7 @@
         </nav>
 
         <div id="tab-info" class="menu__info active">
-            <div class="flex">
+            <div class="flex m-wrap">
                 <div class="w50 m100">
                     <?php if(!empty($_SESSION['alias']->list)) { ?>
                     <h4><?=$_SESSION['alias']->list?></h4><hr>
@@ -205,7 +205,7 @@
         <?php if($product->similarProducts || $otherProductsByGroup) { ?>
         <div id="tab-similar" class="menu__info">
             <?php if(false && $product->similarProducts) { ?>
-                <div class="flex detal__cart">
+                <div class="flex m-wrap detal__cart">
                     <?php $add_block = 5 - count($product->similarProducts) % 5;
                     foreach ($product->similarProducts as $product) {
                             $product->wl_alias = $_SESSION['alias']->id;
@@ -218,7 +218,7 @@
                 </div>
             <?php }
             if($otherProductsByGroup) { ?>
-                <div class="flex sale__wrrap">
+                <div class="flex m-wrap sale__wrrap">
                     <?php foreach ($otherProductsByGroup as $product) {
                              require APP_PATH.'views/@commons/__product_subview.php';
                          }
@@ -236,7 +236,7 @@
             <style>#tab-guarantie p { text-align: left }</style>
         </div>
         <div id="tab-reviews" class="menu__info">
-            <div class="flex">
+            <div class="flex m-wrap">
                 <?php $this->load->library('comments');
                 $this->comments->show(); ?>
             </div>
