@@ -8,6 +8,15 @@ $(document).ready(function(){
         }
     });
 
+    $('#carMobileGroup').change(function(event) {
+        let value = $('#carMobileGroup').val();
+        $('#modelMobileGroup option[value='+value+']').prop('selected', true).text('Всі моделі');
+        $('#modelMobileGroup option').addClass('m-hide').each(function(index, el) {
+            if($(el).data('parent') == value)
+                $(el).removeClass('m-hide');
+        });
+    });
+
     $('.sale__card.no_availabilaty .cart__order').click(function () {
         $(this).closest('.no_availabilaty').find('.cart__modal').slideDown();
     })

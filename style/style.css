@@ -616,7 +616,8 @@ header img.header__logo {
 }
 
 header form {
-    position: relative
+    position: relative;
+    display: flex;
 }
 
 header form .fa-chevron-down {
@@ -692,6 +693,10 @@ header .header__phone .fa-phone-alt {
     font-size: 22px;
     margin-right: 10px;
     color: #8c8c8c;
+}
+
+@media screen and (min-width: 450px) {
+    #carMobileGroup { display: none }
 }
 
 @media screen and (min-width: 1366px) {
@@ -2680,7 +2685,6 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
 
     @media screen and (max-width: 769px) {
 
-        header form select,
         header form .fa-chevron-down,
         header .header__shoping .header__user {
             display: none;
@@ -3118,6 +3122,17 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
 
         header form {
             width: 100%;
+            flex-direction: column-reverse;
+        }
+
+        header form div:first-child {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+        }
+
+        header form select {
+            width: calc(50% - 3px);
         }
 
         header form input {

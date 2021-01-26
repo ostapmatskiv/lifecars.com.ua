@@ -42,37 +42,47 @@
         <form action="<?=SITE_URL?>parts/search">
             <?php if(!empty($catalogAllGroups)) {
                 $selected_id = $this->data->get('group');
+                $selected_parent_id = 0;
                 if(isset($group) && is_object($group))
+                {
                     $selected_id = $group->id;
+                    $selected_parent_id = $group->parent == 0 ? $group->id : $group->parent;
+                }
                 ?>
-                <select id="carMobileGroup">
-                    <option value="0"><?=$this->text('Всі авто', 0)?></option>
-                    <?php foreach ($catalogAllGroups as $h_group) {
-                        if($h_group->parent == 0) {
-                            $selected = $selected_id == $h_group->id ? 'selected' : '';
-                            echo "<option value=\"{$h_group->id}\" {$selected}>{$h_group->name}</option>";
-                        }
-                    } ?>
-                </select>
-                <select name="group">
-                    <option value="0"><?=$this->text('Де шукати?', 0)?></option>
-                    <?php foreach ($catalogAllGroups as $h_group) {
-                        if($h_group->parent == 0) {
-                            $selected = $selected_id == $h_group->id ? 'selected' : '';
-                            echo "<option value=\"{$h_group->id}\" {$selected}>{$h_group->name}</option>";
-                            foreach ($catalogAllGroups as $h_model) {
-                                if($h_model->parent == $h_group->id) {
-                                    $selected = $selected_id == $h_model->id ? 'selected' : '';
-                                    echo "<option value=\"{$h_model->id}\" {$selected}>- {$h_model->name}</option>";
+                <div>
+                    <select id="carMobileGroup">
+                        <option value="0"><?=$this->text('Всі авто', 0)?></option>
+                        <?php foreach ($catalogAllGroups as $h_group) {
+                            if($h_group->parent == 0) {
+                                $selected = $selected_parent_id == $h_group->id ? 'selected' : '';
+                                echo "<option value=\"{$h_group->id}\" {$selected}>{$h_group->name}</option>";
+                            }
+                        } ?>
+                    </select>
+                    <i class="fas fa-chevron-down"></i>
+                    <select name="group" id="modelMobileGroup">
+                        <option value="0"><?=$this->text('Де шукати?', 0)?></option>
+                        <?php foreach ($catalogAllGroups as $h_group) {
+                            if($h_group->parent == 0) {
+                                $selected = $selected_id == $h_group->id ? 'selected' : '';
+                                echo "<option class=\"m-hide\" value=\"{$h_group->id}\" {$selected}>{$h_group->name}</option>";
+                                foreach ($catalogAllGroups as $h_model) {
+                                    if($h_model->parent == $h_group->id) {
+                                        $selected = $selected_id == $h_model->id ? 'selected' : '';
+                                        $class = $selected_parent_id == $h_model->parent ? '' : 'class="m-hide"';
+                                        echo "<option value=\"{$h_model->id}\" data-parent=\"{$h_model->parent}\" {$selected} {$class}>- {$h_model->name}</option>";
+                                    }
                                 }
                             }
-                        }
-                    } ?>
-                </select>
-                <i class="fas fa-chevron-down"></i>
+                        } ?>
+                    </select>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
             <?php } ?>
-            <input required="required" type="search" name="name" value="<?=$this->data->get('name')?>" placeholder="<?=$this->text('Пошук за артикулом або назвою товару', 0)?>">
-            <button><i class="fas fa-search"></i></button>
+            <div>
+                <input required="required" type="search" name="name" value="<?=$this->data->get('name')?>" placeholder="<?=$this->text('Пошук за артикулом або назвою товару', 0)?>">
+                <button><i class="fas fa-search"></i></button>
+            </div>
         </form>
         <div class="flex v-center header__address">
             <i class="fas fa-map-marker-alt"></i>
