@@ -45,7 +45,8 @@
 		<div class="form-group">
 			<label class="col-md-3 control-label">Вартість</label>
 		    <div class="col-md-9">
-		    	<?php if(!empty($_SESSION['currency']) && is_array($_SESSION['currency']))
+		    	<?php $before = $after = false;
+		    	if(!empty($_SESSION['currency']) && is_array($_SESSION['currency']))
 	            {
 	            	echo '<div class="row"><div class="col-md-7"><input type="number" name="price" value="'.$product->price.'" min="0" step="0.01" required class="form-control "></div>';
 	            	echo '<div class="col-md-5"><select name="currency" class="form-control col-md-5">';
@@ -53,6 +54,7 @@
 	            	foreach ($_SESSION['currency'] as $currency => $value) {
 	            		if($product->currency == $currency)
 	            		{
+	            			$after = $currency;
 	            			$in_list = true;
 		            		echo '<option value="'.$currency.'" selected>'.$currency.' (Поточний курс 1 '.$currency.' = '.$value.' у.о. продажу)</option>';
 		            	}
@@ -63,10 +65,19 @@
 	            		echo '<option>'.$product->currency.'</option>';
 	            	echo '</select></div></div>';
 	            }
-	            else { ?>
+	            else { 
+	            	if(!is_array($_SESSION['option']->price_format) && !empty($_SESSION['option']->price_format))
+						$_SESSION['option']->price_format = unserialize($_SESSION['option']->price_format);
+
+					if(isset($_SESSION['option']->price_format['before']))
+						$before = $_SESSION['option']->price_format['before'];
+					if(isset($_SESSION['option']->price_format['after']))
+						$after = $_SESSION['option']->price_format['after'];
+	            ?>
 					<div class="input-group">
+			            <?= $before ? '<span class="input-group-addon">'.$before.'</span>' : ''?>
 			            <input type="number" name="price" value="<?=$product->price?>" min="0" step="0.01" required class="form-control">
-			            <span class="input-group-addon">y.o.</span>
+			            <?= $after ? '<span class="input-group-addon">'.$after.'</span>' : ''?>
 			        </div>
 			    <?php } ?>
 
@@ -78,12 +89,13 @@
 
 	    </div>
 
-	    <div class="form-group" id="myOldPrice" style="display: none">
+	    <div class="form-group" id="myOldPrice" <?=empty($product->old_price) ? 'style="display: none"':''?>>
 			<label class="col-md-3 control-label">Стара ціна (до акції)</label>
 		    <div class="col-md-9">
 		    	<div class="input-group">
+		    		<?= $before ? '<span class="input-group-addon">'.$before.'</span>' : ''?>
 		            <input type="number" name="old_price" value="<?=$product->old_price?>" min="0" step="0.01" class="form-control">
-		            <span class="input-group-addon"><?=(!empty($product->currency)) ? $product->currency : 'y.o.'?></span>
+		            <?= $after ? '<span class="input-group-addon">'.$after.'</span>' : ''?>
 		        </div>
 		    </div>
 	    </div>
@@ -112,7 +124,7 @@
 	{
 		if($_SESSION['option']->ProductMultiGroup)
 		{
-   //          $_SESSION['alias']->js_load[] = 'assets/switchery/switchery.min.js';
+   			// $_SESSION['alias']->js_load[] = 'assets/switchery/switchery.min.js';
 			// echo '<link rel="stylesheet" href="'.SITE_URL.'assets/switchery/switchery.min.css" />';
 			$_SESSION['alias']->js_load[] = 'assets/jstree/jstree.min.js';
 			echo '<link rel="stylesheet" href="'.SITE_URL.'assets/jstree/themes/default/style.min.css" />';
@@ -236,6 +248,11 @@
 			    <div class="col-md-9">
 			    	<input type="radio" name="active" value="1" <?=($product->active == 1)?'checked':''?> id="active-1"><label for="active-1">Товар активний</label>
 					<input type="radio" name="active" value="0" <?=($product->active == 0)?'checked':''?> id="active-0"><label for="active-0">Товар тимчасово відключено</label>
+					<?php if($_SESSION['option']->userCanAdd) { ?>
+						<br>
+						<input type="radio" name="active" value="-1" <?=($product->active == -1)?'checked':''?> id="active--1"><label for="active--1">Очікує підтвердження адміністрацією</label>
+						<input type="radio" name="active" value="-2" <?=($product->active == -2)?'checked':''?> id="active--2"><label for="active--2">Товар формується (створюється автором)</label>
+					<?php } ?>
 			    </div>
 		    </div>
 		<?php }
@@ -246,6 +263,11 @@
 		    <div class="col-md-9">
 		    	<input type="radio" name="active" value="1" <?=($product->active == 1)?'checked':''?> id="active-1"><label for="active-1">Товар активний</label>
 				<input type="radio" name="active" value="0" <?=($product->active == 0)?'checked':''?> id="active-0"><label for="active-0">Товар тимчасово відключено</label>
+				<?php if($_SESSION['option']->userCanAdd) { ?>
+					<br>
+					<input type="radio" name="active" value="-1" <?=($product->active == -1)?'checked':''?> id="active--1"><label for="active--1">Очікує підтвердження адміністрацією</label>
+					<input type="radio" name="active" value="-2" <?=($product->active == -2)?'checked':''?> id="active--2"><label for="active--2">Товар формується (створюється автором)</label>
+				<?php } ?>
 		    </div>
 	    </div>
 	<?php }
@@ -405,6 +427,7 @@
 		<div class="col-md-9" id="after_save">
 			<input type="radio" name="to" value="edit" id="to_edit" checked="checked"><label for="to_edit">продовжити редагування</label>
 			<input type="radio" name="to" value="category" id="to_category"><label for="to_category">до списку <?=$_SESSION['admin_options']['word:products_to_all']?></label>
+			<input type="radio" name="to" value="info" id="to_info"><label for="to_info">карточка товару (перегляд в адмін)</label>
 			<input type="radio" name="to" value="new" id="to_new"><label for="to_new"><?=$_SESSION['admin_options']['word:product_add']?></label>
 		</div>
     </div>

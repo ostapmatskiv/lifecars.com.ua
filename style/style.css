@@ -1338,6 +1338,12 @@ section.sale__catalog .filter .fa-chevron-circle-up {
     color: #d9d9d9;
 }
 
+main section.sale__catalog aside .filter input[type=text] {
+    padding: 5px;
+    width: 100%;
+    margin-top: 10px;
+}
+
 
 
 ul.pagination {

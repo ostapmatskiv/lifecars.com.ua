@@ -70,7 +70,7 @@
 				<?php if(!empty($product->info->article)) { ?>
 					<td><?= $product->info->article_show ?></td>
 				<?php } ?>
-				<td><?=$product->info->options['1-manufacturer']->value?></td>
+				<td><?=$product->info->options['1-manufacturer']->value->name?></td>
 				<td><?php if(!empty($product->info))
 				echo '<strong>'.$product->info->name.'</strong>';
     			if(!empty($product->product_options))

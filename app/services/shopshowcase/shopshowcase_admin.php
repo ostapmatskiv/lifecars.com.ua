@@ -2,7 +2,7 @@
 
 /*
 
- 	Service "Shop Showcase 3.2"
+ 	Service "Shop Showcase 3.3"
 	for WhiteLion 1.3
 
 */
@@ -213,15 +213,26 @@ class shopshowcase_admin extends Controller {
 					$this->__after_edit($id);
 					if(!empty($_FILES['photo']['name']))
 						$this->savephoto('photo', $id, $this->data->latterUAtoEN($name));
-					$this->redirect("admin/{$_SESSION['alias']->alias}/{$link}");
+					$this->redirect("admin/{$_SESSION['alias']->alias}/{$link}?edit");
 				}
 				$this->redirect();
 			}
 			else
 			{
+				if($__init_before_addEditSave = $this->get__wl_cooperation('__init_before_addEditSave'))
+				{
+					$product = $this->db->getAllDataById($_SESSION['service']->table.'_products', $_POST['id']);
+
+					if(empty($product))
+						$this->redirect();
+					
+					foreach ($__init_before_addEditSave as $aliasIdInit) {
+						$this->load->function_in_alias($aliasIdInit, '__before_edit_save', $product);
+					}
+				}
+
 				$link = $this->products_model->save($_POST['id']);
 				$this->products_model->saveProductOptios($_POST['id']);
-				$this->__after_edit($_POST['id']);
 				if($_SESSION['option']->ProductMultiGroup == 0)
 				{
 					$position = explode(' ', $_SESSION['option']->productOrder);
@@ -245,6 +256,9 @@ class shopshowcase_admin extends Controller {
 					}
 				}
 
+				$this->__after_edit($_POST['id']);
+				$this->init__wl_cooperation('__after_product_edit', $_POST['id']);
+
 				if(isset($_POST['to']) && $_POST['to'] == 'new')
 					$this->redirect("admin/{$_SESSION['alias']->alias}/add");
 				elseif(isset($_POST['to']) && $_POST['to'] == 'category')
@@ -258,9 +272,24 @@ class shopshowcase_admin extends Controller {
 
 				$_SESSION['notify'] = new stdClass();
 				$_SESSION['notify']->success = 'Дані успішно оновлено!';
-				$this->redirect('admin/'.$_SESSION['alias']->alias.'/'.$link.'?edit#tab-main');
+				if(isset($_POST['to']) && $_POST['to'] == 'info')
+					$this->redirect('admin/'.$_SESSION['alias']->alias.'/'.$link);
+				else
+					$this->redirect('admin/'.$_SESSION['alias']->alias.'/'.$link.'?edit#tab-main');
 			}
 		}
+	}
+
+	public function confirmProduct()
+	{
+		if($product_id = $this->data->get('id'))
+			if(is_numeric($product_id) && $product_id > 0)
+			{
+				$this->db->updateRow($_SESSION['service']->table.'_products', ['active' => 1, 'date_edit' => time(), 'author_edit' => $_SESSION['user']->id], $product_id);
+				$this->__after_edit($product_id);
+				$this->init__wl_cooperation('__after_product_edit', $product_id);
+			}
+		$this->redirect();
 	}
 
 	public function markup()
@@ -402,11 +431,10 @@ class shopshowcase_admin extends Controller {
 		if(isset($_POST['id']) && is_numeric($_POST['id']))
 		{
 			$this->load->smodel('products_model');
-			$link = $_SESSION['alias']->alias . $this->products_model->delete($_POST['id']);
 			$this->__after_edit($_POST['id']);
+			$link = $this->products_model->delete($_POST['id']);
 			$_SESSION['notify'] = new stdClass();
 			$_SESSION['notify']->success = $_SESSION['admin_options']['word:product_to_delete'].' успішно видалено!';
-			$this->__after_edit($_POST['id']);
 			$this->redirect("admin/".$link);
 		}
 	}
@@ -992,44 +1020,97 @@ class shopshowcase_admin extends Controller {
             	mkdir($path, 0777);
             $path .= '/';
 
+            $data = [];
             $data['alias'] = $_SESSION['alias']->id;
             $data['content'] = $content;
             $data['file_name'] = $data['title'] = '';
             $data['author'] = $_SESSION['user']->id;
             $data['date_add'] = time();
-            $data['position'] = 1;
-            $this->db->insertRow('wl_images', $data);
-            $photo_id = $this->db->getLastInsertedId();
-            $name .= '-' . $photo_id;
+
+            $next_position = 1;
+            if($last_position = $this->db->select('wl_images', 'position', ['alias' => $_SESSION['alias']->id, 'content' => $content])
+            					->order('position DESC')
+            					->limit(1)
+            					->get())
+            	$next_position = $last_position->position + 1;
 
             $this->load->library('image');
-			$this->image->upload($name_field, $path, $name);
-			$extension = $this->image->getExtension();
-			$this->image->save();
-			if($extension && $this->image->getErrors() == '')
+            $sizes = $this->db->getAliasImageSizes();
+            if(is_array($_FILES[$name_field]['name']))
+            {
+            	$file_names = [];
+            	foreach ($_FILES[$name_field]['name'] as $i => $value) {
+            		$data['position'] = $next_position++;
+		            $photo_id = $this->db->insertRow('wl_images', $data);
+		            $photo_name = $name . '-' . $photo_id;
+
+					if($this->image->uploadArray($name_field, $i, $path, $photo_name))
+					{
+						$extension = $this->image->getExtension();
+						$photo_name .= '.'.$extension;
+		                $this->db->updateRow('wl_images', array('file_name' => $photo_name), $photo_id);
+		                $file_names[] = $photo_name;
+
+		                if($sizes)
+							foreach ($sizes as $resize) {
+		                        if($resize->prefix == '')
+		                        {
+	                                if(in_array($resize->type, array(1, 11, 12)))
+	                                    $this->image->resize($resize->width, $resize->height, $resize->quality, $resize->type);
+	                                if(in_array($resize->type, array(2, 21, 22)))
+	                                    $this->image->preview($resize->width, $resize->height, $resize->quality, $resize->type);
+	                                $this->image->save($resize->prefix);
+	                                break;
+		                        }
+		                    }
+					}
+				}
+				if(empty($file_names))
+					return false;
+	            return $file_names;
+			}
+			else
 			{
-				if($sizes = $this->db->getAliasImageSizes())
+				$data['position'] = $next_position;
+	            $photo_id = $this->db->insertRow('wl_images', $data);
+	            $name .= '-' . $photo_id;
+
+				if($this->image->upload($name_field, $path, $name))
 				{
-					foreach ($sizes as $resize) {
-                        if($resize->prefix == '')
-                        {
-                            if($this->image->loadImage($path, $name, $extension))
-                            {
+					$extension = $this->image->getExtension();
+					$name .= '.'.$extension;
+	                $this->db->updateRow('wl_images', array('file_name' => $name), $photo_id);
+
+	                if($sizes)
+						foreach ($sizes as $resize) {
+	                        if($resize->prefix == '')
+	                        {
                                 if(in_array($resize->type, array(1, 11, 12)))
                                     $this->image->resize($resize->width, $resize->height, $resize->quality, $resize->type);
                                 if(in_array($resize->type, array(2, 21, 22)))
                                     $this->image->preview($resize->width, $resize->height, $resize->quality, $resize->type);
                                 $this->image->save($resize->prefix);
-                            }
-                        }
-                    }
+                                break;
+	                        }
+	                    }
+	                return $name;
 				}
-				$name .= '.'.$extension;
-                $this->db->updateRow('wl_images', array('file_name' => $name), $photo_id);
-                return $name;
-			}			
+			}	
 		}
 		return false;
+	}
+
+	public function __savephoto($data)
+	{
+		if(empty($data) || !is_array($data))
+			return false;
+		$keys = ['name_field', 'content', 'name'];
+		foreach ($keys as $key) {
+			if(empty($data[$key]))
+				return false;
+			$$key = $data[$key];
+		}
+		return $this->savephoto($name_field, $content, $name);
 	}
 
 	public function search_history()
@@ -1463,7 +1544,8 @@ class shopshowcase_admin extends Controller {
     	{
     		if($product = $this->shop_model->getProduct($content, 'id'))
     		{
-    			$this->db->cache_delete('product/'.$this->db->getCacheContentKey('product_', $product->id, 2)."-all_info");
+    			$this->db->cache_delete('product'.DIRSEP.$this->db->getCacheContentKey('product_', $product->id, 2));
+    			$this->db->cache_delete('product'.DIRSEP.$this->db->getCacheContentKey('product_', $product->id, 2)."-all_info");
     			if(is_numeric($product->group))
     				$parent_to = $product->group;
     			else if(is_object($product->group))
@@ -1479,9 +1561,10 @@ class shopshowcase_admin extends Controller {
     		if(empty($this->shop_model->allGroups))
     			$this->shop_model->init();
     		while ($parent_to > 0) {
-	    		$this->db->cache_delete("subgroups/".$this->db->getCacheContentKey('group-', $parent_to));
-	    		$this->db->cache_delete("products/".$this->db->getCacheContentKey('group-', $parent_to));
-	    		$this->db->cache_delete("optionsToGroup/".$this->db->getCacheContentKey('group-', $parent_to)."+filter");
+	    		$this->db->cache_delete("subgroups".DIRSEP.$this->db->getCacheContentKey('group-', $parent_to));
+	    		$this->db->cache_delete("products".DIRSEP.$this->db->getCacheContentKey('group-', $parent_to));
+	    		$this->db->cache_delete("optionsToGroup".DIRSEP.$this->db->getCacheContentKey('group-', $parent_to)."+filter");
+	    		$this->db->cache_delete_all("products_in_group".DIRSEP.$this->db->getCacheContentKey('group-', $parent_to));
 	    		if(isset($this->shop_model->allGroups[$parent_to]))
 	    			$parent_to = $this->shop_model->allGroups[$parent_to]->parent;
 	    		else
@@ -1493,9 +1576,10 @@ class shopshowcase_admin extends Controller {
     		$this->shop_model->allGroups = false;
 			$this->shop_model->init();
     		while ($parent_to > 0) {
-	    		$this->db->cache_delete("subgroups/".$this->db->getCacheContentKey('group-', $parent_to));
-	    		$this->db->cache_delete("products/".$this->db->getCacheContentKey('group-', $parent_to));
-	    		$this->db->cache_delete("optionsToGroup/".$this->db->getCacheContentKey('group-', $parent_to)."+filter");
+	    		$this->db->cache_delete("subgroups".DIRSEP.$this->db->getCacheContentKey('group-', $parent_to));
+	    		$this->db->cache_delete("products".DIRSEP.$this->db->getCacheContentKey('group-', $parent_to));
+	    		$this->db->cache_delete("optionsToGroup".DIRSEP.$this->db->getCacheContentKey('group-', $parent_to)."+filter");
+	    		$this->db->cache_delete_all("products_in_group".DIRSEP.$this->db->getCacheContentKey('group-', $parent_to));
 	    		if(isset($this->shop_model->allGroups[$parent_to]))
 	    			$parent_to = $this->shop_model->allGroups[$parent_to]->parent;
 	    		else
@@ -1505,6 +1589,44 @@ class shopshowcase_admin extends Controller {
     	return true;
     }
     
+
+
+
+    public function __dashboard_subview()
+    {   
+        if(empty($_SESSION['option']->userCanAdd))
+        	return false;
+
+        if(!isset($_SESSION['option']->paginator_per_page) || $_SESSION['option']->paginator_per_page < 5)
+            $_SESSION['option']->paginator_per_page = 20;
+        $this->load->smodel('shop_model');
+        ob_start();
+        $products = $this->shop_model->getProducts(-1, 0, -1);
+        $this->load->view('admin/__dashboard_subview', array('products' => $products, 'searchForm' => true));
+        $subview = ob_get_contents();
+        ob_end_clean();
+        return $subview;
+    }
+
+    public function __tab_profile($user_id = 0)
+    {   
+        if(empty($_SESSION['option']->userCanAdd) || empty($user_id))
+        	return false;
+
+        if(!isset($_SESSION['option']->paginator_per_page) || $_SESSION['option']->paginator_per_page < 5)
+            $_SESSION['option']->paginator_per_page = 20;
+        $this->load->smodel('shop_model');
+        ob_start();
+        $_GET['author_add'] = $user_id;
+        $products = $this->shop_model->getProducts(-1, 0, false);
+        $this->load->view('admin/__dashboard_subview', array('products' => $products, 'searchForm' => false));
+        $tab = new stdClass();
+        $tab->key = $_SESSION['alias']->alias;
+        $tab->name = 'Товари автора';
+        $tab->content = ob_get_contents();
+        ob_end_clean();
+        return $tab;
+    }
 }
 
 ?>

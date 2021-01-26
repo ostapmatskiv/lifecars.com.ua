@@ -82,10 +82,10 @@ if(isset($_SESSION['option']->productOrder) && empty($_GET['sort']))
 						</div>
 					</td>
 					<td>
-						<?=$a->price?> <?=(!empty($a->currency)) ? $a->currency : 'y.o.'?>
+						<?=(!empty($a->currency)) ? $a->price.' '.$a->currency : $this->shop_model->formatPrice($a->price) ?>
 						<?php if($a->old_price) {
-							echo "<br><del title='Стара ціна'>{$a->old_price} ";
-							echo (!empty($a->currency)) ? $a->currency : 'y.o.';
+							echo "<br><del title='Стара ціна'>";
+							echo (!empty($a->currency)) ? $a->old_price.' '.$a->currency : $this->shop_model->formatPrice($a->old_price) ;
 							echo "</del>";
 						} ?>
 					</td>
@@ -121,7 +121,7 @@ if(isset($_SESSION['option']->productOrder) && empty($_GET['sort']))
                         echo("</td>");
                     	}
                     ?>
-					<td><?=$a->author_edit ? '<a href="'.SITE_URL.'admin/wl_users/'.$a->author_edit.'">'.$a->user_name.'</a> <br>' : ''?> <?=date("d.m.Y H:i", $a->date_edit)?></td>
+					<td><?=$a->author_add ? '<a href="'.SITE_URL.'admin/wl_users/'.$a->author_add.'">'.$a->user_name.'</a> <br>' : ''?> <?=date("d.m.Y H:i", $a->date_add)?> / <?=date("d.m.Y H:i", $a->date_edit)?></td>
 					
 					<?php if(!isset($search)) {
 						if($productOrder || isset($_GET['sort'])) { ?>
@@ -142,6 +142,19 @@ if(isset($_SESSION['option']->productOrder) && empty($_GET['sort']))
 	                            {
 	                                $color = 'warning';
 	                                $color_text = 'частково активний';
+	                            }
+	                        }
+	                        elseif(!$_SESSION['option']->ProductMultiGroup)
+	                        {
+	                        	if($a->active == 0)
+	                            {
+	                                $color = 'danger';
+	                                $color_text = 'відключено';
+	                            }
+	                            elseif($a->active < 0)
+	                            {
+	                                $color = 'warning';
+	                                $color_text = 'Очікує підтвердження';
 	                            }
 	                        }
 						?>

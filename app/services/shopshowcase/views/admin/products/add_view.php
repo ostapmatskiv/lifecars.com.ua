@@ -28,7 +28,8 @@ require APP_PATH.'views/admin/notify_view.php';
 							<div class="form-group">
 		                        <label class="col-md-3 control-label">Фото</label>
 		                        <div class="col-md-9">
-		                            <input type="file" name="photo">
+		                            <input type="file" name="photo[]" accept="image/jpg,image/jpeg,image/png" multiple id="add-images" onchange="imagesPreview(this, '.gallery')">
+		                            <div class="gallery"></div>
 		                        </div>
 		                    </div>
 							<?php if($_SESSION['option']->useGroups) {
@@ -152,6 +153,100 @@ require APP_PATH.'views/admin/notify_view.php';
 								    <?php } ?>
 		                        </div>
 		                    </div>
+		                    <?php if($_SESSION['option']->useAvailability) { ?>
+	                    		<div class="form-group">
+			                        <label class="col-md-3 control-label">Наявність (од.)</label>
+			                        <div class="col-md-9">
+			                            <input type="number" min="0" class="form-control" name="availability" value="<?=$this->data->re_post('availability', 0)?>">
+			                        </div>
+			                    </div>
+							<?php }
+							if ($options = $this->shop_model->getOptionsToGroup(0, false)) {
+								$init_select2 = true;
+								foreach ($options as $option) {
+									if($option->toCart)
+										continue;
+									if($option->type_name == 'select') { ?>
+										<div class="form-group">
+											<label class="col-md-3 control-label"><?=$option->name?></label>
+											<div class="col-md-9">
+												<select name="option-<?=$option->id?>" class="form-control select2">
+													<?php if(!$this->data->re_post('option-'.$option->id))
+													echo "<option disabled selected>Оберіть потрібне</option>";
+													foreach ($option->values as $value) {
+														$selected = ($this->data->re_post('option-'.$option->id) == $value->id) ? 'selected' : '';
+														echo "<option value={$value->id} {$selected}>{$value->name}</option>";
+													} ?>
+												</select>
+											</div>
+										</div>
+										<?php if($init_select2) {
+											$init_select2 = false;
+											echo '<link rel="stylesheet" href="'.SITE_URL.'assets/select2/select2.min.css" />';
+											$_SESSION['alias']->js_load[] = 'assets/select2/select2.min.js';
+											$_SESSION['alias']->js_init[] = "$('.select2').select2();";
+										}
+									}
+									else if($option->type_name == 'checkbox-select2') { ?>
+										<div class="form-group">
+											<label class="col-md-3 control-label"><?=$option->name?></label>
+											<div class="col-md-9">
+												<select name="option-<?=$option->id?>[]" class="form-control select2" multiple="multiple">
+													<?php if(!$this->data->re_post('option-'.$option->id))
+													echo "<option disabled selected>Оберіть потрібне</option>";
+													foreach ($option->values as $value) {
+														$selected = (isset($_SESSION['_POST']['option-'.$option->id]) && in_array($value->id, $_SESSION['_POST']['option-'.$option->id])) ? 'selected' : '';
+														echo "<option value={$value->id} {$selected}>{$value->name}</option>";
+													} ?>
+												</select>
+											</div>
+										</div>
+										<?php if($init_select2) {
+											$init_select2 = false;
+											echo '<link rel="stylesheet" href="'.SITE_URL.'assets/select2/select2.min.css" />';
+											$_SESSION['alias']->js_load[] = 'assets/select2/select2.min.js';
+											$_SESSION['alias']->js_init[] = "$('.select2').select2();";
+										}
+									}
+									else if($option->type_name == 'checkbox') { ?>
+										<div class="form-group">
+											<label class="col-md-3 control-label"><?=$option->name?></label>
+											<div class="col-md-9">
+												<?php foreach ($option->values as $value) {
+													$checked = (isset($_SESSION['_POST']['option-'.$option->id]) && in_array($value->id, $_SESSION['_POST']['option-'.$option->id])) ? 'checked' : '';
+													echo('<input type="checkbox" name="option-'.$option->id.'[]" value="'.$value->id.'" id="option-'.$value->id.'" '.$checked.'> <label for="option-'.$value->id.'">'.$value->name.'</label> ');
+												} ?>
+											</div>
+										</div>
+									<?php }
+									else if($option->type_name == 'radio') { ?>
+										<div class="form-group">
+											<label class="col-md-3 control-label"><?=$option->name?></label>
+											<div class="col-md-9">
+												<?php foreach ($option->values as $value) {
+													echo('<input type="radio" name="option-'.$option->id.'" value="'.$value->id.'" id="option-'.$value->id.'"> <label for="option-'.$value->id.'">'.$value->name.'</label> ');
+												} ?>
+											</div>
+										</div>
+									<?php }
+									else if($option->type_name == 'textarea') { ?>
+										<div class="form-group">
+											<label class="col-md-3 control-label"><?=$option->name?></label>
+											<div class="col-md-9">
+												<textarea name="option-<?=$option->id?>" class="form-control"></textarea>
+											</div>
+										</div>
+									<?php }
+									else if($option->type_name != 'text') { ?>
+										<div class="form-group">
+											<label class="col-md-3 control-label"><?=$option->name?></label>
+											<div class="col-md-9">
+												<input type="<?=$option->type_name?>" name="option-<?=$option->id?>" class="form-control">
+											</div>
+										</div>
+									<?php }
+								}
+							} ?>
 							<div class="form-group">
 		                        <label class="col-md-3 control-label"></label>
 		                        <div class="col-md-9">
@@ -166,7 +261,27 @@ require APP_PATH.'views/admin/notify_view.php';
     </div>
 </div>
 
-<script>
+<style>
+	.gallery { padding: 5px }
+	.gallery img { height: 120px; width: auto; padding: 5px }
+	@media screen and (max-width: 576px) {
+		.gallery img { height: 80px }
+	}
+</style>
+<script type="text/javascript">
+    var imagesPreview = function(input, placeToInsertImagePreview) {
+        $(placeToInsertImagePreview).empty();
+        if (input.files) {
+            var filesAmount = input.files.length;
+            for (i = 0; i < filesAmount; i++) {
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+                }
+                reader.readAsDataURL(input.files[i]);
+            }
+        }
+    };
 	function setChilds (parent) {
 		if($('#group-'+parent).prop('checked')){
 			$('.parent-'+parent).prop('checked', true);

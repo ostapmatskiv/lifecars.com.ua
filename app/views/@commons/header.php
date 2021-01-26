@@ -40,9 +40,20 @@
             </div>
         </div>
         <form action="<?=SITE_URL?>parts/search">
-            <?php if(!empty($catalogAllGroups)) { 
+            <?php if(!empty($catalogAllGroups)) {
                 $selected_id = $this->data->get('group');
+                if(isset($group) && is_object($group))
+                    $selected_id = $group->id;
                 ?>
+                <select id="carMobileGroup">
+                    <option value="0"><?=$this->text('Всі авто', 0)?></option>
+                    <?php foreach ($catalogAllGroups as $h_group) {
+                        if($h_group->parent == 0) {
+                            $selected = $selected_id == $h_group->id ? 'selected' : '';
+                            echo "<option value=\"{$h_group->id}\" {$selected}>{$h_group->name}</option>";
+                        }
+                    } ?>
+                </select>
                 <select name="group">
                     <option value="0"><?=$this->text('Де шукати?', 0)?></option>
                     <?php foreach ($catalogAllGroups as $h_group) {

@@ -1,13 +1,16 @@
 <main>
     <div class="flex w50 auto__detal">
     	<?php $brend_id = $model_id = 0; $brend_link = 'parts';
-    	if($group->parent == 0)
-    		$brend_id = $group->id;
-    	else
-    	{
-    		$brend_id = $group->parent;
-    		$model_id = $group->id;
-    	}
+        if(!empty($group))
+        {
+        	if($group->parent == 0)
+        		$brend_id = $group->id;
+        	else
+        	{
+        		$brend_id = $group->parent;
+        		$model_id = $group->id;
+        	}
+        }
     	foreach ($catalogAllGroups as $g) {
     		if($g->id == $brend_id) { ?>
     			<a class="cars__model" href="#" data-group="brends">
@@ -100,6 +103,10 @@
                 <button class="btn w50-5" onclick="$(this).closest('section.sale__catalog').find('.catalog__sorted').toggleClass('m-hide')"><?=$this->text('Сортувати')?></button>
             </div>
             <form class="m-hide">
+                <div class="filter">
+                    <p><?=$this->text('Артикул або назва товару')?></p>
+                    <input type="text" name="name" value="<?=$this->data->get('name')?>" placeholder="<?=$this->text('Пошук за артикулом або назвою товару', 0)?>">
+                </div>
             	<?php /*
                 <div class="product__type">
                     <div class="flex v-center">

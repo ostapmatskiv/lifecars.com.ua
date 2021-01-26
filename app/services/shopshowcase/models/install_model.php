@@ -13,11 +13,11 @@ class install
 	public $multi_alias = 1;
 	public $order_alias = 100;
 	public $admin_ico = 'fa-qrcode';
-	public $version = "3.2.1";
+	public $version = "3.3";
 
-	public $options = array('ProductUseArticle' => 0, 'useGroups' => 1, 'showProductsParentsPages' => 1, 'ProductMultiGroup' => 0, 'useAvailability' => 0, 'searchHistory' => 1, 'useMarkUp' => 0, 'folder' => 'shopshowcase', 'productOrder' => 'position DESC', 'groupOrder' => 'position ASC', 'prom' => 0, 'price_format' => '');
-	public $options_type = array('ProductUseArticle' => 'bool', 'useGroups' => 'bool', 'showProductsParentsPages' => 'bool', 'ProductMultiGroup' => 'bool', 'useAvailability' => 'bool', 'searchHistory' => 'bool', 'useMarkUp' => 'bool', 'folder' => 'text', 'productOrder' => 'text', 'groupOrder' => 'text', 'prom' => 'bool', 'price_format' => false);
-	public $options_title = array('ProductUseArticle' => 'Використання зовнішнього артикулу', 'useGroups' => 'Наявність груп', 'showProductsParentsPages' => 'Виводити товари на батьківські групи (підгрупи + товари)', 'ProductMultiGroup' => 'Мультигрупи (1 товар більше ніж 1 група)', 'useAvailability' => 'Використання наявності товару', 'searchHistory' => 'Зберігати історію пошуку користувачів', 'useMarkUp' => 'Використовувати націнку', 'folder' => 'Папка для зображень', 'productOrder' => 'Сортування товарів', 'groupOrder' => 'Сортування груп', 'prom' => 'Дозволити експорт товарів та груп');
+	public $options = array('ProductUseArticle' => 1, 'useGroups' => 1, 'showProductsParentsPages' => 1, 'ProductMultiGroup' => 0, 'useAvailability' => 0, 'searchHistory' => 0, 'useMarkUp' => 0, 'prom' => 0, 'folder' => 'shop', 'productOrder' => 'position DESC', 'groupOrder' => 'position ASC', 'price_format' => '', 'userCanAdd' => 0);
+	public $options_type = array('ProductUseArticle' => 'bool', 'useGroups' => 'bool', 'showProductsParentsPages' => 'bool', 'ProductMultiGroup' => 'bool', 'useAvailability' => 'bool', 'searchHistory' => 'bool', 'useMarkUp' => 'bool', 'folder' => 'text', 'productOrder' => 'text', 'groupOrder' => 'text', 'prom' => 'bool', 'userCanAdd' => 'bool', 'price_format' => false);
+	public $options_title = array('ProductUseArticle' => 'Використання зовнішнього артикулу', 'useGroups' => 'Наявність груп', 'showProductsParentsPages' => 'Виводити товари на батьківські групи (підгрупи + товари)', 'ProductMultiGroup' => 'Мультигрупи (1 товар більше ніж 1 група)', 'useAvailability' => 'Використання наявності товару', 'searchHistory' => 'Зберігати історію пошуку користувачів', 'useMarkUp' => 'Використовувати націнку', 'folder' => 'Папка для зображень', 'productOrder' => 'Сортування товарів', 'groupOrder' => 'Сортування груп', 'prom' => 'Дозволити експорт товарів та груп', 'userCanAdd' => 'Користувачі можуть додавати власні товари');
 	public $options_admin = array (
 					'word:products_to_all' => 'товарів',
 					'word:product_to' => 'До товару',
@@ -140,6 +140,9 @@ class install
 			$this->db->executeQuery($query);
 		}
 
+		if($this->options['userCanAdd'] > 0)
+			$this->setOption('userCanAdd', 1, $alias);
+
 		$preview = array();
 		$preview['alias'] = $alias;
 		$preview['active'] = 1;
@@ -151,7 +154,7 @@ class install
 		$this->db->insertRow('wl_images_sizes', $preview);
 		$preview['name'] = 'Відображення у каталозі товарів';
 		$preview['prefix'] = 'catalog';
-		$preview['width'] = $preview['height'] = 265;
+		$preview['width'] = $preview['height'] = 250;
 		$this->db->insertRow('wl_images_sizes', $preview);
 		$preview['name'] = 'Товар детально';
 		$preview['prefix'] = 'detal';
@@ -160,6 +163,11 @@ class install
 		$preview['name'] = 'Товар детально міні';
 		$preview['prefix'] = 'thumb';
 		$preview['width'] = $preview['height'] = 75;
+		$this->db->insertRow('wl_images_sizes', $preview);
+		$preview['name'] = 'Підгрупа в каталозі';
+		$preview['prefix'] = 'subgroup';
+		$preview['width'] = 230;
+		$preview['height'] = 120;
 		$this->db->insertRow('wl_images_sizes', $preview);
 
 		return true;
@@ -326,7 +334,38 @@ class install
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 			$this->db->executeQuery($query);
 		}
+		if($option == 'userCanAdd' AND $value > 0)
+		{
+			$alias1 = -1; $find = false;
+			if($actions = $this->db->getAllDataByFieldInArray('wl_aliases_cooperation', array('alias1' => '<0', 'type' => '__tab_profile'), 'alias1'))
+			{
+				$alias1 = $actions[0]->alias1 - 1;
+				foreach ($actions as $action) {
+					if($action->alias2 == $alias)
+					{
+						$find = true;
+						break;
+					}
+				}
+			}
+			if(!$find)
+				$this->db->insertRow('wl_aliases_cooperation', array('alias1' => $alias1, 'alias2' => $alias, 'type' => '__tab_profile'));
 
+			$alias1 = -1; $find = false;
+			if($actions = $this->db->getAllDataByFieldInArray('wl_aliases_cooperation', array('alias1' => '<0', 'type' => '__dashboard_subview'), 'alias1'))
+			{
+				$alias1 = $actions[0]->alias1 - 1;
+				foreach ($actions as $action) {
+					if($action->alias2 == $alias)
+					{
+						$find = true;
+						break;
+					}
+				}
+			}
+			if(!$find)
+				$this->db->insertRow('wl_aliases_cooperation', array('alias1' => $alias1, 'alias2' => $alias, 'type' => '__dashboard_subview'));
+		}
 		if($option == 'useMarkUp' AND $value > 0)
 		{
 			$this->sub_menu['markup'] = 'Націнка';
@@ -358,6 +397,8 @@ class install
 					  `availability` tinyint(1) NULL,
 					  `active` tinyint(1) NULL,
 					  `position` int(11) NULL,
+					  `rating` FLOAT NOT NULL DEFAULT '0',
+					  `rating_votes` INT NOT NULL DEFAULT '0',
 					  `author_add` int(11) NOT NULL,
 					  `date_add` int(11) NOT NULL,
 					  `author_edit` int(11) NOT NULL,
@@ -390,6 +431,10 @@ class install
 					  KEY `wl_alias` (`wl_alias`),
 					  KEY `group` (`group`),
 					  KEY `active` (`active`),
+					  KEY `main` (`main`),
+					  KEY `filter` (`filter`),
+					  KEY `toCart` (`toCart`),
+					  KEY `sort` (`sort`),
 					  KEY `position` (`position`)
 					) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
 		$this->db->executeQuery($query);

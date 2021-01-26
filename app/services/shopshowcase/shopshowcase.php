@@ -2,7 +2,7 @@
 
 /*
 
- 	Service "Shop Showcase 3.2"
+ 	Service "Shop Showcase 3.3"
 	for WhiteLion 1.3
 
 */
@@ -16,18 +16,7 @@ class shopshowcase extends Controller {
     {
         parent::__construct();
 
-    	$marketing = $this->db->cache_get('marketing');
-		if($marketing === NULL)
-        {
-	        if($cooperation = $this->db->getAllDataByFieldInArray('wl_aliases_cooperation', $_SESSION['alias']->id, 'alias1'))
-	        	foreach ($cooperation as $c) {
-			        if($c->type == 'marketing')
-			        	$this->marketing[] = $c->alias2;
-		        }
-		    $this->db->cache_add('marketing', $this->marketing);
-		}
-		else
-			$this->marketing = $marketing;
+        $this->marketing = $this->get__wl_cooperation('marketing');
     }
 
     function _remap($method, $data = array())
@@ -50,12 +39,47 @@ class shopshowcase extends Controller {
 
 			if($type == 'product' && $product)
 			{
-				if($product->active == 0 && !$this->userCan())
-					$this->load->page_404(false);
-
 				$this->wl_alias_model->setContent($product->id);
 				$_SESSION['alias']->name = $product->name;
 				$_SESSION['alias']->breadcrumbs = $this->shop_model->breadcrumbs;
+
+				if(isset($_GET['edit']) && $_SESSION['option']->userCanAdd)
+				{
+					if($this->userIs())
+					{
+						if($product->author_add == $_SESSION['user']->id || $this->userCan())
+						{
+							if($__init_before_addEditSave = $this->get__wl_cooperation('__init_before_addEditSave'))
+								foreach ($__init_before_addEditSave as $aliasIdInit) {
+									$this->load->function_in_alias($aliasIdInit, '__before_edit');
+								}
+
+							$_SESSION['alias']->breadcrumbs[$product->name] = $product->link;
+							$_SESSION['alias']->title = $this->text('Редагувати').' '.$_SESSION['alias']->name;
+							$_SESSION['alias']->name = $this->text('Редагувати');
+
+							$groups = $options = false;
+							if($_SESSION['option']->useGroups)
+								$groups = $this->shop_model->getGroups(-1);
+							if($_SESSION['option']->ProductMultiGroup)
+								$options = $this->shop_model->getOptionsToGroup(0, false);
+							else
+								$options = $this->shop_model->getOptionsToGroup($product->group, false);
+
+							$this->load->page_view('manager/edit_view', array('product' => $product, 'groups' => $groups, 'options' => $options));
+						}
+						else
+							$this->load->notify_view(['errors' => "Тільки власник може редагувати товар"]);
+						exit;
+					}
+					else
+						$this->load->redirect('login?redirect='.$this->data->url(true));
+				}
+
+				if($product->active <= 0 && !$this->userCan())
+					if(!$this->userIs() || ($this->userIs() && $product->author_add != $_SESSION['user']->id))
+						$this->load->page_404(false);
+				
 				if($videos = $this->wl_alias_model->getVideosFromText())
 				{
 					$this->load->library('video');
@@ -76,14 +100,7 @@ class shopshowcase extends Controller {
 						}
 					}
 
-				$otherProductsByGroup = false;
-				$_SESSION['option']->paginator_per_page = 5;
-				$_GET['article'] = $product->article;
-				if($otherProductsByGroup = $this->shop_model->getProducts($product->group, $product->id))
-					$this->setProductsPrice($otherProductsByGroup);
-				$_SESSION['option']->paginator_per_page = 20;
-
-				$this->load->page_view('detal_view', array('product' => $product, 'otherProductsByGroup' => $otherProductsByGroup));
+				$this->load->page_view('detal_view', array('product' => $product));
 			}
 			elseif($_SESSION['option']->useGroups && $type == 'group' && $product)
 			{
@@ -94,9 +111,18 @@ class shopshowcase extends Controller {
 
 				$this->wl_alias_model->setContent(-$group->id);
 				$_SESSION['alias']->breadcrumbs = $this->shop_model->breadcrumbs;
-				$subgroups = $products = $filters = false;
+				$subgroups = $products = $filters = $use_filter = $filter_minMaxPrices = false;
 
-				if($group->haveChild)
+				if(count($_GET) > 1)
+					foreach ($_GET as $key => $value) {
+						if(!in_array($key, ['request', 'page']))
+						{
+							$use_filter = true;
+							break;
+						}
+					}
+
+				if(!$use_filter && $group->haveChild)
 				{
 					$subgroups = $this->db->cache_get('subgroups/group-'.$group->id);
 					if($subgroups === NULL)
@@ -108,54 +134,59 @@ class shopshowcase extends Controller {
 
 				if($_SESSION['option']->showProductsParentsPages || !$subgroups)
 				{
-					$filter = false;
-					if(count($_GET) > 1)
-						foreach ($_GET as $key => $value) {
-							if($key != 'request' && $key != 'page')
-							{
-								$filter = true;
-								break;
-							}
-						}
-					if($filter)
+					if($use_filter)
 						$products = $this->shop_model->getProducts($group->id);
 					else
 					{
-						$cache_key = 'group-'.$group->id;
+						$cache_key = "products_in_group".DIRSEP.$this->db->getCacheContentKey('group-', $group->id);
+						$cache_total = $cache_key .DIRSEP. 'total';
 						if(isset($_SESSION['option']->paginator_per_page) && $_SESSION['option']->paginator_per_page > 0)
 						{
 							$page = 1;
 							if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 1)
 								$page = $_GET['page'];
-							$cache_key .= '-page-'.$page;
+							$cache_key .= DIRSEP.'page-'.$page;
 						}
 
-						$products = $this->db->cache_get('products_in_group/'.$cache_key);
+						$products = $this->db->cache_get($cache_key);
 						if($products === NULL)
 						{
 							$products = $this->shop_model->getProducts($group->id);
-							$this->db->cache_add('products_in_group/'.$cache_key, $products);
+							$this->db->cache_add($cache_key, $products);
+							$this->db->cache_add($cache_total, $_SESSION['option']->paginator_total);
+						}
+						elseif(!empty($products))
+						{
+							$total = $this->db->cache_get($cache_total);
+							if($total === NULL)
+							{
+								if(count($products) >= $_SESSION['option']->paginator_per_page)
+									$_SESSION['option']->paginator_total = $this->shop_model->getProductsCountInGroup($group->id);
+								else
+									$_SESSION['option']->paginator_total = count($products);
+								$this->db->cache_add($cache_total, $_SESSION['option']->paginator_total);
+							}
+							else
+								$_SESSION['option']->paginator_total = $total;
 						}
 						else
-						{
-							if(count($products) >= $_SESSION['option']->paginator_per_page)
-								$_SESSION['option']->paginator_total = $this->shop_model->getProductsCountInGroup($group->id);
-							else
-								$_SESSION['option']->paginator_total = count($products);
-						}
+							$_SESSION['option']->paginator_total = 0;
+					}
+					if($_SESSION['option']->showProductsParentsPages || !$group->haveChild || $use_filter)
+					{
+						$filters = $this->shop_model->getOptionsToGroup($group->id);
+						$filter_minMaxPrices = $this->shop_model->getMinMaxPrices($group->id);
 					}
 					if($products)
-					{
-						if($_SESSION['option']->showProductsParentsPages || !$group->haveChild)
-							$filters = $this->shop_model->getOptionsToGroup($group->id);
 						$this->setProductsPrice($products);
-					}
 				}
 
-				$this->load->page_view('group_view', array('group' => $group, 'subgroups' => $subgroups, 'products' => $products, 'filters' => $filters, 'catalogAllGroups' => $this->shop_model->getGroups(-1)));
+				$this->load->page_view('group_view', array('group' => $group, 'subgroups' => $subgroups, 'use_filter' => $use_filter, 'products' => $products, 'filters' => $filters, 'filter_minMaxPrices' => $filter_minMaxPrices, 'catalogAllGroups' => $this->shop_model->getGroups(-1)));
 			}
-			else
+			else//if($this->userIs())
 				$this->load->page_404(false);
+			// else
+			// 	$this->load->page_404();
 		}
 		else
 		{
@@ -182,78 +213,112 @@ class shopshowcase extends Controller {
 
 	public function search()
 	{
-		$this->wl_alias_model->setContent();
-		if(isset($_GET['name']) || isset($_GET['group']))
+		$this->wl_alias_model->setContent(0, 202);
+		$_SESSION['alias']->name = $_SESSION['alias']->title = $this->text('Пошук', 0);
+		$this->load->smodel('shop_model');
+
+		if($id = $this->data->get('id'))
 		{
-			// if(isset($_GET['name']) && is_numeric($_GET['name']))
-			// 	$this->redirect($_SESSION['alias']->alias.'/'.$_GET['name']);
-
-			$this->load->smodel('shop_model');
-			$_SESSION['alias']->name = $_SESSION['alias']->title = $this->text('Пошук по назві');
-
-			if(isset($_GET['name']))
-				$_SESSION['alias']->name = $_SESSION['alias']->title = $this->text('Пошук по назві')." '{$this->data->get('name')}'";
-
-			$group_id = 0;
-			if(isset($_GET['group']))
+			if(is_numeric($id))
 			{
-				$this->db->select($this->shop_model->table('_groups').' as g', 'id', $this->data->get('group'));
-				$where = array('content' => '#-g.id');
-				if($_SESSION['language']) $where['language'] = $_SESSION['language'];
-				$this->db->join('wl_ntkd', 'name, title', $where);
-				if($group = $this->db->get())
+				if($id == 0)
+					$this->redirect($_SESSION['alias']->alias);
+				elseif($id > 0)
 				{
-					$_SESSION['alias']->name = $_SESSION['alias']->title = $this->text('Пошук', 0).' '.$group->title;
-					$group_id = $group->id;
+					if($product = $this->shop_model->getProduct($id, 'id', false))
+						$this->redirect($product->link);
+					else
+						$this->load->notify_view(['errors' => $this->text("Товар з ід #{$id} не знайдено")]);
+				}
+				else
+				{
+					$this->shop_model->getBreadcrumbs = $this->shop_model->getGroupPhoto = false;
+					if($group = $this->shop_model->getGroupByAlias(-$id, 0, 'id'))
+						$this->redirect($group->link);
+					
 				}
 			}
-
-			$name = $this->data->get('name');
-			unset($_GET['name']);
-			$_GET['article'] = $name;
-			$products = $this->shop_model->getProducts($group_id);
-			if(empty($products))
+			else
+				$this->load->notify_view(['errors' => $this->text("id must be numeric")]);
+		}
+		else if(!empty($_GET['group']))
+		{
+			if(is_numeric($_GET['group']) && $_GET['group'] > 0)
 			{
-				$_GET['name'] = $name;
-				unset($_GET['article']);
-				$products = $this->shop_model->getProducts($group_id);
+				$this->shop_model->getBreadcrumbs = $this->shop_model->getGroupPhoto = false;
+				if($group = $this->shop_model->getGroupByAlias($_GET['group'], 0, 'id'))
+				{
+					$request = '';
+					foreach ($_GET as $key => $value) {
+						if(in_array($key, ['request', 'group']) || empty($value))
+							continue;
+						$request .= "{$key}={$value}&";
+					}
+					if(!empty($request))
+						$this->redirect($group->link.'?'.substr($request, 0, -1));
+					$this->redirect($group->link);
+				}
+				else
+					$this->load->notify_view(['errors' => $this->text("Групу з ід #{$_GET['group']} не знайдено")]);
 			}
+			else
+				$this->load->notify_view(['errors' => $this->text("Групу з ід #{$_GET['group']} не знайдено")]);
+		}
+		else if(!empty($_GET['article']))
+		{
+			$article = $this->makeArticle($this->data->get('article'));
+			$products = $this->shop_model->getProducts('%'.$article);
+
+			if($_SESSION['option']->searchHistory)
+				if($this->userIs() && !$this->userCan())
+				{
+					if(is_array($products) && count($products) == 1)
+						$this->shop_model->searchHistory($products[0]->id, $article);
+					else
+						$this->shop_model->searchHistory(0, $article);
+				}
+
+			if(count($products) == 1)
+				$this->redirect($products[0]->link);
+
 			if($products)
 				$this->setProductsPrice($products);
-			$_GET['name'] = $name;
-			
+
 			$this->load->page_view('search_view', array('products' => $products));
 		}
-		else if(isset($_GET['id']) || isset($_GET['article']))
+		else
 		{
-			$this->load->smodel('shop_model');
-			$id = 0;
-			$key = 'id';
-			if(isset($_GET['article']))
-			{
-				$id = $this->makeArticle($this->data->get('article'));
-				$key = 'article';
-			}
-			else
-				$id = $this->data->get('id');
-			$product = $this->shop_model->getProduct($id, $key, false);
-			$products = $this->shop_model->getProducts('%'.$id);
+			if(!empty($_GET['name']))
+				$_SESSION['alias']->name = $_SESSION['alias']->title = $this->text('Пошук по назві', 0)." '{$this->data->get('name')}'";
 
-			if($this->userIs() && !$this->userCan())
+			$author_add = NULL;
+			if(!empty($_GET['author_add']) && is_numeric($_GET['author_add']) && $_GET['author_add'] > 0)
+				$author_add = $this->db->getAllDataById('wl_users', $_GET['author_add']);
+			if($author_alias = $this->data->get('author'))
+				$author_add = $this->db->getAllDataById('wl_users', $author_alias, 'alias');
+
+			if($author_add)
 			{
-				if($product)
-					$this->shop_model->searchHistory($product->id);
+				if($author_add->status == 1 && $author_add->type <= 3)
+				{
+					// $_SESSION['alias']->name = $_SESSION['alias']->title = $_SESSION['alias']->name .' від '.$author_add->name;
+					$_SESSION['alias']->name = $_SESSION['alias']->title = 'Страви від '.$author_add->name;
+					$_GET['author_add'] = $author_add->id;
+				}
 				else
-					$this->shop_model->searchHistory(0, $id);
+					$author_add = false;
 			}
 
-			if($product || count($products) > 0)
+			if($author_add === false)
 			{
-				$link = $product ? $product->link : $products[0]->link;
-				$this->load->page_view('detal_view', array('product' => $product, 'products' => $products));
+				$this->load->page_view('group_view', array('products' => false, 'use_filter' => false, 'filters' => false, 'catalogAllGroups' => $this->shop_model->getGroups(-1)));
+				exit;
 			}
-			else
-				$this->load->page_view('group_view', array('products' => null));
+
+			if($products = $this->shop_model->getProducts())
+				$this->setProductsPrice($products);
+
+			$this->load->page_view('group_view', array('products' => $products, 'use_filter' => true, 'filters' => $this->shop_model->getOptionsToGroup(), 'catalogAllGroups' => $this->shop_model->getGroups(-1)));
 		}
 	}
 
@@ -294,6 +359,16 @@ class shopshowcase extends Controller {
 				$this->load->json(array('price' => $price, 'product' => $product_id));
 			}
 		}
+	}
+
+	public function ajaxGetGroups()
+	{
+		$parent_id = $this->data->post('parent_id');
+		if(!is_numeric($parent_id) || $parent_id < 0)
+			$parent_id = 0;
+
+		$this->load->smodel('shop_model');
+		$this->load->json(array('groups' => $this->shop_model->getGroups($parent_id, false)));
 	}
 
 	public function export_prom()
@@ -409,6 +484,262 @@ class shopshowcase extends Controller {
 		exit;
 	}
 
+	// public user manage mode
+	public function my()
+	{
+		if($this->userIs())
+		{
+			if(empty($_SESSION['option']->userCanAdd))
+				$this->load->notify_view(['errors' => "Згідно політики безпеки сайту, додавати товари може виключно адміністрація"]);
+
+			if($_SESSION['user']->status != 1)
+			{
+				$user = $this->db->getAllDataById('wl_users', $_SESSION['user']->id);
+				if($_SESSION['user']->status != $user->status)
+				{
+					$_SESSION['user']->status = $user->status;
+
+					if($user->status == 1)
+					{
+						$_SESSION['notify'] = new stdClass();
+						$_SESSION['notify']->title = $this->text('Вітаємо!');
+						$_SESSION['notify']->success = $this->text('Ваш профіль успішно підтверджено');
+					}
+				}
+			}
+			
+			$this->load->smodel('shop_model');
+			$this->wl_alias_model->setContent();
+			$_SESSION['alias']->name = $_SESSION['alias']->title = $this->text('Мої товари');
+
+			$groups = false;
+			if($_SESSION['option']->useGroups)
+				$groups = $this->shop_model->getGroups();
+
+			$_GET['author_add'] = $_SESSION['user']->id;
+			$products = $this->shop_model->getProducts(-1, 0, false);
+			$this->setProductsPrice($products);
+
+			$this->load->profile_view('manager/index_view', array('groups' => $groups, 'products' => $products));
+		}
+		else
+			$this->load->redirect('login?redirect='.$_SESSION['alias']->alias.'/my');
+	}
+
+	public function add()
+	{
+		if(empty($_SESSION['option']->userCanAdd))
+			$this->load->notify_view(['errors' => "Згідно політики безпеки сайту, додавати товари може виключно адміністрація"]);
+
+		if($this->userIs())
+		{
+			if($__init_before_addEditSave = $this->get__wl_cooperation('__init_before_addEditSave'))
+				foreach ($__init_before_addEditSave as $aliasIdInit) {
+					$this->load->function_in_alias($aliasIdInit, '__before_add');
+				}
+
+			$this->load->smodel('shop_model');
+			$this->wl_alias_model->setContent();
+			$_SESSION['alias']->name = $this->text('Додати товар');
+
+			$groups = false;
+			if($_SESSION['option']->useGroups)
+				$groups = $this->shop_model->getGroups(-1);
+
+			$options = $this->shop_model->getOptionsToGroup(0, false);
+
+			$this->load->profile_view('manager/add_view', array('groups' => $groups, 'options' => $options));
+		}
+		else
+			$this->load->redirect('login?redirect='.$_SESSION['alias']->alias.'/add');
+	}
+
+	public function save()
+	{
+		if(empty($_SESSION['option']->userCanAdd))
+			$this->load->notify_view(['errors' => "Згідно політики безпеки сайту, керувати товарами може виключно адміністрація"]);
+
+		if($this->userIs())
+		{
+			$_SESSION['notify'] = new stdClass();
+			if(empty($_POST))
+			{
+				$_SESSION['notify']->errors = 'empty POST data';
+				$this->redirect();
+			}
+			$this->load->smodel('products_model');
+			if(empty($_POST['id']))
+			{
+				$_POST['active'] = -2; // користувач має надіслати на модерацію
+
+				if($__init_before_addEditSave = $this->get__wl_cooperation('__init_before_addEditSave'))
+					foreach ($__init_before_addEditSave as $aliasIdInit) {
+						$this->load->function_in_alias($aliasIdInit, '__before_add_save');
+					}
+
+				$link = '';
+				if($id = $this->products_model->add($link))
+				{
+					// $this->load->function_in_alias($_SESSION['alias']->alias, '__after_edit', $id, true);
+					if(!empty($_FILES['photo']['name']))
+						$this->load->function_in_alias($_SESSION['alias']->alias, '__savephoto', 
+															['name_field' => 'photo', 'content' => $id, 'name' => $this->data->latterUAtoEN($this->data->post('name'))],
+															true);
+					$_SESSION['notify']->success = $this->text('Вітаємо! Товар створено');
+					$_SESSION['notify']->success = $this->text('На даний момент є основна інформація, тепер додайте опис та додаткові характеристики');
+					$this->redirect("{$_SESSION['alias']->alias}/{$link}?edit");
+				}
+				$_SESSION['notify']->errors = $this->text('Помилка додачі товару. Перевірте всі дані та спробуйте ще раз');
+				$this->redirect();
+			}
+			else if(is_numeric($_POST['id']))
+			{
+				if($product = $this->products_model->getById($_POST['id']))
+				{
+					if($product->author_add == $_SESSION['user']->id || $this->userCan())
+					{
+						if($__init_before_addEditSave = $this->get__wl_cooperation('__init_before_addEditSave'))
+								foreach ($__init_before_addEditSave as $aliasIdInit) {
+									$this->load->function_in_alias($aliasIdInit, '__before_edit_save', $product);
+								}
+
+						if($product->active < 0 && isset($_POST['active']))
+							unset($_POST['active']);
+						$_POST['article_old'] = $product->article;
+						$_POST['group_old'] = $product->group;
+						$_POST['position_old'] = $product->position;
+						$_POST['alias'] = $this->data->post('name');
+
+						$link = $this->products_model->save($_POST['id']);
+						$this->products_model->saveProductOptios($_POST['id']);
+						$is_photo = false;
+						if(is_array($_FILES['photo']['name']))
+						{
+							if(!empty($_FILES['photo']['name'][0]))
+								$is_photo = true;
+						} else if(!empty($_FILES['photo']['name']))
+							$is_photo = true;
+						if($is_photo)
+							$this->load->function_in_alias($_SESSION['alias']->alias, '__savephoto', 
+															['name_field' => 'photo', 'content' => $product->id, 'name' => $this->data->latterUAtoEN($this->data->post('name'))],
+															true);
+						if(!empty($_POST['video']))
+						{
+							$_POST['alias'] = $_SESSION['alias']->id;
+							$_POST['content'] = $product->id;
+							require APP_PATH.'controllers'.DIRSEP.'admin'.DIRSEP.'wl_video.php';
+							$video = new wl_video_admin();
+							$video->save(true);
+						}
+						$this->load->function_in_alias($_SESSION['alias']->alias, '__after_edit', $product->id, true);
+
+						$_SESSION['notify'] = new stdClass();
+						$_SESSION['notify']->success = 'Дані успішно оновлено!';
+						$this->redirect($_SESSION['alias']->alias.'/'.$link.'?edit');
+					}
+					else
+						$this->load->notify_view(['errors' => "Тільки власник може редагувати товар"]);
+				}
+				else
+					$this->load->notify_view(['errors' => "Product with id #{$_POST['id']} not find"]);
+			}
+			else
+				$this->load->notify_view(['errors' => "Product with id #{$_POST['id']} not find"]);
+		}
+		else
+			$this->load->redirect('login');
+	}
+
+	public function delete_image()
+	{
+		if(empty($_SESSION['option']->userCanAdd))
+			$this->load->notify_view(['errors' => "Згідно політики безпеки сайту, керувати товарами може виключно адміністрація"]);
+
+		if($this->userIs())
+		{
+			if($id = $this->data->get('id'))
+				if(is_numeric($id) && $id > 0)
+					if($image = $this->db->getAllDataById('wl_images', $id))
+						if($image->alias == $_SESSION['alias']->id)
+							if($product = $this->db->getAllDataById($_SESSION['service']->table.'_products', $image->content))
+								if($product->author_add == $_SESSION['user']->id || $this->userCan())
+								{
+									$path = IMG_PATH.$_SESSION['option']->folder.'/'.$image->content.'/';
+				                    $path = substr($path, strlen(SITE_URL));
+				                    $prefix = array('');
+				                    if($sizes = $this->db->getAliasImageSizes($image->alias))
+				                        foreach ($sizes as $resize) {
+				                            $prefix[] = $resize->prefix.'_';
+				                        }
+				                    foreach ($prefix as $p) {
+				                        $filename = $path.$p.$image->file_name;
+				                        @unlink ($filename);
+				                    }
+
+				                    $this->db->deleteRow('wl_images', $image->id);
+				                    if($_SESSION['language'])
+				                        $this->db->deleteRow('wl_media_text', array('type' => 'photo', 'content' => $image->id));
+				                    $this->db->executeQuery("UPDATE `wl_images` SET `position` = `position` - 1 WHERE `alias` = '{$image->alias}' AND `content` = '{$image->content}' AND `position` > '{$image->position}'");
+				                    
+				                    $this->load->function_in_alias($_SESSION['alias']->alias, '__after_edit', $product->id, true);
+				                    $this->redirect();
+								}
+			$this->load->notify_view(['errors' => "Помилка ідентифікатору зображення або у Вас відсутній доступ до даного фото"]);
+		}
+		else
+			$this->load->redirect('login');
+	}
+
+	public function delete_video()
+	{
+		if(empty($_SESSION['option']->userCanAdd))
+			$this->load->notify_view(['errors' => "Згідно політики безпеки сайту, керувати товарами може виключно адміністрація"]);
+
+		if($this->userIs())
+		{
+			if($id = $this->data->get('id'))
+				if(is_numeric($id) && $id > 0)
+					if($video = $this->db->getAllDataById('wl_video', $id))
+						if($video->alias == $_SESSION['alias']->id)
+							if($product = $this->db->getAllDataById($_SESSION['service']->table.'_products', $video->content))
+								if($product->author_add == $_SESSION['user']->id || $this->userCan())
+								{
+				                    $this->db->deleteRow('wl_video', $video->id);
+				                    if($_SESSION['language'])
+				                        $this->db->deleteRow('wl_media_text', array('type' => 'video', 'content' => $video->id));
+				                    
+				                    $this->load->function_in_alias($_SESSION['alias']->alias, '__after_edit', $product->id, true);
+				                    $this->redirect();
+								}
+			$this->load->notify_view(['errors' => "Помилка ідентифікатору зображення або у Вас відсутній доступ до даного фото"]);
+		}
+		else
+			$this->load->redirect('login');
+	}
+
+	public function confirm()
+	{
+		if(empty($_SESSION['option']->userCanAdd))
+			$this->load->notify_view(['errors' => "Згідно політики безпеки сайту, керувати товарами може виключно адміністрація"]);
+
+		if($this->userIs())
+		{
+			if($id = $this->data->post('id'))
+				if(is_numeric($id) && $id > 0)
+					if($product = $this->db->getAllDataById($_SESSION['service']->table.'_products', $id))
+						if($product->author_add == $_SESSION['user']->id || $this->userCan())
+						{
+		                    $this->db->updateRow($_SESSION['service']->table.'_products', ['active' => -1, 'date_edit' => time(), 'author_edit' => $_SESSION['user']->id], $id);
+		                    
+		                    $this->load->function_in_alias($_SESSION['alias']->alias, '__after_edit', $product->id, true);
+		                    $this->redirect();
+						}
+			$this->load->notify_view(['errors' => "Помилка ідентифікатору товару або у Вас відсутній доступ"]);
+		}
+		else
+			$this->load->redirect('login');
+	}
+
     public function __get_Search($content)
     {
     	$this->load->smodel('shop_search_model');
@@ -501,25 +832,25 @@ class shopshowcase extends Controller {
 		if(isset($data['limit']) && is_numeric($data['limit'])) $_SESSION['option']->paginator_per_page = $data['limit'];
 		if(isset($data['sort']) && $data['sort'] != '') $_SESSION['option']->productOrder = $data['sort'];
 		if(isset($data['sale']) && $data['sale'] == 1) $_GET['sale'] = 1;
-		if(isset($data['availability']) && $data['availability'] == 1) {
-			$_GET['availability'] = 1;
-			$_GET['price_min'] = 1;
-		}
+		if(isset($data['availability'])) $_GET['availability'] = $data['availability'];
 		if(isset($data['noInclude']) && $data['noInclude'] > 0) $noInclude = $data['noInclude'];
-		if(isset($data['active']) && $data['active'] == false) $active = false;
+		if(isset($data['active']) && $data['active'] == false) $active = $data['active'];
 		if(isset($data['getProductOptions']) && $data['getProductOptions'] == true) $getProductOptions = true;
 		if(isset($data['additionalFileds']) && is_array($data['additionalFileds']))
 			$additionalFileds = $data['additionalFileds'];
 
 		$this->load->smodel('shop_model');
 		$products = $this->shop_model->getProducts($group, $noInclude, $active, $getProductOptions);
-		if($additionalFileds)
-			foreach ($products as $product)
-				foreach ($additionalFileds as $key => $value) {
-					$product->$key = $value;
-				}
-		$this->setProductsPrice($products);
-
+		if($products)
+		{
+			if($additionalFileds)
+				foreach ($products as $product)
+					foreach ($additionalFileds as $key => $value) {
+						$product->$key = $value;
+					}
+			$this->setProductsPrice($products);
+		}
+		
 		return $products;
 	}
 
@@ -531,12 +862,10 @@ class shopshowcase extends Controller {
 		return $this->shop_model->getGroupByAlias($id, false, 'id');
 	}
 
-	public function __get_Groups($parent)
+	public function __get_Groups($parent_id = 0)
 	{
-		if(empty($parent))
-			$parent = 0;
 		$this->load->smodel('shop_model');
-		return $this->shop_model->getGroups($parent, false);
+		return $this->shop_model->getGroups($parent_id, false);
 	}
 
 	public function __get_OptionsToGroup($group_id)
@@ -630,7 +959,7 @@ class shopshowcase extends Controller {
 			$product->sum_format = $this->shop_model->formatPrice($product->price * $product->quantity);
 	}
 
-	private function setProductsPrice(&$products)
+	public function setProductsPrice(&$products)
 	{
 		if($products)
 		{

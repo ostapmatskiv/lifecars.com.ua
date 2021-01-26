@@ -62,6 +62,7 @@ class shop_model {
 	public function routeURL($url = array(), &$type = null, $admin = false)
 	{
 		$this->init();
+		$this->getBreadcrumbs = true;
 		$_SESSION['alias']->breadcrumbs = array();
 		if($_SESSION['alias']->content < 0)
 			if($group = $this->getGroupByAlias(-$_SESSION['alias']->content, 0, 'id'))
@@ -129,15 +130,17 @@ class shop_model {
 	{
 		$_SESSION['option']->paginator_total = $_SESSION['option']->paginator_total_active = 0;
 		$where = array('wl_alias' => $_SESSION['alias']->id);
-		if($active)
+		if(is_bool($active))
+			$active = $active ? 1 : 0;
+		if(is_numeric($active) && $active != 0)
 		{
 			if($_SESSION['option']->useGroups == 1)
 			{
 				if($_SESSION['option']->ProductMultiGroup == 0)
-					$where['active'] = 1;
+					$where['active'] = $active;
 			}
 			else
-				$where['active'] = 1;
+				$where['active'] = $active;
 		}
 
 		if($_SESSION['option']->ProductUseArticle > 0 && is_string($Group) && $Group[0] == '%')
@@ -153,7 +156,7 @@ class shop_model {
 				$Group = $list;
 				unset($list);
 			}
-			if(!$active && $Group >= 0 && !$this->data->get('name'))
+			if($active <= 0 && $Group >= 0 && !$this->data->get('name'))
 			{
 				if($_SESSION['option']->ProductMultiGroup)
 					$where['#pg.group'] = $Group;
@@ -188,7 +191,7 @@ class shop_model {
 								$start = ($_GET['page'] - 1) * $_SESSION['option']->paginator_per_page;
 							$order .= ' LIMIT '.$start.', '.$_SESSION['option']->paginator_per_page;
 						}
-						$pgNoInclude = ($active) ? '`active` = 1' : '';
+						$pgNoInclude = ($active > 0) ? '`active` = 1' : '';
 						$pgNoInclude .= ($noInclude > 0) ? ' AND `product` != '.$noInclude : '';
 						if($pgNoInclude != '')
 							$pgNoInclude = 'WHERE '.$pgNoInclude;
@@ -198,10 +201,13 @@ class shop_model {
 							foreach ($products as $product) {
 								array_push($where['id'], $product->product);
 							}
+							// $this->productsIdInGroup = $where['id'];
 						}
 						else
 							return null;
 					}
+					elseif($noInclude > 0)
+						$where['id'] = '!'.$noInclude;
 				}
 				else
 				{
@@ -254,11 +260,10 @@ class shop_model {
 									$_SESSION['option']->paginator_total = count($products);
 								$this->db->clear();
 								$where['id'] = array();
-								if($_SESSION['option']->paginator_total <= count($products))
-									$this->productsIdInGroup = array();
+								$this->productsIdInGroup = array();
 								foreach ($products as $product) {
 									array_push($where['id'], $product->product);
-									if($this->productsIdInGroup)
+									if(!$getOk)
 										$this->productsIdInGroup[] = $product->product;
 								}
 							}
@@ -276,58 +281,15 @@ class shop_model {
 
 		if(count($_GET) > 1)
 		{
-			foreach ($_GET as $key => $value) {
-				if($key != 'request' && $key != 'page' && $key != 'sale')
-				{
-					$option = $this->db->getAllDataById($this->table('_options'), array('wl_alias' => $_SESSION['alias']->id, 'alias' => $key, 'filter' => 1));
-					if($option)
-					{
-						$list_where['option'] = $option->id;
-						if(!empty($where['id']))
-							$list_where['product'] = $where['id'];
-						$where['id'] = array();
-						if(is_array($_GET[$key]))
-						{
-							foreach ($_GET[$key] as $value) if(is_numeric($value)) {
-								if($option->type == 8 || $option->type == 12) //checkbox || checkbox-select2
-								{
-									$list_where['value'] = '%'.$value;
-									if($list = $this->db->getAllDataByFieldInArray($this->table('_product_options'), $list_where))
-										foreach ($list as $p) {
-											$p->value = explode(',', $p->value);
-											if(in_array($value, $p->value)) array_push($where['id'], $p->product);
-										}
-								}
-								else
-								{
-									$list_where['value'] = $value;
-									if($list = $this->db->getAllDataByFieldInArray($this->table('_product_options'), $list_where))
-										foreach ($list as $p) {
-											array_push($where['id'], $p->product);
-										}
-								}
-							}
-						}
-						else if(is_numeric($_GET[$key]))
-						{
-							$list_where['value'] = $_GET[$key];
-							if($list = $this->db->getAllDataByFieldInArray($this->table('_product_options'), $list_where))
-								foreach ($list as $p) {
-									array_push($where['id'], $p->product);
-								}
-						}
-						if(empty($where['id']))
-							return false;
-					}
-				}
-			}
-			if(isset($_GET['name']) && $_GET['name'] != '')
+			if($_SESSION['option']->ProductUseArticle > 0 && !empty($_GET['article']))
+				$where['article'] = '%'.$this->prepareArticleKey($this->data->get('article'));
+
+			if($name = $this->data->get('name'))
 			{
 				$content = '>0';
 				if(!empty($where['id']))
 					$content = $where['id'];
-				$products = $this->db->getAllDataByFieldInArray('wl_ntkd', array('alias' => $_SESSION['alias']->id, 'content' => $content, 'name' => '%'.$this->data->get('name')));
-				if(!empty($products))
+				if($products = $this->db->getAllDataByFieldInArray('wl_ntkd', array('alias' => $_SESSION['alias']->id, 'content' => $content, 'name' => '%'.$name)))
 				{
 					if(!isset($where['id']))
 					{
@@ -345,18 +307,82 @@ class shop_model {
 								array_push($where['id'], $p->content);
 						}
 					}
+					if(empty($where['id']))
+						return false;
+
+					if($products = $this->db->select($this->table('_products').' as p', 'id', $where)->get('array'))
+					{
+						$this->productsIdInGroup = array();
+						foreach ($products as $product) {
+							$this->productsIdInGroup[] = $product->id;
+						}
+						$where['id'] = $this->productsIdInGroup;
+					}
+					else
+						return false;
 				}
 				else
 					return false;
 			}
-			if($_SESSION['option']->ProductUseArticle > 0 && !empty($_GET['article']))
-				$where['article'] = '%'.$this->prepareArticleKey($this->data->get('article'));
+			
+			foreach ($_GET as $key => $value) {
+				if(in_array($key, ['request', 'page', 'per_page', 'article', 'name', 'sale', 'price_min', 'price_max', 'availability', 'author_add', 'sort']))
+					continue;
+
+				if($option = $this->db->getAllDataById($this->table('_options'), array('wl_alias' => $_SESSION['alias']->id, 'alias' => $key, 'filter' => 1)))
+				{
+					$list_where['option'] = $option->id;
+					
+					if(is_array($_GET[$key]))
+					{
+						if(!empty($where['id']))
+							$list_where['product'] = $where['id'];
+						$where['id'] = array();
+						foreach ($_GET[$key] as $value)
+							if(is_numeric($value))
+							{
+								if($option->type == 8 || $option->type == 12) //checkbox || checkbox-select2
+								{
+									$list_where['value'] = '%'.$value;
+									if($list = $this->db->getAllDataByFieldInArray($this->table('_product_options'), $list_where))
+										foreach ($list as $p) {
+											$p->value = explode(',', $p->value);
+											if(in_array($value, $p->value))
+												array_push($where['id'], $p->product);
+										}
+								}
+								else
+								{
+									$list_where['value'] = $value;
+									if($list = $this->db->getAllDataByFieldInArray($this->table('_product_options'), $list_where))
+										foreach ($list as $p) {
+											array_push($where['id'], $p->product);
+										}
+								}
+							}
+					}
+					else if(is_numeric($_GET[$key]) && $_GET[$key] > 0)
+					{							
+						$list_where['value'] = $_GET[$key];
+						if(!empty($where['id']))
+							$list_where['product'] = $where['id'];
+						$where['id'] = array();
+						if($list = $this->db->getAllDataByFieldInArray($this->table('_product_options'), $list_where))
+							foreach ($list as $p) {
+								array_push($where['id'], $p->product);
+							}
+					}
+					else
+						continue;
+					if(empty($where['id']))
+						return false;
+				}
+			}
 		}
 		if(isset($_GET['sale']) && $_GET['sale'] == 1)
 		{
 			$where['#p.promo'] = '>0';
-			$where['#p.old_price'] = '>0';
-			$where['+#p.old_price'] = '> p.price';
+			$where['#p.old_price'] = '> p.price';
 		}
 		if(isset($_GET['price_min']) && is_numeric($_GET['price_min']) && $_GET['price_min'] >= 1)
 		{
@@ -373,10 +399,22 @@ class shop_model {
 			$where['+#p.price'] = '<='.$price_max;
 		}
 
-		if(!empty($_GET['availability']) && $_GET['availability'] == 1)
-			$where['#p.availability'] = '>0';
+		if(!empty($_GET['availability']) && is_numeric($_GET['availability']))
+		{
+			if($_SESSION['option']->useAvailability)
+			{
+				$where['#p.availability'] = '>0';
+				if(empty($where['#p.price']))
+					$where['#p.price'] = '>0';
+			}
+			else
+				$where['#p.availability'] = $this->data->get('availability');
+		}
 
-		if($active && $_SESSION['option']->useGroups > 0 && $_SESSION['option']->ProductMultiGroup == 0 && isset($where['group']))
+		if(!empty($_GET['author_add']) && is_numeric($_GET['author_add']) && $_GET['author_add'] > 0)
+			$where['#p.author_add'] = $_GET['author_add'];
+
+		if($active > 0 && $_SESSION['option']->useGroups > 0 && $_SESSION['option']->ProductMultiGroup == 0 && isset($where['group']))
 			$where['#g.active'] = 1;
 
 		$this->db->select($this->table('_products').' as p', '*', $where);
@@ -384,8 +422,8 @@ class shop_model {
 		if($_SESSION['option']->useGroups && $_SESSION['option']->ProductMultiGroup && !is_array($Group))
 			$this->db->join($this->table('_product_group').' as pg', 'id as position_id, position, active', array('group' => $Group, 'product' => '#p.id'));
 
-		if(!$active)
-			$this->db->join('wl_users', 'name as user_name', '#p.author_edit');
+		// if(!$active)
+			$this->db->join('wl_users', 'name as user_name', '#p.author_add');
 
 		if($_SESSION['option']->useAvailability == 0)
 		{
@@ -394,7 +432,7 @@ class shop_model {
 			$where_availability_name['availability'] = '#p.availability';
 			if($_SESSION['language']) $where_availability_name['language'] = $_SESSION['language'];
 			$this->db->join($_SESSION['service']->table.'_availability_name', 'name as availability_name', $where_availability_name);
-		}		
+		}
 
 		if($_SESSION['option']->useMarkUp > 0)
 			$this->db->join($this->table('_markup'), 'value as markup', array('from' => '<p.price', 'to' => '>=p.price'));
@@ -463,9 +501,9 @@ class shop_model {
 				$this->db->order($_SESSION['option']->productOrder);
 		}
 
-		$start = 0;
 		if(isset($_SESSION['option']->paginator_per_page) && $_SESSION['option']->paginator_per_page > 0)
 		{
+			$start = 0;
 			if(isset($_GET['per_page']) && is_numeric($_GET['per_page']) && $_GET['per_page'] > 0)
 				$_SESSION['option']->paginator_per_page = $_GET['per_page'];
 			if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 1)
@@ -508,6 +546,7 @@ class shop_model {
 		}
 		else
 			$products = $this->db->get('array', false);
+
 		if($products)
         {
         	if(!$set_paginator_total && (empty($_SESSION['option']->paginator_total) || count($_GET) > 1))
@@ -518,7 +557,7 @@ class shop_model {
 				{
 					$_SESSION['option']->paginator_total = $this->db->get('count');
 
-					if(!$active)
+					if($active <= 0)
 					{
 						$wherePG = array('active' => 1, 'group' => $Group);
 						if($_SESSION['option']->useGroups && $_SESSION['option']->ProductMultiGroup)
@@ -590,7 +629,7 @@ class shop_model {
 				else if($_SESSION['option']->ProductMultiGroup == 1)
 				{
 					
-					if($active)
+					if($active > 0)
 					{
 						$this->db->select($this->table('_product_group') .' as pg', 'product, active', array('product' => $products_ids, 'active' => 1));
 						$this->db->join($this->table('_groups'), 'id, alias, parent', array('id' => '#pg.group', 'active' => 1));
@@ -724,16 +763,22 @@ class shop_model {
 				$product->promo_from = $row->promo_from;
 				$product->promo_to = $row->promo_to;
 				$product->availability = $row->availability;
+
+				if($this->getBreadcrumbs)
+					$this->breadcrumbs = $product->breadcrumbs;
+				
 				return $product;
 			}
 
 		$this->db->select($this->table('_products').' as p', '*', array('wl_alias' => $_SESSION['alias']->id, $key => $alias));
 		$this->db->join($this->table('_promo'), 'percent as promo_percent, from as promo_from, to as promo_to', ['id' => '#p.promo', 'status' => 1]);
+		if($_SESSION['option']->useMarkUp > 0)
+			$this->db->join($this->table('_markup'), 'value as markup', array('from' => '<p.price', 'to' => '>=p.price'));
 
 		if($all_info)
 		{
-			$this->db->join('wl_users as aa', 'name as author_add_name', '#p.author_add');
-			$this->db->join('wl_users as e', 'name as author_edit_name', '#p.author_edit');
+			$this->db->join('wl_users as aa', 'name as author_add_name, alias as author_add_alias, email as author_add_email', '#p.author_add');
+			$this->db->join('wl_users as e', 'name as author_edit_name, alias as author_edit_alias, email as author_edit_email', '#p.author_edit');
 
 			if($_SESSION['option']->useAvailability == 0)
 			{
@@ -744,14 +789,12 @@ class shop_model {
 				$this->db->join($_SESSION['service']->table.'_availability_name', 'name as availability_name', $where_availability_name);
 			}
 
-			if($_SESSION['option']->useMarkUp > 0)
-				$this->db->join($this->table('_markup'), 'value as markup', array('from' => '<p.price', 'to' => '>=p.price'));
-
 			$where_ntkd['alias'] = $_SESSION['alias']->id;
 			$where_ntkd['content'] = "#p.id";
 			if($_SESSION['language']) $where_ntkd['language'] = $_SESSION['language'];
-			$this->db->join('wl_ntkd as n', 'name', $where_ntkd);
+			$this->db->join('wl_ntkd as n', 'name, list, text', $where_ntkd);
 		}
+
 		$product = $this->db->get();
 		if(is_array($product))
 		{
@@ -767,35 +810,35 @@ class shop_model {
         	$cache_key = 'product/'.$this->db->getCacheContentKey('product_', $product->id, 2);
 			$cache_key .= ($all_info) ? '-all_info' : '';
 
-			$product_cache = $this->db->cache_get($cache_key);
-			if($product_cache !== NULL)
+			if(!isset($_GET['edit']))
 			{
-				$this->db->select($this->table('_products').' as p', 'price, old_price', $product->id)
-							->join($this->table('_promo'), 'percent as promo_percent, from as promo_from, to as promo_to', ['id' => '#p.promo', 'status' => 1]);
-				if($_SESSION['option']->useMarkUp > 0)
-					$this->db->join($this->table('_markup'), 'value as markup', array('from' => '<p.price', 'to' => '>=p.price'));
-				$row = $this->db->get();
-				$product_cache->price = $row->price;
-				$product_cache->old_price = $row->old_price;
-				if($_SESSION['option']->useMarkUp > 0)
-					$product_cache->markup = $row->markup;
-				$product_cache->promo_percent = $row->promo_percent;
-				$product_cache->promo_from = $row->promo_from;
-				$product_cache->promo_to = $row->promo_to;
+				$product_cache = $this->db->cache_get($cache_key);
+				if($product_cache !== NULL)
+				{
+					$product_cache->price = $product->price;
+					$product_cache->old_price = $product->old_price;
+					if($_SESSION['option']->useMarkUp > 0)
+						$product_cache->markup = $product->markup;
+					$product_cache->promo_percent = $product->promo_percent;
+					$product_cache->promo_from = $product->promo_from;
+					$product_cache->promo_to = $product->promo_to;
 
-				return $product_cache;
-			}
+					if($this->getBreadcrumbs)
+						$this->breadcrumbs = $product_cache->breadcrumbs;
 
-			$time = time();
-			if($product->promo &&
-						$product->promo_percent > 0 &&
-						$product->old_price < $product->price &&
-						$product->promo_from < $time &&
-						$product->promo_to > $time &&
-						!isset($_GET['edit']) )
-			{
-				$product->old_price = $product->price;
-				$product->price *= (100 - $product->promo_percent) / 100;
+					return $product_cache;
+				}
+
+				$time = time();
+				if($product->promo &&
+							$product->promo_percent > 0 &&
+							$product->old_price < $product->price &&
+							$product->promo_from < $time &&
+							$product->promo_to > $time)
+				{
+					$product->old_price = $product->price;
+					$product->price *= (100 - $product->promo_percent) / 100;
+				}
 			}
 
         	$product->link = $_SESSION['alias']->alias.'/'.$product->alias;
@@ -808,6 +851,8 @@ class shop_model {
 					$product->name = implode(' ', $name);
 			}
 			$product->parents = array();
+			if(!$this->getBreadcrumbs)
+				$product->breadcrumbs = [];
 
 			if($_SESSION['option']->useGroups > 0)
 			{
@@ -824,9 +869,11 @@ class shop_model {
 							$link .= $parent->alias;
 							if($this->getBreadcrumbs)
 								$this->breadcrumbs[$parent->name] = $link;
+							else
+								$product->breadcrumbs[$parent->name] = $link;
 							$link .= '/';
 						}
-						$product->group_link = $link;
+						$product->group_link = substr($link, 0, -1);
 						$product->link = $link . $product->alias;
 					}
 					elseif($_SESSION['option']->ProductMultiGroup == 1)
@@ -886,11 +933,33 @@ class shop_model {
         				elseif(is_numeric($pid) && $pid > 0)
         					$parents_ids[] = $pid;
         			}
+        			
         		$product->options = $this->getProductOptions($product, $parents_ids);
-        		$product->photo = null;
+        		if($product->options)
+        			foreach ($product->options as $option) {
+        				if($option->main)
+        				{
+        					$option->alias = explode('-', $option->alias);
+		        			if($option->alias[0] == $option->id)
+		        			{
+		        				array_shift($option->alias);
+		        				$key = implode('_', $option->alias);
+		        				if(is_array($option->value))
+		        				{
+		        					$names = [];
+		        					foreach ($option->value as $value) {
+		        						$names[] = $value->name;
+		        					}
+		        					$product->$key = implode(', ', $names);
+		        				}
+		        				else if(is_object($option->value))
+		        					$product->$key = $option->value->name;
+		        			}
+        				}
+        			}
 
+        		$product->photo = null;
         		$sizes = $this->db->getAliasImageSizes();
-        		
         		// if(!$this->getBreadcrumbs)
 	            	if($photo = $this->getProductPhoto($product->id))
 	            	{
@@ -969,6 +1038,8 @@ class shop_model {
 				}
         	}
 
+        	if(empty($product->breadcrumbs))
+        		$product->breadcrumbs = $this->breadcrumbs;
         	$this->db->cache_add($cache_key, $product);
             return $product;
 		}
@@ -1108,9 +1179,9 @@ class shop_model {
 												->get('single');
 							if($value)
 							{
-								$product_options[$option->alias]->value = $value->name;
+								$product_options[$option->alias]->value = $value;
 								if($value->photo)
-									$product_options[$option->alias]->photo = IMG_PATH.$_SESSION['option']->folder.'/options/'.$option->alias.'/'.$value->photo;
+									$product_options[$option->alias]->value->photo = IMG_PATH.$_SESSION['option']->folder.'/options/'.$option->alias.'/'.$value->photo;
 							}
 						}
 					}
@@ -1183,9 +1254,9 @@ class shop_model {
 											->get('single');
 						if($value)
 						{
-							$product_options[$option->alias]->value = $value->name;
+							$product_options[$option->alias]->value = $value;
 							if($value->photo)
-								$product_options[$option->alias]->photo = IMG_PATH.$_SESSION['option']->folder.'/options/'.$option->alias.'/'.$value->photo;
+								$product_options[$option->alias]->value->photo = IMG_PATH.$_SESSION['option']->folder.'/options/'.$option->alias.'/'.$value->photo;
 						}
 					}
 				}
@@ -1572,36 +1643,48 @@ class shop_model {
 				return false;
 		}
 
-		$filterKey = $filter ? '+filter' : '-filter';
-		$cache_key = 'optionsToGroup/'.$this->db->getCacheContentKey('group-', $group->id).$filterKey;
-		$cache_options = $this->db->cache_get($cache_key);
-		if($cache_options !== NULL)
-			return $cache_options;
-
-		if($_SESSION['option']->useGroups && $group->id > 0)
+		$cache_key = false;
+		if($group->id > 0 && empty($_GET['name']) && empty($_GET['article']))
 		{
-			if(empty($this->productsIdInGroup))
+			$filterKey = $filter ? '+filter' : '-filter';
+			$cache_key = 'optionsToGroup/'.$this->db->getCacheContentKey('group-', $group->id).$filterKey;
+			$cache_options = $this->db->cache_get($cache_key);
+			if($cache_options !== NULL)
+				return $cache_options;
+		}
+
+		if($filter)
+		{
+			if($_SESSION['option']->useGroups && $group->id > 0)
 			{
-				$endGroups = $this->getEndGroups($group->id);
-				if($_SESSION['option']->ProductMultiGroup)
+				if(empty($this->productsIdInGroup))
 				{
-					$products_id = $this->db->getAllDataByFieldInArray($this->table('_product_group'), array('group' => $endGroups, 'active' => 1));
-					if($products_id)
-						foreach ($products_id as $product) {
-							$products[] = $product->product;
-						}
+					$endGroups = $this->getEndGroups($group->id);
+					if($_SESSION['option']->ProductMultiGroup)
+					{
+						$products_id = $this->db->getAllDataByFieldInArray($this->table('_product_group'), array('group' => $endGroups, 'active' => 1));
+						if($products_id)
+							foreach ($products_id as $product) {
+								$products[] = $product->product;
+							}
+					}
+					else
+					{
+						$products_id = $this->db->getAllDataByFieldInArray($this->table('_products'), array('group' => $endGroups, 'active' => 1));
+						if($products_id)
+							foreach ($products_id as $product) {
+								$products[] = $product->id;
+							}
+					}
+					$this->productsIdInGroup = $products;
 				}
 				else
-				{
-					$products_id = $this->db->getAllDataByFieldInArray($this->table('_products'), array('group' => $endGroups, 'active' => 1));
-					if($products_id)
-						foreach ($products_id as $product) {
-							$products[] = $product->id;
-						}
-				}
+					$products = $this->productsIdInGroup;
 			}
-			else
+			elseif(!empty($this->productsIdInGroup))
 				$products = $this->productsIdInGroup;
+			else
+				return false;
 		}
 
     	if($filter && ($group->id > 0 && $products || $group->id == 0) || !$filter)
@@ -1621,7 +1704,8 @@ class shop_model {
     		if(empty($this->allOptions))
     		{
 				$where['wl_alias'] = $_SESSION['alias']->id;
-				$where['filter'] = 1;
+				if($filter)
+					$where['filter'] = 1;
 				$where['active'] = 1;
 				$this->db->select($this->table('_options').' as o', '*', $where);
 				$this->db->join('wl_input_types', 'name as type_name', '#o.type');
@@ -1634,7 +1718,7 @@ class shop_model {
 			else
 			{
 				foreach ($this->allOptions as $option) {
-					if($option->filter)
+					if($option->filter || !$filter)
 						if(in_array($option->group, $where['group']))
 							$options[] = clone $option;
 				}
@@ -1643,7 +1727,7 @@ class shop_model {
 			if(!empty($options))
 			{
 				$to_delete_options = $opt_ids = array();
-				if($products)
+				if($filter && $products)
 				{
 			        foreach ($options as $option)
 			        	$opt_ids[] = $option->id;
@@ -1652,7 +1736,8 @@ class shop_model {
 			        $list_product_options = $this->db->getAllDataByFieldInArray($this->table('_product_options'), $where);
 	    			if(!$list_product_options)
 	    			{
-	    				$this->db->cache_add($cache_key, false);
+	    				if($cache_key)
+	    					$this->db->cache_add($cache_key, false);
 	    				return false;
 	    			}
 	    		}
@@ -1783,7 +1868,7 @@ class shop_model {
 							unset($for_sort);
 						}
 
-		    			if(!empty($list_product_options))
+		    			if($filter && !empty($list_product_options))
 		    			{
 		    				$to_delete_values = [];
 		    				foreach ($option->values as $i => $value) {
@@ -1822,11 +1907,11 @@ class shop_model {
 			        			}
 			        		}
 
-			        		if ($filter && count($option->values) < 2) {
-			        			$to_delete_options[] = $opt_i;
-			        		}
+			        		// if ($filter && count($option->values) < 2) {
+			        		// 	$to_delete_options[] = $opt_i;
+			        		// }
 		    			}
-		    			else
+		    			else if($filter)
 		    			{
 		    				$where = array();
 			    			if($products)
@@ -1878,11 +1963,51 @@ class shop_model {
         		}
 			}
 
-			$this->db->cache_add($cache_key, $options);
+			if($cache_key)
+				$this->db->cache_add($cache_key, $options);
 			return $options;
 		}
-		$this->db->cache_add($cache_key, false);
+		if($cache_key)
+			$this->db->cache_add($cache_key, false);
 		return false;
+	}
+
+	// найкраще викликати після getProducts() або getOptionsToGroup()
+	public function getMinMaxPrices($group_id = 0)
+	{
+		if(empty($group_id))
+			return false;
+
+		$in = [];
+		$res = new stdClass();
+		if(empty($this->productsIdInGroup))
+		{
+			$endGroups = $this->getEndGroups($group_id);
+			if($_SESSION['option']->ProductMultiGroup)
+			{
+				if($products_id = $this->db->getAllDataByFieldInArray($this->table('_product_group'), array('group' => $endGroups, 'active' => 1)))
+					foreach ($products_id as $product) {
+						$in[] = $product->product;
+					}
+			}
+			else
+			{
+				$endGroups = implode(',', $endGroups);
+				$res->min = $this->db->getQuery("SELECT MIN(`price`) as min FROM `{$this->table('_products')}` WHERE `group` IN ({$endGroups}) AND `active` = 1")->min;
+				$res->max = $this->db->getQuery("SELECT MAX(`price`) as max FROM `{$this->table('_products')}` WHERE `group` IN ({$endGroups}) AND `active` = 1")->max;
+				return $res;
+			}
+			$this->productsIdInGroup = $products;
+		}
+		else
+			$in = implode(',', $this->productsIdInGroup);
+
+		if(empty($in))
+			return false;
+
+		$res->min = $this->db->getQuery("SELECT MIN(`price`) as min FROM `{$this->table('_products')}` WHERE `id` IN ({$in})")->min;
+		$res->max = $this->db->getQuery("SELECT MAX(`price`) as max FROM `{$this->table('_products')}` WHERE `id` IN ({$in})")->max;
+		return $res;
 	}
 
 	private function makeLink($parent, $link)

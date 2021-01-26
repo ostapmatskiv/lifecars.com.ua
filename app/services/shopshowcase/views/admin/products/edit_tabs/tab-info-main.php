@@ -23,9 +23,9 @@
 			<div class="row m-b-10">
 				<div class="col-md-5 text-right">Базова вартість</div>
 			    <div class="col-md-7">
-			    	<strong><?=$product->price .' '.$product->currency?></strong>
+			    	<strong><?=$product->currency ? $product->price .' '.$product->currency : $this->shop_model->formatPrice($product->price) ?></strong>
 			    	<?php if($product->old_price > $product->price) { ?>
-			    		<del title='Стара ціна (до акції)'> <?=$product->old_price .' '.$product->currency?> </del>
+			    		<del title='Стара ціна (до акції)'> <?=$product->currency ? $product->old_price .' '.$product->currency : $this->shop_model->formatPrice($product->old_price) ?> </del>
 			    	<?php } ?>
 			    </div>
 		    </div>
@@ -120,7 +120,21 @@
 		<?php } ?>
 		<div class="row m-b-10">
 			<div class="col-md-5 text-right">Статус</div>
-		    <div class="col-md-7"> <strong> <?=($product->active == 1)?'Товар активний':'Товар тимчасово відключено'?> </strong> </div>
+		    <div class="col-md-7"> <strong> <?php switch ($product->active) {
+		    	case 1:
+		    		echo 'Товар активний';
+		    		break;
+	    		case -1:
+		    		echo 'Очікує підтвердження адміністрацією <a href="/admin/'.$_SESSION['alias']->alias.'/confirmProduct?id='.$product->id.'" class="btn btn-success btn-xs">Підтвердити</a>';
+		    		break;
+	    		case -2:
+		    		echo 'Товар формується (створюється автором)';
+		    		break;
+		    	
+		    	default:
+		    		echo 'Товар тимчасово відключено';
+		    		break;
+		    }?> </strong> </div>
 	    </div>
 	</div>
 	<div class="col-md-6">
@@ -137,7 +151,7 @@
 			    		}
 			    		$names = implode(', ', $names);
 			    		echo "<strong> {$names} </strong>";
-			    	} else echo "<strong> {$option->value} </strong>"; ?>
+			    	} else echo "<strong> {$option->value->name} </strong>"; ?>
 			    	<?=$option->sufix?>
 			    </div>
 		    </div>

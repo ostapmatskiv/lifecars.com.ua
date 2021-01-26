@@ -1,5 +1,5 @@
 <main class="detal">
-    <h1 class="detal__heading"><?=$product->name.' '.mb_strtoupper($product->options['1-manufacturer']->value).' ('.$product->article_show.')'?></h1>
+    <h1 class="detal__heading"><?=$product->name.' '.mb_strtoupper($product->options['1-manufacturer']->value->name).' ('.$product->article_show.')'?></h1>
 
     <?php if(!empty($_SESSION['notify']->success)): ?>
         <div id="comment_add_success" class="alert alert-success">
@@ -115,7 +115,7 @@
                 <?php } ?>
             </div>
             <?php if($product->active && $product->availability > 0) { ?>
-            <button class="detal__cart" data-product_key="<?="{$product->wl_alias}-{$product->id}"?>" data-product_name="<?="{$product->options['1-manufacturer']->value} {$product->article_show} {$product->name}"?>">
+            <button class="detal__cart" data-product_key="<?="{$product->wl_alias}-{$product->id}"?>" data-product_name="<?="{$product->options['1-manufacturer']->value->name} {$product->article_show} {$product->name}"?>">
                 <img src="/style/icons/detal/shopping-cart.svg" alt="cart">
                 <?=$this->text('Додати до кошика')?>
             </button>
@@ -128,6 +128,11 @@
             */ ?>
         </div>
     </section>
+    <?php $_SESSION['option']->paginator_per_page = 5;
+        $_GET['article'] = $product->article;
+        if($otherProductsByGroup = $this->shop_model->getProducts($product->group, $product->id))
+            $this->setProductsPrice($otherProductsByGroup);
+        $_SESSION['option']->paginator_per_page = 20; ?>
     <div id="tabs" class="detal__menu">
         <nav class="flex tabs-nav <?=($product->similarProducts || $otherProductsByGroup)?'tabs-3':''?>">
             <a href="#tab-info" class="active"><?=$this->text('Опис')?></a>
@@ -179,7 +184,7 @@
                     <div class="flex row">
                         <div><?=$this->text('Виробник')?></div>
                         <div class="dots"></div>
-                        <div><?=$product->options['1-manufacturer']->value?></div>
+                        <div><?=$product->options['1-manufacturer']->value->name?></div>
                     </div>
                     <div class="flex row">
                         <div><?=$this->text('Країна виробник')?></div>

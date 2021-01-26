@@ -160,8 +160,7 @@ class products_model {
 		if($_SESSION['language']) $where_ntkd['language'] = $_SESSION['language'];
 		$this->db->join('wl_ntkd as n', 'name, text, list', $where_ntkd);
 
-		$product = $this->db->get('single');
-        if($product)
+        if($product = $this->db->get('single'))
         {
         	$product->options = $this->getOptions($product);
         	$product->link = $_SESSION['alias']->alias.'/'.$product->alias;
@@ -233,6 +232,10 @@ class products_model {
 		}
 		$data['active'] = $data['availability'] = 1;
 		$data['price'] = $data['group'] = $data['position'] = 0;
+		if(isset($_POST['active']) && is_numeric($_POST['active']))
+			$data['active'] = $_POST['active'];
+		if($availability = $this->data->post('availability'))
+			$data['availability'] = $availability;
 		if(isset($_POST['price']) && is_numeric($_POST['price']) && $_POST['price'] > 0)
 		{
 			$data['price'] = $_POST['price'];
@@ -242,11 +245,9 @@ class products_model {
 		$data['author_add'] = $data['author_edit'] = $_SESSION['user']->id;
 		$data['date_add'] = $data['date_edit'] = time();
 
-		if($this->db->insertRow($this->table(), $data))
+		if($id = $this->db->insertRow($this->table(), $data))
 		{
-			$id = $this->db->getLastInsertedId();
-			$data = array();
-			$data['alias'] = '';
+			$data = array('alias' => '');
 
 			$ntkd['alias'] = $_SESSION['alias']->id;
 			$ntkd['content'] = $id;
@@ -315,15 +316,38 @@ class products_model {
 				$data['position'] = $this->db->getCount($this->table('_products'), $_SESSION['alias']->id, 'wl_alias') + 1;
 
 			$this->db->sitemap_add($id, $_SESSION['alias']->alias.'/'.$link);
-			if($this->db->updateRow($this->table('_products'), $data, $id))
-				return $id;
+			$this->db->updateRow($this->table('_products'), $data, $id);
+
+
+			$options = array();
+			foreach ($_POST as $key => $value) {
+				if(empty($value))
+					continue;
+				$option = [];
+				if(is_array($_POST[$key]))
+					$option['value'] = implode(',', $value);
+				else
+					$option['value'] = $this->data->post($key);
+				$key = explode('-', $key);
+				if($key[0] == 'option' && isset($key[1]) && is_numeric($key[1]))
+				{
+					$option['option'] = $key[1];
+					if($_SESSION['language'] && isset($key[2]) && in_array($key[2], $_SESSION['all_languages']))
+						$option['language'] = $key[2];
+					$options[] = $option;
+				}
+			}
+			if(!empty($options))
+				$this->db->insertRows($this->table('_product_options'), ['product' => $id, 'option', 'language' => '', 'value'], $options);
+
+			return $id;
 		}
 		return false;
 	}
 
 	public function save($id)
 	{
-		$data = array('active' => 0, 'author_edit' => $_SESSION['user']->id, 'date_edit' => time());
+		$data = array('author_edit' => $_SESSION['user']->id, 'date_edit' => time());
 		if(isset($_POST['id_1c']))
 			$data['id_1c'] = $this->data->post('id_1c');
 		if($_SESSION['option']->ProductUseArticle)
@@ -366,8 +390,8 @@ class products_model {
 				$data['alias'] = $id .'-'. $this->data->latterUAtoEN(trim($this->data->post('alias')));
 		}
 		$link = $data['alias'];
-		if(isset($_POST['active']) && $_POST['active'] == 1)
-			$data['active'] = 1;
+		if(isset($_POST['active']) && is_numeric($_POST['active']))
+			$data['active'] = $_POST['active'];
 		if(isset($_POST['availability']) && is_numeric($_POST['availability']))
 			$data['availability'] = $_POST['availability'];
 		if(!empty($_POST['currency']))
@@ -469,6 +493,17 @@ class products_model {
 		$this->db->sitemap_index($id, $data['active']);
 		$this->db->html_cache_clear($id);
 		$this->db->updateRow($this->table(), $data, $id);
+
+		if(!empty($_POST['name']))
+		{
+			$whereLang = ['alias' => $_SESSION['alias']->id, 'content' => $id];
+			if($_SESSION['language'])
+				$whereLang['language'] = $_SESSION['language'];
+			$nlt = $this->data->prepare(['name', 'list', 'text']);
+			if($_SESSION['option']->ProductUseArticle && !empty($data['article']))
+				$nlt['name'] .= ' '.$data['article'];
+			$this->db->updateRow('wl_ntkd', $nlt, $whereLang);
+		}
 		return $link;
 	}
 
@@ -507,7 +542,9 @@ class products_model {
 	{
 		$options = array();
 		foreach ($_POST as $key => $value) {
-			$is_array = (is_array($_POST[$key])) ? true : false;
+			if(empty($value))
+				continue;
+			$is_array = is_array($_POST[$key]) ? true : false;
 			$key = explode('-', $key);
 			if($key[0] == 'option' && isset($key[1]) && is_numeric($key[1]))
 			{
