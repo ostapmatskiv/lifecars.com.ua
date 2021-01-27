@@ -1,10 +1,10 @@
 <center><img src="/style/images/logo.png" style="width: 150px"></center>
 <div class="pull-right" style="text-align: right;">
-	<p><strong>вул. В.Великого 44</strong></p>
+	<p><strong>вул. Виговського 49</strong></p>
 	<p><strong>м. Львів, Україна, 79054</strong></p>
 </div>
 <p><strong><?=SITE_NAME?></strong></p>
-<p><strong><?=SITE_EMAIL?>, +38 068 3072698</strong></p>
+<p><strong><?=SITE_EMAIL?>, +38 096 0000943</strong></p>
 
 <h1>Замовлення #<?= $cart->id?> від <?= date('d.m.Y H:i', $cart->date_edit)?></h1>
 
