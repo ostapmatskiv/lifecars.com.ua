@@ -545,6 +545,12 @@ class cart_admin extends Controller {
                         }
                     }
 
+                if($cart->action == 'delivered' && !empty($cart->ttn) && !empty($cart->user_phone))
+                {
+                    $this->load->library('turbosms');
+                    $this->turbosms->send($cart->user_phone, 'Замовлення #'.$cart->id.' відправлено. ТТН '.$cart->ttn);
+                }
+
                 if (!is_object($pay) && $cart->payment_alias && $cart->payment_id) {
                     if($cart->action == 'confirmed' || $cart->action == 'closed')
                         $this->load->function_in_alias($cart->payment_alias, '__confirmPayment', $cart->payment_id, true);
