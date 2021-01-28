@@ -113,16 +113,54 @@
                             <!-- <i class="fas fa-chevron-circle-up"></i> -->
                         </div>
                         <div class="values">
-                            <?php foreach ($catalogAllGroups as $g) {
+                            <?php $parent_id = []; foreach ($catalogAllGroups as $g) {
                                 if($g->parent > 0) continue;
-                                $checked = (!empty($_GET['group']) && is_array($_GET['group']) && in_array($g->id, $_GET['group'])) ? 'checked' : '';
-                                ?>
-                                <input type="checkbox" name="group" value="<?=$g->id?>" id="group__id-<?=$g->id?>" <?=$checked?>>
+                                $checked = '';
+                                if(!empty($_GET['group'])) {
+                                    if(is_array($_GET['group']) && in_array($g->id, $_GET['group']))
+                                    {
+                                        $parent_id[] = $g->id;
+                                        $checked = 'checked';
+                                    }
+                                    else if(is_numeric($_GET['group'] && $_GET['group'] == $g->id))
+                                    {
+                                        $parent_id[] = $g->id;
+                                        $checked = 'checked';
+                                    }
+                                } ?>
+                                <input type="checkbox" name="group[]" value="<?=$g->id?>" id="group__id-<?=$g->id?>" <?=$checked?>>
                                 <label for="group__id-<?=$g->id?>"><?=$g->name?></label>
                             <?php } ?>
                         </div>
                     </div>
-                <?php }
+                    <?php if(!empty($parent_id)) { ?>
+                        <div class="filter">
+                            <div class="flex v-center">
+                                <p><?=$this->text('Модель авто')?></p>
+                                <!-- <i class="fas fa-chevron-circle-up"></i> -->
+                            </div>
+                            <div class="values">
+                                <?php foreach ($catalogAllGroups as $g) {
+                                    if(!in_array($g->parent, $parent_id)) continue;
+                                    $checked = '';
+                                    if(!empty($_GET['subgroup'])) {
+                                        if(is_array($_GET['subgroup']) && in_array($g->id, $_GET['subgroup']))
+                                        {
+                                            $parent_id[] = $g->id;
+                                            $checked = 'checked';
+                                        }
+                                        else if(is_numeric($_GET['subgroup'] && $_GET['subgroup'] == $g->id))
+                                        {
+                                            $parent_id[] = $g->id;
+                                            $checked = 'checked';
+                                        }
+                                    } ?>
+                                    <input type="checkbox" name="subgroup[]" value="<?=$g->id?>" id="group__id-<?=$g->id?>" <?=$checked?>>
+                                    <label for="group__id-<?=$g->id?>"><?=$g->name?></label>
+                                <?php } ?>
+                            </div>
+                        </div>
+                <?php } }
                 /*
                 <div class="product__type">
                     <div class="flex v-center">

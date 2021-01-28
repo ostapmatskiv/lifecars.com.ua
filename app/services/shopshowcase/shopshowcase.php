@@ -217,6 +217,12 @@ class shopshowcase extends Controller {
 		$_SESSION['alias']->name = $_SESSION['alias']->title = $this->text('Пошук', 0);
 		$this->load->smodel('shop_model');
 
+		if(!empty($_GET['subgroup']))
+		{
+			$_GET['__group'] = $_GET['group'];
+			$_GET['group'] = $_GET['subgroup'];
+		}
+
 		if($id = $this->data->get('id'))
 		{
 			if(is_numeric($id))
@@ -246,7 +252,7 @@ class shopshowcase extends Controller {
 			if(!empty($_GET['name']))
 			{
 				$name = $this->data->get('name');
-				$group = $this->data->get('group');
+				$group = $_GET['group'];
 				$_SESSION['alias']->name = $_SESSION['alias']->title = $this->text('Пошук за артикулом', 0)." '{$name}'";
 
 				unset($_GET['name'], $_GET['group']);
@@ -290,6 +296,8 @@ class shopshowcase extends Controller {
 					if(is_numeric($group) && $group > 0)
 						$groups[] = $group;
 				}
+				if(!empty($_GET['__group']))
+					$_GET['group'] = $_GET['__group'];
 				if(!empty($groups))
 				{
 					if($products = $this->shop_model->getProducts($groups))
