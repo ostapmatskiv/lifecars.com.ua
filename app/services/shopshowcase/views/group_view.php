@@ -10,36 +10,35 @@
         		$brend_id = $group->parent;
         		$model_id = $group->id;
         	}
-        }
-    	foreach ($catalogAllGroups as $g) {
-    		if($g->id == $brend_id) { ?>
-    			<a class="cars__model" href="#" data-group="brends">
-		            <?php if($g->photo) { ?>
-                        <img src="<?=IMG_PATH.$g->photo?>" alt="<?=$g->name?>">
-                    <?php } ?>
-		            <div class="detal__text"><?=$g->name?></div>
-		            <i class="fas fa-chevron-down"></i>
-		        </a>
-    		<?php $brend_link = $g->link;
-    		break; }
-    	}
-    	if($model_id == 0) { ?>        
-	        <a class="cars__model" href="#" data-group="models">
-	            <img src="/style/images/carslogo/cars.png" alt="car">
-	            <div class="detal__text">Всі моделі</div>
-	            <i class="fas fa-chevron-down"></i>
-	        </a>
-	    <?php } else { foreach ($catalogAllGroups as $g) {
-    		if($g->id == $model_id) { ?>
-    			<a class="cars__model" href="#" data-group="models">
-    				<?php if($g->photo) { ?>
-                        <img src="<?=IMG_PATH.$g->photo?>" alt="<?=$g->name?>">
-                    <?php } ?>
-		            <div class="detal__text"><?=$g->name?></div>
-		            <i class="fas fa-chevron-down"></i>
-		        </a>
-    		<?php break; }
-    	} } ?>
+        	foreach ($catalogAllGroups as $g) {
+        		if($g->id == $brend_id) { ?>
+        			<a class="cars__model" href="#" data-group="brends">
+    		            <?php if($g->photo) { ?>
+                            <img src="<?=IMG_PATH.$g->photo?>" alt="<?=$g->name?>">
+                        <?php } ?>
+    		            <div class="detal__text"><?=$g->name?></div>
+    		            <i class="fas fa-chevron-down"></i>
+    		        </a>
+        		<?php $brend_link = $g->link;
+        		break; }
+        	}
+        	if($model_id == 0) { ?>        
+    	        <a class="cars__model" href="#" data-group="models">
+    	            <img src="/style/images/carslogo/cars.png" alt="car">
+    	            <div class="detal__text">Всі моделі</div>
+    	            <i class="fas fa-chevron-down"></i>
+    	        </a>
+    	    <?php } else { foreach ($catalogAllGroups as $g) {
+        		if($g->id == $model_id) { ?>
+        			<a class="cars__model" href="#" data-group="models">
+        				<?php if($g->photo) { ?>
+                            <img src="<?=IMG_PATH.$g->photo?>" alt="<?=$g->name?>">
+                        <?php } ?>
+    		            <div class="detal__text"><?=$g->name?></div>
+    		            <i class="fas fa-chevron-down"></i>
+    		        </a>
+        		<?php break; }
+    	} } } ?>
     </div>
     <div class="flex w66 h-evenly v-end main__logo logo__catalog brends__cars">
     	<?php $this->load->js_init('init__parts()');
@@ -104,10 +103,27 @@
             </div>
             <form class="m-hide">
                 <div class="filter">
-                    <p><?=$this->text('Артикул або назва товару')?></p>
-                    <input type="text" name="name" value="<?=$this->data->get('name')?>" placeholder="<?=$this->text('Пошук за артикулом або назвою товару', 0)?>">
+                    <p><?=$this->text('Назва товару')?></p>
+                    <input type="text" name="name" value="<?=$this->data->get('name')?>" placeholder="<?=$this->text('Пошук за назвою товару', 0)?>">
                 </div>
-            	<?php /*
+                <?php if(empty($group)) { ?>
+                    <div class="filter">
+                        <div class="flex v-center">
+                            <p><?=$this->text('Марка авто')?></p>
+                            <!-- <i class="fas fa-chevron-circle-up"></i> -->
+                        </div>
+                        <div class="values">
+                            <?php foreach ($catalogAllGroups as $g) {
+                                if($g->parent > 0) continue;
+                                $checked = (!empty($_GET['group']) && is_array($_GET['group']) && in_array($g->id, $_GET['group'])) ? 'checked' : '';
+                                ?>
+                                <input type="checkbox" name="group" value="<?=$g->id?>" id="group__id-<?=$g->id?>" <?=$checked?>>
+                                <label for="group__id-<?=$g->id?>"><?=$g->name?></label>
+                            <?php } ?>
+                        </div>
+                    </div>
+                <?php }
+                /*
                 <div class="product__type">
                     <div class="flex v-center">
                         <p>Тип товару</p>
@@ -179,7 +195,12 @@
                         for ($i=0; $i < $add_block; $i++) { 
                             echo "<div class='sale__card empty'></div>";
                         } 
-                } ?>
+                } else { ?>
+                    <div class="alert alert-danger w100">
+                        <h4><?=$this->text('Товари відсутні!')?></h4>
+                        <p><?=$_SESSION['alias']->name?></p>
+                    </div>
+                <?php } ?>
             </div>
         </div>
     </section>
@@ -193,3 +214,11 @@
         <p><?=html_entity_decode($_SESSION['alias']->text)?></p>
     </section>
 </main>
+
+<style>
+    .auto__detal a.cars__model {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>

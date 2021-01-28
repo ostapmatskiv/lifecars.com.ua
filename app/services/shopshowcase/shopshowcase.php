@@ -243,6 +243,28 @@ class shopshowcase extends Controller {
 		}
 		else if(!empty($_GET['group']))
 		{
+			if(!empty($_GET['name']))
+			{
+				$name = $this->data->get('name');
+				$group = $this->data->get('group');
+				$_SESSION['alias']->name = $_SESSION['alias']->title = $this->text('Пошук за артикулом', 0)." '{$name}'";
+
+				unset($_GET['name'], $_GET['group']);
+				if($products = $this->shop_model->getProducts('%'.$this->makeArticle($name)))
+				{
+					if(count($products) == 1)
+						$this->redirect($products[0]->link);
+
+					$this->setProductsPrice($products);
+					$this->load->page_view('search_view', array('products' => $products));
+					exit;
+				}
+
+				$_GET['name'] = $name;
+				$_GET['group'] = $group;
+				$_SESSION['alias']->name = $_SESSION['alias']->title = $this->text('Пошук по назві', 0)." '{$this->data->get('name')}'";
+			}
+
 			if(is_numeric($_GET['group']) && $_GET['group'] > 0)
 			{
 				$this->shop_model->getBreadcrumbs = $this->shop_model->getGroupPhoto = false;
@@ -261,11 +283,30 @@ class shopshowcase extends Controller {
 				else
 					$this->load->notify_view(['errors' => $this->text("Групу з ід #{$_GET['group']} не знайдено")]);
 			}
+			else if(is_array($_GET['group']))
+			{
+				$groups = [];
+				foreach ($_GET['group'] as $group) {
+					if(is_numeric($group) && $group > 0)
+						$groups[] = $group;
+				}
+				if(!empty($groups))
+				{
+					if($products = $this->shop_model->getProducts($groups))
+						$this->setProductsPrice($products);
+
+					$this->load->page_view('group_view', array('products' => $products, 'use_filter' => true, 'filters' => $this->shop_model->getOptionsToGroup(), 'catalogAllGroups' => $this->shop_model->getGroups(-1)));
+				}
+				else
+					$this->load->notify_view(['errors' => $this->text("Помилка пошуку")]);
+			}
 			else
 				$this->load->notify_view(['errors' => $this->text("Групу з ід #{$_GET['group']} не знайдено")]);
 		}
 		else if(!empty($_GET['article']))
 		{
+			$_SESSION['alias']->name = $_SESSION['alias']->title = $this->text('Пошук за артикулом', 0)." '{$this->data->get('article')}'";
+
 			$article = $this->makeArticle($this->data->get('article'));
 			$products = $this->shop_model->getProducts('%'.$article);
 
@@ -289,7 +330,24 @@ class shopshowcase extends Controller {
 		else
 		{
 			if(!empty($_GET['name']))
+			{
+				$name = $this->data->get('name');
+				$_SESSION['alias']->name = $_SESSION['alias']->title = $this->text('Пошук за артикулом', 0)." '{$name}'";
+
+				unset($_GET['name']);
+				if($products = $this->shop_model->getProducts('%'.$this->makeArticle($name)))
+				{
+					if(count($products) == 1)
+						$this->redirect($products[0]->link);
+
+					$this->setProductsPrice($products);
+					$this->load->page_view('search_view', array('products' => $products));
+					exit;
+				}
+
+				$_GET['name'] = $name;
 				$_SESSION['alias']->name = $_SESSION['alias']->title = $this->text('Пошук по назві', 0)." '{$this->data->get('name')}'";
+			}
 
 			$author_add = NULL;
 			if(!empty($_GET['author_add']) && is_numeric($_GET['author_add']) && $_GET['author_add'] > 0)

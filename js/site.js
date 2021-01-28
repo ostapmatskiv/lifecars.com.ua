@@ -8,13 +8,38 @@ $(document).ready(function(){
         }
     });
 
+    if($(window).width() < 500)
+    {
+        let car_val = $('#carMobileGroup').val();
+        if(car_val != '0')
+        {
+            $('#modelMobileGroup option[value=0]').addClass('m-hide');
+            $('#modelMobileGroup option[value='+car_val+']').removeClass('m-hide').text('Всі моделі');
+        }
+    }
+
     $('#carMobileGroup').change(function(event) {
         let value = $('#carMobileGroup').val();
-        $('#modelMobileGroup option[value='+value+']').prop('selected', true).text('Всі моделі');
-        $('#modelMobileGroup option').addClass('m-hide').each(function(index, el) {
-            if($(el).data('parent') == value)
-                $(el).removeClass('m-hide');
-        });
+        if(value > 0)
+        {
+            $('#modelMobileGroup option').addClass('m-hide').each(function(index, el) {
+                if($(el).data('parent') == value)
+                    $(el).removeClass('m-hide');
+            });
+            $('#modelMobileGroup option[value=0]').addClass('m-hide');
+            $('#modelMobileGroup option[value='+value+']').prop('selected', true).text('Всі моделі').removeClass('m-hide');
+        }
+        else
+        {
+            $('#modelMobileGroup option').addClass('m-hide');
+            $('#modelMobileGroup option[value=0]').removeClass('m-hide').prop('selected', true).text('Оберіть марку');
+        }
+    });
+
+    $('#modelMobileGroup').change(function(event) {
+        let val = $(this).closest('form').find('input').val();
+        if(val != '')
+            $(this).closest('form').submit()
     });
 
     $('.sale__card.no_availabilaty .cart__order').click(function () {
