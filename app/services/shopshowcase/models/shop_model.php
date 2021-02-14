@@ -286,6 +286,10 @@ class shop_model {
 
 			if($name = $this->data->get('name'))
 			{
+				if($_SESSION['option']->searchHistory)
+					if(empty($_SESSION['user']->id) || (empty($_SESSION['user']->admin) && empty($_SESSION['user']->manager)))
+						$this->searchHistory($name);
+
 				$content = '>0';
 				if(!empty($where['id']))
 					$content = $where['id'];
@@ -2046,25 +2050,24 @@ class shop_model {
 		return $endGroups;
 	}
 
-	public function searchHistory($product_id, $product_article = NULL)
+	// find => -1 // without resalts
+	public function searchHistory($search_key, $find = -1)
 	{
-		$data['user'] = $_SESSION['user']->id;
+		$data = [];
+		$data['user'] = !empty($_SESSION['user']->id) ? $_SESSION['user']->id : 0;
 		$data['date'] = strtotime('today');
+		$data['search_url'] = $this->data->url(true);
+		$data['search_key'] = sha1($search_key.'-'.$data['date'].'-'.$data['user'].'-'.$data['search_url']);
 
-		if($product_id > 0)
-			$data['product_id'] = $product_id;
-		else
-			$data['product_article'] = $product_article;
-
-		$search = $this->db->getAllDataById($this->table('_search_history'), $data);
-		if($search)
+		if($search = $this->db->getAllDataById($this->table('_search_history'), $data['search_key'], 'search_key'))
 		{
-			$this->db->updateRow($this->table('_search_history'), array('count_per_day' => $search->count_per_day + 1, 'last_view' => time()), $search->id);
+			$this->db->updateRow($this->table('_search_history'), ['find' => $find, 'count_per_day' => $search->count_per_day + 1, 'last_view' => time()], $search->id);
 			return true;
 		}
 
-		$data['product_id'] = $product_id;
-		$data['product_article'] = $product_article;
+		$data['search_by'] = $search_key;
+		$data['find'] = $find;
+		$data['title'] = $_SESSION['alias']->name;
 		$data['last_view'] = time();
 		$data['count_per_day'] = 1;
 		$this->db->insertRow($this->table('_search_history'), $data);

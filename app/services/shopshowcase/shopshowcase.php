@@ -124,11 +124,11 @@ class shopshowcase extends Controller {
 
 				if(!$use_filter && $group->haveChild)
 				{
-					$subgroups = $this->db->cache_get('subgroups/group-'.$group->id);
+					$subgroups = $this->db->cache_get("subgroups".DIRSEP.$this->db->getCacheContentKey('group-', $group->id));
 					if($subgroups === NULL)
 					{
 						$subgroups = $this->shop_model->getGroups($group->id);
-						$this->db->cache_add('subgroups/group-'.$group->id, $subgroups);
+						$this->db->cache_add("subgroups".DIRSEP.$this->db->getCacheContentKey('group-', $group->id), $subgroups);
 					}
 				}
 
@@ -249,7 +249,7 @@ class shopshowcase extends Controller {
 		}
 		else if(!empty($_GET['group']))
 		{
-			if(!empty($_GET['name']))
+			if(!empty($_GET['name']) && $_SESSION['option']->ProductUseArticle)
 			{
 				$name = $this->data->get('name');
 				$group = $_GET['group'];
@@ -258,6 +258,9 @@ class shopshowcase extends Controller {
 				unset($_GET['name'], $_GET['group']);
 				if($products = $this->shop_model->getProducts('%'.$this->makeArticle($name)))
 				{
+					if($_SESSION['option']->searchHistory && !$this->userCan())
+						$this->shop_model->searchHistory($this->makeArticle($name), count($products));
+
 					if(count($products) == 1)
 						$this->redirect($products[0]->link);
 
@@ -311,21 +314,15 @@ class shopshowcase extends Controller {
 			else
 				$this->load->notify_view(['errors' => $this->text("Групу з ід #{$_GET['group']} не знайдено")]);
 		}
-		else if(!empty($_GET['article']))
+		else if(!empty($_GET['article']) && $_SESSION['option']->ProductUseArticle)
 		{
 			$_SESSION['alias']->name = $_SESSION['alias']->title = $this->text('Пошук за артикулом', 0)." '{$this->data->get('article')}'";
 
 			$article = $this->makeArticle($this->data->get('article'));
 			$products = $this->shop_model->getProducts('%'.$article);
 
-			if($_SESSION['option']->searchHistory)
-				if($this->userIs() && !$this->userCan())
-				{
-					if(is_array($products) && count($products) == 1)
-						$this->shop_model->searchHistory($products[0]->id, $article);
-					else
-						$this->shop_model->searchHistory(0, $article);
-				}
+			if($_SESSION['option']->searchHistory && !$this->userCan())
+				$this->shop_model->searchHistory($article, count($products));
 
 			if(count($products) == 1)
 				$this->redirect($products[0]->link);
@@ -337,7 +334,7 @@ class shopshowcase extends Controller {
 		}
 		else
 		{
-			if(!empty($_GET['name']))
+			if(!empty($_GET['name']) && $_SESSION['option']->ProductUseArticle)
 			{
 				$name = $this->data->get('name');
 				$_SESSION['alias']->name = $_SESSION['alias']->title = $this->text('Пошук за артикулом', 0)." '{$name}'";

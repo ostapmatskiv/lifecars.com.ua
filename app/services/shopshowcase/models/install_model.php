@@ -115,15 +115,19 @@ class install
 		if($this->options['searchHistory'] > 0)
 		{
 			$query = "CREATE TABLE IF NOT EXISTS `{$this->table_service}_search_history` (
-						  `id` int(11) NOT NULL AUTO_INCREMENT,
-						  `product_id` int(11) NOT NULL,
-						  `product_article` text NULL,
-						  `user` int(11) NOT NULL,
-						  `date` int(11) NOT NULL,
-						  `last_view` int(11) NOT NULL,
-						  `count_per_day` int(11) NULL,
-						  PRIMARY KEY (`id`),
-						  KEY `product` (`product_id`,`user`,`date`)
+							`id` int(11) NOT NULL AUTO_INCREMENT,
+							`search_key` char(40) NOT NULL,
+							`search_by` varchar(512) NOT NULL,
+							`find` int(11) DEFAULT NULL,
+							`search_url` varchar(512) NOT NULL,
+							`title` varchar(512) NOT NULL,
+							`user` int(11) NOT NULL,
+							`date` int(11) NOT NULL,
+							`last_view` int(11) NOT NULL,
+							`count_per_day` int(11) DEFAULT NULL,
+							PRIMARY KEY (`id`),
+							KEY `user` (`user`),
+							KEY `search_key` (`search_key`)
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 			$this->db->executeQuery($query);
 		}
@@ -322,17 +326,41 @@ class install
 		if($option == 'searchHistory' AND $value > 0)
 		{
 			$query = "CREATE TABLE IF NOT EXISTS `{$this->table_service}_search_history` (
-						  `id` int(11) NOT NULL AUTO_INCREMENT,
-						  `product_id` int(11) NOT NULL,
-						  `product_article` text NULL,
-						  `user` int(11) NOT NULL,
-						  `date` int(11) NOT NULL,
-						  `last_view` int(11) NOT NULL,
-						  `count_per_day` int(11) NULL,
-						  PRIMARY KEY (`id`),
-						  KEY `product` (`product_id`,`user`,`date`)
+							`id` int(11) NOT NULL AUTO_INCREMENT,
+							`search_key` char(40) NOT NULL,
+							`search_by` varchar(512) NOT NULL,
+							`find` int(11) DEFAULT NULL,
+							`search_url` varchar(512) NOT NULL,
+							`title` varchar(512) NOT NULL,
+							`user` int(11) NOT NULL,
+							`date` int(11) NOT NULL,
+							`last_view` int(11) NOT NULL,
+							`count_per_day` int(11) DEFAULT NULL,
+							PRIMARY KEY (`id`),
+							KEY `user` (`user`),
+							KEY `search_key` (`search_key`)
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 			$this->db->executeQuery($query);
+
+			$option = ['alias' => -$alias, 'name' => 'sub-menu'];
+			if($sub_menu = $this->db->getAllDataByFieldInArray('wl_options', $option))
+			{
+				$find = false;
+				foreach ($sub_menu as $menu) {
+					$link = unserialize($menu->value);
+					if($link['alias'] == 'search_history')
+					{
+						$find = true;
+						break;
+					}
+				}
+				if(!$find)
+				{
+					$option['service'] = $sub_menu[0]->service;
+                    $option['value'] = serialize(array('alias' => 'search_history', 'name' => 'Історія пошуку'));
+                    $this->db->insertRow('wl_options', $option);
+				}
+			}
 		}
 		if($option == 'userCanAdd' AND $value > 0)
 		{

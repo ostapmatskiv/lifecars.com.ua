@@ -1119,7 +1119,6 @@ class shopshowcase_admin extends Controller {
 		$_SESSION['alias']->name .= '. Історія пошуку';
 
 		$this->db->select('s_shopshowcase_search_history as psh');
-        $this->db->join('s_shopshowcase_products', 'article', '#psh.product_id');
         $this->db->join('wl_users', 'name as user_name, email as user_email', '#psh.user');
         $this->db->order('last_view DESC');
 
