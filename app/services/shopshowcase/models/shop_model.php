@@ -293,7 +293,7 @@ class shop_model {
 				$content = '>0';
 				if(!empty($where['id']))
 					$content = $where['id'];
-				if($products = $this->db->getAllDataByFieldInArray('wl_ntkd', array('alias' => $_SESSION['alias']->id, 'content' => $content, 'name' => '%'.$name)))
+				if($products = $this->db->getAllDataByFieldInArray('wl_ntkd', array('alias' => $_SESSION['alias']->id, 'content' => $content, 'name' => '~'.$name)))
 				{
 					if(!isset($where['id']))
 					{

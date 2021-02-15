@@ -1,6 +1,7 @@
-﻿Service "Shop Showcase 3.3"
+﻿Service "Shop Showcase 3.3.1"
 for WhiteLion 1.3
 Author: Ostap Matskiv
+Date 3.3.1 : 15.02.2021
 Date 3.3 : 25.12.2020
 Date 3.2.3 : 12.11.2020
 Date 3.2.2 : 29.10.2020
@@ -365,4 +366,5 @@ Versions:
 			shop_model. Підтримка у GET[option-$] числових значень
 			Виправлено помилки при видаленні товару
 			Оновлено функцію пошуку
-			Оновлено searchHistory
+	3.3.1	Оновлено searchHistory
+			name by FULLTEXT search
