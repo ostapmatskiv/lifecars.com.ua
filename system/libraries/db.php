@@ -397,7 +397,7 @@ class Db {
                 {
                     if($key[0] == '+')
                         $key = substr($key, 1);
-                    if($value[0] == '~')
+                    if(is_string($value) && !empty($value) && $value[0] == '~')
                     {
                         $value = substr($value, 1);
                         $words = explode(' ', $value);
