@@ -36,7 +36,8 @@
                             додано getHTMLCacheKey(), getCacheContentKey(), $this->version
    Версія 2.8 (05.08.2020) - додано redis_set(), redis_get(), redis_del(), redis_delByKey(), redis_ping(), redis_do(), $this->html_cache_in_redis
    2.8.1 (09.12.2020) - updateRow() values can set NULL, numeric format. select(.., .., .., clear = true) add default clear param
-   2.8.2 (15.01.2020) - makeWhere() масив значень з одного елементу {key} IN ({value}) => {key} = {value}
+   2.8.2 (15.01.2021) - makeWhere() масив значень з одного елементу {key} IN ({value}) => {key} = {value}
+   2.9 (15.02.2021) - makeWhere() підтримка FULLTEXT пошуку. Ключ ~
  */
 
 class Db {
@@ -396,6 +397,22 @@ class Db {
                 {
                     if($key[0] == '+')
                         $key = substr($key, 1);
+                    if($value[0] == '~')
+                    {
+                        $value = substr($value, 1);
+                        $words = explode(' ', $value);
+                        if(count($words) == 1)
+                            $value = '%'.$value;
+                        else
+                        {
+                            foreach ($words as &$w)
+                                $w = '+'.$w;
+                            $words = implode(' ', $words);
+                            $where .= "MATCH ({$key}) AGAINST ('$words' IN BOOLEAN MODE) AND ";
+                            continue;
+                        }
+                    }
+                    
                     if($prefix && $key[0] != '#')
                         $where .= "{$prefix}.{$key}";
                     elseif($key[0] == '#')
@@ -405,6 +422,7 @@ class Db {
                     }
                     else
                         $where .= "`{$key}`";
+
                     if(is_array($value))
                     {
                         if(count($value) == 1)
