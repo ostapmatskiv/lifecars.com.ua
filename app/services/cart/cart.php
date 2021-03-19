@@ -2,7 +2,7 @@
 
 /*
 
- 	Service "Shop Cart 2.3"
+ 	Service "Shop Cart 2.4"
 	for WhiteLion 1.1
 
 */
@@ -44,124 +44,10 @@ class cart extends Controller {
 
         if($id = $this->data->uri(1))
         {
-            if(is_numeric($id))
+            if(is_numeric($id) && $id > 0)
             {
-                if(isset($_SESSION['user']->id))
-                {
-                    if($cart = $this->cart_model->getById($id))
-                    {
-                        $this->wl_alias_model->setContent($id);
-                        $_SESSION['alias']->name = $_SESSION['alias']->title = $this->text('Замовлення №').$id;
-                        if($cart->user == $_SESSION['user']->id || $this->userCan())
-                        {
-                            $_SESSION['alias']->breadcrumbs = array($this->text('До всіх замовлень') => $_SESSION['alias']->alias.'/my', $this->text('Замовлення №').$id => '');
-
-                            $cart->totalFormat = $cart->total;
-                            $cart->subTotal = $cart->subTotalFormat = $cart->shippingPrice = $cart->shippingPriceFormat = 0;
-                            $cart->shipping = $cart->payment = false;
-
-                            if($cart->shipping_id && !empty($cart->shipping_info))
-                            {
-                                $cart->shipping_info = unserialize($cart->shipping_info);
-                                if($cart->shipping = $this->cart_model->getShippings(array('id' => $cart->shipping_id)))
-                                {
-                                    $cart->shipping = $cart->shipping[0];
-                                    if($_SESSION['language'])
-                                    {
-                                        @$name = unserialize($cart->shipping->name);
-                                        if(isset($name[$_SESSION['language']]))
-                                            $cart->shipping->name = $name[$_SESSION['language']];
-                                        else if(is_array($name))
-                                            $cart->shipping->name = array_shift($name);
-                                        @$info = unserialize($cart->shipping->info);
-                                        if(isset($info[$_SESSION['language']]))
-                                            $cart->shipping->info = $info[$_SESSION['language']];
-                                        else if(is_array($info))
-                                            $cart->shipping->info = array_shift($info);
-                                    }
-                                    $cart->shipping->text = '';
-                                    if($cart->shipping->wl_alias)
-                                        $cart->shipping->text = $this->load->function_in_alias($cart->shipping->wl_alias, '__get_info', $cart->shipping_info);  
-                                }
-                                if(!empty($cart->shipping_info['price']))
-                                    $cart->shippingPrice = $cart->shipping_info['price'];
-                            }
-
-                            if($cart->products)
-                            {
-                                foreach ($cart->products as $product) {
-                                    $product->info = $this->load->function_in_alias($product->product_alias, '__get_Product', $product->product_id);
-                                    if($product->storage_invoice)
-                                        $product->storage = $this->load->function_in_alias($product->storage_alias, '__get_Invoice', array('id' => $product->storage_invoice, 'user_type' => $cart->user_type));
-                                    $product->price_format =  $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price);
-                                    $cart->subTotal += $product->price * $product->quantity + $product->discount;
-                                    $product->sum_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity);
-                                    if($product->discount)
-                                        $product->sum_before_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity + $product->discount);
-                                }
-                                if ($cart->subTotal != $cart->total)
-                                    $cart->subTotalFormat = $this->load->function_in_alias($cart->products[0]->product_alias, '__formatPrice', $cart->subTotal);
-                                $cart->totalFormat = $this->load->function_in_alias($cart->products[0]->product_alias, '__formatPrice', $cart->total);
-                                if($cart->discount)
-                                    $cart->discountFormat = $this->load->function_in_alias($cart->products[0]->product_alias, '__formatPrice', $cart->discount);
-                                if($cart->shippingPrice)
-                                    $cart->shippingPriceFormat = $this->load->function_in_alias($cart->products[0]->product_alias, '__formatPrice', $cart->shippingPrice);
-                            }
-                            
-                            if($cart->payment_alias && $cart->payment_id)
-                                $cart->payment = $this->load->function_in_alias($cart->payment_alias, '__get_info', $cart->payment_id);
-                            else if($cart->payment_id)
-                            {
-                                $cart->payment = $this->cart_model->getPayments(array('id' => $cart->payment_id));
-                                if($cart->payment)
-                                    $cart->payment = $cart->payment[0];
-                            }
-
-                            if($this->data->uri(2) == 'print')
-                                $this->load->view('print_view', array('cart' => $cart));
-                            elseif($this->data->uri(2) == 'pay' && $cart->action == 'new')
-                            {
-                                if($payments = $this->cart_model->getPayments(array('active' => 1, 'wl_alias' => '>0')))
-                                {
-                                    $cooperation_where['alias1'] = $_SESSION['alias']->id;
-                                    $cooperation_where['type'] = 'payment';
-                                    $ntkd = array('alias' => '#c.alias2', 'content' => 0);
-                                    if($_SESSION['language'])
-                                        $ntkd['language'] = $_SESSION['language'];
-                                    $payments = $this->db->select('wl_aliases_cooperation as c', 'alias2 as id', $cooperation_where)
-                                                            ->join('wl_ntkd', 'name, list as info', $ntkd)
-                                                            ->get('array');
-                                    if(count($payments) == 1)
-                                    {
-                                        $cart->return_url = $_SESSION['alias']->alias.'/'.$cart->id;
-                                        $cart->wl_alias = $_SESSION['alias']->id;
-
-                                        $this->load->function_in_alias($payments[0]->id, '__get_Payment', $cart);
-                                        exit;
-                                    }
-                                    $this->load->profile_view('pay_view', array('cart' => $cart, 'payments' => $payments));
-                                }
-                                else
-                                    $this->redirect($_SESSION['alias']->alias.'/'.$cart->id);
-                            }
-                            else
-                            {
-                                $showPayment = false;
-                                if($cart->action == 'new')
-                                    if($payments = $this->cart_model->getPayments(array('active' => 1, 'wl_alias' => '>0')))
-                                        $showPayment = true;
-                                if(!empty($_SESSION['notify']->meta))
-                                    $_SESSION['alias']->meta = $_SESSION['notify']->meta;
-                                $this->load->page_view('detal_view', array('cart' => $cart, 'showPayment' => $showPayment, 'controls' => true));
-                            }
-                            exit;
-                        }
-                        else
-                            $this->load->notify_view(array('errors' => $this->text('Немає прав для перегляду даного замовлення.')));
-                    }
-                    else
-                        $this->load->page_404(false);
-                }
+                if($this->userIs())
+                    $this->__view_order_by_id($id);
                 else
                     $this->redirect('login');
             }
@@ -192,6 +78,210 @@ class cart extends Controller {
                 $res['discountTotal'] = $this->load->function_in_alias($res['products'][0]->product_alias, '__formatPrice', $this->cart_model->discountTotal);
         }
         $this->load->page_view('index_view', $res);
+    }
+
+    private function __view_order_by_id($id, $return = false)
+    {
+        $this->load->smodel('cart_model');
+        if($cart = $this->cart_model->getById($id))
+        {
+            if(!$return)
+            {
+                $this->wl_alias_model->setContent($id);
+                $_SESSION['alias']->name = $_SESSION['alias']->title = $this->text('Замовлення №').$id;
+            }
+            if($cart->user == $_SESSION['user']->id || $this->userCan())
+            {
+                if(!$return)
+                    $_SESSION['alias']->breadcrumbs = array($this->text('До всіх замовлень') => $_SESSION['alias']->alias.'/my', $this->text('Замовлення №').$id => '');
+
+                $cart->totalFormat = $cart->total;
+                $cart->subTotal = $cart->subTotalFormat = $cart->shippingPrice = $cart->shippingPriceFormat = 0;
+                $cart->shipping = $cart->payment = false;
+
+                if($cart->shipping_id && !empty($cart->shipping_info))
+                {
+                    $cart->shipping_info = unserialize($cart->shipping_info);
+                    if($cart->shipping = $this->cart_model->getShippings(array('id' => $cart->shipping_id)))
+                    {
+                        $cart->shipping = $cart->shipping[0];
+                        if($_SESSION['language'])
+                        {
+                            @$name = unserialize($cart->shipping->name);
+                            if(isset($name[$_SESSION['language']]))
+                                $cart->shipping->name = $name[$_SESSION['language']];
+                            else if(is_array($name))
+                                $cart->shipping->name = array_shift($name);
+                            @$info = unserialize($cart->shipping->info);
+                            if(isset($info[$_SESSION['language']]))
+                                $cart->shipping->info = $info[$_SESSION['language']];
+                            else if(is_array($info))
+                                $cart->shipping->info = array_shift($info);
+                        }
+                        $cart->shipping->text = '';
+                        if($cart->shipping->wl_alias)
+                            $cart->shipping->text = $this->load->function_in_alias($cart->shipping->wl_alias, '__get_info', $cart->shipping_info);  
+                    }
+                    if(!empty($cart->shipping_info['price']))
+                        $cart->shippingPrice = $cart->shipping_info['price'];
+                }
+
+                if($cart->products)
+                {
+                    $shop_alias = $cart->products[0]->product_alias;
+                    if(empty($shop_alias))
+                    {
+                        if($row = $this->db->select('s_cart_products', 'product_alias', ['product_alias' => '>0'])->limit(1)->get())
+                            $shop_alias = $row->product_alias;
+                    }
+                    foreach ($cart->products as $product) {
+                        if(!empty($product->product_alias))
+                        {
+                            $product->info = $this->load->function_in_alias($product->product_alias, '__get_Product', $product->product_id);
+                            if($product->storage_invoice)
+                                $product->storage = $this->load->function_in_alias($product->storage_alias, '__get_Invoice', array('id' => $product->storage_invoice, 'user_type' => $cart->user_type));
+                            $product->price_format =  $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price);
+                            $cart->subTotal += $product->price * $product->quantity + $product->discount;
+                            $product->sum_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity);
+                            if($product->discount)
+                                $product->sum_before_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity + $product->discount);
+                        }
+                        else if(!empty($product->product_options))
+                        {
+                            $options = unserialize($product->product_options);
+                            $product->info = new stdClass();
+                            $product->info->id = $product->id;
+                            $product->info->photo = $options['photo'];
+                            $product->info->cart_photo = $product->info->admin_photo = IMG_PATH.$options['cart_photo'];
+                            $product->info->article = $product->info->article_show = $options['article'];
+                            $product->info->name = $options['name'];
+                            $product->info->link = $options['photo'] ?? '';
+                            $cart->subTotal += $product->price * $product->quantity + $product->discount;
+                            if($shop_alias)
+                            {
+                                $product->price_format = $this->load->function_in_alias($shop_alias, '__formatPrice', $product->price);
+                                $product->sum_format = $this->load->function_in_alias($shop_alias, '__formatPrice', $product->price * $product->quantity);
+                            }
+                            else
+                            {
+                                $product->price_format = $product->price;
+                                $product->sum_format = $product->price * $product->quantity;
+                            }
+                            $product->product_options = false;
+                        }
+                    }
+
+                    $cart->subTotalFormat = $cart->subTotal;
+                    $cart->discountFormat = $cart->discount;
+                    $cart->shippingPriceFormat = $cart->shippingPrice;
+                    $cart->totalFormat = $cart->total;
+                    $cart->payedFormat = $cart->payed;
+                    if($shop_alias)
+                    {
+                        if ($cart->subTotal != $cart->total)
+                            $cart->subTotalFormat = $this->load->function_in_alias($shop_alias, '__formatPrice', $cart->subTotal);
+                        $cart->totalFormat = $this->load->function_in_alias($shop_alias, '__formatPrice', $cart->total);
+                        if($cart->discount)
+                            $cart->discountFormat = $this->load->function_in_alias($shop_alias, '__formatPrice', $cart->discount);
+                        if($cart->shippingPrice)
+                            $cart->shippingPriceFormat = $this->load->function_in_alias($shop_alias, '__formatPrice', $cart->shippingPrice);
+                    }
+                    if($cart->payed > 0 && $cart->payed < $cart->total)
+                    {
+                        $cart->toPay = $cart->toPayFormat = $cart->total - $cart->payed;
+                        if($shop_alias)
+                        {
+                            $cart->payedFormat = $this->load->function_in_alias($shop_alias, '__formatPrice', $cart->payed);
+                            $cart->toPayFormat = $this->load->function_in_alias($shop_alias, '__formatPrice', $cart->toPay);
+                        }
+                    }
+                    else if($cart->payed < $cart->total)
+                    {
+                        $cart->toPay = $cart->toPayFormat = $cart->total;
+                        $cart->payedFormat = 0;
+                        if($shop_alias)
+                            $cart->toPayFormat = $this->load->function_in_alias($shop_alias, '__formatPrice', $cart->toPay);
+                    }
+                    else if($cart->payed > $cart->total)
+                    {
+                        $cart->toPay = $cart->toPayFormat = 0;
+                        if($shop_alias)
+                            $cart->payedFormat = $this->load->function_in_alias($shop_alias, '__formatPrice', $cart->payed);
+                    }
+                }
+                
+                if($cart->payment_alias && $cart->payment_id)
+                    $cart->payment = $this->load->function_in_alias($cart->payment_alias, '__get_info', $cart->payment_id);
+                else if($cart->payment_id)
+                {
+                    $cart->payment = $this->cart_model->getPayments(array('id' => $cart->payment_id));
+                    if($cart->payment)
+                        $cart->payment = $cart->payment[0];
+                }
+
+                if($return)
+                {
+                    $cart->return_url = $_SESSION['alias']->alias.'/success?order='.$cart->id;
+                    return $cart;
+                }
+
+                if($this->data->uri(2) == 'print')
+                    $this->load->view('print_view', array('cart' => $cart));
+                elseif($this->data->uri(2) == 'pay' && !empty($cart->toPay))
+                {
+                    if($payments = $this->cart_model->getPayments(array('active' => 1, 'wl_alias' => '>0')))
+                    {
+                        $cooperation_where['alias1'] = $_SESSION['alias']->id;
+                        $cooperation_where['type'] = 'payment';
+                        $ntkd = array('alias' => '#c.alias2', 'content' => 0);
+                        if($_SESSION['language'])
+                            $ntkd['language'] = $_SESSION['language'];
+                        $payments = $this->db->select('wl_aliases_cooperation as c', 'alias2 as id', $cooperation_where)
+                                                ->join('s_cart_payments', 'name as payname, info as payinfo', ['wl_alias' => '#c.alias2'])
+                                                ->join('wl_ntkd', 'name, list as info', $ntkd)
+                                                ->get('array');
+                        if(count($payments) == 1)
+                            $this->redirect($_SESSION['alias']->alias.'/pay?cart='.$cart->id.'&method='.$payments[0]->id);
+                        else
+                        {
+                            foreach ($payments as $pay) {
+                                if(!empty($pay->payname))
+                                {
+                                    if($_SESSION['language'])
+                                    {
+                                        $name = unserialize($pay->payname);
+                                        if(isset($name[$_SESSION['language']]))
+                                            $pay->name = $name[$_SESSION['language']];
+                                    }
+                                    else
+                                        $pay->name = $pay->payname;
+                                }
+                            }
+                            $this->load->profile_view('pay_view', array('cart' => $cart, 'payments' => $payments));
+                        }
+                    }
+                    else
+                        $this->redirect($_SESSION['alias']->alias.'/'.$cart->id);
+                }
+                else
+                {
+                    $showPayment = false;
+                    if($cart->payed < $cart->total)
+                        if($payments = $this->cart_model->getPayments(array('active' => 1, 'wl_alias' => '>0')))
+                            $showPayment = true;
+                    if(!empty($_SESSION['notify']->meta))
+                        $_SESSION['alias']->meta = $_SESSION['notify']->meta;
+                    $this->load->profile_view('detal_view', array('cart' => $cart, 'showPayment' => $showPayment));
+                }
+                exit;
+            }
+            else
+                $this->load->notify_view(array('errors' => $this->text('Немає прав для перегляду даного замовлення.')));
+        }
+        else if ($return)
+            return false;
+        else
+            $this->load->page_404(false);
     }
 
     public function my($user = 0)
@@ -236,7 +326,11 @@ class cart extends Controller {
                     if($order->status_weight < 90)
                         $check_payments = true;
                     if($order->total && !empty($order->products))
-                        $order->total_format = $this->load->function_in_alias($order->products[0]->product_alias, '__formatPrice', $order->total);
+                    {
+                        $order->total_format = $order->total;
+                        if ($order->products[0]->product_alias)
+                            $order->total_format = $this->load->function_in_alias($order->products[0]->product_alias, '__formatPrice', $order->total);
+                    }
                     else
                         $order->total_format = 0;
                 }
@@ -800,8 +894,9 @@ class cart extends Controller {
                         $pay = new stdClass();
                         $pay->id = $cart['id'];
                         $pay->total = $cart['total'];
+                        $pay->payed = 0;
                         $pay->wl_alias = $_SESSION['alias']->id;
-                        $pay->return_url = $_SESSION['alias']->alias.'/'.$cart['id'];
+                        $pay->return_url = $_SESSION['alias']->alias.'/success?order='.$cart['id'];
                         
                         $this->load->function_in_alias($payment->wl_alias, '__get_Payment', $pay);
                     }
@@ -852,7 +947,7 @@ class cart extends Controller {
                         $_SESSION['notify']->title = $_SESSION['alias']->name;
                         $_SESSION['notify']->success = $_SESSION['alias']->text;
                         $_SESSION['notify']->meta = $_SESSION['alias']->meta;
-                        $this->redirect($_SESSION['alias']->alias.'/'.$cart['id']);
+                        $this->redirect($_SESSION['alias']->alias.'/success?order='.$cart['id']);
                         // $this->load->profile_view('success_view', array('cart' => $cart));
                     }
                 }
@@ -866,6 +961,24 @@ class cart extends Controller {
         }
         else
             $this->redirect($_SESSION['alias']->alias);
+    }
+
+    public function success()
+    {
+        if($order_id = $this->data->get('order'))
+        {
+            if(is_numeric($order_id) && $order_id > 0)
+            {
+                if($this->userIs())
+                    $this->__view_order_by_id($order_id);
+                else
+                    $this->redirect('login');
+            }
+            else
+                $this->load->page_404(false);
+        }
+        else
+            $this->load->page_404(false);
     }
 
     public function checkout()
@@ -977,8 +1090,20 @@ class cart extends Controller {
                 exit;
             }
         }
-        else
-            $this->redirect();
+
+        if(isset($_GET['method']) && is_numeric($_GET['method']) && isset($_GET['cart']) && is_numeric($_GET['cart']))
+        {
+            if($cart = $this->db->getAllDataById('s_cart', $_GET['cart']))
+            {
+                $cart->return_url = $_SESSION['alias']->alias.'/'.$cart->id;
+                $cart->wl_alias = $_SESSION['alias']->id;
+
+                $this->load->function_in_alias($this->data->get('method'), '__get_Payment', $cart);
+                exit;
+            }
+        }
+
+        $this->redirect();
     }
 
     public function get_Shipping_to_cart()
@@ -1045,6 +1170,11 @@ class cart extends Controller {
         if($products = $this->cart_model->getProductsInCart(0,0))
             $res['count'] = $this->cart_model->getProductsCountInCart();
         $this->load->json($res);
+    }
+
+    public function __getById($id)
+    {
+        return $this->__view_order_by_id($id, true);
     }
 
     public function __show_btn_add_product($product)
@@ -1118,7 +1248,37 @@ class cart extends Controller {
                     $where['options'] = $changePrice;
             }
             $where['additionalFileds'] = array('quantity' => $product->quantity);
-            $product->info = $this->load->function_in_alias($product->product_alias, '__get_Product', $where);
+            if($product->product_alias)
+                $product->info = $this->load->function_in_alias($product->product_alias, '__get_Product', $where);
+            else if(!empty($product->product_options))
+            {
+                $shop_alias = $products[0]->product_alias;
+                if(empty($shop_alias))
+                {
+                    if($row = $this->db->select('s_cart_products', 'product_alias', ['product_alias' => '>0'])->limit(1)->get())
+                        $shop_alias = $row->product_alias;
+                }
+                $options = unserialize($product->product_options);
+                $product->info = new stdClass();
+                $product->info->id = $product->id;
+                $product->info->photo = $options['photo'];
+                $product->info->cart_photo = $product->info->admin_photo = IMG_PATH.$options['cart_photo'];
+                $product->info->article = $options['article'];
+                $product->info->name = $options['name'];
+                $product->info->link = $options['photo'] ?? '';
+                $cart->subTotal += $product->price * $product->quantity + $product->discount;
+                if(empty($shop_alias))
+                {
+                    $product->price_format = $this->load->function_in_alias($shop_alias, '__formatPrice', $product->price);
+                    $product->sum_format = $this->load->function_in_alias($shop_alias, '__formatPrice', $product->price * $product->quantity);
+                }
+                else
+                {
+                    $product->price_format = $product->price;
+                    $product->sum_format = $product->price * $product->quantity;
+                }
+                $product->product_options = false;
+            }
             if($getStorages)
             {
                 if($product->storage_invoice)

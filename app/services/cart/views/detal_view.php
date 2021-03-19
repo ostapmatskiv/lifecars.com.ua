@@ -166,12 +166,19 @@ if(!$showPayment &&  $cart->action == 'closed') {
 			<tr>
 				<td colspan="6"><?=$this->text('Доставка')?>: <strong><?= $cart->shippingPriceFormat ?></strong></td>
 			</tr>
+		<?php } if (!empty($cart->toPay) && $cart->toPay != $cart->total) { ?>
+			<tr>
+				<td colspan="5"><?=$this->text('Оплачено')?>: <strong><?= $cart->payedFormat ?></strong></td>
+			</tr>
+			<tr>
+				<td colspan="5"><?=$this->text('До оплати')?>: <strong><?= $cart->toPayFormat ?></strong></td>
+			</tr>
 		<?php } ?>
 	</tfoot>
 </table>
 
 
-<?php */ if($cart->shipping_id) {
+<?php if($cart->shipping_id) {
 	echo "<h4>{$this->text('Доставка')}</h4>";
 	if(!empty($cart->shipping->name))
 		echo "<p><strong>{$cart->shipping->name}</strong>";

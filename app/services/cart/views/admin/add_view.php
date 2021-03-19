@@ -139,6 +139,8 @@
 		$('#userId').val(id);
 		$('#userType').val(type);
 		$('#wizard').bwizard('next');
+
+		$('#modal-add-virtual-product form input[name=user_id]').val(id);
 	}
 
 	function saveNewUser() {

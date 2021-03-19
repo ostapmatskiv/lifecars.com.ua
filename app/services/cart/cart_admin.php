@@ -2,6 +2,8 @@
 
 class cart_admin extends Controller {
 
+    private $notify_client_sms_on_delivered = false;
+
     function _remap($method, $data = array())
     {
         $_SESSION['alias']->breadcrumb = array('Корзина' => '');
@@ -26,6 +28,8 @@ class cart_admin extends Controller {
         {
             if($cart = $this->cart_model->getById($id))
             {
+                $_SESSION['alias']->breadcrumb = array($_SESSION['alias']->name => 'admin/'.$_SESSION['alias']->alias, 'Замовлення #'.$id => '');
+                $_SESSION['alias']->name .= '. Замовлення #'.$id.' від '.date('d.m.Y H:i', $cart->date_add);
                 $cart->totalFormat = $cart->total;
                 $cart->subTotal = $cart->subTotalFormat = $cart->shippingPrice = $cart->shippingPriceFormat = 0;
                 $cart->shipping = $cart->payment = $cart->paymentsMethod = false;
@@ -61,31 +65,72 @@ class cart_admin extends Controller {
 
                 if($cart->products)
                 {
+                    $shop_alias = $cart->products[0]->product_alias;
+                    if(empty($shop_alias))
+                    {
+                        if($row = $this->db->select('s_cart_products', 'product_alias', ['product_alias' => '>0'])->limit(1)->get())
+                            $shop_alias = $row->product_alias;
+                    }
                     foreach ($cart->products as $product) {
-                        $product->info = $this->load->function_in_alias($product->product_alias, '__get_Product', $product->product_id);
-                        if($product->storage_invoice)
-                            $product->storage = $this->load->function_in_alias($product->storage_alias, '__get_Invoice', array('id' => $product->storage_invoice, 'user_type' => $cart->user_type));
-                        $product->price_format =  $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price);
-                        $cart->subTotal += $product->price * $product->quantity + $product->discount;
-                        $product->sum_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity);
-                        if($product->discount)
+                        if($product->product_alias)
                         {
-                            $product->sumBefore_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity + $product->discount);
-                            $product->discountFormat = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->discount);
+                            $product->info = $this->load->function_in_alias($product->product_alias, '__get_Product', $product->product_id);
+                            if($product->storage_invoice)
+                                $product->storage = $this->load->function_in_alias($product->storage_alias, '__get_Invoice', array('id' => $product->storage_invoice, 'user_type' => $cart->user_type));
+                            $product->price_format =  $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price);
+                            $cart->subTotal += $product->price * $product->quantity + $product->discount;
+                            $product->sum_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity);
+                            if($product->discount)
+                            {
+                                $product->sumBefore_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity + $product->discount);
+                                $product->discountFormat = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->discount);
+                            }
+                        }
+                        else if(!empty($product->product_options))
+                        {
+                            $options = unserialize($product->product_options);
+                            $product->info = new stdClass();
+                            $product->info->id = $product->id;
+                            $product->info->photo = $options['photo'];
+                            $product->info->cart_photo = $product->info->admin_photo = $options['cart_photo'];
+                            $product->info->article = $product->info->article_show = $options['article'];
+                            $product->info->name = $options['name'];
+                            $product->info->link = $options['photo'] ?? '';
+                            $cart->subTotal += $product->price * $product->quantity + $product->discount;
+                            if($shop_alias)
+                            {
+                                $product->price_format = $this->load->function_in_alias($shop_alias, '__formatPrice', $product->price);
+                                $product->sum_format = $this->load->function_in_alias($shop_alias, '__formatPrice', $product->price * $product->quantity);
+                            }
+                            else
+                            {
+                                $product->price_format = $product->price;
+                                $product->sum_format = $product->price * $product->quantity;
+                            }
+                            $product->product_options = false;
                         }
                     }
-                    $cart->subTotalFormat = $this->load->function_in_alias($cart->products[0]->product_alias, '__formatPrice', $cart->subTotal);
-                    
-                    if($cart->discount)
-                        $cart->discountFormat = $this->load->function_in_alias($cart->products[0]->product_alias, '__formatPrice', $cart->discount);
-                    
-                    if($cart->shippingPrice)
-                        $cart->shippingPriceFormat = $this->load->function_in_alias($cart->products[0]->product_alias, '__formatPrice', $cart->shippingPrice);
 
-                    $cart->totalFormat = $this->load->function_in_alias($cart->products[0]->product_alias, '__formatPrice', $cart->total);
+                    $cart->subTotalFormat = $cart->subTotal;
+                    $cart->discountFormat = $cart->discount;
+                    $cart->shippingPriceFormat = $cart->shippingPrice;
+                    $cart->totalFormat = $cart->total;
+                    $cart->payedFormat = $cart->payed;
+                    if($shop_alias)
+                    {
+                        $cart->subTotalFormat = $this->load->function_in_alias($shop_alias, '__formatPrice', $cart->subTotal);
+                        
+                        if($cart->discount)
+                            $cart->discountFormat = $this->load->function_in_alias($shop_alias, '__formatPrice', $cart->discount);
+                        
+                        if($cart->shippingPrice)
+                            $cart->shippingPriceFormat = $this->load->function_in_alias($shop_alias, '__formatPrice', $cart->shippingPrice);
 
-                    if($cart->payed > 0 && $cart->payed < $cart->total)
-                        $cart->payedFormat = $this->load->function_in_alias($cart->products[0]->product_alias, '__formatPrice', $cart->payed);
+                        $cart->totalFormat = $this->load->function_in_alias($shop_alias, '__formatPrice', $cart->total);
+
+                        if($cart->payed > 0)
+                            $cart->payedFormat = $this->load->function_in_alias($shop_alias, '__formatPrice', $cart->payed);
+                    }
                 }
                 
                 if($cart->payment_alias && $cart->payment_id)
@@ -93,10 +138,7 @@ class cart_admin extends Controller {
                 else if($cart->payment_id)
                     $cart->payment = $this->cart_model->getPayments(array('id' => $cart->payment_id))[0];
 
-                $_SESSION['alias']->breadcrumb = array($_SESSION['alias']->name => 'admin/'.$_SESSION['alias']->alias, 'Замовлення #'.$id => '');
-                $_SESSION['alias']->name .= '. Замовлення #'.$id.' від '.date('d.m.Y H:i', $cart->date_add);
                 $_SESSION['alias']->title = $_SESSION['alias']->name;
-                
                 if($this->data->uri(3) == 'print')
                 {
                     if(isset($_GET['go']))
@@ -193,10 +235,27 @@ class cart_admin extends Controller {
                 $carts = $this->cart_model->getCarts($where);
                 if($carts)
                     foreach ($carts as $cart) {
-                        $cart->totalFormat = $this->load->function_in_alias($cart->products[0]->product_alias, '__formatPrice', $cart->total);
+                        $cart->totalFormat = $cart->total;
+                        if ($cart->products[0]->product_alias)
+                            $cart->totalFormat = $this->load->function_in_alias($cart->products[0]->product_alias, '__formatPrice', $cart->total);
                         if($cart->products)
                             foreach ($cart->products as $product) {
-                                $product->info = $this->load->function_in_alias($product->product_alias, '__get_Product', $product->product_id);
+                                if($product->product_alias)
+                                    $product->info = $this->load->function_in_alias($product->product_alias, '__get_Product', $product->product_id);
+                                else if(!empty($product->product_options))
+                                {
+                                    $options = unserialize($product->product_options);
+                                    $product->info = new stdClass();
+                                    $product->info->id = $product->id;
+                                    $product->info->photo = $options['photo'];
+                                    $product->info->cart_photo = $product->info->admin_photo = $options['cart_photo'];
+                                    $product->info->article = $product->info->article_show = $options['article'];
+                                    $product->info->name = $options['name'];
+                                    $product->info->link = $options['photo'] ?? '';
+                                    $product->price_format = $product->price;
+                                    $product->sum_format = $product->price * $product->quantity;
+                                    $product->product_options = false;
+                                }
                                 break;
                             }
                     }
@@ -210,6 +269,87 @@ class cart_admin extends Controller {
         $_SESSION['alias']->breadcrumb = array('Корзина' => 'admin/'.$_SESSION['alias']->alias, 'Додати покупку' => '');
         $_SESSION['alias']->name = 'Корзина. Додати покупку';
         $this->load->admin_view('add_view');
+    }
+
+    public function add_virtualProduct()
+    {
+        $time = time();
+        $cart_id = $this->data->post('cart_id');
+        if(empty($cart_id))
+            if($user_id = $this->data->post('user_id'))
+            {
+                $product_price = $this->data->post('product-price');
+                $product_quantity = $this->data->post('product-quantity');
+                $cart_id = $this->db->insertRow('s_cart', array('user' => $user_id, 'total' => round($product_price * $product_quantity, 3), 'status' => 0, 'date_add' => $time, 'date_edit' => $time));
+            }
+        if($cart_id)
+        {
+            $data = ['cart' => $cart_id,
+                        'user' => $_SESSION['user']->id,
+                        'active' => 1,
+                        'product_alias' => 0,
+                        'product_id' => 0,
+                        'storage_alias' => 0,
+                        'storage_invoice' => 0,
+                        'discount' => 0,
+                        'bonus' => 0,
+                        'quantity_returned' => 0,
+                        'date' => $time];
+            $data['price'] = $data['price_in'] = $this->data->post('product-price');
+            $data['quantity'] = $data['quantity_wont'] = $this->data->post('product-quantity');
+            $product_options = ['photo' => false, 'cart_photo' => false,
+                                    'article' => $this->data->post('product-article'),
+                                    'name' => $this->data->post('product-name')];
+            $name_field = 'product-image';
+            if(!empty($_FILES[$name_field]['name']))
+            {
+                $path = IMG_PATH;
+                $path = substr($path, strlen(SITE_URL));
+                $path = substr($path, 0, -1);
+                if(!is_dir($path))
+                    mkdir($path, 0777);
+                $path .= '/'.$_SESSION['alias']->alias;
+                if(!is_dir($path))
+                    mkdir($path, 0777);
+                $f_100 = ceil($cart_id / 100) * 100;
+                $path .= '/'.$f_100;
+                if(!is_dir($path))
+                    mkdir($path, 0777);
+                $path .= '/';
+                $sub_path = $_SESSION['alias']->alias.'/'.$f_100.'/';
+
+                $name = $_FILES[$name_field]['name'];
+                $n = explode('.', $name);
+                if (count($n) > 1) {
+                    array_pop($n);
+                    $name = implode('.', $n);
+                }
+                $name = $cart_id .'-'.$data['date'].'-'.$this->data->latterUAtoEN(trim($name));
+
+                $this->load->library('image');
+                if($this->image->upload($name_field, $path, $name))
+                {
+                    $extension = $this->image->getExtension();
+                    $this->image->save();
+
+                    $product_options['photo'] = IMG_PATH.$sub_path.$name.'.'.$extension;
+
+                    if($this->image->loadImage($path, $name, $extension))
+                    {
+                        $this->image->preview(128, 128);
+                        $this->image->save('cart');
+
+                        $product_options['cart_photo'] = $sub_path.'cart_'.$name.'.'.$extension;
+                    }
+                }
+            }
+            $data['product_options'] = serialize($product_options);
+
+            $this->db->insertRow('s_cart_products', $data);
+            $this->db->insertRow('s_cart_history', ['cart' => $cart_id, 'status' => 0, 'show' => 0, 'user' => $_SESSION['user']->id, 'comment' => "Додано віртуальний товар <strong>{$product_options['article']}</strong> {$product_options['name']}", 'date' => $data['date']]);
+            $this->_updateTotal($cart_id);
+        }
+        $this->redirect("admin/{$_SESSION['alias']->alias}/{$cart_id}");
     }
 
     public function searchClient()
@@ -545,7 +685,7 @@ class cart_admin extends Controller {
                         }
                     }
 
-                if($cart->action == 'delivered' && !empty($cart->ttn) && !empty($cart->user_phone))
+                if($this->notify_client_sms_on_delivered && $cart->action == 'delivered' && !empty($cart->ttn) && !empty($cart->user_phone))
                 {
                     $this->load->library('turbosms');
                     $this->turbosms->send($cart->user_phone, 'Замовлення #'.$cart->id.' відправлено. ТТН '.$cart->ttn);
@@ -583,13 +723,6 @@ class cart_admin extends Controller {
         $this->load->smodel('cart_model');
         if($cart = $this->cart_model->getById($cartId))
         {
-            if($cart->products)
-                foreach ($cart->products as $product) {
-                    $product->info = $this->load->function_in_alias($product->product_alias, '__get_Product', $product->product_id);
-                    if($product->storage_invoice)
-                        $product->storage = $this->load->function_in_alias($product->storage_alias, '__get_Invoice', array('id' => $product->storage_invoice, 'user_type' => $cart->user_type));
-                }
-
             $this->load->library('mail');
 
             $info['id'] = $cart->id;
@@ -607,21 +740,51 @@ class cart_admin extends Controller {
             $info['pay_link'] = SITE_URL.$_SESSION['alias']->alias.'/'.$cart->id.'/pay';
             $info['admin_link'] = SITE_URL.'admin/'.$_SESSION['alias']->alias.'/'.$info['id'];
             $subTotal = 0;
+            $shop_alias = $cart->products[0]->product_alias;
+            if(empty($shop_alias))
+            {
+                if($row = $this->db->select('s_cart_products', 'product_alias', ['product_alias' => '>0'])->limit(1)->get())
+                    $shop_alias = $row->product_alias;
+            }
             foreach ($cart->products as $product) {
-                $product->price_format =  $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price);
-                $subTotal += $product->price * $product->quantity + $product->discount;
-                $product->sum_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity);
-                if($product->discount)
-                    $product->sumBefore_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity + $product->discount);
+                if($product->product_alias)
+                {
+                    $product->info = $this->load->function_in_alias($product->product_alias, '__get_Product', $product->product_id);
+                    if($product->storage_invoice)
+                        $product->storage = $this->load->function_in_alias($product->storage_alias, '__get_Invoice', array('id' => $product->storage_invoice, 'user_type' => $cart->user_type));
+                    $product->price_format =  $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price);
+                    $cart->subTotal += $product->price * $product->quantity + $product->discount;
+                    $product->sum_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity);
+                    if($product->discount)
+                    {
+                        $product->sumBefore_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity + $product->discount);
+                        $product->discountFormat = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->discount);
+                    }
+                }
+                else if(!empty($product->product_options))
+                {
+                    $options = unserialize($product->product_options);
+                    $product->info = new stdClass();
+                    $product->info->id = $product->id;
+                    $product->info->photo = $options['photo'];
+                    $product->info->cart_photo = $product->info->admin_photo = $options['cart_photo'];
+                    $product->info->article = $product->info->article_show = $options['article'];
+                    $product->info->name = $options['name'];
+                    $product->info->link = $options['photo'] ?? '';
+                    $cart->subTotal += $product->price * $product->quantity + $product->discount;
+                    $product->price_format = $this->load->function_in_alias($shop_alias, '__formatPrice', $product->price);
+                    $product->sum_format = $this->load->function_in_alias($shop_alias, '__formatPrice', $product->price * $product->quantity);
+                    $product->product_options = false;
+                }
             }
             if ($subTotal != $cart->total)
-                $info['subTotalFormat'] = $this->load->function_in_alias($cart->products[0]->product_alias, '__formatPrice', $subTotal);
+                $info['subTotalFormat'] = $this->load->function_in_alias($shop_alias, '__formatPrice', $subTotal);
             if($cart->discount)
-                $info['discountFormat'] = $this->load->function_in_alias($cart->products[0]->product_alias, '__formatPrice', $cart->discount);
+                $info['discountFormat'] = $this->load->function_in_alias($shop_alias, '__formatPrice', $cart->discount);
             
             $info['payed'] = $cart->payed;
             $info['total'] = $cart->total;
-            $info['total_formatted'] = $this->load->function_in_alias($cart->products[0]->product_alias, '__formatPrice', $cart->total);
+            $info['total_formatted'] = $this->load->function_in_alias($shop_alias, '__formatPrice', $cart->total);
             $info['discount'] = $cart->discount;
             $info['products'] = $cart->products;
             $info['delivery'] = false;
@@ -902,7 +1065,11 @@ class cart_admin extends Controller {
             $data['email'] = $email = $this->data->post('email');
             $data['photo'] = NULL;
             $userInfo['phone'] = $phone = $this->data->post('phone');
-            if(!empty($phone)) $userInfo['phone'] = $phone = $this->validator->getPhone($phone);
+            if(!empty($phone))
+            {
+                $this->load->library('validator');
+                $userInfo['phone'] = $phone = $this->validator->getPhone($phone);
+            }
 
             if($email || $phone)
             {
@@ -966,19 +1133,52 @@ class cart_admin extends Controller {
                     $data = array();
                     $data['cart'] = $cartId;
                     $data['status'] = 1;
+                    $data['show'] = 0;
                     $data['user'] = $_SESSION['user']->id;
                     $data['comment'] = $_SESSION['notify']->success = 'Замовлення сформовано';
                     $data['date'] = time();
                     $this->db->insertRow('s_cart_history', $data);
 
-                    if(!empty($cart->user_email))
+                    if(!empty($cart->user_email) && $cart->products)
                     {
-                        if($cart->products)
-                            foreach ($cart->products as $product) {
+                        $cart->subTotal = 0;
+                        $shop_alias = $cart->products[0]->product_alias;
+                        if(empty($shop_alias))
+                        {
+                            if($row = $this->db->select('s_cart_products', 'product_alias', ['product_alias' => '>0'])->limit(1)->get())
+                                $shop_alias = $row->product_alias;
+                        }
+                        foreach ($cart->products as $product) {
+                            if($product->product_alias)
+                            {
                                 $product->info = $this->load->function_in_alias($product->product_alias, '__get_Product', $product->product_id);
                                 if($product->storage_invoice)
-                                    $product->storage = $this->load->function_in_alias($product->product_alias, '__get_Invoice', array('id' => $product->storage_invoice, 'user_type' => $product->user_type));
+                                    $product->storage = $this->load->function_in_alias($product->storage_alias, '__get_Invoice', array('id' => $product->storage_invoice, 'user_type' => $cart->user_type));
+                                $product->price_format =  $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price);
+                                $cart->subTotal += $product->price * $product->quantity + $product->discount;
+                                $product->sum_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity);
+                                if($product->discount)
+                                {
+                                    $product->sumBefore_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity + $product->discount);
+                                    $product->discountFormat = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->discount);
+                                }
                             }
+                            else if(!empty($product->product_options))
+                            {
+                                $options = unserialize($product->product_options);
+                                $product->info = new stdClass();
+                                $product->info->id = $product->id;
+                                $product->info->photo = $options['photo'];
+                                $product->info->cart_photo = $product->info->admin_photo = $options['cart_photo'];
+                                $product->info->article = $product->info->article_show = $options['article'];
+                                $product->info->name = $options['name'];
+                                $product->info->link = $options['photo'] ?? '';
+                                $cart->subTotal += $product->price * $product->quantity + $product->discount;
+                                $product->price_format = $this->load->function_in_alias($shop_alias, '__formatPrice', $product->price);
+                                $product->sum_format = $this->load->function_in_alias($shop_alias, '__formatPrice', $product->price * $product->quantity);
+                                $product->product_options = false;
+                            }
+                        }
 
                         $this->load->library('mail');
 
@@ -1000,20 +1200,20 @@ class cart_admin extends Controller {
                             $info['password'] = $user->reset_key;
                             $this->db->updateRow('wl_users', array('reset_key' => ''), $user->id);
                         }
-                        foreach ($cart->products as $product) {
-                            $product->price_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price);
-                            $product->sum_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity);
-                        }
                         
-                        $info['total'] = $cart->total;
-                        $info['discount'] = $cart->discount;
-                        $info['total_formatted'] = $this->load->function_in_alias($cart->products[0]->product_alias, '__formatPrice', $info['total']);
+                        $info['total'] = $info['total_formatted'] = $cart->total;
+                        $info['discount'] = $info['discount_formatted'] = $cart->discount;
+                        if($shop_alias)
+                            $info['total_formatted'] = $this->load->function_in_alias($shop_alias, '__formatPrice', $info['total']);
                         
                         if($info['discount'])
                         {
-                            $sum = $info['total'] + $info['discount'];
-                            $info['sum_formatted'] = $this->load->function_in_alias($cart->products[0]->product_alias, '__formatPrice', $sum);
-                            $info['discount_formatted'] = $this->load->function_in_alias($cart->products[0]->product_alias, '__formatPrice', $info['discount']);
+                            $sum = $info['sum_formatted'] = $info['total'] + $info['discount'];
+                            if($shop_alias)
+                            {
+                                $info['sum_formatted'] = $this->load->function_in_alias($shop_alias, '__formatPrice', $sum);
+                                $info['discount_formatted'] = $this->load->function_in_alias($shop_alias, '__formatPrice', $info['discount']);
+                            }
                         }
                         $info['products'] = $cart->products;
                         
@@ -1333,13 +1533,17 @@ class cart_admin extends Controller {
             $data['date'] = time();
             $this->db->insertRow('s_cart_history', $data);
 
-            // if($products = $this->db->getAllDataByFieldInArray('s_cart_products', $id, 'cart'))
-            //     foreach ($products as $product) {
-            //         if($product->storage_alias && $product->storage_invoice)
-            //             continue;
-            //         $reserve = array('invoice' => $product->storage_invoice, 'amount' => -$product->quantity);
-            //         $this->load->function_in_alias($product->storage_alias, '__set_Reserve', $reserve);
-            //     }
+            if($this->data->post('reserve_cancel'))
+            {
+                if($products = $this->db->getAllDataByFieldInArray('s_cart_products', $id, 'cart'))
+                    foreach ($products as $product) {
+                        if($product->storage_alias && $product->storage_invoice)
+                        {
+                            $reserve = array('invoice' => $product->storage_invoice, 'amount' => -$product->quantity);
+                            $this->load->function_in_alias($product->storage_alias, '__set_Reserve', $reserve);
+                        }
+                    }
+            }
         }
         $this->redirect();
     }
@@ -1738,7 +1942,7 @@ class cart_admin extends Controller {
         if(is_numeric($cartId))
             $cart = $this->db->getAllDataById('s_cart', $cartId);
         if (is_object($cart) && !empty($cart->id)) {
-            if($cart->{'1c_status'} > 0)
+            if(isset($cart->{'1c_status'}) && $cart->{'1c_status'} > 0)
                 $this->db->updateRow('s_cart', ['1c_status' => 0], $cart->id);
             $total = $this->db->getQuery("SELECT SUM(quantity * price) as totalPrice FROM `s_cart_products` WHERE `cart` = $cart->id")->totalPrice;
             if ($total) {

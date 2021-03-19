@@ -1,11 +1,11 @@
 <link rel="stylesheet" type="text/css" href="<?=SERVER_URL.'style/'.$_SESSION['alias']->alias.'/order.css'?>">
 
 <h2><?=$this->text('Оплата замовлення')?> #<?= $cart->id?> <?=$this->text('від')?> <?= date('d.m.Y H:i', $cart->date_edit)?></h2>
-<p><?=$this->text('Поточний статус')?>: <strong><?= $cart->status_name ?></strong>, <?=$this->text('До оплати')?>: <strong><?= $cart->totalFormat ?></strong></p>
+<p><?=$this->text('Поточний статус')?>: <strong><?= $cart->status_name ?></strong>, <?=$this->text('До оплати')?>: <strong><?= $cart->toPayFormat ?></strong></p>
 
 <a href="<?=SITE_URL.$_SESSION['alias']->alias.'/'.$cart->id?>" class="btn btn-success"><i class="fas fa-undo"></i> <?=$this->text('До замовлення')?></a>
 
-<h4><?=$this->text('Оберіть платіжний механізм')?></h4>
+<h4><?=$this->text('Оберіть платіжний механізм')?>:</h4>
 
 <form action="<?= SERVER_URL?>cart/pay" method="POST">
 	<input type="hidden" name="cart" value="<?=$cart->id?>">
@@ -84,7 +84,15 @@
 			</tr>
 		<?php } ?>
 		<tr>
-			<td colspan="5"><?=$this->text('До оплати')?>: <strong><?= $cart->totalFormat ?></strong></td>
+			<td colspan="5"><?=$this->text('Сума')?>: <strong><?= $cart->totalFormat ?></strong></td>
 		</tr>
+		<?php if (!empty($cart->toPay) && $cart->toPay != $cart->total) { ?>
+			<tr>
+				<td colspan="5"><?=$this->text('Оплачено')?>: <strong><?= $cart->payedFormat ?></strong></td>
+			</tr>
+			<tr>
+				<td colspan="5"><?=$this->text('До оплати')?>: <strong><?= $cart->toPayFormat ?></strong></td>
+			</tr>
+		<?php } ?>
 	</tfoot>
 </table>

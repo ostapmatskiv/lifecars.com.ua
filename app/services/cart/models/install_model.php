@@ -13,7 +13,7 @@ class install
 	public $order_alias = 200;
 	public $admin_sidebar = 1;
 	public $admin_ico = 'fa-shopping-cart';
-	public $version = "2.3";
+	public $version = "2.4";
 
 	public $options = array('useCheckBox' => 0, 'usePassword' => 1, 'dogovirOfertiLink' => '');
 	public $options_type = array('useCheckBox' => 'bool', 'usePassword' => 'bool', 'dogovirOfertiLink' => 'text');
