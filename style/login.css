@@ -20,8 +20,8 @@
 
 #login-container button {
     border-radius: 20px;
-    border: 1px solid #29ABE2;
-    background-color: #29ABE2;
+    border: 1px solid #7cbe49;
+    background-color: #7cbe49;
     color: #FFF;
     font-size: 12px;
     font-weight: bold;
@@ -30,6 +30,7 @@
     text-transform: uppercase;
     transition: transform 80ms ease-in;
 }
+#login-container button:hover { background-color: #629c35 }
 
 #login-container button:active {
     transform: scale(0.95);
@@ -136,8 +137,8 @@
 
 .overlay {
     background: #FF416C;
-    background: -webkit-linear-gradient(to right, #29abe2, #3F51B5);
-    background: linear-gradient(to right, #29abe2, #3F51B5);;
+    background: -webkit-linear-gradient(to right, #29abe2, #7cbe49);
+    background: linear-gradient(to right, #29abe2, #7cbe49);;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 0 0;

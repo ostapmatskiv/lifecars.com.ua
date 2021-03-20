@@ -27,7 +27,7 @@ main img {
     padding-top: 50px
 }
 
-#modal-add_success {
+#modal-add_success, #modal-buyProduct {
     position: fixed;
     background: rgba(0, 0, 0, .8);
     width: 100%;
@@ -41,7 +41,7 @@ main img {
     flex-direction: column;
 }
 
-#modal-add_success .bg-white {
+#modal-add_success .bg-white, #modal-buyProduct .bg-white {
     width: 50%;
     max-width: 700px;
     background-color: #fff;
@@ -49,8 +49,20 @@ main img {
     text-align: center;
     padding: 50px;
 }
+#modal-buyProduct .bg-white {
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#modal-buyProduct input, #modal-buyProduct textarea {
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    width: 100%;
+    font-size: 14px
+}
 
-#modal-add_success img {
+#modal-add_success img, #modal-buyProduct img {
     margin-bottom: 15px;
     max-width: 90%
 }
@@ -64,13 +76,17 @@ main img {
 #modal-add_success h4.product_name {
     font-size: 26px
 }
+#modal-buyProduct h4.product_name {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
 
 #modal-add_success .flex {
     width: 420px;
     margin: auto
 }
 
-#modal-add_success a {
+#modal-add_success a, #modal-buyProduct a, #modal-buyProduct button {
     display: block;
     padding: 12px;
     text-align: center;
@@ -81,16 +97,23 @@ main img {
     font-size: 18px;
     color: #fff
 }
+#modal-buyProduct button, #modal-buyProduct a.close {
+    width: 50%;
+}
+#modal-buyProduct button[disabled] {
+    background-color: grey;
+    cursor: not-allowed;
+}
 
-#modal-add_success a:hover {
+#modal-add_success a:hover, #modal-buyProduct button:hover {
     background-color: #669e3b;
 }
 
-#modal-add_success a.close {
+#modal-add_success a.close, #modal-buyProduct a.close {
     background-color: #ffc505;
 }
 
-#modal-add_success a.close:hover {
+#modal-add_success a.close:hover, #modal-buyProduct a.close:hover {
     background-color: #e4af00;
 }
 
@@ -1678,7 +1701,8 @@ main.detal section.detal__info .info__price .card__check.detal__check span.plus:
     background-color: #b8b4b4;
 }
 
-main.detal section.detal__info .info__price button.detal__cart {
+main.detal section.detal__info .info__price button.detal__cart,
+main.detal section.detal__info .info__price button.detal__bay {
     margin-top: 15px;
     width: 280px;
     height: 48px;
@@ -1703,17 +1727,7 @@ main.detal section.detal__info .info__price button.detal__cart img {
 }
 
 main.detal section.detal__info .info__price button.detal__bay {
-    margin-top: 15px;
-    width: 400px;
-    height: 45px;
-    border: none;
-    border-radius: 5px;
     background-color: #ffc505;
-    font-size: 25px;
-    font-weight: normal;
-    color: #fefefe;
-    outline: none;
-    cursor: pointer;
 }
 
 main.detal section.detal__info .info__price button.detal__bay:hover {

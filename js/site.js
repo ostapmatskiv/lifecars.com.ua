@@ -105,6 +105,17 @@ $(document).ready(function(){
         event.preventDefault;
         $('#modal-add_success').hide()
     });
+    $('main.detal button.detal__bay').click(function () {
+        $('#modal-buyProduct').css('display', 'flex');
+
+        $('#modal-buyProduct h4.product_name').text( $(this).data('product_name') );
+        $('#modal-buyProduct input[name=productKey]').val( $(this).data('product_key') );
+        $('#modal-buyProduct input[name=quantity]').val( $(this).closest('.info__price').find('input').val() );
+    });
+    $('#modal-buyProduct a.close').click(function(event) {
+        event.preventDefault;
+        $('#modal-buyProduct').hide()
+    });
     $('.modal .close, .modal .fa-times').click(function(event) {
         event.preventDefault;
         $(this).closest('.modal').hide()

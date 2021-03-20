@@ -49,12 +49,14 @@
                 </div>
             </div>
             <button class="review-btn" title='<?=$this->text('Заповніть "Я не робот"')?>' disabled><?=$this->text('Додати відгук')?></button>
-        <?php } ?>
+        <?php } 
+        $this->js_init('init__commentsAdd()');
+        ?>
     </form>
 </div>
 
 <script type="text/javascript">
-    window.onload = function() {
+    function init__commentsAdd() {
         $('.rating label').click(function() {
             $('.rating label').removeClass('checked')
             $(this).addClass('checked');
