@@ -121,7 +121,7 @@
             </button>
             <button class="detal__bay" data-product_key="<?="{$product->wl_alias}-{$product->id}"?>" data-product_name="<?="{$product->options['1-manufacturer']->value->name} {$product->article_show} {$product->name}"?>">
                 <img src="/style/icons/detal/thunder.svg" alt="thunder">
-                <?=$this->text('Купити в один клік')?>
+                <?=$this->text('Купити в один клік', 0)?>
             </button>
             <?php } ?>
         </div>

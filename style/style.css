@@ -76,7 +76,7 @@ main img {
 #modal-add_success h4.product_name {
     font-size: 26px
 }
-#modal-buyProduct h4.product_name {
+#modal-buyProduct h4 {
     font-size: 22px;
     margin-bottom: 10px;
 }
@@ -98,7 +98,7 @@ main img {
     color: #fff
 }
 #modal-buyProduct button, #modal-buyProduct a.close {
-    width: 50%;
+    width: 49%;
 }
 #modal-buyProduct button[disabled] {
     background-color: grey;
@@ -130,6 +130,10 @@ main img {
 
     #modal-add_success a {
         margin-bottom: 15px
+    }
+    #modal-buyProduct .bg-white {
+        max-width: 90%;
+        width: 90%;
     }
 }
 
@@ -2563,15 +2567,10 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
             font-size: 19px;
         }
 
-        main.detal section.detal__info .info__price button.detal__cart {
-            width: 210px;
-            height: 50px;
-            font-size: 16px;
-        }
-
+        main.detal section.detal__info .info__price button.detal__cart,
         main.detal section.detal__info .info__price button.detal__bay {
             width: 210px;
-            height: 30px;
+            height: 50px;
             font-size: 16px;
         }
 

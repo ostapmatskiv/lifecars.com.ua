@@ -34,7 +34,7 @@
 	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>style/ws__main.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
 	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>assets/magnific-popup/magnific-popup.css">
-	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>style/style.css?v=0.1.5">
+	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>style/style.css?v=0.1.6">
 </head>
 <body>
 	<!-- Google Tag Manager (noscript) -->
@@ -71,16 +71,15 @@
 	</div>
 	<div id="modal-buyProduct">
 		<form action="<?=SITE_URL?>cart/buyProduct" method="post" class="bg-white">
-			<img src="<?=SERVER_URL?>style/images/logo.png" alt="logo">
-			<h4 class="product_name"></h4>
+			<!-- <img src="<?=SERVER_URL?>style/images/logo.png" alt="logo"> -->
+			<h4><?=$this->text('Купити в один клік', 0)?></h4>
+			<!-- <h4 class="product_name"></h4> -->
 
 			<input type="hidden" name="productKey">
-			<input type="number" name="quantity" min="1" title="<?=$this->text('Кількість од.')?>">
-			<?php if(!$this->userIs()) { ?>
-				<input type="email" name="email" placeholder="email*" required>
-				<input type="text" name="phone" placeholder="<?=$this->text('Телефон', 0)?>*" value="<?=$this->userIs() ? $_SESSION['user']->phone : ''?>" required>
-				<input type="text" name="name" placeholder="<?=$this->text("Ім'я Прізвище", 0)?>*" value="<?=$this->userIs() ? $_SESSION['user']->name : ''?>" required>
-			<?php } ?>
+			<input type="hidden" name="quantity" min="1" title="<?=$this->text('Кількість од.')?>">
+			<input type="email" name="email" placeholder="email*" value="<?=$this->userIs() ? $_SESSION['user']->email : ''?>" <?=$this->userIs() ? 'disabled' : 'required'?>>
+			<input type="text" name="phone" placeholder="<?=$this->text('Телефон', 0)?>*" value="<?=$this->userIs() ? $_SESSION['user']->phone : ''?>" <?=$this->userIs() ? 'disabled' : 'required'?>>
+			<input type="text" name="name" placeholder="<?=$this->text("Ім'я Прізвище", 0)?>*" value="<?=$this->userIs() ? $_SESSION['user']->name : ''?>" <?=$this->userIs() ? 'disabled' : 'required'?>>
 			<textarea name="comment" placeholder="<?=$this->text('Коментар', 0)?>" rows="3"></textarea>
 			<?php if(!$this->userIs()) {
 				$this->load->library('recaptcha');
