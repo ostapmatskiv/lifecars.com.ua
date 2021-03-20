@@ -190,6 +190,10 @@ class Loader {
 
 	function page_404($update_SiteMap = true)
 	{
+		// echo "<pre>";
+		// debug_print_backtrace();
+		// echo "</pre>";
+		// exit('page_404');
 		$_SESSION['alias']->code = 404;
 		if($update_SiteMap)
 		{

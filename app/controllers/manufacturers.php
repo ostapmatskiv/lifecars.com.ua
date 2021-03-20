@@ -27,7 +27,7 @@
         $links = $names = [];
         if($manufactures)
         	foreach ($manufactures as &$manufacturer) {
-        		$link = $this->data->latterUAtoEN($manufacturer->name);
+        		$link = $this->data->latterUAtoEN(trim($manufacturer->name));
         		if(array_key_exists($link, $links))
         		{
         			$i = 2;
@@ -44,18 +44,23 @@
  			$this->wl_alias_model->setContent();
  			$this->load->page_view('manufacturers/index_view', ['manufactures' => $manufactures]);
  		}
+        elseif($this->data->uri(2))
+            $this->load->page_404();
  		elseif(array_key_exists($uri, $links))
  		{
  			$id = $links[$uri];
  			$_GET['1-manufacturer'][] = $id;
  			$this->wl_alias_model->init('parts');
  			$products = $this->load->function_in_alias('parts', '__get_Products');
- 			$_SESSION['alias']->alias = 'manufacturers';
+ 			$_SESSION['alias']->id = 11;
+            $_SESSION['alias']->alias = 'manufacturers';
+            $_SESSION['alias']->content = $id;
+            $_SESSION['alias']->code = 200;
  			$_SESSION['alias']->name = $_SESSION['alias']->title = $names[$id];
  			$this->load->page_view('search_view', array('products' => $products));
  		}
  		else
- 			$this->load->page_404(false);
+ 			$this->load->page_404();
  	}
 
  } ?>
