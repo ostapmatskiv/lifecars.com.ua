@@ -1,7 +1,8 @@
-Service "NovaPoshta.ua 1.5"
+Service "NovaPoshta.ua 1.5.1"
 for WhiteLion 1.0
 
 Author: Ostap Matskiv
+Date 1.5.1 : 20.03.2020
 Date 1.5   : 16.10.2019
 Date 1.0   : 27.06.2018
 
@@ -20,3 +21,5 @@ Versions:
 	1.0 	Основа сервісу
 	1.5 	Синхронізація відділень по АПІ.
 			Додано доставку кур'єром
+	1.5.1	виправлено __get_Shipping_to_cart() - дублювання виклику при ->function_in_alias()
+			виправлено novaposhta-city у шаблоні (некоректне автозаповнення)

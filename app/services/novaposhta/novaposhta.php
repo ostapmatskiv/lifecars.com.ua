@@ -138,6 +138,7 @@ class novaposhta extends Controller {
     public function __get_Shipping_to_cart($userShipping)
     {
         $this->load->view('__cart_view', array('userShipping' => $userShipping));
+        return true;
     }
 
     public function __set_Shipping_from_cart()

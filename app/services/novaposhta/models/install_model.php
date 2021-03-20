@@ -13,7 +13,7 @@ class install
 	public $order_alias = 0;
 	public $multi_page = 0;
 	public $admin_ico = 'fa-car';
-	public $version = "1.5";
+	public $version = "1.5.1";
 
 	public $options = array('api_key' => '');
 	public $options_type = array('api_key' => 'text');

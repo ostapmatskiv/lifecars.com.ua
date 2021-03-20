@@ -8,7 +8,7 @@
 <input type="hidden" name="nova-poshta-warehouse-ref" value="<?=$userShipping->warehouse_ref ?? ''?>">
 
  <!-- <label><?=$this->text('Місто')?></label> -->
-<input type="text" name="novaposhta-city" placeholder="<?=$this->text('Місто')?>" value="<?=$userShipping->city ?? ''?>" autocomplete="off" class="form-control" required>
+<input type="text" name="novaposhta-city" placeholder="<?=$this->text('Місто')?>" value="<?=(!empty($userShipping->city_ref) && !empty($userShipping->city)) ? $userShipping->city : ''?>" autocomplete="off" class="form-control" required>
 
 <div id="nova-poshta-warehouse" <?=(!empty($userShipping->method) && $userShipping->method == 'courier') ? 'class="hide"':''?>>
     <!-- <label><?=$this->text('Відділення')?></label> -->
