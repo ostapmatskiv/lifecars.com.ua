@@ -79,7 +79,7 @@
 		?>
 	</div>
 </div>
-<?php } if($cart->payed < $cart->total && empty($cart->payment_alias)) { ?>
+<?php } if($cart->payed < $cart->total && empty($cart->payment_alias) && $this->data->uri(3) != 'edit-shipping') { ?>
 <div class="panel">
 	<div class="panel-body">
 		<legend><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Внести оплату</legend>
@@ -118,7 +118,7 @@
 		</table>
 	</div>
 </div>
-<?php } if(!empty($cart->comment)) { ?>
+<?php } if(!empty($cart->comment) && $this->data->uri(3) != 'edit-shipping') { ?>
 <div class="panel">
 	<div class="panel-body">
 	    <legend><i class="fa fa-commenting" aria-hidden="true"></i> Коментар (побажання) клієнта до замовлення</legend>
@@ -127,10 +127,12 @@
 </div>
 <?php }
 
-if($cart->shipping_id || !empty($cart->shipping_info)) { ?>
+if(($cart->shipping_id || !empty($cart->shipping_info)) && $this->data->uri(3) != 'edit-shipping') { ?>
 <div class="panel">
 	<div class="panel-body">
-		<legend><i class="fa fa-truck" aria-hidden="true"></i> Доставка</legend>
+		<legend><i class="fa fa-truck" aria-hidden="true"></i> Доставка
+			<?=($cart->action == 'new') ? "<a href='/admin/{$_SESSION['alias']->alias}/{$cart->id}/edit-shipping' class='btn btn-primary btn-xs'><i class=\"fa fa-pencil\"></i> редагувати</a>" : '' ?>
+		</legend>
 		<?php
 	    if(!empty($cart->shipping->name))
 	        echo "<p>Служба доставки: <b>{$cart->shipping->name}</b> </p>";
@@ -175,8 +177,42 @@ if($cart->shipping_id || !empty($cart->shipping_info)) { ?>
         </div>
 	</div>
 </div>
+<?php }
+elseif($cart->action == 'new' && (empty($cart->shipping_id) || $this->data->uri(3) == 'edit-shipping'))
+{
+	if($shippings = $this->cart_model->getShippings(array('active' => 1))) { ?>
+<div class="panel" id="cart">
+	<div class="panel-body">
+		<legend><i class="fa fa-truck" aria-hidden="true"></i> Доставка</legend>
+	    <?php if(empty($cart->shipping_id))
+	    			$userShipping = $this->cart_model->getUserShipping($cart->user);
+	    		else
+	    		{
+	    			$userShipping = new stdClass();
+	    			$userShipping->method_id = $cart->shipping_id;
+	    			$userShipping->info = $cart->shipping_info;
+	    			$userShipping->city = $userShipping->department = $userShipping->address = '';
+	    			if(!empty($userShipping->info))
+						foreach ($userShipping->info as $key => $value) {
+							$userShipping->$key = $value;
+						}
+	    		}
+	    echo '<form action="'.SITE_URL.$_SESSION['alias']->alias.'/set__shippingToOrder" method="post" class="col-sm-4 w30">';
+	    echo '<input type="hidden" name="order_id" value="'.$cart->id.'">';
+	    echo '<input type="hidden" name="redirect" value="admin/'.$_SESSION['alias']->alias.'/'.$cart->id.'">';
+	    require_once APP_PATH.'services/cart/views/__shippings_subview.php';
+	    echo '<a href="/admin/'.$_SESSION['alias']->alias.'/'.$cart->id.'" class="btn btn-warning m-r-5" style="display: inline-block;"><i class="fa fa-undo" aria-hidden="true"></i> Назад</a>';
+	    echo '<button type="submit" class="btn btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i> Зберегти</button>';
+		echo "</form></div></div>";
 
-<?php } if($cart->status > 0 && $cart->status_weight < 90) { ?>
+		echo '<link rel="stylesheet" type="text/css" href="'.SERVER_URL.'style/'.$_SESSION['alias']->alias.'/cart.css">';
+		echo '<link rel="stylesheet" type="text/css" href="'.SERVER_URL.'style/'.$_SESSION['alias']->alias.'/checkout.css">';
+		echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">';
+		$this->load->js(['assets/jquery-ui/1.12.1/jquery-ui.min.js', 'assets/jquery.mask.min.js', 'js/'.$_SESSION['alias']->alias.'/cities.js', 'js/'.$_SESSION['alias']->alias.'/checkout.js']);
+	}
+}
+
+if($cart->status > 0 && $cart->status_weight < 90 && $this->data->uri(3) != 'edit-shipping') { ?>
 <div class="panel">
 	<div class="panel-body">
 		<?php require_once 'tabs/_tabs-history.php'; ?>

@@ -1,7 +1,7 @@
 <link rel="stylesheet" type="text/css" href="<?=SERVER_URL.'style/'.$_SESSION['alias']->alias.'/cart.css'?>">
 <link rel="stylesheet" type="text/css" href="<?=SERVER_URL.'style/'.$_SESSION['alias']->alias.'/checkout.css'?>">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
-<?php $this->load->js(['assets/jquery-ui/1.12.1/jquery-ui.min.js', 'assets/sticky.min.js', 'assets/jquery.mask.min.js', 'js/'.$_SESSION['alias']->alias.'/cart.js', 'js/'.$_SESSION['alias']->alias.'/cities.js', 'js/'.$_SESSION['alias']->alias.'/checkout.js']) ?>
+<?php $this->load->js(['assets/jquery-ui/1.12.1/jquery-ui.min.js', 'assets/jquery.mask.min.js', 'js/'.$_SESSION['alias']->alias.'/cart.js', 'js/'.$_SESSION['alias']->alias.'/cities.js', 'js/'.$_SESSION['alias']->alias.'/checkout.js']); // 'assets/sticky.min.js',  ?>
 
 <main id="cart" data-sticky-container>
 	<a href="<?=SITE_URL.$_SESSION['alias']->alias?>" class="right"><i class="fas fa-undo"></i> <?=$this->text('Редагувати замовлення')?></a>
@@ -152,7 +152,7 @@
 					<?php if(!empty($_SESSION['option']->dogovirOfertiLink)) { ?>
 						<label id="oferta">
 							<input type="checkbox" name="oferta" <?=$this->userIs() ? 'checked' : ''?> required>
-							<i class="<?=$this->userIs() ? 'fas' : 'far'?> fa-check-circle"></i>
+							<i class="<?=$this->userIs() ? 'fas fa-check-square' : 'far fa-square'?>"></i>
 							<div><?=$this->text('Я погоджуюся з')?> <a href="<?=SERVER_URL.$_SESSION['option']->dogovirOfertiLink?>" target="_blank"><?=$this->text('Договором оферти')?></a></div>
 						</label>
 					<?php } ?>

@@ -174,7 +174,7 @@ class wl_user_model {
     public function userExists($email = '', &$user = false)
     {
         $email = $this->db->sanitizeString($email);
-        $user = $this->db->select('wl_users as u', 'id, alias, email, name, type, status, photo, password', $email, 'email')
+        $user = $this->db->select('wl_users as u', 'id, alias, email, name, type, status, photo, password, auth_id', $email, 'email')
                             ->join('wl_user_info as i', 'value as phone', ['user' => '#u.id', 'field' => 'phone'])
                             ->limit(1)
                             ->get();

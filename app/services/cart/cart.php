@@ -2,7 +2,7 @@
 
 /*
 
- 	Service "Shop Cart 2.4"
+ 	Service "Shop Cart 2.5"
 	for WhiteLion 1.1
 
 */
@@ -10,7 +10,7 @@
 class cart extends Controller {
 
     private $marketing = array();
-    private $returns_alias = false;
+    private $use__profile_view = false; // for list, detal subview
 
     function __construct()
     {
@@ -23,8 +23,6 @@ class cart extends Controller {
         //     foreach ($cooperation as $c) {
         //         if($c->type == 'marketing')
         //             $this->marketing[] = $c->alias2;
-        //         if($c->type == 'returns')
-        //             $this->returns_alias = $c->alias2;
         //     }
     }
 
@@ -46,7 +44,7 @@ class cart extends Controller {
         {
             if(is_numeric($id) && $id > 0)
             {
-                if($this->userIs())
+                if($this->userIs() || $this->data->get('key'))
                     $this->__view_order_by_id($id);
                 else
                     $this->redirect('login');
@@ -90,7 +88,14 @@ class cart extends Controller {
                 $this->wl_alias_model->setContent($id);
                 $_SESSION['alias']->name = $_SESSION['alias']->title = $this->text('Замовлення №').$id;
             }
-            if($cart->user == $_SESSION['user']->id || $this->userCan())
+            $go = false;
+            if($this->userIs() && $cart->user == $_SESSION['user']->id || $this->userCan())
+                $go = true;
+            else if($key = $this->data->get('key'))
+                if($user = $this->db->getAllDataById('wl_users', $key, 'auth_id'))
+                    if($cart->user == $user->id)
+                        $go = true;
+            if($go)
             {
                 if(!$return)
                     $_SESSION['alias']->breadcrumbs = array($this->text('До всіх замовлень') => $_SESSION['alias']->alias.'/my', $this->text('Замовлення №').$id => '');
@@ -241,7 +246,12 @@ class cart extends Controller {
                                                 ->join('wl_ntkd', 'name, list as info', $ntkd)
                                                 ->get('array');
                         if(count($payments) == 1)
-                            $this->redirect($_SESSION['alias']->alias.'/pay?cart='.$cart->id.'&method='.$payments[0]->id);
+                        {
+                            $accessKey = '';
+                            if(!$this->userIs() && $this->data->get('key'))
+                                $accessKey = '&key='.$this->data->get('key');
+                            $this->redirect($_SESSION['alias']->alias.'/pay?cart='.$cart->id.'&method='.$payments[0]->id.$accessKey);
+                        }
                         else
                         {
                             foreach ($payments as $pay) {
@@ -257,7 +267,10 @@ class cart extends Controller {
                                         $pay->name = $pay->payname;
                                 }
                             }
-                            $this->load->profile_view('pay_view', array('cart' => $cart, 'payments' => $payments));
+                            if($this->userIs() && $this->use__profile_view)
+                                $this->load->profile_view('pay_view', array('cart' => $cart, 'payments' => $payments));
+                            else
+                                $this->load->page_view('pay_view', array('cart' => $cart, 'payments' => $payments));
                         }
                     }
                     else
@@ -266,12 +279,16 @@ class cart extends Controller {
                 else
                 {
                     $showPayment = false;
+                    if(!empty($_SESSION['notify']->meta))
+                        $_SESSION['alias']->meta = $_SESSION['notify']->meta;
+
                     if($cart->payed < $cart->total)
                         if($payments = $this->cart_model->getPayments(array('active' => 1, 'wl_alias' => '>0')))
                             $showPayment = true;
-                    if(!empty($_SESSION['notify']->meta))
-                        $_SESSION['alias']->meta = $_SESSION['notify']->meta;
-                    $this->load->profile_view('detal_view', array('cart' => $cart, 'showPayment' => $showPayment));
+                    if($this->userIs() && $this->use__profile_view)
+                        $this->load->profile_view('detal_view', array('cart' => $cart, 'showPayment' => $showPayment));
+                    else
+                        $this->load->page_view('detal_view', array('cart' => $cart, 'showPayment' => $showPayment, 'echoContainer' => true));
                 }
                 exit;
             }
@@ -328,7 +345,7 @@ class cart extends Controller {
                     if($order->total && !empty($order->products))
                     {
                         $order->total_format = $order->total;
-                        if ($order->products[0]->product_alias)
+                        if($order->products[0]->product_alias)
                             $order->total_format = $this->load->function_in_alias($order->products[0]->product_alias, '__formatPrice', $order->total);
                     }
                     else
@@ -341,14 +358,17 @@ class cart extends Controller {
                             $showPayment = true;
             }
 
-            $this->load->page_view('list_view', array('orders' => $orders, 'showPayment' => $showPayment));
+            if($this->use__profile_view)
+                $this->load->profile_view('list_view', array('orders' => $orders, 'showPayment' => $showPayment));
+            else
+                $this->load->page_view('list_view', array('orders' => $orders, 'showPayment' => $showPayment));
             exit;
         }
         else
             $this->redirect('login');
     }
 
-    public function addProduct()
+    public function addProduct($return_product = false)
     {
         $res = array('result' => false, 'subTotal' => 0);
         if($this->data->post('productKey') && $this->data->post('quantity') != 0)
@@ -415,16 +435,26 @@ class cart extends Controller {
                             if($invoice->price_out)
                             {
                                 $product->price = $invoice->price_out;
-                                $product->price_format = $this->load->function_in_alias($wl_alias, '__formatPrice', $product->price);
+                                $product->price_format = 0;
                             }
                             if($invoice->price_in)
                                 $product->price_in = $invoice->price_in;
                             if($invoice->amount_free < $product->quantity)
                                 $product->quantity = $invoice->amount_free;
-                            $product->sum_format = $this->load->function_in_alias($wl_alias, '__formatPrice', $product->price * $product->quantity);
+                            $product->sum_format = 0;
                         }
                     if(isset($product->discount))
                     	$product->discount *= $product->quantity;
+
+                    $product->sum = $product->price * $product->quantity;
+                    if(empty($product->price_format))
+                        $product->price_format = $this->load->function_in_alias($wl_alias, '__formatPrice', $product->price);
+                    if(empty($product->sum_format))
+                        $product->sum_format = $this->load->function_in_alias($wl_alias, '__formatPrice', $product->sum);
+
+                    if($return_product)
+                        return $product;
+
                     $this->load->smodel('cart_model');
                     if($product->key = $this->cart_model->addProduct($product))
                     {
@@ -665,7 +695,7 @@ class cart extends Controller {
             $user = new stdClass();
             if($this->wl_user_model->userExists($email, $user))
             {
-                if(!empty($user->password) || $_SESSION['option']->usePassword || $get_user)
+                if(!empty($user->password) && $_SESSION['option']->usePassword || $get_user)
                 {
                     $res['result'] = true;
                     if($get_user)
@@ -711,7 +741,7 @@ class cart extends Controller {
             {
                 $_POST['phone'] = !empty($_POST['phone']) ? $this->validator->getPhone($_POST['phone']) : '';
                 $_POST['recipientPhone'] = !empty($_POST['recipientPhone']) ? $this->validator->getPhone($_POST['recipientPhone']) : '';
-                $new_user = $new_user_password = false;
+                $new_user = $new_user_password = $user_auth_id = false;
                 if(!$this->userIs())
                 {
                     $check = $this->checkEmail(true);
@@ -725,6 +755,7 @@ class cart extends Controller {
                         }
                         else
                         {
+                            $user_auth_id = $check['user']->auth_id;
                             $this->wl_user_model->setSession($check['user']);
                             $this->cart_model->updateAdditionalUserFields($_SESSION['user']->id);
                         }
@@ -745,7 +776,10 @@ class cart extends Controller {
                                 $additionall[$key] = $this->data->post($key);
                             }
                         if($user = $this->wl_user_model->add($info, $additionall, $_SESSION['option']->new_user_type, $_SESSION['option']->usePassword, 'cart autoregister'))
+                        {
+                            $user_auth_id = $user->auth_id;
                             $this->wl_user_model->setSession($user);
+                        }
                         $new_user = true;
                     }
                 }
@@ -762,7 +796,7 @@ class cart extends Controller {
                 }
 
                 $delivery_name = '';
-                $delivery = array('id' => 0, 'recipient' => '', 'info' => '', 'text' => '');
+                $delivery = array('id' => 0, 'recipient' => '', 'info' => [], 'text' => '');
                 if($shippings)
                     if($shippingId = $this->data->post('shipping-method'))
                         if(is_numeric($shippingId))
@@ -793,23 +827,27 @@ class cart extends Controller {
                                             $delivery_name = array_shift($name);
                                     } 
 
-                                    $info = array();
-                                    if($city = $this->data->post('shipping-city'))
+                                    if($shipping->type < 3) // 3 => без адреси
                                     {
-                                        $info['city'] = $city;
-                                        $delivery['text'] .= $this->text('Місто').': '.$city;
+                                        if($city = $this->data->post('shipping-city'))
+                                        {
+                                            $info['city'] = $city;
+                                            $delivery['text'] .= $this->text('Місто').': '.$city;
+                                        }
+                                        if($shipping->type == 1) // 1 => за адресою
+                                            if($address = $this->data->post('shipping-address'))
+                                            {
+                                                $info['address'] = $address;
+                                                $delivery['text'] .= '<br>'.$this->text('Адреса').': '.$address;
+                                            }
+                                        if($shipping->type == 2) // 2 => у відділення
+                                            if($department = $this->data->post('shipping-department'))
+                                            {
+                                                $info['department'] = $department;
+                                                $delivery['text'] .= ' '.$this->text('Відділення').': '.$department;
+                                            }
+                                        $delivery['info'] = $info;
                                     }
-                                    if($department = $this->data->post('shipping-department'))
-                                    {
-                                        $info['department'] = $department;
-                                        $delivery['text'] .= ' '.$this->text('Відділення').': '.$department;
-                                    }
-                                    if($address = $this->data->post('shipping-address'))
-                                    {
-                                        $info['address'] = $address;
-                                        $delivery['text'] .= '<br>'.$this->text('Адреса').': '.$address;
-                                    }
-                                    $delivery['info'] = $info;
                                 }
 
                                 $delivery['info']['recipientName'] = $this->data->post('recipientName');
@@ -889,6 +927,12 @@ class cart extends Controller {
                     $this->mail->sendTemplate('checkout', $_SESSION['user']->email, $cart);
                     $this->mail->sendTemplate('checkout_manager', $email_manager_notify, $cart);
 
+                    if(!$_SESSION['option']->usePassword && $user_auth_id)
+                    {
+                        $_SESSION['user'] = new stdClass();
+                        setcookie('auth_id', '', time() - 3600, '/');
+                    }
+
                     if($payment && $payment->wl_alias > 0)
                     {
                         $pay = new stdClass();
@@ -897,6 +941,8 @@ class cart extends Controller {
                         $pay->payed = 0;
                         $pay->wl_alias = $_SESSION['alias']->id;
                         $pay->return_url = $_SESSION['alias']->alias.'/success?order='.$cart['id'];
+                        if(!$_SESSION['option']->usePassword && $user_auth_id)
+                            $pay->return_url .= '&key='.$user_auth_id;
                         
                         $this->load->function_in_alias($payment->wl_alias, '__get_Payment', $pay);
                     }
@@ -947,8 +993,10 @@ class cart extends Controller {
                         $_SESSION['notify']->title = $_SESSION['alias']->name;
                         $_SESSION['notify']->success = $_SESSION['alias']->text;
                         $_SESSION['notify']->meta = $_SESSION['alias']->meta;
-                        $this->redirect($_SESSION['alias']->alias.'/success?order='.$cart['id']);
-                        // $this->load->profile_view('success_view', array('cart' => $cart));
+                        if(!$_SESSION['option']->usePassword && $user_auth_id)
+                            $this->redirect($_SESSION['alias']->alias.'/success?order='.$cart['id'].'&key='.$user_auth_id);
+                        else
+                            $this->redirect($_SESSION['alias']->alias.'/success?order='.$cart['id']);
                     }
                 }
             }
@@ -969,7 +1017,7 @@ class cart extends Controller {
         {
             if(is_numeric($order_id) && $order_id > 0)
             {
-                if($this->userIs())
+                if($this->userIs() || !empty($_GET['key']))
                     $this->__view_order_by_id($order_id);
                 else
                     $this->redirect('login');
@@ -1003,8 +1051,8 @@ class cart extends Controller {
                 $_SESSION['notify']->success = $this->text('Доброго вечора', 0).', <strong>'.$_SESSION['user']->name.'</strong>! '.$this->text('Дякуємо що повернулися').$notify;
             else
                 $_SESSION['notify']->success = $this->text('Доброго дня', 0).', <strong>'.$_SESSION['user']->name.'</strong>! '.$this->text('Дякуємо що повернулися').$notify;
-            if(!empty($notify))
-                $this->redirect($_SESSION['alias']->alias);
+            // if(!empty($notify))
+            //     $this->redirect($_SESSION['alias']->alias);
         }
 
         if($products = $this->cart_model->getProductsInCart())
@@ -1053,6 +1101,166 @@ class cart extends Controller {
             $this->redirect($_SESSION['alias']->alias);
     }
 
+    // buy per one click
+    public function buyProduct()
+    {
+        $this->load->library('validator');
+        $this->validator->setRules($this->text('productKey'), $this->data->post('productKey'), 'required|3..50');
+        if(!$this->userIs())
+        {
+            $this->validator->setRules($this->text('email'), $this->data->post('email'), 'required|email');
+            $this->validator->setRules($this->text('Ім\'я Прізвище'), $this->data->post('name'), 'required|5..50');
+        }
+        if(!empty($_POST['phone']))
+            $this->validator->setRules($this->text('Контактний номер'), $this->data->post('phone'), 'required|phone');
+        if($this->validator->run())
+        {
+            $this->load->smodel('cart_model');
+            if($product = $this->addProduct(true))
+            {
+                $_POST['phone'] = !empty($_POST['phone']) ? $this->validator->getPhone($_POST['phone']) : '';
+                $new_user = $new_user_password = $user_auth_id = false;
+                if(!$this->userIs())
+                {
+                    $check = $this->checkEmail(true);
+                    if($check['result'] && $check['user'])
+                    {
+                        if($_SESSION['option']->usePassword)
+                        {
+                            $_SESSION['notify'] = new stdClass();
+                            $_SESSION['notify']->error = $check['message'];
+                            $this->redirect();
+                        }
+                        else
+                        {
+                            $user_auth_id = $check['user']->auth_id;
+                            $this->wl_user_model->setSession($check['user']);
+                            $this->cart_model->updateAdditionalUserFields($_SESSION['user']->id);
+                        }
+                    }
+                    else
+                    {
+                        $this->load->model('wl_user_model');
+                        $info = $additionall = array();
+                        $info['status'] = 1;
+                        $info['email'] = $this->data->post('email');
+                        $info['name'] = $this->data->post('name');
+                        $info['photo'] = NULL;
+                        if($_SESSION['option']->usePassword)
+                            $info['password'] = $new_user_password = bin2hex(openssl_random_pseudo_bytes(4));
+                        $additionall = array();
+                        if(!empty($this->cart_model->additional_user_fields))
+                            foreach ($this->cart_model->additional_user_fields as $key) {
+                                $additionall[$key] = $this->data->post($key);
+                            }
+                        if($user = $this->wl_user_model->add($info, $additionall, $_SESSION['option']->new_user_type, $_SESSION['option']->usePassword, 'cart autoregister'))
+                        {
+                            $user_auth_id = $user->auth_id;
+                            $this->wl_user_model->setSession($user);
+                        }
+                        $new_user = true;
+                    }
+                }
+                else
+                    $this->cart_model->updateAdditionalUserFields($_SESSION['user']->id);
+
+                $cart = $this->cart_model->checkout($_SESSION['user']->id, array(), false, $product->sum);
+                $this->cart_model->addProduct($product, $_SESSION['user']->id, $cart['id']);
+                if($product->storage_invoice && $product->storage_alias)
+                {
+                    $reserve = array('invoice' => $product->storage_invoice, 'amount' => $product->quantity);
+                    $this->load->function_in_alias($product->storage_alias, '__set_Reserve', $reserve);
+                }
+
+                $cart['date'] = date('d.m.Y H:i');
+                $cart['user_name'] = $_SESSION['user']->name;
+                $cart['user_email'] = $_SESSION['user']->email;
+                $cart['user_phone'] = $this->data->formatPhone($_POST['phone']);
+                $cart['new_user'] = $new_user;
+                if($new_user && $new_user_password)
+                    $cart['password'] = $new_user_password;
+                $cart['link'] = SITE_URL.$_SESSION['alias']->alias.'/'.$cart['id'];
+                $cart['admin_link'] = SITE_URL.'admin/'.$_SESSION['alias']->alias.'/'.$cart['id'];
+
+                $cart['total_formatted'] = $cart['sum_formatted'] = $product->sum_format;
+                if($cart['discount'])
+                    $cart['discount_formatted'] = $this->load->function_in_alias($product->product_alias, '__formatPrice', $cart['discount']);
+
+                $product->info = $product;
+                $cart['products'] = [$product];
+                $cart['delivery'] = $cart['delivery_price'] = $cart['payment'] = '';
+
+                $email_manager_notify = $_SESSION['option']->email_manager ?? SITE_EMAIL;
+                
+                $this->load->library('mail');
+                $this->mail->sendTemplate('checkout', $_SESSION['user']->email, $cart);
+                $this->mail->sendTemplate('checkout_manager', $email_manager_notify, $cart);
+
+                if(!$_SESSION['option']->usePassword && $user_auth_id)
+                {
+                    $_SESSION['user'] = new stdClass();
+                    setcookie('auth_id', '', time() - 3600, '/');
+                }
+
+                $this->wl_alias_model->setContent(2);
+                if (!empty($_SESSION['alias']->text) || !empty($_SESSION['alias']->meta)) {
+                    $keys = array();
+                    foreach ($cart as $key => $value) {
+                        $name = '{cart.'.$key;
+                        if(!is_object($value) && !is_array($value))
+                            $keys[$name.'}'] = $value;
+                        else
+                            foreach ($value as $keyO => $valueO) {
+                                if(!is_object($valueO) && !is_array($valueO))
+                                    $keys[$name.'.'.$keyO.'}'] = $valueO;
+                                else
+                                    foreach ($valueO as $key1 => $value1) {
+                                        if(!is_object($value1) && !is_array($value1))
+                                            $keys[$name.'.'.$keyO.'.'.$key1.'}'] = $value1;
+                                    }
+                            }
+                    }
+                    if (!empty($_SESSION['alias']->meta) && strripos($_SESSION['alias']->meta, 'transactionProducts') !== false) {
+                        $transactionProducts = '';
+                        foreach ($cart['products'] as $product) {
+                            $transactionProducts .= "{
+                                'sku': '{$product->info->article_show}',
+                                'name': '{$product->info->name}',
+                                'category': '{$product->info->group_name}',
+                                'price': '{$product->price}',
+                                'quantity': '{$product->quantity}'
+                            },";
+                        }
+                        $keys['{{$transactionProducts}}'] = substr($transactionProducts, 0, -1);
+                    }
+                    $keys['{name}'] = $_SESSION['alias']->name;
+                    $keys['{SITE_NAME}'] = SITE_NAME;
+                    $keys['{SITE_URL}'] = SITE_URL;
+                    $keys['{IMG_PATH}'] = IMG_PATH;
+                    foreach (['text', 'meta'] as $key) {
+                        foreach ($keys as $keyR => $valueR) {
+                            $_SESSION['alias']->$key = str_replace($keyR, $valueR, $_SESSION['alias']->$key);
+                        }
+                    }
+                }
+                $_SESSION['notify'] = new stdClass();
+                $_SESSION['notify']->title = $_SESSION['alias']->name;
+                $_SESSION['notify']->success = $_SESSION['alias']->text;
+                $_SESSION['notify']->meta = $_SESSION['alias']->meta;
+                if(!$_SESSION['option']->usePassword && $user_auth_id)
+                    $this->redirect($_SESSION['alias']->alias.'/success?order='.$cart['id'].'&key='.$user_auth_id);
+                else
+                    $this->redirect($_SESSION['alias']->alias.'/success?order='.$cart['id']);
+            }
+        }
+        else
+        {
+            $_SESSION['notify'] = new stdClass();
+            $_SESSION['notify']->error = $this->validator->getErrors();
+            $this->redirect();
+        }
+    }
+
     public function coupon()
     {
         if($code = $this->data->post('code'))
@@ -1079,14 +1287,30 @@ class cart extends Controller {
 
     public function pay()
     {
+        $accessKey = '';
+        if(!$this->userIs() && $this->data->get('key'))
+            $accessKey = '?key='.$this->data->get('key');
+
         if(isset($_POST['method']) && is_numeric($_POST['method']) && isset($_POST['cart']) && is_numeric($_POST['cart']))
         {
             if($cart = $this->db->getAllDataById('s_cart', $_POST['cart']))
             {
-                $cart->return_url = $_SESSION['alias']->alias.'/'.$cart->id;
-                $cart->wl_alias = $_SESSION['alias']->id;
+                $go = false;
+                if($this->userIs() && $cart->user == $_SESSION['user']->id || $this->userCan())
+                    $go = true;
+                else if($key = $this->data->get('key'))
+                    if($user = $this->db->getAllDataById('wl_users', $key, 'auth_id'))
+                        if($cart->user == $user->id)
+                            $go = true;
+                if($go)
+                {
+                    $cart->return_url = $_SESSION['alias']->alias.'/'.$cart->id.$accessKey;
+                    $cart->wl_alias = $_SESSION['alias']->id;
 
-                $this->load->function_in_alias($this->data->post('method'), '__get_Payment', $cart);
+                    $this->load->function_in_alias($this->data->post('method'), '__get_Payment', $cart);
+                }
+                else
+                    $this->load->notify_view(array('errors' => $this->text('Немає прав для перегляду даного замовлення.')));
                 exit;
             }
         }
@@ -1095,10 +1319,22 @@ class cart extends Controller {
         {
             if($cart = $this->db->getAllDataById('s_cart', $_GET['cart']))
             {
-                $cart->return_url = $_SESSION['alias']->alias.'/'.$cart->id;
-                $cart->wl_alias = $_SESSION['alias']->id;
+                $go = false;
+                if($this->userIs() && $cart->user == $_SESSION['user']->id || $this->userCan())
+                    $go = true;
+                else if($key = $this->data->get('key'))
+                    if($user = $this->db->getAllDataById('wl_users', $key, 'auth_id'))
+                        if($cart->user == $user->id)
+                            $go = true;
+                if($go)
+                {
+                    $cart->return_url = $_SESSION['alias']->alias.'/'.$cart->id.$accessKey;
+                    $cart->wl_alias = $_SESSION['alias']->id;
 
-                $this->load->function_in_alias($this->data->get('method'), '__get_Payment', $cart);
+                    $this->load->function_in_alias($this->data->get('method'), '__get_Payment', $cart);
+                }
+                else
+                    $this->load->notify_view(array('errors' => $this->text('Немає прав для перегляду даного замовлення.')));
                 exit;
             }
         }
@@ -1119,6 +1355,105 @@ class cart extends Controller {
                 $this->load->function_in_alias($shipping[0]->wl_alias, '__get_Shipping_to_cart', $userShipping);
             }
         }
+    }
+
+    public function set__shippingToOrder()
+    {
+        if($order_id = $this->data->post('order_id'))
+        {
+            if($cart = $this->db->getAllDataById('s_cart', $order_id))
+            {
+                $go = false;
+                if($this->userIs() && $cart->user == $_SESSION['user']->id || $this->userCan())
+                    $go = true;
+                else if($accessKey = $this->data->post('accessKey'))
+                    if($user = $this->db->getAllDataById('wl_users', $accessKey, 'auth_id'))
+                        if($cart->user == $user->id)
+                            $go = true;
+                if($go)
+                {
+                    $this->load->library('validator');
+                    $this->validator->setRules($this->text('Ім\'я Прізвище отримувача'), $this->data->post('recipientName'), 'required');
+                    $this->validator->setRules($this->text('Контактний номер'), $this->data->post('recipientPhone'), 'required|phone');
+                    if($this->validator->run())
+                    {
+                        $_POST['recipientPhone'] = !empty($_POST['recipientPhone']) ? $this->validator->getPhone($_POST['recipientPhone']) : '';
+
+                        $delivery = array('id' => 0, 'recipient' => '', 'info' => [], 'text' => '');
+                        if($shippingId = $this->data->post('shipping-method'))
+                            if(is_numeric($shippingId))
+                                if($shipping = $this->db->getAllDataById($_SESSION['service']->table.'_shipping', array('id' => $shippingId, 'active' => 1)))
+                                {
+                                    $delivery['id'] = $shipping->id;
+                                    if($shipping->wl_alias)
+                                    {
+                                        $info = $this->load->function_in_alias($shipping->wl_alias, '__set_Shipping_from_cart');
+                                        if(!empty($info['info']))
+                                            $delivery['info'] = $info['info'];
+                                        if(!empty($info['text']))
+                                            $delivery['text'] = $info['text'];
+                                    }
+                                    elseif($shipping->type < 3) // 3 => без адреси
+                                    {
+                                        if($city = $this->data->post('shipping-city'))
+                                        {
+                                            $info['city'] = $city;
+                                            $delivery['text'] .= $this->text('Місто').': '.$city;
+                                        }
+                                        if($shipping->type == 1) // 1 => за адресою
+                                            if($address = $this->data->post('shipping-address'))
+                                            {
+                                                $info['address'] = $address;
+                                                $delivery['text'] .= '<br>'.$this->text('Адреса').': '.$address;
+                                            }
+                                        if($shipping->type == 2) // 2 => у відділення
+                                            if($department = $this->data->post('shipping-department'))
+                                            {
+                                                $info['department'] = $department;
+                                                $delivery['text'] .= ' '.$this->text('Відділення').': '.$department;
+                                            }
+                                        $delivery['info'] = $info;
+                                    }
+
+                                    $delivery['info']['recipientName'] = $this->data->post('recipientName');
+                                    $delivery['info']['recipientPhone'] = $this->data->post('recipientPhone');
+                                    if($shipping->pay >= 0)
+                                    {
+                                        $delivery['pay'] = $delivery['info']['pay'] = $shipping->pay;
+                                        $delivery['price'] = $delivery['info']['price'] = $shipping->price;
+                                    }
+                                    $delivery['text'] .= '<br><br>'.$this->text('Отримувач').': <strong>'.$delivery['info']['recipientName'].', '.$this->data->formatPhone($delivery['info']['recipientPhone']).'</strong>';
+
+                                    $update = [];
+                                    $update['shipping_id'] = (isset($delivery['id'])) ? $delivery['id'] : 0;
+                                    $update['shipping_info'] = (!empty($delivery['info'])) ? serialize($delivery['info']) : '';
+                                    if(!empty($delivery['price']) && ($delivery['pay'] == 0 || $delivery['pay'] > $cart->total))
+                                        $update['total'] = $cart->total + $delivery['price'];
+                                    $this->db->updateRow($_SESSION['service']->table, $update, $cart->id);
+                                }
+
+                        if($link = $this->data->post('redirect'))
+                            $this->redirect($link);
+
+                        $accessKey = '';
+                        if(!$this->userIs() && $this->data->post('accessKey'))
+                            $accessKey = '?key='.$this->data->post('accessKey');
+                        $this->redirect($_SESSION['alias']->alias.'/'.$cart->id.$accessKey);
+                    }
+                    else
+                    {
+                        $_SESSION['notify'] = new stdClass();
+                        $_SESSION['notify']->error = $this->validator->getErrors();
+                        $this->redirect();
+                    }
+                }
+                else
+                    $this->load->notify_view(array('errors' => $this->text('Немає прав для перегляду даного замовлення.')));
+                exit;
+            }
+        }
+        echo "error saving shipping data";
+        exit;
     }
 
     public function getProductsInCart()

@@ -1,15 +1,20 @@
 $(document).ready(function (){
     $('input#phone, input[name=recipientPhone]').mask('+38 (000) 000-00-00');
-    var sticky_percents = new Sticky('#cart #percents');
-    var sticky_percents_info = new Sticky('#cart #percents+.info');
+    if (typeof Sticky === "function")
+    {
+        var sticky_percents = new Sticky('#cart #percents');
+        var sticky_percents_info = new Sticky('#cart #percents+.info');
+    }
+    
     setPercents();
+
     if (typeof initShipping === "function")
         initShipping();
 
     if (typeof cities !== "undefined")
     {
         if (typeof autocomplete === "function")
-            $("#shipping-cities input").autocomplete({ source: cities });
+            $("#shipping-cities input").autocomplete({ source: cities }).attr('autocomplete', 'none');
         else
             cities.forEach(function(city) {
                 $("#shipping-cities-list").append('<option>'+city+'</option>');
@@ -42,9 +47,9 @@ $('form input[name=payment_method]').change(function(){
 
 $( '#cart #oferta' ).change(function() {
     if($( this ).find('input').is(":checked"))
-        $( this ).parent().find('i').attr('class', 'fas fa-check-circle');
+        $( this ).parent().find('i').attr('class', 'fas fa-check-square');
     else
-        $( this ).parent().find('i').attr('class', 'far fa-check-circle');
+        $( this ).parent().find('i').attr('class', 'far fa-square');
 })
 
 $( 'form#confirm' ).find( 'select, textarea, input' ).change(function() { setPercents() })

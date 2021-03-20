@@ -359,7 +359,7 @@ class cart_model
 		}
 	}
 
-	public function checkout($user, $delivery = array(), $payment = false)
+	public function checkout($user, $delivery = array(), $payment = false, $cart_total = 0)
 	{
 		$cart = array();
 		$cart['user'] = $user;
@@ -373,7 +373,10 @@ class cart_model
 			if($payment->wl_alias == 0)
 				$cart['payment_id'] = $payment->id;
 		}
-		$cart['total'] = $this->getSubTotalInCart($user);
+		if($cart_total > 0)
+			$cart['total'] = $cart_total;
+		else
+			$cart['total'] = $this->getSubTotalInCart($user);
 		if(!empty($delivery['price']) && ($delivery['pay'] == 0 || $delivery['pay'] > $cart['total']))
 			$cart['total'] += $delivery['price'];
 		if($this->discountTotal)
@@ -386,17 +389,20 @@ class cart_model
 		$cart['date_add'] = $cart['date_edit'] = time();
 		$cart['id'] = $this->db->insertRow($this->table(), $cart);
 
-		$where = array('user' => $user, 'cart' => 0, 'active' => 1);
-		$this->db->updateRow($this->table('_products'), array('cart' => $cart['id']), $where);
-		if($this->bonusDiscountId && !empty($this->bonusDiscountInfo))
-			foreach ($this->bonusDiscountInfo as $key => $value) {
-				$history = array();
-				$history['cart'] = $cart['id'];
-				$history['user'] = $user;
-				$history['comment'] = 'Бонус-код: '.$key.' '.$value;
-				$history['date'] = $cart['date_add'];
-				$this->db->insertRow($this->table('_history'), $history);
-			}
+		if($cart_total == 0)
+		{
+			$where = array('user' => $user, 'cart' => 0, 'active' => 1);
+			$this->db->updateRow($this->table('_products'), array('cart' => $cart['id']), $where);
+			if($this->bonusDiscountId && !empty($this->bonusDiscountInfo))
+				foreach ($this->bonusDiscountInfo as $key => $value) {
+					$history = array();
+					$history['cart'] = $cart['id'];
+					$history['user'] = $user;
+					$history['comment'] = 'Бонус-код: '.$key.' '.$value;
+					$history['date'] = $cart['date_add'];
+					$this->db->insertRow($this->table('_history'), $history);
+				}
+		}
 
 		return $cart;
 	}
@@ -559,7 +565,7 @@ class cart_model
 
 	public function getUserShipping($user = 0)
 	{
-		if(isset($_SESSION['user']->id))
+		if(isset($_SESSION['user']->id) || $user > 0)
 		{
 			if($user == 0)
 				$user = $_SESSION['user']->id;
@@ -578,6 +584,10 @@ class cart_model
 						$userShipping->$key = $value;
 					}
 				}
+				if(empty($userShipping->recipientName))
+					$userShipping->recipientName = $userShipping->userName;
+				if(empty($userShipping->recipientPhone))
+					$userShipping->recipientPhone = $userShipping->userPhone;
 				return $userShipping;
 			}
 		}

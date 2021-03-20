@@ -12,16 +12,21 @@
         <h4><i class="fas fa-check"></i> <?=(isset($_SESSION['notify']->title)) ? $_SESSION['notify']->title : $this->text('Успіх!', 0)?></h4>
         <p><?=$_SESSION['notify']->success?></p>
     </div>
-<?php } unset($_SESSION['notify']); ?>
+<?php } unset($_SESSION['notify']); 
 
-<main>
+$accessKey = '';
+if(!$this->userIs() && $this->data->get('key'))
+	$accessKey = '?key='.$this->data->get('key');
+?>
+
+<main id="cart">
 <h1><?=$this->text('Замовлення')?> #<?= $cart->id?> <?=$this->text('від')?> <?= date('d.m.Y H:i', $cart->date_edit)?></h1>
 <p><?=$this->text('Статус замовлення')?>: <strong><?= $cart->status_name ?></strong>. <?=$this->text('Статус оплати')?>: <strong><?= empty($cart->payed) ? 'Очікує оплати' : 'Оплачено' ?></strong></p>
 
 <a href="<?=SITE_URL.$_SESSION['alias']->alias?>/my" class="btn btn-success"><i class="fas fa-undo"></i> <?=$this->text('До всіх замовлень')?></a>
-<a href="<?=SITE_URL?>cart/<?= $cart->id?>/print" class="btn btn-danger" target="_blank"><i class="fas fa-print"></i> <?=$this->text('Друкувати')?></a>
+<a href="<?=SITE_URL?>cart/<?= $cart->id?>/print<?=$accessKey?>" class="btn btn-danger" target="_blank"><i class="fas fa-print"></i> <?=$this->text('Друкувати')?></a>
 <?php if($cart->action == 'new' && $showPayment) { ?>
-	<a href="<?=SITE_URL?>cart/<?= $cart->id?>/pay" class="btn btn-warning"><i class="fas fa-credit-card"></i> <?=$this->text('Оплатити')?></a>
+	<a href="<?=SITE_URL?>cart/<?= $cart->id?>/pay<?=$accessKey?>" class="btn btn-warning"><i class="fas fa-credit-card"></i> <?=$this->text('Оплатити')?></a>
 <?php } 
 if(!$showPayment &&  $cart->action == 'closed') {
 	$lastday = time() - 86400*14;
@@ -177,9 +182,13 @@ if(!$showPayment &&  $cart->action == 'closed') {
 	</tfoot>
 </table>
 
-
-<?php if($cart->shipping_id) {
-	echo "<h4>{$this->text('Доставка')}</h4>";
+<?php */ 
+if($cart->shipping_id && $this->data->uri(2) != 'edit-shipping')
+{
+	if($cart->action == 'new')
+		echo "<h4>{$this->text('Доставка')} <small style='font-size: small'><a href='/{$_SESSION['alias']->alias}/{$cart->id}/edit-shipping{$accessKey}' class='btn btn-primary'><i class=\"fas fa-pencil-alt\"></i> {$this->text('редагувати')}</a></small></h4>";
+	else
+		echo "<h4>{$this->text('Доставка')}</h4>";
 	if(!empty($cart->shipping->name))
 		echo "<p><strong>{$cart->shipping->name}</strong>";
 	if(!empty($cart->shipping->text))
@@ -207,6 +216,44 @@ if(!$showPayment &&  $cart->action == 'closed') {
 		echo "<p>{$cart->shipping_info}</p>";
 	if(!empty($cart->ttn))
         echo "<p>{$this->text('ТТН')}: <strong>{$cart->ttn}</strong> </p>";
+}
+elseif($cart->action == 'new' && (empty($cart->shipping_id) || $this->data->uri(2) == 'edit-shipping'))
+{
+	if($shippings = $this->cart_model->getShippings(array('active' => 1)))
+	{
+		if(empty($cart->shipping_id)) { ?>
+		<div class="alert alert-warning">
+	        <h4 style="margin: 0"><i class="fas fa-exclamation-triangle "></i> <?=$this->text('Увага! Вкажіть доставку')?></h4>
+	    </div>
+	    <?php }
+	    // if($shippings[0]->pay >= 0)
+	    //     $shippings[0]->priceFormat = $this->load->function_in_alias($products[0]->product_alias, '__formatPrice', $shippings[0]->price);
+	    if(empty($cart->shipping_id))
+			$userShipping = $this->cart_model->getUserShipping($cart->user);
+		else
+		{
+			$userShipping = new stdClass();
+			$userShipping->method_id = $cart->shipping_id;
+			$userShipping->info = $cart->shipping_info;
+			$userShipping->city = $userShipping->department = $userShipping->address = '';
+			if(!empty($userShipping->info))
+				foreach ($userShipping->info as $key => $value) {
+					$userShipping->$key = $value;
+				}
+		}
+	    echo '<form action="'.SITE_URL.$_SESSION['alias']->alias.'/set__shippingToOrder" method="post" class="w30 m100">';
+	    echo '<input type="hidden" name="order_id" value="'.$cart->id.'">';
+	    if(!$this->userIs() && $this->data->get('key'))
+	    	echo '<input type="hidden" name="accessKey" value="'.$this->data->get('key').'">';
+	    require_once '__shippings_subview.php';
+	    echo '<button type="submit" class="checkout active">'.$this->text('Зберегти', 0).'</button>';
+		echo "</form>";
+
+		echo '<link rel="stylesheet" type="text/css" href="'.SERVER_URL.'style/'.$_SESSION['alias']->alias.'/cart.css">';
+		echo '<link rel="stylesheet" type="text/css" href="'.SERVER_URL.'style/'.$_SESSION['alias']->alias.'/checkout.css">';
+		echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">';
+		$this->load->js(['assets/jquery-ui/1.12.1/jquery-ui.min.js', 'assets/jquery.mask.min.js', 'js/'.$_SESSION['alias']->alias.'/cities.js', 'js/'.$_SESSION['alias']->alias.'/checkout.js']);
+	}
 }
 
 if(!empty($cart->payment)) {

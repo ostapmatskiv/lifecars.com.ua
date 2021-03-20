@@ -9,7 +9,10 @@
 
 <form action="<?= SERVER_URL?>cart/pay" method="POST">
 	<input type="hidden" name="cart" value="<?=$cart->id?>">
-	<?php if($payments) {
+	<?php if(!$this->userIs() && $this->data->get('key'))
+		echo '<input type="hidden" name="accessKey" value="'.$this->data->get('key').'">';
+
+	if($payments) {
         foreach ($payments as $payment) { ?>
 		    <button type="submit" name="method" value="<?=$payment->id?>" class="btn btn-success w50">
 		    	<?=$payment->name?>

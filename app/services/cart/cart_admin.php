@@ -92,8 +92,8 @@ class cart_admin extends Controller {
                             $product->info = new stdClass();
                             $product->info->id = $product->id;
                             $product->info->photo = $options['photo'];
-                            $product->info->cart_photo = $product->info->admin_photo = $options['cart_photo'];
-                            $product->info->article = $product->info->article_show = $options['article'];
+                            $product->info->cart_photo = $product->info->admin_photo = $options['cart_photo'] ?? '';
+                            $product->info->article = $product->info->article_show = $options['article'] ?? '';
                             $product->info->name = $options['name'];
                             $product->info->link = $options['photo'] ?? '';
                             $cart->subTotal += $product->price * $product->quantity + $product->discount;
