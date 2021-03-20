@@ -54,9 +54,10 @@ if(empty($address) && $userShipping && $userShipping->address)
     } ?>
 </div>
 
+<?php if(isset($cart)) { ?>
 <h4><?=$this->text('Отримувач')?></h4>
-
-<?php $recipientName = $this->data->re_post('recipientName');
+<?php }
+$recipientName = $this->data->re_post('recipientName');
 if(empty($recipientName))
 {
     $recipientName = $userShipping && !empty($userShipping->recipientName) ? $userShipping->recipientName : '';
@@ -69,8 +70,8 @@ if(empty($recipientPhone) && $userShipping && !empty($userShipping->recipientPho
 if(empty($recipientPhone) && $this->userIs() && !empty($_SESSION['user']->phone))
     $recipientPhone = $_SESSION['user']->phone;
 ?>
-<input type="text" name="recipientName" placeholder="<?=$this->text('Ім\'я Прізвище отримувача')?>" value="<?= $recipientName ?>" required>
-<input type="phone" name="recipientPhone" placeholder="<?=$this->text('+380********* (Контактний номер)')?>" value="<?= $recipientPhone ?>" required>
+<input type="<?=(isset($cart)) ? 'text' : 'hidden'?>" name="recipientName" placeholder="<?=$this->text('Ім\'я Прізвище отримувача')?>" value="<?= $recipientName ?>" required>
+<input type="<?=(isset($cart)) ? 'phone' : 'hidden'?>" name="recipientPhone" placeholder="<?=$this->text('+380********* (Контактний номер)')?>" value="<?= $recipientPhone ?>" required>
 
 <script>
 var shippingsTypes = {

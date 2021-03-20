@@ -181,7 +181,7 @@ $("#cart input#phone").on("change", function() {
     var phone = $(this).val(),
         recipientPhone = $('form#confirm input[name="recipientPhone"]');
     $( 'form#confirm' ).find( 'input[name="phone"]' ).val(phone);
-    if(recipientPhone.val() == '')
+    // if(recipientPhone.val() == '')
         recipientPhone.val(phone);
     setPercents()
 });
@@ -189,7 +189,7 @@ $("#cart input#name").on("change", function() {
     var name = $(this).val(),
         recipientName = $('form#confirm input[name="recipientName"]');
     $( 'form#confirm' ).find( 'input[name="name"]' ).val(name);
-    if(recipientName.val() == '')
+    // if(recipientName.val() == '')
         recipientName.val(name);
     setPercents()
 });
