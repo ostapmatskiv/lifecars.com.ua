@@ -112,7 +112,7 @@
 									$checked = 'checked';
 							} ?>
 				    		<label <?=$checked ? 'class="active"' : ''?>>
-					            <input type="radio" name="payment_method" value="<?=$payment->id?>" <?=$checked?> required>
+					            <input type="radio" name="payment_method" value="<?=$payment->id?>" <?=$checked?>>
 					            <?=$payment->name?>
 					        </label>
 					        <div class="payment-info <?=$checked ? '' : 'hide'?>" id="payment-<?=$payment->id?>">

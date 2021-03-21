@@ -9,7 +9,7 @@ if(count($shippings) > 1) {
         $selected = $userShipping->method_id;
     foreach ($shippings as $i => $method) { ?>
         <label>
-            <input type="radio" name="shipping-method" value="<?=$method->id?>" <?php if($selected == $method->id) { echo 'checked'; $shippingType = $method->type; $shippingInfo = $method->info; $shippingWlAlias = $method->wl_alias; } ?> onchange="changeShipping(this)" <?=$i == 0?'required':''?>>
+            <input type="radio" name="shipping-method" value="<?=$method->id?>" <?php if($selected == $method->id) { echo 'checked'; $shippingType = $method->type; $shippingInfo = $method->info; $shippingWlAlias = $method->wl_alias; } ?> onchange="changeShipping(this)">
             <?=$method->name?>
         </label>
         <?php }
