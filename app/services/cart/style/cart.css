@@ -311,9 +311,9 @@ table.__cart_products_list .amount button.plusInCart i { margin-left: -4px }
 		position: relative;
 	}
 	.table__cart_products_list2 .photo { width: 20%; height: 100% }
-	.table__cart_products_list2 .name { width: calc(80% - 65px) }
+	.table__cart_products_list2 .name { width: calc(80% - 70px) }
 	.table__cart_products_list2 .amount { width: 20%; padding: 0; height: 20px }
-	.table__cart_products_list2 .actions { width: 65px; height: 20px }
+	.table__cart_products_list2 .actions { width: 70px; height: 20px }
 	.table__cart_products_list2 .sum {
 		position: absolute;
 	    right: 5px;
