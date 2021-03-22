@@ -315,7 +315,7 @@ table.__cart_products_list .amount button.plusInCart i { margin-left: -4px }
 	}
 	.table__cart_products_list2 .photo { width: 20%; height: 100% }
 	.table__cart_products_list2 .name { width: calc(80% - 70px) }
-	.table__cart_products_list2 .amount { width: 20%; padding: 0; height: 20px }
+	.table__cart_products_list2 .amount { width: 100px; padding: 0; height: 20px }
 	.table__cart_products_list2 .actions { width: 70px; height: 50px }
 	.table__cart_products_list2 .sum {
 		position: absolute;
@@ -323,7 +323,7 @@ table.__cart_products_list .amount button.plusInCart i { margin-left: -4px }
 	    bottom: 0;
 	    width: 65px; 
 	}
-	main.detal section.detal__info .info__price .card__check.detal__check input, .table__cart_products_list2 .amount input { width: 35px }
+	main.detal section.detal__info .info__price .card__check.detal__check input, .table__cart_products_list2 .amount input { width: 40px }
 	.table__cart_products_list2 .product-active {
 		margin-right: 0;
 		width: 65px;
