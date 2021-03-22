@@ -146,7 +146,7 @@ var cart = {
 					$('#product-'+id).fadeOut().remove();
 					$('#cart p.price strong').html(res.subTotalFormat);
 					$('#cart p.discount strong').html(res.discountTotal);
-					if($('table.__cart_products_list tbody tr').length == 0)
+					if($('.table__cart_products_list2 .tr').length == 0)
 					{
 						$('a[href$=checkout]').attr('disabled', true).removeClass('active');
 						$('#cart .emptyCart').removeClass('hide').fadeIn();

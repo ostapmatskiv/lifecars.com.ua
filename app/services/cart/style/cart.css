@@ -213,9 +213,11 @@ table.__cart_products_list .amount button.plusInCart i { margin-left: -4px }
 }
 #cart-product-delete h4 { font-size: 20px; text-align: center; padding: 10px 0 20px; }
 #cart-product-delete h5 { font-weight: 400; font-size: 18px; font-weight: bold }
+#cart-product-delete .product-img img { width: 100% }
 #cart-product-delete .product-options { margin: 5px 0 }
 #cart-product-delete p.product-price + p { margin-top: 30px }
 #cart-product-delete .actions { margin-top: 20px; color: #fff }
+#cart-product-delete .actions button { padding: 10px 20px }
 #cart-product-delete .actions .postpone { background: #74C186 }
 #cart-product-delete .actions .postpone:hover { background: #4d945d }
 #cart-product-delete .actions .delete { background: #E22929 }

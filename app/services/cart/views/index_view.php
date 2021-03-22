@@ -95,7 +95,7 @@
 	<input type="hidden" id="action-product-key">
 	<div class="flex actions">
 		<!-- <button class="close"><?=$this->text('Скасувати')?></button> -->
-		<button class="postpone"><?=$this->text('Відкласти товар')?></button>
-		<button class="delete"><?=$this->text('Видалити з корзини')?></button>
+		<button class="postpone"><i class="fas fa-history"></i> <?=$this->text('Відкласти товар')?></button>
+		<button class="delete"><i class="fas fa-times"></i> <?=$this->text('Видалити з корзини')?></button>
 	</div>
 </div>

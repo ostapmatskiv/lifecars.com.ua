@@ -33,9 +33,9 @@
 		</div>
 		<div class="td price m-hide" id="pricePerOne-<?= $product->key ?>"><?=$product->info->price_format ?></div>
 		<div class="td amount">
-				<span class="minusInCart">-</span>
-				<input type="number" id="productQuantity-<?= $product->key?>" value="<?= $product->quantity?>" data-key="<?= $product->key?>" data-max="<?= $product->storage->amount_free ?? $product->info->availability?>" placeholder="1">
-				<span class="plusInCart">+</span>
+			<span class="minusInCart">-</span>
+			<input type="number" id="productQuantity-<?= $product->key?>" value="<?= $product->quantity?>" data-key="<?= $product->key?>" data-max="<?= $product->storage->amount_free ?? $product->info->availability?>" placeholder="1">
+			<span class="plusInCart">+</span>
 		</div>
 		<div class="td sum" id="priceSum-<?= $product->key ?>"><?=$product->info->sum_format ?></div>
 		<?php if($actions) { ?>
