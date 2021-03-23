@@ -739,7 +739,7 @@ class cart_admin extends Controller {
             $info['link'] = SITE_URL.$_SESSION['alias']->alias.'/'.$info['id'];
             $info['pay_link'] = SITE_URL.$_SESSION['alias']->alias.'/'.$cart->id.'/pay';
             $info['admin_link'] = SITE_URL.'admin/'.$_SESSION['alias']->alias.'/'.$info['id'];
-            $subTotal = 0;
+            $cart->subTotal = 0;
             $shop_alias = $cart->products[0]->product_alias;
             if(empty($shop_alias))
             {
@@ -777,8 +777,8 @@ class cart_admin extends Controller {
                     $product->product_options = false;
                 }
             }
-            if ($subTotal != $cart->total)
-                $info['subTotalFormat'] = $this->load->function_in_alias($shop_alias, '__formatPrice', $subTotal);
+            if ($cart->subTotal != $cart->total)
+                $info['subTotalFormat'] = $this->load->function_in_alias($shop_alias, '__formatPrice', $cart->subTotal);
             if($cart->discount)
                 $info['discountFormat'] = $this->load->function_in_alias($shop_alias, '__formatPrice', $cart->discount);
             
