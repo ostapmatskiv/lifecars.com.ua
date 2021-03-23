@@ -6,7 +6,10 @@
             <i class="card__label">-<?=100-ceil($product->price / ($product->old_price / 100))?>%</i>
         <?php } if(!empty($product->date_add) && ($product->date_add + 3600 * 24 * 30) > time()) { ?>
             <i class="new__label">new</i>
-        <?php } ?>
+        <?php } 
+        if(!isset($product->manufacturer))
+            $product->manufacturer = '';
+        ?>
     </a>
    
     <div class="card__text">

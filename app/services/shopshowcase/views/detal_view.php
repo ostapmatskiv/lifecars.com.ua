@@ -89,9 +89,7 @@
                 <p><strike><?=round($product->old_price) ?></strike></p>
             </div>
             <?php } ?>
-            <div class="new__price">
-                <?=$product->price_format ?>
-            </div>
+            <div class="new__price"><?=$product->price_format ?></div>
             <?php if($product->old_price > $product->price) { ?>
             <div class="flex h-end v-center discount">
                 <div class="discount__procent">
