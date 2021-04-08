@@ -1188,7 +1188,7 @@ main .catalog__detal {
 main .catalog__detal a {
     display: block;
     text-align: center;
-    width: 12%;
+    width: 11%;
     margin-bottom: 15px
 }
 
@@ -1198,7 +1198,7 @@ main .catalog__detal a img {
 }
 
 main .catalog__detal a div {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     text-align: center;
     color: #666666;
