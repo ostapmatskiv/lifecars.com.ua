@@ -303,6 +303,18 @@ section.sale .sale__wrrap {
     text-align: left;
     color: #000;
 }
+.sale__card .card__border_in {
+    border: 2px solid #8c8c8c;
+    border-radius: 5px;
+    padding: 5px;
+}
+main.detal .card__border_in {
+    border: 2px solid #fff;
+    border-radius: 5px;
+    padding: 5px;
+    background: #fff;
+    max-width: 300px;
+}
 .sale__card .card__info { display: flex }
 .sale__card .card__info .info__article { margin-right: 5px }
 .sale__card .card__info .info__article p,

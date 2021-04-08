@@ -15,20 +15,19 @@
     <div class="card__text">
         <?=$product->name?>
     </div>
+    <?php if(!empty($product->list)) { ?>
+    <div class="card__border_in">
+        <?=$product->list?>
+    </div>
+    <?php } ?>
     <div class="card__info">
-        <div class="w40 info__article">
+        <div class="w33 info__article">
             <p><?=$this->text('Виробник', 0)?></p>
             <p><?=$this->text('Артикул', 0)?></p>
-            <?php if(!empty($product->list)) { ?>
-            <p><?=$this->text('Застосовується до', 0)?></p>
-            <?php } ?>
         </div>
-        <div class="w60 info__name">
+        <div class="w66 info__name">
             <p><?=$product->manufacturer?></p>
             <p><?=$product->article_show?></p>
-            <?php if(!empty($product->list)) { ?>
-            <p><?=$product->list?></p>
-            <?php } ?>
         </div>
     </div>
     <?php if($product->availability > 0) { ?>

@@ -2,7 +2,9 @@
     <h1 class="detal__heading"><?=$product->name.' '.mb_strtoupper($product->options['1-manufacturer']->value->name).' ('.$product->article_show.')'?></h1>
 
     <?php if(!empty($_SESSION['alias']->list)) { ?>
-    <p><?=$_SESSION['alias']->list?></p>
+        <div class="card__border_in">
+            <?=$_SESSION['alias']->list?>
+        </div>
     <?php } ?>
 
     <?php if(!empty($_SESSION['notify']->success)): ?>
