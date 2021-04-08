@@ -1,4 +1,6 @@
 <main>
+    <h1 class="detal__heading"><?=(!empty($group) && !empty($group->parents)) ? $group->parents[0]->name : '' ?> <?=$_SESSION['alias']->name?></h1>
+    <?php /*
     <div class="flex w50 auto__detal">
     	<?php $brend_id = $model_id = 0; $brend_link = 'parts';
         if(!empty($group))
@@ -66,7 +68,7 @@
 		<?php } } ?>
     </section>
    
-	<?php if(false && !empty($filters))
+	<?php */ if(!empty($filters))
     	foreach ($filters as $filter) {
     		if($filter->id == 2) { ?>
     		<div class="flex h-center wrap catalog__detal">
@@ -127,6 +129,12 @@
                                         $parent_id[] = $g->id;
                                         $checked = 'checked';
                                     }
+                                } elseif(!empty($group)) {
+                                    if($group->id == $g->id || $group->parent == $g->id)
+                                    {
+                                        $parent_id[] = $g->id;
+                                        $checked = 'checked';
+                                    }
                                 } ?>
                                 <input type="checkbox" name="group[]" value="<?=$g->id?>" id="group__id-<?=$g->id?>" <?=$checked?>>
                                 <label for="group__id-<?=$g->id?>"><?=$g->name?></label>
@@ -150,6 +158,12 @@
                                             $checked = 'checked';
                                         }
                                         else if(is_numeric($_GET['subgroup'] && $_GET['subgroup'] == $g->id))
+                                        {
+                                            $parent_id[] = $g->id;
+                                            $checked = 'checked';
+                                        }
+                                    } elseif(!empty($group)) {
+                                        if($group->id == $g->id)
                                         {
                                             $parent_id[] = $g->id;
                                             $checked = 'checked';
@@ -180,7 +194,7 @@
                     echo "<input type='hidden' name='sort' value='{$value}' >";
                 if(!empty($filters))
                 	foreach ($filters as $filter) {
-                		if(false && $filter->id == 2)
+                		if($filter->id == 2)
                         {
                             if($value = $this->data->get($filter->alias))
                                 echo "<input type='hidden' name='{$filter->alias}' value='{$value}' >";

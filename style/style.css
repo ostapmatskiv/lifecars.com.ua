@@ -1239,10 +1239,6 @@ main .catalog__sorted div a {
     color: #8c8c8c;
 }
 
-main .catalog__sorted {
-    margin-top: 50px;
-}
-
 main .catalog__sorted div a.active,
 main .catalog__sorted div a:hover {
     background-color: #82C166;
@@ -1350,9 +1346,6 @@ section.sale__catalog .sale__wrrap .sale__card .card__img i.new__label {
 
 
 /*                 aside checkbox               */
-section.sale__catalog aside {
-    margin-top: 35px
-}
 
 section.sale__catalog .filter {
     width: 92%;
