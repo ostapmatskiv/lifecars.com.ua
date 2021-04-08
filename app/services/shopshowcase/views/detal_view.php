@@ -1,6 +1,10 @@
 <main class="detal">
     <h1 class="detal__heading"><?=$product->name.' '.mb_strtoupper($product->options['1-manufacturer']->value->name).' ('.$product->article_show.')'?></h1>
 
+    <?php if(!empty($_SESSION['alias']->list)) { ?>
+    <p><?=$_SESSION['alias']->list?></p>
+    <?php } ?>
+
     <?php if(!empty($_SESSION['notify']->success)): ?>
         <div id="comment_add_success" class="alert alert-success">
             <span class="close" data-dismiss="alert">×</span>
@@ -174,7 +178,7 @@
         <div id="tab-info" class="menu__info <?=($mainProduct->similarProducts || $otherProductsByGroup) ? '' : 'active' ?>">
             <div class="flex m-wrap">
                 <div class="w50 m100">
-                    <?php if(!empty($_SESSION['alias']->list)) { ?>
+                    <?php if(false && !empty($_SESSION['alias']->list)) { ?>
                     <h4><?=$_SESSION['alias']->list?></h4><hr>
                     <br>
                     <?php } ?>

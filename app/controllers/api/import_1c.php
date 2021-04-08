@@ -299,8 +299,8 @@ class import_1c extends Controller
 				$where['id_1c'] = $searchKeys;
 			$my_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c, alias, article_show, group', $where)
 										->join('s_shopshowcase_groups as g', 'id_1c as group_id_1c', '#p.group')
-										->join('wl_ntkd as uk', 'id as name_id_uk, name as name_uk, text as text_uk', ['alias' => $this->shop_wl_alias, 'content' => '#p.id', 'language' => 'uk'])
-										->join('wl_ntkd as ru', 'id as name_id_ru, name as name_ru, text as text_ru', ['alias' => $this->shop_wl_alias, 'content' => '#p.id', 'language' => 'ru'])
+										->join('wl_ntkd as uk', 'id as name_id_uk, name as name_uk, list as list_uk, text as text_uk', ['alias' => $this->shop_wl_alias, 'content' => '#p.id', 'language' => 'uk'])
+										->join('wl_ntkd as ru', 'id as name_id_ru, name as name_ru, list as list_ru, text as text_ru', ['alias' => $this->shop_wl_alias, 'content' => '#p.id', 'language' => 'ru'])
 										->join('s_shopshowcase_product_options', 'id as row_manufacturer_id, value as manufacturer_id', ['option' => $this->manufacturer_option_id, 'product' => '#p.id'])
 										->get('array');
 			if(!empty($my_products))
@@ -373,14 +373,14 @@ class import_1c extends Controller
 								$this->db->updateRow('s_shopshowcase_products', ['article_show' => $xml_product->Артикул, 'article' => $this->prepareArticleKey($xml_product->Артикул)], $my_product->id);
 								$update_product = true;
 							}
-							if($my_product->name_uk != $xml_product->ЗаголовокТайтл || $my_product->text_uk != $xml_product->Описание)
+							if($my_product->name_uk != $xml_product->ЗаголовокТайтл || $my_product->list_uk != $xml_product->Применение || $my_product->text_uk != $xml_product->Описание)
 							{
-								$this->db->updateRow('wl_ntkd', ['name' => $xml_product->ЗаголовокТайтл, 'text' => $xml_product->Описание], $my_product->name_id_uk);
+								$this->db->updateRow('wl_ntkd', ['name' => $xml_product->ЗаголовокТайтл, 'list' => $xml_product->Применение, 'text' => $xml_product->Описание], $my_product->name_id_uk);
 								$update_product = true;
 							}
-							if($my_product->name_ru != $xml_product->ЗаголовокТайтлРос || $my_product->text_ru != $xml_product->ОписаниеРос)
+							if($my_product->name_ru != $xml_product->ЗаголовокТайтлРос || $my_product->list_ru != $xml_product->ПрименениеРос || $my_product->text_ru != $xml_product->ОписаниеРос)
 							{
-								$this->db->updateRow('wl_ntkd', ['name' => $xml_product->ЗаголовокТайтлРос, 'text' => $xml_product->ОписаниеРос], $my_product->name_id_ru);
+								$this->db->updateRow('wl_ntkd', ['name' => $xml_product->ЗаголовокТайтлРос, 'list' => $xml_product->ПрименениеРос, 'text' => $xml_product->ОписаниеРос], $my_product->name_id_ru);
 								$update_product = true;
 							}
 							if(!empty($xml_product->Авто))
@@ -559,8 +559,8 @@ class import_1c extends Controller
 
 					$id = $this->db->insertRow('s_shopshowcase_products', $insert);
 
-					$this->db->insertRow('wl_ntkd', ['alias' => $this->shop_wl_alias, 'content' => $id, 'language' => 'uk', 'name' => $xml_product->ЗаголовокТайтл, 'text' => $xml_product->Описание]);
-					$this->db->insertRow('wl_ntkd', ['alias' => $this->shop_wl_alias, 'content' => $id, 'language' => 'ru', 'name' => $xml_product->ЗаголовокТайтлРос, 'text' => $xml_product->ОписаниеРос]);
+					$this->db->insertRow('wl_ntkd', ['alias' => $this->shop_wl_alias, 'content' => $id, 'language' => 'uk', 'name' => $xml_product->ЗаголовокТайтл, 'list' => $xml_product->Применение, 'text' => $xml_product->Описание]);
+					$this->db->insertRow('wl_ntkd', ['alias' => $this->shop_wl_alias, 'content' => $id, 'language' => 'ru', 'name' => $xml_product->ЗаголовокТайтлРос, 'list' => $xml_product->ПрименениеРос, 'text' => $xml_product->ОписаниеРос]);
 
 					if(!empty($xml_product->Производитель))
 					{

@@ -43,7 +43,7 @@
     	} } } ?>
     </div>
     <div class="flex w66 h-evenly v-end main__logo logo__catalog brends__cars">
-    	<?php $this->load->js_init('init__parts()');
+    	<?php
 		foreach ($catalogAllGroups as $g) { if($g->parent == 0) { ?>
 			<a href="<?=SITE_URL.$g->link?>">
 				<?php if($g->photo) { ?>
@@ -86,6 +86,8 @@
             	<?php } ?>
             </div>
     <?php } }
+
+    $this->load->js_init('init__parts()');
 
     /* ?>
     <div class="flex h-evenly catalog__info">
