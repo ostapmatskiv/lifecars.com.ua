@@ -131,75 +131,19 @@
         $_SESSION['option']->paginator_per_page = 20; ?>
     <div id="tabs" class="detal__menu">
         <nav class="flex tabs-nav <?=($product->similarProducts || $otherProductsByGroup)?'tabs-3':''?>">
-            <a href="#tab-info" class="active"><?=$this->text('Опис')?></a>
             <?php if($product->similarProducts || $otherProductsByGroup) { ?>
-                <a href="#tab-similar"><?=$this->text('Аналоги')?></a>
+                <a href="#tab-similar" class="active"><?=$this->text('Аналоги')?></a>
+                <a href="#tab-info"><?=$this->text('Опис')?></a>
+            <?php } else { ?>
+                <a href="#tab-info" class="active"><?=$this->text('Опис')?></a>
             <?php } ?>
             <a href="#tab-guarantie"><?=$this->text('Гарантія')?></a>
             <a href="#tab-reviews"><?=$this->text('Відгуки')?></a>
         </nav>
 
-        <div id="tab-info" class="menu__info active">
-            <div class="flex m-wrap">
-                <div class="w50 m100">
-                    <?php if(!empty($_SESSION['alias']->list)) { ?>
-                    <h4><?=$_SESSION['alias']->list?></h4><hr>
-                    <br>
-                    <?php } ?>
-                    <div class="flex row">
-                        <div><?=$this->text('Застосовується до')?></div>
-                        <div class="dots"></div>
-                        <div><?php 
-                            if(!empty($product->parents)){
-                                $name = [];
-                                foreach ($product->parents as $group) {
-                                    $name[] = $group->name;
-                                }
-                                $link = SITE_URL.$product->group_link;
-                                $name = implode(' ', $name);
-                                echo "<a href='{$link}'>{$name}</a> ";
-                            } ?></div>
-                    </div>
-                    <div class="flex row">
-                        <div><?=$this->text('Група запчастин')?></div>
-                        <div class="dots"></div>
-                        <div><?php 
-                            if(!empty($product->options['2-part']->value)){
-                                $part = [];
-                                foreach ($product->options['2-part']->value as $value) {
-                                    $part[] = $value->name;
-                                }
-                                echo implode(', ', $part);
-                            } ?></div>
-                    </div>
-                    <div class="flex row">
-                        <div><?=$this->text('Артикул')?></div>
-                        <div class="dots"></div>
-                        <div><?=$product->article_show?></div>
-                    </div>
-                    <div class="flex row">
-                        <div><?=$this->text('Виробник')?></div>
-                        <div class="dots"></div>
-                        <div><?=$product->options['1-manufacturer']->value->name?></div>
-                    </div>
-                    <div class="flex row">
-                        <div><?=$this->text('Країна виробник')?></div>
-                        <div class="dots"></div>
-                        <div><?=$this->text('Китай')?></div>
-                    </div>
-                    <div class="flex row">
-                        <div><?=$this->text('Код товару')?></div>
-                        <div class="dots"></div>
-                        <div><?=$product->id?></div>
-                    </div>
-                </div>
-                <div class="w50 m100">
-                    <?=$_SESSION['alias']->text?>
-                </div>
-            </div>
-        </div>
-        <?php if($product->similarProducts || $otherProductsByGroup) { ?>
-        <div id="tab-similar" class="menu__info">
+        <?php $mainProduct = clone $product;
+        if($product->similarProducts || $otherProductsByGroup) { ?>
+        <div id="tab-similar" class="menu__info active">
             <?php if(false && $product->similarProducts) { ?>
                 <div class="flex m-wrap detal__cart">
                     <?php $add_block = 5 - count($product->similarProducts) % 5;
@@ -227,6 +171,67 @@
             <?php } ?>
         </div>
         <?php } ?>
+        <div id="tab-info" class="menu__info <?=($mainProduct->similarProducts || $otherProductsByGroup) ? '' : 'active' ?>">
+            <div class="flex m-wrap">
+                <div class="w50 m100">
+                    <?php if(!empty($_SESSION['alias']->list)) { ?>
+                    <h4><?=$_SESSION['alias']->list?></h4><hr>
+                    <br>
+                    <?php } ?>
+                    <div class="flex row">
+                        <div><?=$this->text('Застосовується до')?></div>
+                        <div class="dots"></div>
+                        <div><?php 
+                            if(!empty($mainProduct->parents)){
+                                $name = [];
+                                foreach ($mainProduct->parents as $group) {
+                                    $name[] = $group->name;
+                                }
+                                $link = SITE_URL.$mainProduct->group_link;
+                                $name = implode(' ', $name);
+                                echo "<a href='{$link}'>{$name}</a> ";
+                            } ?></div>
+                    </div>
+                    <div class="flex row">
+                        <div><?=$this->text('Група запчастин')?></div>
+                        <div class="dots"></div>
+                        <div><?php 
+                            if(!empty($mainProduct->options['2-part']->value)){
+                                $part = [];
+                                foreach ($mainProduct->options['2-part']->value as $value) {
+                                    $part[] = $value->name;
+                                }
+                                echo implode(', ', $part);
+                            } ?></div>
+                    </div>
+                    <div class="flex row">
+                        <div><?=$this->text('Артикул')?></div>
+                        <div class="dots"></div>
+                        <div><?=$mainProduct->article_show?></div>
+                    </div>
+                    <?php if(!empty($mainProduct->options['1-manufacturer']->value)){ ?>
+                    <div class="flex row">
+                        <div><?=$this->text('Виробник')?></div>
+                        <div class="dots"></div>
+                        <div><?=$mainProduct->options['1-manufacturer']->value->name?></div>
+                    </div>
+                    <?php } ?>
+                    <div class="flex row">
+                        <div><?=$this->text('Країна виробник')?></div>
+                        <div class="dots"></div>
+                        <div><?=$this->text('Китай')?></div>
+                    </div>
+                    <div class="flex row">
+                        <div><?=$this->text('Код товару')?></div>
+                        <div class="dots"></div>
+                        <div><?=$mainProduct->id?></div>
+                    </div>
+                </div>
+                <div class="w50 m100">
+                    <?=$_SESSION['alias']->text?>
+                </div>
+            </div>
+        </div>
         <div id="tab-guarantie" class="menu__info">
             <?php echo $this->load->function_in_alias('exchange-and-return', '__get_Text'); ?>
             <style>#tab-guarantie p { text-align: left }</style>
