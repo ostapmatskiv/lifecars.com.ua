@@ -67,6 +67,12 @@ class wl_cache_model extends Loader
 				$referer['from'] = (!empty($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : 'direct link';
 				$referer['date'] = time();
 				$this->db->insertRow('wl_sitemap_from', $referer);
+
+				if ($this->page->alias_link == 'parts') {
+					$this->db->updateRow('wl_sitemap', ['code' => 200], $this->page->id);
+					$this->page->code = 200;
+					break;
+				}
 				
 				new Page404(false);
 				break;
