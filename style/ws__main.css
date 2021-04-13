@@ -130,6 +130,7 @@ input:focus { outline: none }
 	.m-flex.h-start, .flex.m-h-start { justify-content: flex-start }
 	.m-flex.h-center, .flex.m-h-center { justify-content: center }
 	.m-flex.h-evenly, .flex.m-h-evenly { justify-content: space-evenly }
+	.m-flex.h-between, .flex.m-h-between { justify-content: space-between }
 	.m-flex.h-end, .flex.m-h-end { justify-content: flex-end }
 	.m-flex.v-center, .flex.m-v-center { align-items: center }
 	.m-flex.v-start, .flex.m-v-start { align-items: flex-start }

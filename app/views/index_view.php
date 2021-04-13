@@ -3,10 +3,10 @@
 $this->load->js_init('init__main()'); ?>
 
 <main>
-    <h1><?=$_SESSION['alias']->name?></h1>
+    <h1 class="hide m-block"><?=$_SESSION['alias']->name?></h1>
 
     <?php if(!empty($catalogAllGroups)) { ?>
-    <div class="flex w50 m100 h-evenly v-end main__logo">
+    <div class="flex w50 m100 h-evenly v-end m-wrap m-h-between main__logo m-m0">
         <?php foreach ($catalogAllGroups as $group) {
             if($group->parent == 0) { ?>
                 <a href="<?=SITE_URL.'parts/'.$group->alias?>" data-group="<?=$group->alias?>">
@@ -14,7 +14,7 @@ $this->load->js_init('init__main()'); ?>
                         <img src="<?=IMG_PATH.'parts/-'.$group->id.'/'.$group->photo?>" alt="<?=$group->name?>">
                     <?php } ?>
                     <div class="logo__text"><?=$group->name?></div>
-                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chevron-down m-hide"></i>
                 </a>
         <?php } } ?>
     </div>
@@ -34,7 +34,7 @@ $this->load->js_init('init__main()'); ?>
         <?php } } ?>
     <?php } ?>
    
-   <div class="slick__main" id="main__slick">
+   <div class="slick__main m-hide" id="main__slick">
         <div>
             <img src="style/images/main_owl/auto1.png" alt="auto">
         </div>
@@ -63,7 +63,7 @@ $this->load->js_init('init__main()'); ?>
             <a href="#">Обзори</a>
             <a href="#">Поради</a>
         </div> */ ?>
-        <div class="flex wrap sale__wrrap">
+        <div class="flex wrap sale__wrrap  m-m0">
             <?php if($products = $this->load->function_in_alias('parts', '__get_Products', ['sort' => 'id DESC', 'limit' => 10, 'availability' => 1]))
             foreach($products as $product)
                 require '@commons/__product_subview.php'; ?>
