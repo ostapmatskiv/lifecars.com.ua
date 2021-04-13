@@ -145,7 +145,9 @@
                         	<input type="text" name="sufix_<?=$lang?>" value="<?=$names[$lang]->sufix?>" class="form-control">
                         </div>
                     </div>
-				<?php } } else { ?>
+				<?php }
+				$option->name = $names[$_SESSION['language']]->name;
+				 } else { ?>
 					<div class="form-group">
                         <label class="col-md-3 control-label">Назва</label>
                         <div class="col-md-9">
@@ -273,7 +275,7 @@
 								echo("<td>{$lang}</td>");
 							}
 							echo("<td></td></tr>");
-							$this->db->join($this->options_model->table('_options_name').' as n', 'name', array('option' => '#o.id', 'language' => $_SESSION['language']));
+							$this->db->join($this->options_model->table('_options_name').' as n', 'name, sufix', array('option' => '#o.id', 'language' => $_SESSION['language']));
 						}
 						else
 							$this->db->join($this->options_model->table('_options_name').' as n', 'id as name_id, name', '#o.id', 'option');
@@ -355,25 +357,32 @@
 										foreach ($names_db as $name) {
 											@$names[$name->language]->id = $name->id;
 											$names[$name->language]->name = $name->name;
+											$names[$name->language]->sufix = $name->sufix;
 										}
 
 									foreach ($_SESSION['all_languages'] as $lang) {
-										$value = '';
+										$value = $sufix = '';
 										$value_id = 0;
 										if(isset($names[$lang])){
 											$value = $names[$lang]->name;
+											$sufix = $names[$lang]->sufix;
 											$value_id = $names[$lang]->id;
 										} else {
 											$data = array();
 											$data['option'] = $opt->id;
 											$data['language'] = $lang;
 											$data['name'] = '';
-											$this->db->insertRow($this->options_model->table('_options_name'), $data);
-											$value_id = $this->db->getLastInsertedId();
+											$value_id = $this->db->insertRow($this->options_model->table('_options_name'), $data);
 										}
 										if($value_id > 0) {
 											$value = htmlspecialchars($value);
-											echo("<td><input type='text' name='option_{$value_id}' value=\"{$value}\" class='form-control'></td>");
+											if($option->id == 1)
+												echo("<td>
+													<input type='text' name='option_{$value_id}' value=\"{$value}\" placeholder='{$option->name}' class='form-control'> <br>
+													<input type='text' name='option_sufix_{$value_id}' value=\"{$sufix}\" placeholder='Країна' class='form-control'>
+												</td>");
+											else
+												echo("<td><input type='text' name='option_{$value_id}' value=\"{$value}\" class='form-control'></td>");
 										} else {
 											echo("<td>Error {$lang}</td>");
 										}

@@ -221,12 +221,18 @@
                         <div class="dots"></div>
                         <div><?=$mainProduct->options['1-manufacturer']->value->name?></div>
                     </div>
-                    <?php } ?>
+                    <div class="flex row">
+                        <div><?=$this->text('Країна виробник')?></div>
+                        <div class="dots"></div>
+                        <div><?=empty($mainProduct->options['1-manufacturer']->value->sufix) ? $this->text('Китай') : $mainProduct->options['1-manufacturer']->value->sufix?></div>
+                    </div>
+                    <?php } else { ?>
                     <div class="flex row">
                         <div><?=$this->text('Країна виробник')?></div>
                         <div class="dots"></div>
                         <div><?=$this->text('Китай')?></div>
                     </div>
+                    <?php } ?>
                     <div class="flex row">
                         <div><?=$this->text('Код товару')?></div>
                         <div class="dots"></div>

@@ -917,6 +917,8 @@ class shopshowcase_admin extends Controller {
 				$this->wl_position_model->where .= " AND `group` = '{$parent}'";
 			}
 			if($this->wl_position_model->change($_POST['id'], $_POST['position'])) {
+				$this->db->cache_delete_all();
+				$this->db->cache_delete_all($_SESSION['alias']->alias, 'html');
 				$this->redirect();
 			}
 		}
@@ -938,8 +940,13 @@ class shopshowcase_admin extends Controller {
 					$this->wl_position_model->table = $this->options_model->table();
 					$this->wl_position_model->where = '`wl_alias` = '.$_SESSION['alias']->id." AND `group` = {$option->group}";
 				
-					if($this->wl_position_model->change($id[1], $_POST['position']))
+					$position = ($_SESSION['language']) ? $_POST['position'] - 1 : $_POST['position'];
+					if($this->wl_position_model->change($id[1], $position))
+					{
+						$this->db->cache_delete_all();
+						$this->db->cache_delete_all($_SESSION['alias']->alias, 'html');
 						$res['result'] = true;
+					}
 				}
 			}
 		}

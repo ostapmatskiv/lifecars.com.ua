@@ -138,7 +138,7 @@ class options_model {
 					
 					if($options_name)
 						foreach ($options_name as $opt) {
-							$this->db->updateRow($this->table('_options_name'), array('name' => $_POST['option_'.$opt]), $opt);
+							$this->db->updateRow($this->table('_options_name'), array('name' => $_POST['option_'.$opt], 'sufix' => $_POST['option_sufix_'.$opt]), $opt);
 						}
 					if(isset($_POST['changePrice']) && $_POST['changePrice'] == 1 && $options)
 						foreach ($options as $opt_id) {

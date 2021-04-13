@@ -1115,7 +1115,7 @@ class shop_model {
 							$where = array('option' => '#o.id');
 							if($_SESSION['language']) $where['language'] = $_SESSION['language'];
 							$this->db->select($this->table('_options') .' as o', 'id, photo', array('id' => explode(',', $option->value), 'active' => 1))
-												->join($this->table('_options_name') .' as n', 'name', $where);
+												->join($this->table('_options_name') .' as n', 'name, sufix', $where);
 							if($option->sort == 0)
 								$this->db->order('position ASC');
 							if($option->sort == 1 || $option->sort == 3)
@@ -1146,7 +1146,7 @@ class shop_model {
 							$where = array('option' => '#o.id');
 							if($_SESSION['language']) $where['language'] = $_SESSION['language'];
 							$list = $this->db->select($this->table('_options') .' as o', 'id, photo', ['group' => -$option->id, 'active' => 1])
-												->join($this->table('_options_name') .' as n', 'name', $where);
+												->join($this->table('_options_name') .' as n', 'name, sufix', $where);
 							if($option->sort == 0)
 								$this->db->order('position ASC');
 							if($option->sort == 1 || $option->sort == 3)
@@ -1179,7 +1179,7 @@ class shop_model {
 							$where = array('option' => '#o.id');
 							if($_SESSION['language']) $where['language'] = $_SESSION['language'];
 							$value = $this->db->select($this->table('_options') .' as o', 'id, photo', ['id' => $option->value, 'active' => 1])
-												->join($this->table('_options_name'), 'name', $where)
+												->join($this->table('_options_name'), 'name, sufix', $where)
 												->get('single');
 							if($value)
 							{
@@ -1223,7 +1223,7 @@ class shop_model {
 					if($option->toCart)
 					{
 						$list = $this->db->select($this->table('_options') .' as o', 'id, photo', ['group' => -$option->id, 'active' => 1])
-											->join($this->table('_options_name') .' as n', 'name', $where_name);
+											->join($this->table('_options_name') .' as n', 'name, sufix', $where_name);
 						if($option->sort == 0)
 							$this->db->order('position ASC');
 						if($option->sort == 1 || $option->sort == 3)
@@ -1254,7 +1254,7 @@ class shop_model {
 					else
 					{
 						$value = $this->db->select($this->table('_options') .' as o', 'id, photo', $option->value)
-											->join($this->table('_options_name'), 'name', $where_name)
+											->join($this->table('_options_name'), 'name, sufix', $where_name)
 											->get('single');
 						if($value)
 						{
