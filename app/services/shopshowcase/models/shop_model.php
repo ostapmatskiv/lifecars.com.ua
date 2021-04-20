@@ -616,7 +616,8 @@ class shop_model {
 		            		if(!empty($opt->name) && $main_options_UseSubOptions[$opt->option])
 		            		{
 			            		$main_options[$opt->product][$opt->option] = $opt->name;
-			            		$main_options_Photo[$opt->product][$opt->option] = IMG_PATH.$_SESSION['option']->folder.'/options/'.$mainOptionsAlias[$opt->option].'/'.$opt->photo;
+			            		if(!empty($opt->photo))
+			            			$main_options_Photo[$opt->product][$opt->option] = IMG_PATH.$_SESSION['option']->folder.'/options/'.$mainOptionsAlias[$opt->option].'/'.$opt->photo;
 		            		}
 			            	else
 			            		$main_options[$opt->product][$opt->option] = $opt->value;
