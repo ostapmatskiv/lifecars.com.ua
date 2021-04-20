@@ -578,7 +578,7 @@ class shop_model {
 
 			$sizes = $this->db->getAliasImageSizes();
 
-			$products_ids = $products_photos = $main_options = $main_options_Alias = $main_options_UseSubOptions = $product_group = array();
+			$products_ids = $products_photos = $main_options = $main_options_Alias = $main_options_UseSubOptions = $main_options_Photo = $product_group = array();
             foreach ($products as $product)
             	$products_ids[] = $product->id;
             if($photos = $this->getProductPhoto($products_ids))
@@ -594,9 +594,10 @@ class shop_model {
 	        			->join('wl_input_types', 'options', '#o.type');
 	        	if($mainOptions = $this->db->get('array'))
 	        	{
-	        		$ids = array();
+	        		$ids = $mainOptionsAlias = array();
 	        		foreach ($mainOptions as $o) {
 	        			$ids[] = $o->id;
+	        			$mainOptionsAlias[$o->id] = $o->alias;
 	        			$o->alias = explode('-', $o->alias);
 	        			if($o->alias[0] == $o->id)
 	        				array_shift($o->alias);
@@ -607,15 +608,20 @@ class shop_model {
 	        		if($_SESSION['language'])
 	        			$where['language'] = $_SESSION['language'];
 			        $options = $this->db->select($this->table('_product_options'). ' as po', 'option, product, value', array('product' => $products_ids, 'option' => $ids))
-		            						->join($this->table('_options_name'), 'name', $where)->get('array');
+		            						->join($this->table('_options'), 'photo', '#po.value')
+		            						->join($this->table('_options_name'), 'name', $where)
+		            						->get('array');
 		            if($options)
 		            	foreach ($options as $opt) {
 		            		if(!empty($opt->name) && $main_options_UseSubOptions[$opt->option])
+		            		{
 			            		$main_options[$opt->product][$opt->option] = $opt->name;
+			            		$main_options_Photo[$opt->product][$opt->option] = IMG_PATH.$_SESSION['option']->folder.'/options/'.$mainOptionsAlias[$opt->option].'/'.$opt->photo;
+		            		}
 			            	else
 			            		$main_options[$opt->product][$opt->option] = $opt->value;
 			            }
-		            unset($options, $main_options_UseSubOptions);
+		            unset($options);
 		        }
 	        }
 
@@ -690,6 +696,11 @@ class shop_model {
             		foreach ($main_options[$product->id] as $opt_id => $value) {
             			$key = $main_options_Alias[$opt_id];
             			$product->$key = $value;
+            			if($main_options_UseSubOptions[$opt_id] && isset($main_options_Photo[$product->id][$opt_id]))
+            			{
+            				$key .= '__photo';
+            				$product->$key = $main_options_Photo[$product->id][$opt_id];
+            			}
             		}
             	if($_SESSION['option']->useGroups > 0 && $_SESSION['option']->ProductMultiGroup == 0 && $products[0]->group > 0)
             	{

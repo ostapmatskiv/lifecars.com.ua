@@ -229,6 +229,13 @@ section.sale .sale__wrrap {
 .sale__card.no_availabilaty:hover { border-color: #ffc505 }
 
 .sale__card .card__img img { width: 100% }
+.sale__card .card__img img.manufacturer__photo {
+    width: auto;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    max-height: 40px;
+}
 .sale__card .card__img i.card__label {
     position: absolute;
     top: 26px;
@@ -268,6 +275,7 @@ section.sale .sale__wrrap {
     background-color: transparent;
     overflow: hidden;
     border-radius: 5px;
+    position: relative;
 }
 .sale__card .card__img.empty_photo {
     background-color: #fff;

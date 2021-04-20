@@ -9,6 +9,8 @@
         <?php } 
         if(!isset($product->manufacturer))
             $product->manufacturer = '';
+        elseif(!empty($product->manufacturer__photo))
+            echo "<img src='{$product->manufacturer__photo}' class='manufacturer__photo'>";
         ?>
     </a>
    
