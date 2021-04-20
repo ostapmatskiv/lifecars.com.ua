@@ -178,7 +178,7 @@ class products_model {
 				if($_SESSION['option']->ProductMultiGroup == 0 && $product->group > 0)
 				{
 					$product->parents = $this->makeParents($list, $product->group, $product->parents);
-					$link = '';
+					$link = $_SESSION['alias']->alias.'/';
 					foreach ($product->parents as $parent) {
 						$link .= $parent->alias .'/';
 					}

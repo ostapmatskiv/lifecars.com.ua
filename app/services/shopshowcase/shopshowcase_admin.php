@@ -361,12 +361,19 @@ class shopshowcase_admin extends Controller {
             $option['service'] = $_SESSION['service']->id;
             $option['alias'] = $_SESSION['alias']->id;
             $option['name'] = 'exportKey';
-            $option['value'] = $password;
-            if($this->db->insertRow('wl_options', $option))
-            {
-            	$_SESSION['notify'] = new stdClass();
-            	$_SESSION['notify']->success = "Ключ безпеки для експорту товарів: <strong>{$password}</strong>";
-            }
+			if($row = $this->db->getAllDataById('wl_options', $option))
+				$this->db->updateRow('wl_options', ['value' => $password], $row->id);
+			else
+			{
+				$option['value'] = $password;
+				$this->db->insertRow('wl_options', $option);
+			}
+			$_SESSION['notify'] = new stdClass();
+			$_SESSION['notify']->success = "Ключ безпеки для експорту товарів: <strong>{$password}</strong>";
+
+			$this->db->cache_delete($_SESSION['alias']->alias, 'wl_aliases');
+			if (isset($_SESSION['alias-cache'][$_SESSION['alias']->id]))
+				unset($_SESSION['alias-cache'][$_SESSION['alias']->id]);
             $this->redirect();
 		}
 		$_SESSION['alias']->name = 'Експорт товарів';
@@ -1633,6 +1640,35 @@ class shopshowcase_admin extends Controller {
         ob_end_clean();
         return $tab;
     }
+
+
+    public function __reset_products_position()
+	{
+		$products = $this->db->select('s_shopshowcase_products as p', 'id, `group`, position')
+								->order('group')
+								->get();
+		$group = $products[0]->group;
+		$position = 1;
+		$updated = 0;
+		foreach ($products as $product) {
+			if($group != $product->group)
+			{
+				$group = $product->group;
+				$position = 1;
+			}
+			if($product->position != $position)
+			{
+				$this->db->updateRow('s_shopshowcase_products', ['position' => $position], $product->id);
+				$updated++;
+			}
+			$position++;
+		}
+		echo "updated: ".$updated;
+		// echo "<pre>";
+		// print_r($products);
+		// echo "</pre>";
+		// exit;
+	}
 }
 
 ?>
