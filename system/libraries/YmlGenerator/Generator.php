@@ -183,7 +183,10 @@ class Generator
         $this->writer->startElement('offer');
         $this->writer->writeAttribute('id', $offer->getId());
         $this->writer->writeAttribute('selling_type', $offer->getSellingType());
-        $this->writer->writeAttribute('available', $offer->isAvailable() ? 'true' : 'false');
+        if($offer->isAvailable() === NULL)
+            $this->writer->writeAttribute('available', '');
+        else
+            $this->writer->writeAttribute('available', $offer->isAvailable() ? 'true' : 'false');
 
         if ($offer->getType() !== null) {
             $this->writer->writeAttribute('type', $offer->getType());

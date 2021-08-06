@@ -93,7 +93,7 @@ class ymlgenerator extends Controller {
 
                     $offerSimple = (new OfferSimple())
                         ->setId($productId)
-                        ->setSellingType('u')
+                        ->setSellingType('r')
                         ->setUrl(SITE_URL.$product->link)
                         ->setPrice($product->price)
                         ->setCurrencyId('UAH')
@@ -114,14 +114,14 @@ class ymlgenerator extends Controller {
                         if($product->availability > 0)
                             $offerSimple->setAvailable(true);
                         else
-                            $offerSimple->setAvailable(false);
+                            $offerSimple->setAvailable(NULL);
                     }
                     else
                     {
                         if($product->availability == 1)
                             $offerSimple->setAvailable(true);
                         else
-                            $offerSimple->setAvailable(false);
+                            $offerSimple->setAvailable(NULL);
                     }
 
                     if(isset($product->quantity_in_stock))
@@ -150,7 +150,7 @@ class ymlgenerator extends Controller {
             {
                 $offerSimple = (new OfferSimple())
                     ->setId($product->id)
-                    ->setSellingType('u')
+                    ->setSellingType('r')
                     ->setUrl(SITE_URL.$product->link)
                     ->setPrice($product->price)
                     ->setCurrencyId('UAH')
@@ -169,16 +169,19 @@ class ymlgenerator extends Controller {
                 if($_SESSION['option']->useAvailability)
                 {
                     if($product->availability > 0)
+                    {
                         $offerSimple->setAvailable(true);
+                    }
                     else
-                        $offerSimple->setAvailable(false);
+                        $offerSimple->setAvailable(NULL);
+                    $offerSimple->setQuantity_in_stock($product->availability);
                 }
                 else
                 {
                     if($product->availability == 1)
                         $offerSimple->setAvailable(true);
                     else
-                        $offerSimple->setAvailable(false);
+                        $offerSimple->setAvailable(NULL);
                 }
 
                 if(isset($product->quantity_in_stock))
@@ -200,8 +203,6 @@ class ymlgenerator extends Controller {
                             ->setValue('Новое'));
 
                 $offers[] = $offerSimple;
-
-                break;
             }
         }
 

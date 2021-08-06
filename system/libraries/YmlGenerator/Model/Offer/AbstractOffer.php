@@ -103,6 +103,11 @@ abstract class AbstractOffer implements OfferInterface
     private $description;
 
     /**
+     * @var int
+     */
+    private $quantity_in_stock = -1;
+
+    /**
      * @var string
      */
     private $countryOfOrigin;
@@ -465,6 +470,26 @@ abstract class AbstractOffer implements OfferInterface
     }
 
     /**
+     * @return int
+     */
+    public function getQuantity_in_stock()
+    {
+        return $this->quantity_in_stock;
+    }
+
+    /**
+     * @param int $quantity_in_stock
+     *
+     * @return $this
+     */
+    public function setQuantity_in_stock($quantity_in_stock)
+    {
+        $this->quantity_in_stock = $quantity_in_stock;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getDescription()
@@ -479,7 +504,10 @@ abstract class AbstractOffer implements OfferInterface
      */
     public function setDescription($description)
     {
-        $this->description = $description;
+        if(empty(trim($description)))
+            $this->description = '';
+        else
+            $this->description = '<![CDATA['.$description.']]>';
 
         return $this;
     }
@@ -574,19 +602,36 @@ abstract class AbstractOffer implements OfferInterface
      */
     private function getHeaderOptions()
     {
-        return [
-            'url' => $this->getUrl(),
-            'price' => $this->getPrice(),
-            'prices' => $this->getPrices(),
-            'oldprice' => $this->getOldPrice(),
-            'currencyId' => $this->getCurrencyId(),
-            'categoryId' => $this->getCategoryId(),
-            'market_category' => $this->getMarketCategory(),
-            'picture' => $this->getPictures(),
-            'pickup' => $this->isPickup(),
-            'delivery' => $this->isDelivery(),
-            'local_delivery_cost' => $this->getLocalDeliveryCost(),
-        ];
+        $quantity_in_stock = $this->getQuantity_in_stock();
+        if($quantity_in_stock >= 0)
+            return [
+                'url' => $this->getUrl(),
+                'price' => $this->getPrice(),
+                'prices' => $this->getPrices(),
+                'quantity_in_stock' => $quantity_in_stock,
+                'oldprice' => $this->getOldPrice(),
+                'currencyId' => $this->getCurrencyId(),
+                'categoryId' => $this->getCategoryId(),
+                'market_category' => $this->getMarketCategory(),
+                'picture' => $this->getPictures(),
+                'pickup' => $this->isPickup(),
+                'delivery' => $this->isDelivery(),
+                'local_delivery_cost' => $this->getLocalDeliveryCost(),
+            ];
+        else
+            return [
+                'url' => $this->getUrl(),
+                'price' => $this->getPrice(),
+                'prices' => $this->getPrices(),
+                'oldprice' => $this->getOldPrice(),
+                'currencyId' => $this->getCurrencyId(),
+                'categoryId' => $this->getCategoryId(),
+                'market_category' => $this->getMarketCategory(),
+                'picture' => $this->getPictures(),
+                'pickup' => $this->isPickup(),
+                'delivery' => $this->isDelivery(),
+                'local_delivery_cost' => $this->getLocalDeliveryCost(),
+            ];
     }
 
     /**

@@ -34,6 +34,11 @@ class OfferSimple extends AbstractOffer implements OfferGroupAwareInterface
     private $vendorCode;
 
     /**
+     * @var string
+     */
+    private $country;
+
+    /**
      * @return string
      */
     public function getType()
@@ -56,7 +61,7 @@ class OfferSimple extends AbstractOffer implements OfferGroupAwareInterface
      */
     public function setName($name)
     {
-        $this->name = htmlentities($name, ENT_XML1);
+        $this->name = $name;
 
         return $this;
     }
@@ -77,6 +82,26 @@ class OfferSimple extends AbstractOffer implements OfferGroupAwareInterface
     public function setVendor($vendor)
     {
         $this->vendor = $vendor;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getСountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param string $vendor
+     *
+     * @return $this
+     */
+    public function setСountry($country)
+    {
+        $this->country = $country;
 
         return $this;
     }
@@ -110,6 +135,7 @@ class OfferSimple extends AbstractOffer implements OfferGroupAwareInterface
             'name' => $this->getName(),
             'vendor' => $this->getVendor(),
             'vendorCode' => $this->getVendorCode(),
+            'country' => $this->getСountry(),
         ];
     }
 }
