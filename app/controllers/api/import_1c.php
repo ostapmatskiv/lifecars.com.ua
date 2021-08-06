@@ -623,20 +623,28 @@ class import_1c extends Controller
 				if(!empty($key))
 				{
 					$searchKeys[] = $key;
-					$xml_category[$key] = ['uk' => $this->xml_attribute($category, 'Наименование'), 'ru' => $this->xml_attribute($category, 'НаименованиеРос')];
+					$xml_category[$key] = ['uk' => $this->xml_attribute($category, 'Наименование'), 'ru' => $this->xml_attribute($category, 'НаименованиеРос'), 'parent' => $this->xml_attribute($category, 'РодительКод')];
 				}
 			}
 
 		if(!empty($searchKeys))
 		{
-			$my_category = $this->db->select('s_shopshowcase_options as o', 'id, alias', ['group' => -$this->category_option_id, 'alias' => $searchKeys])
+			$ids_1c_site = [];
+			$my_category = $this->db->select('s_shopshowcase_options as o', 'id, alias, type', ['group' => -$this->category_option_id, 'alias' => $searchKeys])
 										->join('s_shopshowcase_options_name as uk', 'id as name_id_uk, name as name_uk', ['option' => '#o.id', 'language' => 'uk'])
 										->join('s_shopshowcase_options_name as ru', 'id as name_id_ru, name as name_ru', ['option' => '#o.id', 'language' => 'ru'])
 										->get('array');
+			if(!empty($my_category))
+				foreach ($my_category as $category) {
+					$ids_1c_site[$category->alias] = $category->id;
+				}
 
 			$last_position = 0;
 			foreach ($searchKeys as $key) {
 				$find = false;
+				$parent_xml = empty($xml_category[$key]['parent']) ? 0 : $xml_category[$key]['parent'];
+				$parent_xml = $ids_1c_site[$parent_xml] ?? 0;
+
 				if(!empty($my_category))
 					foreach ($my_category as $category) {
 						if($category->alias == $key)
@@ -651,6 +659,12 @@ class import_1c extends Controller
 								$this->db->updateRow('s_shopshowcase_options_name', ['name' => $xml_category[$key]['ru']], $category->name_id_ru);
 								$this->update_VygruzkaNomenklatury++;
 							}
+							
+							if($category->type != $parent_xml)
+							{
+								$this->db->updateRow('s_shopshowcase_options', ['type' => $parent_xml], $category->id);
+								$this->update_VygruzkaNomenklatury++;
+							}
 							$find = true;
 							break;
 						}
@@ -660,7 +674,7 @@ class import_1c extends Controller
 					if($last_position == 0)
 						$last_position = $this->db->getCount('s_shopshowcase_options', -$this->category_option_id, 'group');
 					$last_position++;
-					$insert = ['wl_alias' => $this->shop_wl_alias, 'group' => -$this->category_option_id, 'alias' => $key, 'position' => $last_position, 'active' => 1];
+					$insert = ['wl_alias' => $this->shop_wl_alias, 'group' => -$this->category_option_id, 'alias' => $key, 'position' => $last_position, 'active' => 1, 'type' => $parent_xml];
 					$id = $this->db->insertRow('s_shopshowcase_options', $insert);
 					$this->db->insertRow('s_shopshowcase_options_name', ['option' => $id, 'language' => 'uk', 'name' => $xml_category[$key]['uk']]);
 					$this->db->insertRow('s_shopshowcase_options_name', ['option' => $id, 'language' => 'ru', 'name' => $xml_category[$key]['ru']]);

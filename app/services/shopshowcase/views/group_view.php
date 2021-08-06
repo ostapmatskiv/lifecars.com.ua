@@ -68,35 +68,44 @@
 		<?php } } ?>
     </section>
    
-	<?php */ if(!empty($filters))
+	<?php */ $subFilterKey = 2; $subFilterParentId = 0;
+    if(!empty($filters))
     	foreach ($filters as $filter) {
-    		if($filter->id == 2) { ?>
+    		if($filter->id == 2) { $subFilterKey = $filter->alias; ?>
     		<div class="flex h-center wrap catalog__detal">
                 <a href="<?=$this->data->get_link($filter->alias)?>" <?=empty($_GET[$filter->alias])?'class="active"':''?>>
                     <img src="/style/icons/catalog/component.svg" alt="all">
                     <div><?=$this->text('Всі запчастини')?></div>
                 </a>
-    			<?php foreach ($filter->values as $value) { ?>
-    				<a href="<?=$this->data->get_link($filter->alias, $value->id)?>" <?=isset($_GET[$filter->alias]) && $_GET[$filter->alias] == $value->id ?'class="active"':''?>>
+    			<?php foreach ($filter->values as $value) {
+                    if(isset($_GET[$filter->alias]) && $_GET[$filter->alias] == $value->id)
+                        $subFilterParentId = empty($value->type) ? $value->id : $value->type;
+                }
+                foreach ($filter->values as $value) {
+                if(empty($value->type)) {  ?>
+    				<a href="<?=$this->data->get_link($filter->alias, $value->id)?>" <?=isset($_GET[$filter->alias]) && $subFilterParentId == $value->id ?'class="active"':''?>>
     					<?php if(!empty($value->photo)) { ?>
 				            <img src="<?=$value->photo?>" alt="<?=$value->name?>">
 				        <?php } ?>
 			            <div><?=$value->name?></div>
 			        </a>
-            	<?php } ?>
+            	<?php } } ?>
             </div>
     <?php } }
-
+    
     $this->load->js_init('init__parts()');
 
-    /* ?>
+    if(!empty($filters) && isset($_GET[$subFilterKey])) { ?>
     <div class="flex h-evenly catalog__info">
-        <a href="#">Блок цилиндров</a>
-        <a href="#">Головка блока цилиндров</a>
-        <a href="#">Подушки и кронштейны двинателя</a>
-        <a href="#">Ремни и ролики двигателя</a>
-        <a href="#">Сальники и прокладки</a>
-    </div> */ ?>
+        <?php foreach ($filters as $filter) {
+            if($filter->id == 2) { 
+            foreach ($filter->values as $value) if($value->type == $subFilterParentId) { ?>
+                <a href="<?=$this->data->get_link($filter->alias, $value->id)?>" <?=isset($_GET[$filter->alias]) && ($_GET[$filter->alias] == $value->id) ?'class="active"':''?>>
+                    <?=$value->name?>
+                </a>
+        <?php } } } ?>
+    </div>
+    <?php } ?>
     
     
     <section class="flex sale__catalog">

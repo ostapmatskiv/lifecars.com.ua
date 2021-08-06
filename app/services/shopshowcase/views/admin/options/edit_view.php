@@ -329,16 +329,23 @@
 					        }
 
 							$i = 1;
-							
+							$subOptions = [];
+							foreach ($options as $opt) {
+								$subOptions[$opt->id] = $opt->alias;
+							}
 							foreach ($options as $opt) {
 								
 								$rowspan = ($option->changePrice) ? 'rowspan="2"' : '';
 								$disableBG = ($opt->active) ? '' : 'class="warning" title="Властивість відключено"';
 								echo('<tr id="option_'.$opt->id.'" '.$disableBG.'>');
+
+								$parent_subOption = '';
+								if(is_numeric($opt->type) && $opt->type > 0 && !empty($subOptions[$opt->type]))
+									$parent_subOption = "<br><strong>{$subOptions[$opt->type]}</strong>";
 								if($option->sort)
-									echo("<td {$rowspan}>#{$i}</td>");
+									echo("<td {$rowspan}>#{$i} {$parent_subOption}</td>");
 								else
-									echo("<td {$rowspan} class=\"move sortablehandle\"><i class=\"fa fa-sort\"></i> #{$i}</td>");
+									echo("<td {$rowspan} class=\"move sortablehandle\"><i class=\"fa fa-sort\"></i> #{$i} {$parent_subOption}</td>");
 
 								if($opt->photo == 0)
 									echo('<td '.$rowspan.'><label class="btn btn-warning" ><input onchange="uploadPhoto(this)" type="file" name="photo['.$opt->id.']" value="+" style="display: none;"><span>+</span></label></td>');
@@ -359,6 +366,8 @@
 											$names[$name->language]->name = $name->name;
 											$names[$name->language]->sufix = $name->sufix;
 										}
+									if(isset($names[$_SESSION['language']]))
+										$subOptions[$opt->id] = $names[$_SESSION['language']]->name;
 
 									foreach ($_SESSION['all_languages'] as $lang) {
 										$value = $sufix = '';

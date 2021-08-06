@@ -1230,7 +1230,9 @@ main .catalog__detal a div {
 }
 
 main .catalog__detal a.active div,
-main .catalog__detal a:hover div {
+main .catalog__detal a:hover div,
+main .catalog__info a.active,
+main .catalog__info a:hover {
     color: #82C166;
 }
 
