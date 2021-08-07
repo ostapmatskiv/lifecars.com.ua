@@ -216,7 +216,7 @@ section.sale .sale__wrrap {
     min-height: auto;
     margin-bottom: 20px;
     border: 2px solid #fefefe;
-    border-radius: 10px;
+    border-radius: 3px;
     position: relative;
     font-family: Exo2;
     background: #fff
@@ -304,7 +304,7 @@ section.sale .sale__wrrap {
 }
 
 .sale__card .card__text {
-    height: 70px;
+    height: 80px;
     display: table-cell;
     vertical-align: middle;
     font-size: 14px;
@@ -312,9 +312,10 @@ section.sale .sale__wrrap {
     color: #000;
 }
 .sale__card .card__border_in {
-    border: 2px solid #8c8c8c;
+    border: 1px solid #ddd;
     border-radius: 5px;
     padding: 5px;
+    margin-bottom: 5px;
 }
 main.detal .card__border_in {
     border: 2px solid #fff;
@@ -332,22 +333,23 @@ main.detal .card__border_in {
     color: #a6a6a6;
     text-align: left;
     margin-bottom: 0;
+    overflow: hidden;
 }
 .sale__card .card__info .info__name p { color: #262626 }
 
 .sale__card .card__check { margin-top: 15px }
 .sale__card .card__check .check__pieces .fa-check-circle {
-    font-size: 16px;
+    font-size: 12px;
     color: #7cbe49;
 }
 .sale__card .card__check .check__pieces .fa-times-circle {
-    font-size: 16px;
+    font-size: 12px;
     color: #FFC505;
 }
 .sale__card .card__check .check__pieces p {
-    font-size: 14px;
+    font-size: 12px;
     color: #262626;
-    margin-left: 6px;
+    margin-left: 3px;
     margin-bottom: 0;
 }
 
@@ -855,7 +857,7 @@ header nav a.active::before {
 /*                                    Main                                         */
 
 main h1 {
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 600;
     text-transform: uppercase;
     font-style: normal;
@@ -1204,16 +1206,23 @@ main .auto__detal a:hover .fa-chevron-down {
     color: #82C166;
 }
 
+main h4.subgroup-name {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    font-size: 13px;
+    color: #8c8c8c;
+}
+
 main .catalog__detal {
-    margin: 20px 0;
+    margin-bottom: 15px;
     align-items: baseline;
 }
 
 main .catalog__detal a {
     display: block;
     text-align: center;
-    width: 11%;
-    margin-bottom: 15px
+    margin-bottom: 0;
+    margin-left: 50px;
 }
 
 main .catalog__detal a img {
@@ -1223,7 +1232,7 @@ main .catalog__detal a img {
 
 main .catalog__detal a div {
     font-size: 14px;
-    font-weight: 600;
+    /*font-weight: 600;*/
     text-align: center;
     color: #666666;
     margin-top: 15px;
@@ -1381,8 +1390,11 @@ section.sale__catalog .filter {
     /*border-radius: 5px;
     background-color: #fefefe;*/
     font-size: 13px;
-    font-weight: 600;
+    
     color: #666;
+}
+section.sale__catalog .filter p {
+    font-weight: 600;
 }
 
 section.sale__catalog .filter .fa-chevron-circle-up {
@@ -1390,9 +1402,12 @@ section.sale__catalog .filter .fa-chevron-circle-up {
 }
 
 main section.sale__catalog aside .filter input[type=text] {
-    padding: 5px;
+    padding: 0 10px;
     width: 100%;
+    border: none;
+    height: 32px;
     margin-top: 10px;
+    border-radius: 3px;
 }
 
 
@@ -2380,6 +2395,7 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
 
         main .catalog__detal a div {
             font-size: 14px;
+            margin-top: 10px;
         }
 
         section.sale__catalog .product__type,
@@ -2403,14 +2419,6 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
 
         .sale__card .card__text {
             font-size: 16px;
-        }
-
-        .sale__card .card__info .info__article p {
-            font-size: 14px;
-        }
-
-        .sale__card .card__info .info__name p {
-            font-size: 14px;
         }
 
         .sale__card .card__info .info__article {
@@ -3373,9 +3381,7 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
         }
 
         main div.flex.wrap.catalog__detal a {
-            text-align: center;
-            width: 25%;
-            margin-bottom: 10px;
+            margin-left: 10px;
         }
 
         main .catalog__info {
@@ -3395,7 +3401,8 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
         }
 
         main section.sale__catalog {
-            flex-wrap: wrap
+            flex-wrap: wrap;
+            padding: 0
         }
 
         main .pagination,

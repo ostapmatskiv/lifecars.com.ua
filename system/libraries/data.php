@@ -151,7 +151,7 @@ class Data {
 		return $default;
 	}
 
-	public function get_link($new_key = '', $new_value = '')
+	public function get_link($new_key = '', $new_value = '', $skip_key = '')
 	{
 		$link = SERVER_URL . $_GET['request'];
 		if(($new_key != '' && $new_value != '') || count($_GET) > 1)
@@ -162,7 +162,7 @@ class Data {
         	if(substr($nk2, -2) == '[]')
         		$nk2 = substr($nk2, 0, -2);
         	foreach ($_GET as $key => $value) {
-	            if($key != 'request')
+	            if($key != 'request' && $key != $skip_key)
 	            {
 	            	if(is_array($value))
 	            	{

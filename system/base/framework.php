@@ -241,7 +241,8 @@ if(isset($_GET['request']))
 	}
 }
 
-define('IMG_PATH', SERVER_URL.$images_folder.'/');
+if(!defined('IMG_PATH'))
+	define('IMG_PATH', SERVER_URL.$images_folder.'/');
 
 $request = ($request == '') ? 'main' : $request;
 if($request[0] == '/')

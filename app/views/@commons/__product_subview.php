@@ -114,7 +114,7 @@
     <div class="flex v-center card__check">
         <div class="flex v-center check__pieces">
             <i class="fas <?=$product->availability > 0 ? 'fa-check-circle' : 'fa-times-circle'?>"></i>
-            <p><?=$this->text('В наявності', 0)?> <span class="pieces"><?=$product->availability?></span> шт.</p>
+            <p><?=$this->text('На складі', 0)?> <span class="pieces"><?=$product->availability?></span> шт.</p>
         </div>
         <div class="flex v-center card__rating">
             <?php if(empty($product->rating)) $product->rating = 0; ?>

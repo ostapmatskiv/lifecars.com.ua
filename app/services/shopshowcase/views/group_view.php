@@ -1,5 +1,17 @@
 <main>
-    <h1 class="detal__heading"><?=(!empty($group) && !empty($group->parents)) ? $group->parents[0]->name : '' ?> <?=$_SESSION['alias']->name?></h1>
+    <?php if(!empty($_SESSION['alias']->image)) { ?>
+        <div class="flex m-wrap">
+            <div class="w25 text-center m100">
+                <img src="<?=IMG_PATH.$_SESSION['alias']->image?>" alt="<?=$_SESSION['alias']->name?>" class="w80" style="max-width: 250px">
+                <h1><?=(!empty($group) && !empty($group->parents)) ? $group->parents[0]->name : '' ?> <?=$_SESSION['alias']->name?><br><?=$_SESSION['alias']->list?></h1>
+            </div>
+            <div class="w75-5 m100">
+                <?php require '__head_filters.php'; ?>
+            </div>
+        </div>
+    <?php } else require '__head_filters.php'; ?>
+    
+
     <?php /*
     <div class="flex w50 auto__detal">
     	<?php $brend_id = $model_id = 0; $brend_link = 'parts';
@@ -68,47 +80,9 @@
 		<?php } } ?>
     </section>
    
-	<?php */ $subFilterKey = 2; $subFilterParentId = 0;
-    if(!empty($filters))
-    	foreach ($filters as $filter) {
-    		if($filter->id == 2) { $subFilterKey = $filter->alias; ?>
-    		<div class="flex h-center wrap catalog__detal">
-                <a href="<?=$this->data->get_link($filter->alias)?>" <?=empty($_GET[$filter->alias])?'class="active"':''?>>
-                    <img src="/style/icons/catalog/component.svg" alt="all">
-                    <div><?=$this->text('Всі запчастини')?></div>
-                </a>
-    			<?php foreach ($filter->values as $value) {
-                    if(isset($_GET[$filter->alias]) && $_GET[$filter->alias] == $value->id)
-                        $subFilterParentId = empty($value->type) ? $value->id : $value->type;
-                }
-                foreach ($filter->values as $value) {
-                if(empty($value->type)) {  ?>
-    				<a href="<?=$this->data->get_link($filter->alias, $value->id)?>" <?=isset($_GET[$filter->alias]) && $subFilterParentId == $value->id ?'class="active"':''?>>
-    					<?php if(!empty($value->photo)) { ?>
-				            <img src="<?=$value->photo?>" alt="<?=$value->name?>">
-				        <?php } ?>
-			            <div><?=$value->name?></div>
-			        </a>
-            	<?php } } ?>
-            </div>
-    <?php } }
-    
-    $this->load->js_init('init__parts()');
-
-    if(!empty($filters) && isset($_GET[$subFilterKey])) { ?>
-    <div class="flex h-evenly catalog__info">
-        <?php foreach ($filters as $filter) {
-            if($filter->id == 2) { 
-            foreach ($filter->values as $value) if($value->type == $subFilterParentId) { ?>
-                <a href="<?=$this->data->get_link($filter->alias, $value->id)?>" <?=isset($_GET[$filter->alias]) && ($_GET[$filter->alias] == $value->id) ?'class="active"':''?>>
-                    <?=$value->name?>
-                </a>
-        <?php } } } ?>
-    </div>
-    <?php } ?>
-    
-    
-    <section class="flex sale__catalog">
+	<?php */ $this->load->js_init('init__parts()'); ?>
+        
+    <section class="flex sale__catalog pt-50">
         <aside class="w25">
             <div class="hide m-flex">
                 <button class="btn w50-5" onclick="$(this).closest('aside').find('form').toggleClass('m-hide')"><?=$this->text('Фільтр')?></button>
@@ -229,7 +203,7 @@
             </form>
         </aside>
         <div class="w75">
-            <div class="flex catalog__sorted m-hide">
+            <div class="flex catalog__sorted m-hide" style="margin-top: 10px;">
                 <div>
                     <a href="<?=$this->data->get_link('sort', 'price_down')?>" <?=($this->data->get('sort') == 'price_down')?'class="active"':''?>><?=$this->text('Спершу дешеві')?></a>
                     <a href="<?=$this->data->get_link('sort', 'price_up')?>" <?=($this->data->get('sort') == 'price_up')?'class="active"':''?>><?=$this->text('Спершу дорожчі')?></a>

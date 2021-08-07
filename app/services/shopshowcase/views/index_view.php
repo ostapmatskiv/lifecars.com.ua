@@ -35,9 +35,9 @@
 				if($model->parent == $group->id) { ?>
 				<a class="base__detal" href="<?=SITE_URL.$model->link?>">
 					<?php if($model->photo) { ?>
-						<img src="<?=IMG_PATH.$model->photo?>" alt="<?=$model->name?>">
+						<img src="<?=IMG_PATH.$model->photo?>" alt="<?=$model->name?>" class="w80">
 					<?php } ?>
-			        <div class="detal__text"><?=$model->name?></div>
+			        <div class="detal__text"><?=$model->name?> <?=$model->list?></div>
 			    </a>
 			<?php } } ?>
 			</div>
