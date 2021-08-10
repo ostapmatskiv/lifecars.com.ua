@@ -349,7 +349,7 @@ class export_model
                     $name = explode(' ', $product->name);
                     $last_name = array_pop($name);
                     if($last_name == $product->article || $last_name == $product->article_show)
-                        $product->name = implode(' ', $name);
+                        $product->name = implode(' ', $name) . "({$product->article_show})";
                 }
 
                 if($product->promo &&
