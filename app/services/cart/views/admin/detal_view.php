@@ -21,7 +21,17 @@
 	        <p>Остання операція: <strong><?= $cart->date_edit > 0 ? date('d.m.Y H:i', $cart->date_edit) : 'очікує' ?></strong>
 	        </p>
 	        <?php if(isset($cart->date_1c)) { ?>
-	        <p>Синхронізація з 1с: <strong><?= $cart->date_1c > 0 ? date('d.m.Y H:i', $cart->date_1c) : 'очікує' ?></strong></p>
+	        <p> <?php if($cart->{"1c_status"} == $cart->status && $cart->date_1c > 0) { ?>
+	        		<button type="button" onClick="set_1c_status(this)" data-status="0" class="btn btn-warning btn-xs pull-right" title="Відмітити замовлення як не синхронізовано"><i class="fa fa-repeat" aria-hidden="true"></i> Повторна синхронізація</button>
+	        	<?php } else { ?>
+	        		<button type="button" onClick="set_1c_status(this)" data-status="1" class="btn btn-warning btn-xs pull-right" title="Відмітити замовлення як синхронізовано"><i class="fa fa-ban" aria-hidden="true"></i> Скасувати синхронізхацію</button>
+	        	<?php } ?>
+	        	Синхронізація з 1с: 
+	        		<strong class="text-<?= ($cart->{"1c_status"} == $cart->status && $cart->date_1c > 0) ? 'success' : 'warning' ?>" <?= ($cart->{"1c_status"} == $cart->status && $cart->date_1c > 0) ? '' : 'title="Очікуємо: '.$cart->status_1c_name.' => '.$cart->status_name.'"' ?>>
+	        			<i class="fa fa-<?= ($cart->{"1c_status"} == $cart->status && $cart->date_1c > 0) ? 'check-circle' : 'ban' ?>" aria-hidden="true"></i>
+	        			<?= $cart->date_1c > 0 ? date('d.m.Y H:i', $cart->date_1c) : 'очікується' ?>
+	        		</strong>
+	        </p>
 	        <?php } ?>
 	    </div>
 	</div>
@@ -257,3 +267,38 @@ if($cart->status > 0 && $cart->status_weight < 90 && $this->data->uri(3) != 'edi
 		</div>
 	</div>
 </div>
+
+
+<script>
+function set_1c_status(btn) {
+	let status = $(btn).data('status');
+	$('#page-loader').removeClass('hide');
+	$.ajax({
+        url: '<?=SITE_URL?>admin/cart/set_1c_status',
+        type: 'POST',
+        data: { 
+        	cart_id: <?=$cart->id?>,
+        	status: status,
+        	ajax: true
+        }
+    })
+    .done(function(res) {
+        if(res == 'success') {
+        	if(status == 1)
+        	{
+        		$(btn).attr('title', 'Відмітити замовлення як не синхронізовано').html('<i class="fa fa-repeat" aria-hidden="true"></i> Повторна синхронізація').data('status', '0');
+        		let date = new Date();
+        		$(btn).parent().find('strong').addClass('text-success').removeClass('text-warning').html('<i class="fa fa-check-circle" aria-hidden="true"></i> '+date.toDateString());
+        	}
+        	else
+        	{
+        		$(btn).attr('title', 'Відмітити замовлення як синхронізовано').html('<i class="fa fa-ban" aria-hidden="true"></i> Скасувати синхронізхацію').data('status', '1');
+        		$(btn).parent().find('strong').addClass('text-warning').removeClass('text-success').html('<i class="fa fa-ban" aria-hidden="true"></i> очікується');
+        	}
+        }
+    })
+    .always(function() {
+        $('#page-loader').addClass('hide');
+    });
+}
+</script>

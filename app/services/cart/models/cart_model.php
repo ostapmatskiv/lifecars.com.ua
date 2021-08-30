@@ -59,7 +59,8 @@ class cart_model
 	    	$this->db->select($this->table().' as c', '*', $where);
 	    else
 	    	$this->db->select($this->table().' as c');
-		$this->db->join($this->table('_status'), 'name as status_name, color as status_color, weight as status_weight', '#c.status');
+		$this->db->join($this->table('_status').' as s1', 'name as status_name, color as status_color, weight as status_weight', '#c.status');
+		$this->db->join($this->table('_status').' as s2', 'name as status_1c_name', '#c.1c_status');
 		$this->db->join('wl_users as m', 'name as manager_name, email as manager_email', '#c.manager');
 		$this->db->join('wl_users as u', 'name as user_name, email as user_email, type as user_type, alias as user_alias', '#c.user');
 		$this->db->join('wl_user_types', 'title as user_type_name', '#u.type');
@@ -121,7 +122,8 @@ class cart_model
 		$cart_where = $cart_where + ['id' => '#p.cart'];
 		$this->db->select($this->table('_products').' as p', '', ['product_id' => $products_ids, 'active' => 1])
                  ->join($this->table().' as c', 'id, public_number, status, date_add, date_edit, total, payed, source', $cart_where)
-				->join($this->table('_status'), 'name as status_name, color as status_color, weight as status_weight', '#c.status')
+				->join($this->table('_status').' as s1', 'name as status_name, color as status_color, weight as status_weight', '#c.status')
+				->join($this->table('_status').' as s2', 'name as status_1c_name', '#c.1c_status')
 				->join('wl_users as m', 'name as manager_name, email as manager_email', '#c.manager')
 				->join('wl_users as u', 'name as user_name, email as user_email, type as user_type, alias as user_alias', '#c.user')
 				->join('wl_user_types', 'title as user_type_name', '#u.type');
@@ -177,7 +179,8 @@ class cart_model
 		if(is_numeric($id) && $id > 0)
 		{
 			$this->db->select($this->table().' as c', '*', $id);
-			$this->db->join($this->table('_status'), 'name as status_name, weight as status_weight, color as status_color', '#c.status');
+			$this->db->join($this->table('_status').' as s1', 'name as status_name, weight as status_weight, color as status_color', '#c.status');
+			$this->db->join($this->table('_status').' as s2', 'name as status_1c_name', '#c.1c_status');
 			$where = array('field' => "phone", 'user' => "#c.user");
 			$this->db->join('wl_users as u', 'name as user_name, email as user_email, type as user_type, alias as user_alias', '#c.user');
 			$this->db->join('wl_users as m', 'name as manager_name, email as manager_email, alias as manager_alias', '#c.manager');

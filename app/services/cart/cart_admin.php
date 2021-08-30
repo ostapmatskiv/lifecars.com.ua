@@ -1967,6 +1967,27 @@ class cart_admin extends Controller {
         return false;
     }
 
+
+
+
+    public function set_1c_status()
+    {
+        $status = $this->data->post('status');
+        if($id = $this->data->post('cart_id'))
+            if(is_numeric($id) && is_numeric($status))
+                if($order = $this->db->getAllDataById('s_cart', $id))
+                {
+                    if($status == 1)
+                        $status = $order->status;
+                    if($order->{'1c_status'} != $status)
+                    {
+                        $this->db->updateRow('s_cart', ['1c_status' => $status, 'date_1c' => time()], $id);
+                    }
+                    echo "success";
+                }
+                    
+    }
+
 }
 
 ?>

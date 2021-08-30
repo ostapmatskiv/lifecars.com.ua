@@ -96,6 +96,7 @@
                         			<option value="full" <?=!empty($_GET['pay']) && $_GET['pay'] == 'full' ? 'selected' : ''?>>Повна оплата</option>
                         		</select>
 								</th>
+								<th>1C</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -104,7 +105,7 @@
 								$day = date('d.m.Y', $cart->date_add);
 								if($activeDay != $day)
 								{
-									echo "<tr><th colspan=5>{$day}</th></tr>";
+									echo "<tr><th colspan=6>{$day}</th></tr>";
 									$activeDay = $day;
 								} ?>
 						<tr class="<?=$cart->status_color?>">
@@ -156,10 +157,12 @@
 										echo "<span class='label label-danger'>Не оплачено</span>";
 								 ?>
 							</td>
+							<td><?= ($cart->{"1c_status"} == $cart->status && $cart->date_1c > 0) ? '<i class="fa fa-check-circle text-success" aria-hidden="true" title="'.date('d.m.Y H:i', $cart->date_1c).'"></i>' : '<i class="fa fa-ban text-warning" aria-hidden="true" title="Очікуємо: '.$cart->status_1c_name.' => '.$cart->status_name.'"></i>' ?>
+							</td>
 						</tr>
 						<?php } } else { ?>
 							<tr>
-								<td colspan="8">Замовлення відсутні</td>
+								<td colspan="6">Замовлення відсутні</td>
 							</tr>
 						<?php } ?>
 						</tbody>
