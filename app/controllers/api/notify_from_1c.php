@@ -10,13 +10,11 @@ class notify_from_1c extends Controller
 	function index()
 	{
 		$time = time();
-		$alias_table = ['cart' => 's_cart'];
+		$alias_table = ['cart' => 's_cart', 'clients' => 'wl_users'];
 		foreach ($alias_table as $alias => $table) {
 			if($row_id = $this->data->get($alias))
 			{
 				$data = ['date_1c' => $time];
-				if($alias == 'returns')
-					$data = ['date_synchronization' => $time];
 				if($alias == 'cart')
 				{
 					if($cart = $this->db->getAllDataById($table, $row_id))
