@@ -14,6 +14,10 @@ class notify_from_1c extends Controller
 		foreach ($alias_table as $alias => $table) {
 			if($row_id = $this->data->get($alias))
 			{
+				if(!is_numeric($row_id)) {
+					exit('GET value must be numeric');
+				}
+
 				$data = ['date_1c' => $time];
 				if($alias == 'cart')
 				{
