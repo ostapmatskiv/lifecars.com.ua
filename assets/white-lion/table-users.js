@@ -15,8 +15,12 @@ var handleDataTableCombinationSetting = function() {
 	            { "data": "name" },
 	            { "data": "type_name" },
 	            { "data": "status_name" },
-	            { "data": "last_login" }
+	            { "data": "last_login" },
+                { "data": "date_1c" }
 	        ],
+            order: [
+                [1, "desc"]
+            ],
 	        responsive: true,
             lengthMenu: [20, 40, 60]
         });

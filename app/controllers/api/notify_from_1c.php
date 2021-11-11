@@ -10,7 +10,7 @@ class notify_from_1c extends Controller
 	function index()
 	{
 		$time = time();
-		$alias_table = ['cart' => 's_cart', 'clients' => 'wl_users'];
+		$alias_table = ['cart' => 's_cart', 'client' => 'wl_users'];
 		foreach ($alias_table as $alias => $table) {
 			if($row_id = $this->data->get($alias))
 			{

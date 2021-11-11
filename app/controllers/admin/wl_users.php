@@ -106,6 +106,7 @@ class wl_users_admin extends Controller {
                     else
                         $user->last_login = 'Дані відсутні';
                     $user->status_name = '<label class="label label-'.$user->status_color.'">'.$user->status_name.'</label>';
+                    $user->date_1c = $user->date_1c ? '<i class="fa fa-check-circle text-success" aria-hidden="true" title="'.date('d.m.Y H:i', $user->date_1c).'"></i>' : '<i class="fa fa-ban text-warning" aria-hidden="true" title="Очікуємо"></i>';
                 }
             $this->load->json(array('data' => $wl_users));
         }
