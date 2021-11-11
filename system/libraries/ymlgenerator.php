@@ -51,7 +51,6 @@ class ymlgenerator extends Controller {
         $settings = (new Settings())->setOutputFile($file)->setEncoding($this->encoding);
 
         $shopInfo = (new ShopInfo())
-            
             ->setName(SITE_NAME)
             ->setUrl(SITE_URL);
 
