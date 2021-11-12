@@ -35,7 +35,7 @@ class export_1c extends Controller
 		$xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n
 					<VygruzkaKlientiv>\n
 						<Клиенты>\n";
-		$this->db->select('wl_users as u', 'id, id_1c, email, name, type')
+		$this->db->select('wl_users as u', 'id, id_1c, email, name, type', ['date_1c' => 0])
 					->join('wl_user_info as i', 'value as user_phone', ['user' => '#u.id', 'field' => 'phone'])
 					->join('wl_user_types as t', 'title as type_name', '#u.type');
 		if ($users = $this->db->get('array'))
