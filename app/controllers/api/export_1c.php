@@ -24,10 +24,10 @@ class export_1c extends Controller
 			$this->db->select('wl_users as u', 'id, id_1c, email, name, type', ['date_1c' => 0])
 						->join('wl_user_info as i', 'value as user_phone', ['user' => '#u.id', 'field' => 'phone'])
 						->join('wl_user_types as t', 'title as type_name', '#u.type');
-			$users = $this->db->get('array');
-			foreach ($users as $user) {
-				$user->id = 'life-'.$user->id;
-			}
+			if ($users = $this->db->get('array'))
+				foreach ($users as $user) {
+					$user->id = 'life-'.$user->id;
+				}
 			$this->load->json($users);
 		}
 
