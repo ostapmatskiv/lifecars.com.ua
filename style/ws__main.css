@@ -103,6 +103,9 @@ input:focus { outline: none }
 @media screen and (max-width: 1025px) {
 	.t100 { width: 100% }
 	.t-hide { display: none !important }
+	.t-show {
+		display: block !important;
+	}
 	.container {
 		width: 100%;
 		padding: 0 10px;

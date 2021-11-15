@@ -140,11 +140,13 @@ $(document).ready(function(){
     });
 
     $('.fa-bars').click(function() {
+        $('.mob__menu').toggleClass('active');
         $('.close__menu').css("display", "block");
         $('.mob__nav').css("left", "0");
      });
 
      $('.fa-times').click(function() {
+         $('.mob__menu').removeClass('active');
         $('.mob__nav').css("left", "-281px");
         $('.close__menu').css("display", "none");
      })
@@ -153,10 +155,10 @@ $(document).ready(function(){
      $(window).scroll(function() {
          if ($(this).scrollTop() > 85) {
              $('.nav__mobile').addClass("default").fadeIn('slow');
-             $('.fa-bars').css("color", "#F2F2F2");
+             $('#main-search').addClass('scrolled');
          } else {
              $('.nav__mobile').removeClass("default").fadeIn('slow');
-             $('.fa-bars').css("color", "#777");
+             $('#main-search').removeClass('scrolled');
          };
      });
 
@@ -194,12 +196,11 @@ function init__main() {
     $('section.cars__base').hide();
     $('.main__logo a').click(function() {
         var group_alias = $(this).data('group');
-        $('section.cars__base').slideUp();
         $('.main__logo a').removeClass('active');
         if ($('.cars__base.models__' + group_alias + ' > a').length > 0) {
         	event.preventDefault();
-        	$(this).addClass('active');
-            $('.cars__base.models__' + group_alias).slideDown();
+            $(this).closest('.main__logo-wrapper').find('.cars__base').slideUp();
+        	$(this).addClass('active').toggleClass('open').closest('.main__logo-wrapper').find('.cars__base.models__' + group_alias).slideToggle();
         }
     });
 }
@@ -251,3 +252,16 @@ var recaptchaExpiredCallback_saveOrders = function(response) {
     $('form.save_orders button').attr('disabled', true);
     $('form.save_orders button').attr('title', 'Заповніть "Я не робот"');
 };
+
+
+$(document).on('click','.tab', function () {
+    $(this).toggleClass('active');
+    $(this).parent().find('.tab-item').slideToggle();
+});
+
+$('.category-mobile-menu>.flex>a').each(function (index){
+    $(this).css('order', index);
+});
+$('.category-mobile-menu>.flex>section').each(function (index){
+    $(this).css('order', index);
+});
