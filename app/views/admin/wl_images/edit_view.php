@@ -93,6 +93,81 @@
     	        </form>
             </div>
         </div>
+
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <h4 class="panel-title">Водяний знак</h4>
+            </div>
+            <div class="panel-body">
+                <form action="<?=SITE_URL?>admin/wl_images/save_watermark" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                    <input type="hidden" name="id" value="<?=$wl_image->id?>">
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Зображення</label>
+                        <div class="col-md-9">
+                            <select name="watermark" class="form-control" onchange="watermarkMode(this)">
+                                <option value="0" <?= empty($wl_image->watermark) ? 'selected':''?>>без водяного знаку</option>
+                                <option value="1" <?= !empty($wl_image->watermark) ? 'selected':''?>>накласти</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="watermark-options" class="<?= empty($wl_image->watermark) ? 'hide' : '' ?>">
+                        <?php $watermark = new stdClass();
+                        $watermark->file_path = '';
+                        $watermark->top = $watermark->bottom = $watermark->left = $watermark->right = $watermark->width = $watermark->height = 0;
+                        // $watermark->opacity = 50;
+
+                        if(!empty($wl_image->watermark)) {
+                            $watermark = unserialize($wl_image->watermark);
+                        } ?>
+
+                        
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Файл</label>
+                            <div class="col-md-9">
+                                <input type="file" name="file" class="form-control">
+                            </div>
+                        </div>
+
+                        <h4 class="text-center">Розміри</h4>
+                        <p class="text-center">0px - без змін</p>
+                        
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Ширина (px)</label>
+                            <div class="col-md-9">
+                                <input type="number" name="width" class="form-control" value="<?=$watermark->width?>" required placeholder="Ширина" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Висота (px)</label>
+                            <div class="col-md-9">
+                                <input type="number" name="height" class="form-control" value="<?=$watermark->height?>" required placeholder="Висота" />
+                            </div>
+                        </div>
+
+                        <h4 class="text-center">Розташування</h4>
+                        <p class="text-center">Лівий верхній кут має пріорітет. Якщо 0 - тоді нижній правий кут</p>
+
+                        <?php foreach(['left' => 'Лівий бік', 'top' => 'Згори', 'right' => 'Правий бік', 'bottom' => 'Знизу'] as $key => $title) { ?>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label"><?= $title ?> (px)</label>
+                                <div class="col-md-9">
+                                    <input type="number" name="<?= $key ?>" class="form-control" value="<?= $watermark->$key ?>" required placeholder="<?= $title ?> (px)" />
+                                </div>
+                            </div>
+                        <?php } ?>
+
+                        <div class="form-group">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-9">
+                                <button type="submit" class="btn btn-sm btn-success">Зберегти</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
     <div class="col-md-6">
         <div class="panel panel-inverse">
@@ -241,3 +316,13 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+function watermarkMode(e) {
+    if(e.value == '1') {
+        $('#watermark-options').removeClass('hide');
+    } else {
+        $('#watermark-options').addClass('hide');
+    }
+}
+</script>
