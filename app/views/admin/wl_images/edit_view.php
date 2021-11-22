@@ -130,6 +130,12 @@
                             </div>
                         </div>
 
+                        <?php if(!empty($watermark->file_path)) { ?>
+                            <div class="text-center">
+                                <img src="<?= $watermark->file_path ?>" style="max-width: 350px;">
+                            </div>
+                        <?php } ?>
+
                         <h4 class="text-center">Розміри</h4>
                         <p class="text-center">0px - без змін</p>
                         
