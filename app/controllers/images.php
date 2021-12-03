@@ -80,8 +80,7 @@ class images extends Controller {
     							if($resize->prefix != '' && $resize->prefix == $prefix)
     							{
     								$name = substr($this->data->uri(3), strlen($resize->prefix) + 1);
-    								$path = IMG_PATH.$folder->value.'/'.$this->data->uri(2).'/'.$name;
-    								$path = substr($path, strlen(SITE_URL));
+                                    $path = $GLOBALS['images_folder'].'/'.$folder->value.'/'.$this->data->uri(2).'/'.$name;
     								$this->load->library('image');
     								if($this->image->loadImage($path))
     								{
@@ -89,11 +88,16 @@ class images extends Controller {
 				                            $this->image->resize($resize->width, $resize->height, $resize->quality, $resize->type);
 				                        if(in_array($resize->type, array(2, 21, 22)))
 				                            $this->image->preview($resize->width, $resize->height, $resize->quality, $resize->type);
+                                        if(!empty($resize->watermark)) {
+                                            $resize->watermark = unserialize($resize->watermark);
+                                            if(file_exists($resize->watermark->file_path)) {
+                                                $this->image->watermark($resize->watermark);
+                                            }
+                                        }
 				                        $this->image->save($resize->prefix);
 
 				                        header("Content-type: image/".$this->image->getExtension());
-				                        $path = IMG_PATH.$folder->value.'/'.$this->data->uri(2).'/'.$this->data->uri(3);
-    									$path = substr($path, strlen(SITE_URL));
+				                        $path = $GLOBALS['images_folder'].'/'.$folder->value.'/'.$this->data->uri(2).'/'.$this->data->uri(3);
 				                        readfile($path);
 				                        exit();
     								}

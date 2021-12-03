@@ -469,6 +469,99 @@ class Image {
     	return false;
     }
 
+    public function watermark($watermark)
+    {
+    	if(empty($this->image))
+    		return false;
+
+    	$src_watermark = $fixOrientation = true;
+    	@$info = getimagesize($watermark->file_path);
+		if(!empty($info))
+		{
+			switch ($info[2]) {
+				// gif
+				case '1' :
+					$fixOrientation = false;
+					$src_watermark = imagecreatefromgif($watermark->file_path);
+					imagealphablending($src_watermark, false);
+					imagesavealpha($src_watermark, true);
+					break;
+				// jpg
+				case '2' :
+					$src_watermark = imagecreatefromjpeg($watermark->file_path);
+					break;
+				// png
+				case '3' :
+					$fixOrientation = false;
+					$src_watermark = imagecreatefrompng($watermark->file_path);
+					imagealphablending($src_watermark, false);
+					imagesavealpha($src_watermark, true);
+					break;
+				default:
+					return false;
+			}
+
+			if($fixOrientation)
+			{
+				$exif = exif_read_data($watermark->file_path);
+				$angles = array(8 => 90, 3 => 180, 6 => -90);
+				if(!empty($exif['Orientation']) && isset($angles[$exif['Orientation']]))
+				{
+				    $src_watermark = imagerotate($src_watermark, $angles[$exif['Orientation']], 0);
+				}
+			}
+		}
+
+		if(empty($src_watermark))
+    		return false;
+
+		$src_w = $dest_w = imagesx($src_watermark);
+		$src_h = $dest_h = imagesy($src_watermark);
+
+		if($watermark->width > 0 && $watermark->height == 0 || $watermark->width == 0 && $watermark->height > 0) {
+			$ratio = $src_w / $watermark->width;
+			if($src_w < $src_h && $watermark->height > 0)
+				$ratio = $src_h / $watermark->height;
+
+			$dest_w = round($src_w / $ratio);
+			$dest_h = round($src_h / $ratio);
+			if($dest_h > $watermark->height && $watermark->height > 0) 
+				$dest_h = $watermark->height;
+			if($watermark->height == 0)
+			{
+				$ratio = $src_w / $watermark->width;
+				$dest_w = $watermark->width;
+				$dest_h = round($src_h / $ratio);
+			}
+			if($watermark->width == 0)
+			{
+				$ratio = $src_h / $watermark->height;
+				$dest_w = round($src_w / $ratio);
+				$dest_h = $watermark->height;
+			}
+		}
+
+		
+				// 
+
+				// $this->image = imagecreatetruecolor($dest_w, $dest_h);
+				// imagealphablending($this->image, false);
+				// imagesavealpha($this->image, true);
+				// imagecopyresampled($this->image, $src, 0, 0, 0, 0, $dest_w, $dest_h, $src_w, $src_h);
+				
+				// imagedestroy($src);
+
+		if($fixOrientation) {
+    		imagecopymerge($this->image, $src_watermark, $watermark->left, $watermark->top, 0, 0, $src_w, $src_h, $watermark->opacity);
+		} else {
+	    	$this->imagecopymerge_alpha($this->image, $src_watermark, $watermark->left, $watermark->top, 0, 0, $dest_w, $dest_h, $watermark->opacity);
+	    }
+
+		header("Content-type: image/".$this->getExtension());
+    	imagejpeg($this->image);
+    	exit;
+    }
+
     /*
      * Зберігання отриманого зображення
      */
@@ -546,6 +639,21 @@ class Image {
         }
         return $errors;
     }
+
+    public function imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct){
+        // creating a cut resource
+        $cut = imagecreatetruecolor($src_w, $src_h);
+
+        // copying relevant section from background to the cut resource
+        imagecopy($cut, $dst_im, 0, 0, $dst_x, $dst_y, $src_w, $src_h);
+       
+        // copying relevant section from watermark to the cut resource
+        imagecopy($cut, $src_im, 0, 0, $src_x, $src_y, $src_w, $src_h);
+       
+        // insert cut resource to destination image
+        imagecopymerge($dst_im, $cut, $dst_x, $dst_y, 0, 0, $src_w, $src_h, $pct);
+    }
+
 }
 
 ?>

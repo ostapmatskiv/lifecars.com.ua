@@ -246,20 +246,27 @@ class wl_images_admin extends Controller {
     public function save_watermark()
     {
         $update = ['watermark' => ''];
+        $resize = $this->db->getAllDataById('wl_images_sizes', $this->data->post('id'));
+        if(empty($resize)) {
+            $this->redirect();
+        }
 
-        if($this->data->post('watermark') == 1) {
-            $watermark = new stdClass();
-            $watermark->file_path = '';
-            $watermark->top = $watermark->bottom = $watermark->left = $watermark->right = $watermark->width = $watermark->height = 0;
+        if($this->data->post('use_watermark') == 1) {
+            if(!empty($resize->watermark)) {
+                $watermark = unserialize($resize->watermark);
+            } else {
+                $watermark = new stdClass();
+                $watermark->file_path = $watermark->img_path = '';
+                $watermark->top = $watermark->bottom = $watermark->left = $watermark->right = $watermark->width = $watermark->height = 0;
+                $watermark->opacity = 50;
+            }
 
-            foreach(['top', 'bottom', 'left', 'right', 'width', 'height'] as $key) {
+            foreach(['top', 'bottom', 'left', 'right', 'width', 'height', 'opacity'] as $key) {
                 $watermark->$key = $this->data->post($key);
             }
 
             if(!empty($_FILES['file'])) {
-                $path = IMG_PATH;
-                $path = substr($path, strlen(SITE_URL));
-                $path = substr($path, 0, -1);
+                $path = $GLOBALS['images_folder'];
                 if(!is_dir($path)) {
                     mkdir($path, 0777);
                 }
@@ -268,16 +275,21 @@ class wl_images_admin extends Controller {
                     mkdir($path, 0777);
                 }
                 $path .= '/';
-
                 $this->load->library('image');
                 if($this->image->upload('file', $path, $this->data->post('id'))) {
-                    $watermark->file_path = IMG_PATH . 'watermark/' . $this->data->post('id') . '.' . $this->image->getExtension();
+                    $watermark->file_path = $path . $this->data->post('id') . '.' . $this->image->getExtension();
+                    $watermark->img_path = IMG_PATH . 'watermark/' . $this->data->post('id') . '.' . $this->image->getExtension();
                 }
             }
 
             $update['watermark'] = serialize($watermark);
         }
         $this->db->updateRow('wl_images_sizes', $update, $this->data->post('id'));
+
+        $this->db->imageReSizes = [];
+        if($a = $this->db->getAllDataById('wl_aliases', $resize->alias))
+            $this->db->cache_delete('imageReSizes', $a->alias);
+
         $this->redirect();
     }
 

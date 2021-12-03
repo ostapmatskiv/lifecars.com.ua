@@ -105,7 +105,7 @@
                     <div class="form-group">
                         <label class="col-md-3 control-label">Зображення</label>
                         <div class="col-md-9">
-                            <select name="watermark" class="form-control" onchange="watermarkMode(this)">
+                            <select name="use_watermark" class="form-control" onchange="watermarkMode(this)">
                                 <option value="0" <?= empty($wl_image->watermark) ? 'selected':''?>>без водяного знаку</option>
                                 <option value="1" <?= !empty($wl_image->watermark) ? 'selected':''?>>накласти</option>
                             </select>
@@ -116,7 +116,7 @@
                         <?php $watermark = new stdClass();
                         $watermark->file_path = '';
                         $watermark->top = $watermark->bottom = $watermark->left = $watermark->right = $watermark->width = $watermark->height = 0;
-                        // $watermark->opacity = 50;
+                        $watermark->opacity = 50;
 
                         if(!empty($wl_image->watermark)) {
                             $watermark = unserialize($wl_image->watermark);
@@ -132,7 +132,7 @@
 
                         <?php if(!empty($watermark->file_path)) { ?>
                             <div class="text-center">
-                                <img src="<?= $watermark->file_path ?>" style="max-width: 350px;">
+                                <img src="<?= SITE_URL . $watermark->file_path ?>" style="max-width: 350px;">
                             </div>
                         <?php } ?>
 
@@ -142,13 +142,13 @@
                         <div class="form-group">
                             <label class="col-md-3 control-label">Ширина (px)</label>
                             <div class="col-md-9">
-                                <input type="number" name="width" class="form-control" value="<?=$watermark->width?>" required placeholder="Ширина" />
+                                <input type="number" name="width" class="form-control" value="<?=$watermark->width?>" min="0" max="<?=$wl_image->width?>" required placeholder="Ширина" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">Висота (px)</label>
                             <div class="col-md-9">
-                                <input type="number" name="height" class="form-control" value="<?=$watermark->height?>" required placeholder="Висота" />
+                                <input type="number" name="height" class="form-control" value="<?=$watermark->height?>" min="0" max="<?=$wl_image->height?>" required placeholder="Висота" />
                             </div>
                         </div>
 
@@ -165,6 +165,13 @@
                         <?php } ?>
 
                         <div class="form-group">
+                            <label class="col-md-3 control-label">Інтенсивність [0-100]</label>
+                            <div class="col-md-9">
+                                <input type="number" name="opacity" class="form-control" value="<?=$watermark->opacity?>" min="0" max="100" required placeholder="Інтенсивність" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <div class="col-md-3"></div>
                             <div class="col-md-9">
                                 <button type="submit" class="btn btn-sm btn-success">Зберегти</button>
@@ -176,7 +183,7 @@
         </div>
     </div>
     <div class="col-md-6">
-        <div class="panel panel-inverse">
+        <div class="panel panel-danger">
             <div class="panel-heading">
                 <h4 class="panel-title">Видалити зміну розміру</h4>
             </div>
@@ -216,7 +223,7 @@
             </div>
         </div>
 
-        <div class="panel panel-inverse">
+        <div class="panel panel-info">
             <div class="panel-heading">
                 <h4 class="panel-title">Скопіювати зміну розміру</h4>
             </div>
@@ -276,7 +283,7 @@
             </div>
         </div>
 
-        <div class="panel panel-inverse">
+        <div class="panel panel-warning">
             <div class="panel-heading">
                 <h4 class="panel-title">Видалити зображення з префіксом <strong><?=$wl_image->prefix?></strong></h4>
             </div>
