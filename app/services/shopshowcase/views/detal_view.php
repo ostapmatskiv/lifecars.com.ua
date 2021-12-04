@@ -56,7 +56,7 @@
                 <?php if(!empty($_SESSION['alias']->images)) {
                     for ($i = 0; $i < count($_SESSION['alias']->images); $i++) {  ?>
                         <div class="flex h-center v-center small__img">
-                            <a href="<?=IMG_PATH.$_SESSION['alias']->images[$i]->path?>" class="small__item"><img src="<?=IMG_PATH.$_SESSION['alias']->images[$i]->thumb_path?>"></a> 
+                            <a href="<?=IMG_PATH.$_SESSION['alias']->images[$i]->detal_path?>" class="small__item"><img src="<?=IMG_PATH.$_SESSION['alias']->images[$i]->thumb_path?>"></a> 
                         </div>
                 <?php } } ?>
             </div>
