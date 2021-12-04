@@ -231,7 +231,7 @@ class export_model
 
         if($products)
         {
-            $imagesAll = $where_img = $product_ids = $content_ids = array();
+            $imagesAll = $imagesAll_detal = $where_img = $product_ids = $content_ids = array();
             $where_img['alias'] = $products[0]->wl_alias;
             if($_SESSION['option']->ProductMultiGroup)
             {
@@ -262,6 +262,7 @@ class export_model
                     if(count($imagesAll[$id]) > 9)
                         continue;
                     $imagesAll[$id][] = IMG_PATH.$_SESSION['option']->folder.'/'.$id.'/'.$image->file_name;
+                    $imagesAll_detal[$id][] = IMG_PATH.$_SESSION['option']->folder.'/'.$id.'/detal_'.$image->file_name;
                 }
             unset($images);
             
@@ -367,8 +368,14 @@ class export_model
                 $product->images = array();
                 if(isset($imagesAll[$id]))
                 {
-                    $product->images = $imagesAll[$id];
+                    if($this->export_to == 'export_prom') {
+                        $product->images = $imagesAll_detal[$id];
+                    } else {
+                        $product->images = $imagesAll[$id];
+                    }
+                    
                     unset($imagesAll[$id]);
+                    unset($imagesAll_detal[$id]);
                 }
 
                 // do not export products without image
