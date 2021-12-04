@@ -21,8 +21,8 @@ class export_1c extends Controller
 
 		if($type == 'json')
 		{
-			$this->db->select('wl_users as u', 'id, id_1c, email, name, type', ['date_1c' => 0])
-						->join('wl_user_info as i', 'value as user_phone', ['user' => '#u.id', 'field' => 'phone'])
+			$this->db->select('wl_users as u', 'id, id_1c, email, phone as user_phone, name, type', ['date_1c' => 0])
+						// ->join('wl_user_info as i', 'value as user_phone', ['user' => '#u.id', 'field' => 'phone'])
 						->join('wl_user_types as t', 'title as type_name', '#u.type');
 			if ($users = $this->db->get('array'))
 				foreach ($users as $user) {
@@ -35,8 +35,8 @@ class export_1c extends Controller
 		$xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n
 					<VygruzkaKlientiv>\n
 						<Клиенты>\n";
-		$this->db->select('wl_users as u', 'id, id_1c, email, name, type', ['date_1c' => 0])
-					->join('wl_user_info as i', 'value as user_phone', ['user' => '#u.id', 'field' => 'phone'])
+		$this->db->select('wl_users as u', 'id, id_1c, email, phone, name, type', ['date_1c' => 0])
+					// ->join('wl_user_info as i', 'value as user_phone', ['user' => '#u.id', 'field' => 'phone'])
 					->join('wl_user_types as t', 'title as type_name', '#u.type');
 		if ($users = $this->db->get('array'))
 		{
@@ -46,7 +46,7 @@ class export_1c extends Controller
 				$xml .= "\t\t" . '<site_id>life-' . $user->id . '</site_id>' . "\n";
 				$xml .= "\t\t" . '<name>' . $user->name . '</name>' . "\n";
 				$xml .= "\t\t" . '<email>' . $user->email . '</email>' . "\n";
-				$xml .= "\t\t" . '<tel>' . $user->user_phone . '</tel>' . "\n";
+				$xml .= "\t\t" . '<tel>' . $user->phone . '</tel>' . "\n";
 				$xml .= "\t\t" . '<Type_Opt>' . $user->type . '</Type_Opt>' . "\n";
 				$xml .= "\t\t" . '<Type_Name>' . $user->type_name . '</Type_Name>' . "\n";
 
@@ -68,8 +68,8 @@ class export_1c extends Controller
 					->join('s_cart_shipping as sh', 'name as shipping_name', '#c.shipping_id')
 					->join('s_cart_payments as p', 'name as payment_name, info as payment_info', '#c.payment_id')
 					->join('s_cart_status as s', 'name as status_name', '#c.status')
-					->join('wl_users as u', 'email as user_email, name as user_name, type as user_type, id_1c as user_id_1c', '#c.user')
-					->join('wl_user_info as i', 'value as user_phone', ['user' => '#c.user', 'field' => 'phone'])
+					->join('wl_users as u', 'email as user_email, phone as user_phone, name as user_name, type as user_type, id_1c as user_id_1c', '#c.user')
+					// ->join('wl_user_info as i', 'value as user_phone', ['user' => '#c.user', 'field' => 'phone'])
 					->join('wl_user_types as t', 'id as user_type_id, title as type_name', '#u.type');
 		if ($orders = $this->db->get('array'))
 		{

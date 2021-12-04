@@ -16,6 +16,9 @@ class turbosms {
 
 	function send($phone, $text)
 	{
+		if(empty($this->login) || empty($this->password))
+			return false;
+
 		header ('Content-type: text/html; charset=utf-8');
 		$client = new SoapClient ('http://turbosms.in.ua/api/wsdl.html');
 
@@ -31,6 +34,7 @@ class turbosms {
 	        'text' => $text
     	);
     	$res = $client->SendSMS($sms);
+    	return true;
 	}
 
 }

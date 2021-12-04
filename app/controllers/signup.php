@@ -70,50 +70,56 @@ class Signup extends Controller {
 		{
 			$_SESSION['notify'] = new stdClass();
 
-	    	$this->load->library('recaptcha');
-			if($this->recaptcha->check($this->data->post('g-recaptcha-response')) == false)
-			{
-				$_SESSION['notify']->errors = $this->text('Заповніть "Я не робот"');
-			}
-			else
-			{
+	    	// $this->load->library('recaptcha');
+			// if($this->recaptcha->check($this->data->post('g-recaptcha-response')) == false)
+			// {
+			// 	$_SESSION['notify']->errors = $this->text('Заповніть "Я не робот"');
+			// }
+			// else
+			// {
 		        $this->load->library('validator');
-		        if($this->name == 'name')
-					$this->validator->setRules($this->text("Ім'я"), $this->data->post('name'), 'required');
-				else
-				{
+		 //        if($this->name == 'name')
+			// 		$this->validator->setRules($this->text("Ім'я"), $this->data->post('name'), 'required');
+			// 	else
+			// 	{
 					$this->validator->setRules($this->text("Ім'я"), $this->data->post('first_name'), 'required');
 					$this->validator->setRules($this->text("Прізвище"), $this->data->post('last_name'), 'required');
-				}
-				$email = '';
-		    	if($email = $this->data->post('email'))
-		    		$email = strtolower($email);
-				$this->validator->setRules('E-mail', $email, 'required|email');
-				if(in_array('phone', $this->additionall))
-					$this->validator->setRules($this->text('Контактний номер'), $this->data->post('phone'), 'phone');	
-				$this->validator->setRules($this->text('Пароль'), $this->data->post('password'), 'required|5..20');
-				$this->validator->password($this->data->post('password'), $this->data->post('re-password'));
+				// }
+				// $email = '';
+		  //   	if($email = $this->data->post('email'))
+		  //   		$email = strtolower($email);
+				// $this->validator->setRules('E-mail', $email, 'required|email');
+				// if(in_array('phone', $this->additionall))
+					$this->validator->setRules($this->text('Номер телефону'), $this->data->post('phone'), 'phone|required');	
+					$this->validator->setRules($this->text('Код з СМС'), $this->data->post('code'), 'required');	
+				// $this->validator->setRules($this->text('Пароль'), $this->data->post('password'), 'required|5..20');
+				// $this->validator->password($this->data->post('password'), $this->data->post('re-password'));
 		        if($this->validator->run())
 		        {
 		            $this->load->model('wl_user_model');
-		            $info['email'] = $email;
-			    	$info['name'] = $this->data->post('name');
-			    	$info['password'] = $_POST['password'];
+		            $info['email'] = '';
+			    	$info['phone'] = $this->validator->getPhone($this->data->post('phone'));
+			    	$info['name'] = $this->data->post('first_name') .' '. $this->data->post('last_name');
+			    	// $info['password'] = $_POST['password'];
 			    	$info['photo'] = '';
-			    	if(isset($_POST['first_name']) && isset($_POST['last_name']))
-			    		$info['name'] = $this->data->post('first_name') .' '. $this->data->post('last_name');
-			    	$additionall = array();
-			    	if(!empty($this->additionall))
-					{
-						foreach ($this->additionall as $key) {
-							if($value = $this->data->post($key))
-							{
-								if($key == 'phone')
-									$value = $this->validator->getPhone($value);
-								$additionall[$key] = $value;
-							}
-						}
+			  //   	$additionall = array();
+			  //   	if(!empty($this->additionall))
+					// {
+					// 	foreach ($this->additionall as $key) {
+					// 		if($value = $this->data->post($key))
+					// 		{
+					// 			if($key == 'phone')
+					// 				$value = $this->validator->getPhone($value);
+					// 			$additionall[$key] = $value;
+					// 		}
+					// 	}
+					// }
+					if(!preg_match('/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯ]+$/', $info['name'])) {
+						$_SESSION['notify']->errors = $this->text('Ім\'я').' '.$this->text('Прізвище').' '.$this->text('Тільки українські літери');
+						$this->redirect('signup');
 					}
+					exit;
+
 	                if($user = $this->wl_user_model->add($info, $additionall, $this->new_user_type))
 	                {
 	                	$this->load->library('mail');
@@ -131,7 +137,7 @@ class Signup extends Controller {
 		        }
 		        else
 		            $_SESSION['notify']->errors = '<ul>'.$this->validator->getErrors('<li>', '</li>').'</ul>';
-		    }
+		    // }
 	        $this->redirect('signup');
 		}
 		$this->redirect('profile');
@@ -177,13 +183,13 @@ class Signup extends Controller {
 		$this->load->page_404(false);
 	}
 
-	public function check_email()
-	{
-		$this->load->model('wl_user_model');
-		$res['result'] = $this->wl_user_model->userExists($this->data->post('email'));
-		$res['message'] = $this->wl_user_model->user_errors;
-		$this->load->json($res);
-	}
+	// public function check_email()
+	// {
+	// 	$this->load->model('wl_user_model');
+	// 	$res['result'] = $this->wl_user_model->userExists($this->data->post('email'));
+	// 	$res['message'] = $this->wl_user_model->user_errors;
+	// 	$this->load->json($res);
+	// }
 
 	public function facebook()
 	{
@@ -250,65 +256,66 @@ class Signup extends Controller {
 		}
 	}
 
-	// function checkPhone()
-	// {
-	// 	$res = array('result' => false, 'message' => '');
-	// 	$phone = $this->data->post('phone');
-	// 	if(isset($phone)){
-	// 		$this->load->model('wl_user_model');
-	// 		$res['result'] = $this->wl_user_model->phoneExists($phone);
-	// 		if(count($this->wl_user_model->user_errors) == 1) $res['message'] = $this->wl_user_model->user_errors[0];
-	// 	}
-	// 	header('Content-type: application/json');
-	// 	echo json_encode($res);
-	// 	exit;
-	// }
+	function check_phone()
+	{
+		$res = array('status' => false, 'message' => 'Введіть коректний номер телефону');
+		if($phone = $this->data->post('phone'))
+		{
+			$this->load->library('validator');
+			if($phone = $this->validator->getPhone($phone))
+			{
+				$this->load->model('wl_user_model');
+				if($userExists = $this->wl_user_model->userExists($phone)) {
+					$res['message'] = $this->wl_user_model->user_errors;
+				} else {
+					$res = array('status' => true);
+				}
+			}
+		}
+		$this->load->json($res);
+	}
 
-	// public function phone_confirmed()
-	// {
-	// 	$res = array('result' => false, 'message' => '');
-	// 	$phone = str_replace(' ', '', $this->data->post('phone'));
-	// 	$id = $_SESSION['user']->id;
-	// 	$this->db->executeQuery("SELECT * FROM wl_users WHERE phone = '{$phone}' AND `id` != $id");
-	// 	if($this->db->numRows() == 0){
-	// 		if(is_numeric($phone) && (strlen($phone) == 13) && isset($id)){
-	//             $this->db->executeQuery("UPDATE wl_users SET phone = '{$phone}' WHERE id = $id");
-	//             $_SESSION['code'] = rand(10000 , 99999);
-	//             $this->load->library('turbosms');
-	//             $this->turbosms->send($phone, $_SESSION['code']);
-	//             $res['result'] = true;
-	//             $res['message'] = 'Зараз на телефон вам прийде код підтвердження';
-	//         }
-	//         else $res['message'] = 'Не вірний формат телефону (Приклад: +380 12 345 6789).';
-	//     } else $res['message'] = 'Користувач з таким телефоном вже існує';
+	public function send_phone_code()
+	{
+		$res = array('status' => false, 'message' => 'Введіть коректний номер телефону');
+		if($phone = $this->data->post('phone'))
+		{
+			$this->load->library('validator');
+			if($phone = $this->validator->getPhone($phone))
+			{
+				if(empty($_SESSION['signup'][$phone])) {
+					$_SESSION['signup'][$phone] = rand(1000 , 9999);
+				}
+	            $this->load->library('turbosms');
+	            if($this->turbosms->send($phone, $_SESSION['signup'][$phone]))
+	            	$res = array('status' => true, 'code' => $_SESSION['signup'][$phone] + 1);
+			}
+		}
+		$this->load->json($res);
+	}
 
-	// 	header('Content-type: application/json');
-	// 	echo json_encode($res);
-	// 	exit;
-	// }
+	public function check_phone_code()
+	{
+		$res = array('status' => false, 'message' => 'Введіть коректний номер телефону');
+		if($phone = $this->data->post('phone'))
+		{
+			$this->load->library('validator');
+			if($phone = $this->validator->getPhone($phone))
+			{
+				if(!empty($_SESSION['signup'][$phone])) {
+					if($_SESSION['signup'][$phone] == $this->data->post('code')) {
+						$res = array('status' => true);
+					} else {
+						$res['message'] = 'Помилка коду';
+					}
+				} else {
+					$res['message'] = 'Помилка коду';
+				}
+			}
+		}
+		$this->load->json($res);
+	}
 
-	// public function code_confirmed()
-	// {
-	// 	$res = array('result' => false, 'message' => '');
-	// 	$code = $this->data->post('code');
-	// 	$id = $_SESSION['user']->id;
-	// 	if($code == $_SESSION['code']){
-	// 		$this->db->executeQuery("UPDATE wl_users SET confirmed = confirmed+2 WHERE id = $id ");
-
-	// 		$res['result'] = true;
- //            $res['message'] = 'Успішно!';
- //            if(!isset($_SESSION['alias']->referTo))
- //            	$res['referTo'] = 'profile';
- //            else {
- //            	$res['referTo'] = $_SESSION['alias']->referTo;
- //            }
-	// 	}
-	// 	else $res['message'] = 'Код підтвердження не співпав';
-
-	// 	header('Content-type: application/json');
-	// 	echo json_encode($res);
-	// 	exit;
-	// }
 }
 
 ?>

@@ -79,8 +79,10 @@
                 <p><?=$_SESSION['notify']->success?></p>
             </div>
         <?php endif; unset($_SESSION['notify']); } ?>
-        <form action="<?=SITE_URL?>signup/process" method="POST" onsubmit="$('#divLoading').addClass('show');">
+
+        <form action="<?=SITE_URL?>signup/process" method="POST" id="signupForm">
             <h1><?=$this->text('Реєстрація')?></h1>
+
             <?php if($_SESSION['option']->facebook_initialise || $this->googlesignin->clientId) { ?>
                 <div class="social-container">
                     <?php if($_SESSION['option']->facebook_initialise) { ?>
@@ -89,22 +91,35 @@
                         <a href="#" class="social google-login" title="<?=$this->text('Швидкий вхід за допомогою google', 4)?>"><i class="fab fa-google"></i></a>
                     <?php } ?>
                 </div>
-                <span>або за допомогою email та паролю</span>
-            <?php } ?>
+                <span>або за допомогою номеру телефону</span>
+            <?php } /* ?>
             <div class="flex wrap">
                 <input name="first_name" type="text" value="<?=$this->data->re_post('first_name')?>" placeholder="<?=$this->text('Ім\'я', 5)?>" required />
                 <input name="last_name" type="text" value="<?=$this->data->re_post('last_name')?>" placeholder="<?=$this->text('Прізвище', 5)?>" required />
             </div>
+            */ ?>
+            <input name="phone" type="text" value="<?=$this->data->re_post('phone')?>" placeholder="<?=$this->text('Номер телефону', 5)?>" required minlength="17"/>
+            <h4 class="text-danger hide" id="phoneError"><?=$this->text('Користувач з таким номером телефону вже існує!')?> <button class="ghost hexa" onclick="document.getElementById('login-container').classList.remove('right-panel-active')"><?=$this->text('Увійти', 4)?></button></h4>
+            <h4 class="text-danger hide" id="phoneError2"></h4>
+
+            <input name="first_name" type="text" value="<?=$this->data->re_post('first_name')?>" placeholder="<?=$this->text('Ім\'я', 5)?>" required  disabled />
+            <h4 class="text-danger hide" id="fnError"><?=$this->text('Тільки українські літери')?></h4>
+
+            <input name="last_name" type="text" value="<?=$this->data->re_post('last_name')?>" placeholder="<?=$this->text('Прізвище', 5)?>" required  disabled />
+            <h4 class="text-danger hide" id="lnError"><?=$this->text('Тільки українські літери')?></h4>
+            
+            <input name="code" type="number" value="<?=$this->data->re_post('code')?>" placeholder="<?=$this->text('Код з СМС', 5)?>" <?=$this->data->re_post('code') ? '' : 'class="hide"'?> />
+            <h4 class="text-danger hide" id="codeError"><?=$this->text('Помилка коду! Перевірте введені дані')?></h4>
+
+            <?php /*
             <input name="email" type="email" value="<?=$this->data->re_post('email')?>" placeholder="Email" required />
-            <input name="phone" type="text" value="<?=$this->data->re_post('phone')?>" placeholder="<?=$this->text('Контактний телефон', 5)?>" required minlength="19"/>
             <input name="password" type="password" value="<?=$this->data->re_post('password')?>" class="form-control" placeholder="<?=$this->text('Пароль', 4)?>" required />
             <input name="re-password" type="password" class="form-control" placeholder="<?=$this->text('Повторіть пароль', 5)?>" required />
             <span><?=$this->text('*пороль має містити від 5 до 20 символів', 5)?></span>
             <br>
             <?php
                 $this->load->library('recaptcha');
-                $this->recaptcha->form();
-            ?>
+                $this->recaptcha->form(); */ ?>
             <br>
             <button type="submit" class="hexa"><?=$this->text('Зареєструватися', 5)?></button>
         </form>
@@ -124,7 +139,7 @@
                 <p><?=$_SESSION['notify']->success?></p>
             </div>
         <?php endif; unset($_SESSION['notify']); } ?>
-        <form  action="<?=SITE_URL?>login/process" method="POST" onsubmit="$('#divLoading').addClass('show');">
+        <form  action="<?=SITE_URL?>login/process" method="POST" onsubmit="$('#divLoading').addClass('show');" id="signInForm">
             <h1><?=$this->text('Вхід')?></h1>
             <?php if($_SESSION['option']->facebook_initialise || $this->googlesignin->clientId) { ?>
                 <div class="social-container">
@@ -138,10 +153,15 @@
             <?php } ?>
             <?php if(isset($_GET['redirect']) || $this->data->re_post('redirect')) { ?>
                 <input type="hidden" name="redirect" value="<?=$this->data->re_post('redirect', $this->data->get('redirect'))?>">
-            <?php } ?>
+            <?php } /* ?>
             <input type="email" name="email" value="<?=$this->data->re_post('email')?>" placeholder="Email" required />
             <input type="password" name="password" placeholder="<?=$this->text('Пароль', 4)?>" required />
             <a href="<?=SITE_URL?>reset"><?=$this->text('Забули пароль?', 4)?></a>
+            */ ?>
+            <input name="phone" type="text" value="<?=$this->data->re_post('phone')?>" placeholder="<?=$this->text('Номер телефону', 5)?>" required minlength="19"/>
+
+            <h4 class="text-danger hide" id="phoneError"><?=$this->text('Користувач з таким номером телефону не існує!')?> <button class="ghost hexa" onclick="document.getElementById('login-container').classList.add('right-panel-active')"><?=$this->text('Зареєструватися', 4)?></button></h4>
+
             <button type="submit" class="hexa"><?=$this->text('Увійти', 4)?></button>
         </form>
     </div>
@@ -160,6 +180,12 @@
         </div>
     </div>
 </div>
+
+<style>
+    .text-danger {
+        color: red;
+    }
+</style>
 
 <script type="text/javascript">
     const signUpButton = document.getElementById('signUp');
@@ -185,20 +211,170 @@
         });
 
         var mask_options =  {
-          onKeyPress: function(cep, e, field, options) {
-            mask = '+00 (000) 000-00-00';
-            if(cep == '+')
-                field.mask(mask, mask_options);
-            else if(cep.length > 3)
-            {
-                cep = cep.substr(0, 3);
-                if(cep == '+38')
-                    $('input[name=phone]').mask('+38 (000) 000-00-00', mask_options);
-                else
-                    field.mask(mask, mask_options);
+            placeholder: '<?=$this->text('Номер телефону', 5)?>',
+            translation: {
+              'Z': {
+                pattern: 0, optional: false
+              },
+              'N': {
+                pattern: /[1-9]/, optional: false
+              }
             }
-        }};
-    $('input[name=phone]').mask('+38 (000) 000-00-00', mask_options);
+          // onKeyPress: function(cep, e, field, options) {
+          //   mask = '+38 000 000 00 00';
+          //   if(cep == '+')
+          //       field.mask(mask, mask_options);
+          //   // else if(cep.length > 3)
+          //   // {
+          //   //     cep = cep.substr(0, 3);
+          //   //     if(cep == '+38')
+          //   //         $('input[name=phone]').mask('+38 000 000 00 00', mask_options);
+          //   //     else
+          //   //         field.mask(mask, mask_options);
+          //   // }
+          //   }
+        };
+        $('input[name=phone]').focus(function() {
+            if(this.value.length == 0) {
+                this.value = '+38 0';
+            }
+        }).mask('+38 ZNN 000 00 00', mask_options);
+
+        let signUpStage = 1;
+        $('#signupForm input[name=phone]').change(function() {
+            $('#signupForm #phoneError2').addClass('hide');
+            if(this.value.length == 17) {
+                $('#divLoading').addClass('show');
+                let tel = this.value;
+                $.ajax({
+                    type: "POST",
+                    url: SERVER_URL+'signup/check_phone',
+                    data: {
+                        phone: this.value
+                    },
+                    success: function(res) {
+                        $('#divLoading').removeClass('show');
+                        if(res.status) {
+                            signUpStage = 2;
+                            $('#signupForm input[type=text]').attr('disabled', false);
+                            $('#signupForm #phoneError').addClass('hide');
+                            $('#signupForm input[name=first_name]').focus();
+                        } else {
+                            signUpStage = 1;
+                            $('#signInForm input[name=phone]').val(tel);
+                            $('#signupForm input[name=first_name]').attr('disabled', true);
+                            $('#signupForm input[name=last_name]').attr('disabled', true);
+                            $('#signupForm #phoneError').removeClass('hide');
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#signupForm input[name=first_name]').change(function () {
+            if(this.value.length > 0) {
+                if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯ]+$/.test(this.value) === false) {
+                    $('#signupForm #fnError').removeClass('hide');
+                    $('#signupForm input[name=first_name]').focus();
+                } else {
+                    $('#signupForm #fnError').addClass('hide');
+                    $('#signupForm input[name=last_name]').focus();
+                }
+            }
+        });
+
+        $('#signupForm input[name=last_name]').change(function () {
+            if(this.value.length > 0) {
+                if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯ]+$/.test(this.value) === false) {
+                    $('#signupForm #lnError').removeClass('hide');
+                    $('#signupForm input[name=last_name]').focus();
+                } else {
+                    $('#signupForm #lnError').addClass('hide');
+                }
+            }
+        });
+
+        $('#signupForm input[name=code]').change(function () {
+            $('#divLoading').addClass('show');
+            $.ajax({
+                type: "POST",
+                url: SERVER_URL+'signup/check_phone_code',
+                data: {
+                    phone: $('#signupForm input[name=phone]').val(),
+                    code: $('#signupForm input[name=code]').val()
+                },
+                success: function(res) {
+                    $('#divLoading').removeClass('show');
+                    if(res.status) {
+                        signUpStage = 4;
+                        $('#signupForm #codeError').addClass('hide');
+                        $('#signupForm').submit();
+                    } else {
+                        $('#signupForm #codeError').removeClass('hide');
+                    }
+                }
+            });
+        });
+        
+        $('#signupForm').submit(() => {
+            if(signUpStage == 1) {
+                first_name = $('#signupForm input[name=first_name]').val();
+                last_name = $('#signupForm input[name=last_name]').val();
+                phone = $('#signupForm input[name=phone]').val();
+                if(first_name.length > 0 && last_name.length > 0 && phone.length > 0) {
+                    signUpStage = 2;
+                }
+            }
+
+            if(signUpStage == 2) {
+                // verification for ukr letters
+                if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯ]+$/.test(first_name) === false) {
+                    $('#signupForm #fnError').removeClass('hide');
+                    return false;
+                }
+                
+                if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯ]+$/.test(last_name) === false) {
+                    $('#signupForm #lnError').removeClass('hide');
+                    return false;
+                }
+
+                // code = $('#signupForm input[name=code]').val();
+                // if(code > 0) {
+                //     signUpStage = 3;
+                // }
+                $('#divLoading').addClass('show');
+                $.ajax({
+                    type: "POST",
+                    url: SERVER_URL+'signup/send_phone_code',
+                    data: {
+                        phone: $('#signupForm input[name=phone]').val()
+                    },
+                    success: function(res) {
+                        $('#divLoading').removeClass('show');
+                        if(res.status) {
+                            signUpStage = 3;
+                            $('#signupForm input[name=phone]').attr('readonly', true);
+                            $('#signupForm #phoneError2').addClass('hide');
+                            $('#signupForm #codeError').addClass('hide');
+                            $('#signupForm input[name=code]').focus().removeClass('hide').attr('required', true);
+                        } else {
+                            signUpStage = 2;
+                            $('#signupForm input[name=phone]').attr('readonly', false).focus();
+                            $('#signupForm #phoneError2').text(res.message).removeClass('hide');
+                            $('#signupForm input[name=code]').addClass('hide').attr('required', false);
+                        }
+                    }
+                });
+                return false;
+            }
+            if(signUpStage == 3) {
+                
+            }
+            if(signUpStage == 4) {
+                return true;
+            }
+            return false;
+        });
     };
 </script>
 <?php if($_SESSION['option']->userSignUp && ($_SESSION['option']->facebook_initialise || $this->googlesignin->clientId)) {

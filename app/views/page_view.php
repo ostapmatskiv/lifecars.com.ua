@@ -69,6 +69,8 @@
 			</div>
 		</div>
 	</div>
+
+	<?php if(!in_array($_SESSION['alias']->alias, ['login', 'signup'])) { ?>
 	<div id="modal-buyProduct">
 		<form action="<?=SITE_URL?>cart/buyProduct" method="post" class="bg-white">
 			<!-- <img src="<?=SERVER_URL?>style/images/logo.png" alt="logo"> -->
@@ -91,6 +93,7 @@
 			</div>
 		</form>
 	</div>
+	<?php } ?>
 
 	<script type="text/javascript" src="<?=SERVER_URL?>assets/jquery/jquery-3.4.1.min.js"></script>
 	<script type="text/javascript" src="<?=SERVER_URL?>assets/magnific-popup/magnific-popup.min.js"></script>
@@ -119,7 +122,7 @@
 				echo $js.'; ';
 			}
 			echo "}) </script>";
-		} ?>
+		} /* ?>
 
 	<script type="text/javascript">
 	  (function(d, w, s) {
@@ -127,6 +130,6 @@
 	 gcw.src = '//widgets.binotel.com/getcall/widgets/'+ widgetHash +'.js';
 	 var sn = d.getElementsByTagName(s)[0]; sn.parentNode.insertBefore(gcw, sn);
 	  })(document, window, 'script');
-	</script>
+	</script> */ ?>
 </body>
 </html>
