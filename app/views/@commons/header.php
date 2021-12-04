@@ -187,7 +187,7 @@
                            <a href="<?= SITE_URL . 'parts/' . $group->alias ?>" data-group="<?= $group->alias ?>">
                               <div class="img-wrap">
                                  <?php if ($group->photo) { ?>
-                                    <img src="<?= IMG_PATH ?><?= $_SESSION['alias']->alias == 'parts' ? $group->photo : 'parts/-' . $group->id . '/' . $group->photo ?>"
+                                    <img src="<?= IMG_PATH ?><?= $_SESSION['alias']->alias == 'parts' ? $group->photo : 'parts/-' . $group->id . '/thumb_' . $group->photo ?>"
                                          alt="<?= $group->name ?>">
                                  <?php } ?>
                               </div>
@@ -205,7 +205,7 @@
                                     <a href="<?= SITE_URL . 'parts/' . $group->alias . '/' . $model->alias ?>"
                                        class="base__detal">
                                        <?php if ($model->photo) { ?>
-                                          <img src="<?= IMG_PATH ?><?= $_SESSION['alias']->alias == 'parts' ? $model->photo : 'parts/-' . $model->id . '/' . $model->photo ?>"
+                                          <img src="<?= IMG_PATH ?><?= $_SESSION['alias']->alias == 'parts' ? $model->photo : 'parts/-' . $model->id . '/thumb_' . $model->photo ?>"
                                                alt="<?= $model->name ?>">
                                        <?php } ?>
                                        <div class="detal__text"><?= $model->name ?></div>

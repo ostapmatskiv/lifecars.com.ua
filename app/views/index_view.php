@@ -11,7 +11,7 @@ $this->load->js_init('init__main()'); ?>
                if ($group->parent == 0) { ?>
                   <a href="<?= SITE_URL . 'parts/' . $group->alias ?>" data-group="<?= $group->alias ?>">
                      <?php if ($group->photo) { ?>
-                        <img src="<?= IMG_PATH . 'parts/-' . $group->id . '/' . $group->photo ?>"
+                        <img src="<?= IMG_PATH . 'parts/-' . $group->id . '/thumb_' . $group->photo ?>"
                              alt="<?= $group->name ?>">
                      <?php } ?>
                      <div class="logo__text"><?= $group->name ?></div>
@@ -27,7 +27,7 @@ $this->load->js_init('init__main()'); ?>
                      if ($model->parent == $group->id) { ?>
                         <a href="<?= SITE_URL . 'parts/' . $group->alias . '/' . $model->alias ?>" class="base__detal">
                            <?php if ($model->photo) { ?>
-                              <img src="<?= IMG_PATH . 'parts/-' . $model->id . '/' . $model->photo ?>"
+                              <img src="<?= IMG_PATH . 'parts/-' . $model->id . '/catalog_' . $model->photo ?>"
                                    alt="<?= $model->name ?>">
                            <?php } ?>
                            <div class="detal__text"><?= $model->name ?></div>
