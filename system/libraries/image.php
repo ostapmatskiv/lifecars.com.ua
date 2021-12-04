@@ -439,6 +439,7 @@ class Image {
 	 /*
      * Обрізання зображення
      */
+    
     public function cut($width, $height, $red = 0, $green = 0, $blue = 0)
     {
 		if($this->image)
@@ -519,7 +520,9 @@ class Image {
 		$src_h = $dest_h = imagesy($src_watermark);
 
 		if($watermark->width > 0 && $watermark->height == 0 || $watermark->width == 0 && $watermark->height > 0) {
-			$ratio = $src_w / $watermark->width;
+			$ratio = 1;
+			if($watermark->width > 0)
+				$ratio = $src_w / $watermark->width;
 			if($src_w < $src_h && $watermark->height > 0)
 				$ratio = $src_h / $watermark->height;
 
@@ -539,17 +542,24 @@ class Image {
 				$dest_w = round($src_w / $ratio);
 				$dest_h = $watermark->height;
 			}
+
+			$src = $src_watermark;
+			$src_watermark = imagecreatetruecolor($dest_w, $dest_h);
+			imagealphablending($src_watermark, false);
+			imagesavealpha($src_watermark, true);
+			imagecopyresampled($src_watermark, $src, 0, 0, 0, 0, $dest_w, $dest_h, $src_w, $src_h);
+			imagedestroy($src);
 		}
-
-		
-				// 
-
-				// $this->image = imagecreatetruecolor($dest_w, $dest_h);
-				// imagealphablending($this->image, false);
-				// imagesavealpha($this->image, true);
-				// imagecopyresampled($this->image, $src, 0, 0, 0, 0, $dest_w, $dest_h, $src_w, $src_h);
-				
-				// imagedestroy($src);
+		if($watermark->width > 0 && $watermark->height > 0) {
+			$dest_w = $watermark->width;
+			$dest_h = $watermark->height;
+			$src = $src_watermark;
+			$src_watermark = imagecreatetruecolor($dest_w, $dest_h);
+			imagealphablending($src_watermark, false);
+			imagesavealpha($src_watermark, true);
+			imagecopyresampled($src_watermark, $src, 0, 0, 0, 0, $dest_w, $dest_h, $src_w, $src_h);
+			imagedestroy($src);
+		}				
 
 		if($fixOrientation) {
     		imagecopymerge($this->image, $src_watermark, $watermark->left, $watermark->top, 0, 0, $src_w, $src_h, $watermark->opacity);
@@ -557,9 +567,9 @@ class Image {
 	    	$this->imagecopymerge_alpha($this->image, $src_watermark, $watermark->left, $watermark->top, 0, 0, $dest_w, $dest_h, $watermark->opacity);
 	    }
 
-		header("Content-type: image/".$this->getExtension());
-    	imagejpeg($this->image);
-    	exit;
+		// header("Content-type: image/".$this->getExtension());
+  //   	imagejpeg($this->image);
+  //   	exit;
     }
 
     /*
