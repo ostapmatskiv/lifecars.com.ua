@@ -26,19 +26,22 @@
 			<div id="percents" data-margin-top="0"><div class="active"></div><div class="text">15%</div></div>
 			<div class="info" data-margin-top="27"><?=$this->text('Статус заповнення інформації')?></div>
 
-			<?php */ if(!$this->userIs()) { ?>
+			<?php */ if(!$this->userIs()) { /* ?>
 				<div id="cart-signup" class="flex">
 					<div data-tab="new-buyer" class="w50 active"><?=$this->text('Я новий покупець')?></div>
 					<div data-tab="regular-buyer" class="w50"><?=$this->text('Я постійний покупець')?></div>
 				</div>
+				*/ ?>
 
 				<div id="new-buyer">
 					<h4><?=$this->text('Покупець')?></h4>
-					<input type="text" id="email" placeholder="email*" value="<?=$this->data->re_post('email')?>">
+					<input type="text" id="first_name" placeholder="<?=$this->text("Ім'я")?>*" value="<?=$this->data->re_post('first_name')?>">
+					<input type="text" id="last_name" placeholder="<?=$this->text("Прізвище")?>*" value="<?=$this->data->re_post('last_name')?>">
 					<input type="text" id="phone" placeholder="<?=$this->text('Телефон', 0)?>*" value="<?=$this->data->re_post('phone')?>">
-					<input type="text" id="name" placeholder="<?=$this->text("Ім'я Прізвище")?>*" value="<?=$this->data->re_post('name')?>">
+					<input type="text" id="email" placeholder="email" value="<?=$this->data->re_post('email')?>">
 				</div>
 
+				<?php /*
 				<div id="regular-buyer" class="hide">
 					<h4><?=$this->text('Вже купували?')?></h4>
 		 			<p><?=$this->text('Увійдіть - це заощадить Ваш час')?></p>
@@ -52,6 +55,7 @@
 						</div>
 					</form>
 				</div>
+				*/ ?>
 
 				<?php $this->load->library('facebook'); 
 				if(false && $_SESSION['option']->facebook_initialise){ ?>
@@ -84,7 +88,7 @@
 
 			<form id="confirm" action="<?=SITE_URL.$_SESSION['alias']->alias?>/confirm" method="POST">
 				<?php if(!$this->userIs()) { ?>
-					<input type="text" name="email" value="<?=$this->data->re_post('email')?>" class="hide" required>
+					<input type="text" name="email" value="<?=$this->data->re_post('email')?>" class="hide">
 					<input type="text" name="phone" value="<?=$this->data->re_post('phone')?>" class="hide" required>
 					<input type="text" name="name" value="<?=$this->data->re_post('name')?>" class="hide" required>
 				<?php } /* else { ?>

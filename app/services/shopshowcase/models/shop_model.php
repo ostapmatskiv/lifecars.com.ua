@@ -780,10 +780,14 @@ class shop_model {
 				$product->promo_to = $row->promo_to;
 				$product->availability = $row->availability;
 
-				if($this->getBreadcrumbs)
-					$this->breadcrumbs = $product->breadcrumbs;
-				
-				return $product;
+				if($this->getBreadcrumbs) {
+					if(isset($product->breadcrumbs)) {
+						$this->breadcrumbs = $product->breadcrumbs;
+						return $product;
+					}
+				}
+				else
+					return $product;
 			}
 
 		$this->db->select($this->table('_products').' as p', '*', array('wl_alias' => $_SESSION['alias']->id, $key => $alias));
@@ -839,10 +843,14 @@ class shop_model {
 					$product_cache->promo_from = $product->promo_from;
 					$product_cache->promo_to = $product->promo_to;
 
-					if($this->getBreadcrumbs)
-						$this->breadcrumbs = $product_cache->breadcrumbs;
-
-					return $product_cache;
+					if($this->getBreadcrumbs) {
+						if(isset($product_cache->breadcrumbs)) {
+							$this->breadcrumbs = $product_cache->breadcrumbs;
+							return $product_cache;
+						}
+					}
+					else
+						return $product_cache;
 				}
 
 				$time = time();

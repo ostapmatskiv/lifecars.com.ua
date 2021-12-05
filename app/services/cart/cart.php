@@ -689,11 +689,11 @@ class cart extends Controller {
     public function checkEmail($get_user = false)
     {
         $res = array('result' => false, 'message' => '');
-        if($email = $this->data->post('email'))
+        if($phone = $this->data->post('phone'))
         {
             $this->load->model('wl_user_model');
             $user = new stdClass();
-            if($this->wl_user_model->userExists($email, $user))
+            if($this->wl_user_model->userExists($phone, $user))
             {
                 if(!empty($user->password) && $_SESSION['option']->usePassword || $get_user)
                 {
@@ -701,6 +701,7 @@ class cart extends Controller {
                     if($get_user)
                         $res['user'] = $user;
                     $res['email'] = $user->email;
+                    $res['phone'] = $user->phone;
                     $res['message'] = '<p>'.$this->text('Доброго дня', 0);
                     if(date('H') > 18 || date('H') < 6)
                         $res['message'] = '<p>'.$this->text('Доброго вечора', 0);
@@ -725,10 +726,10 @@ class cart extends Controller {
             $this->load->library('validator');
             if(!$this->userIs())
             {
-                $this->validator->setRules($this->text('email'), $this->data->post('email'), 'required|email');
+                // $this->validator->setRules($this->text('email'), $this->data->post('email'), 'required|email');
                 $this->validator->setRules($this->text('Ім\'я Прізвище'), $this->data->post('name'), 'required|5..50');
             }
-            if(!empty($_POST['phone']))
+            // if(!empty($_POST['phone']))
                 $this->validator->setRules($this->text('Контактний номер'), $this->data->post('phone'), 'required|phone');
             $shippings = $this->cart_model->getShippings(array('active' => 1));
             if($shippings)
@@ -741,24 +742,25 @@ class cart extends Controller {
             {
                 $_POST['phone'] = !empty($_POST['phone']) ? $this->validator->getPhone($_POST['phone']) : '';
                 $_POST['recipientPhone'] = !empty($_POST['recipientPhone']) ? $this->validator->getPhone($_POST['recipientPhone']) : '';
-                $new_user = $new_user_password = $user_auth_id = false;
+                $new_user = $new_user_password = $user_auth_id = $loginViaPhone = false;
                 if(!$this->userIs())
                 {
                     $check = $this->checkEmail(true);
                     if($check['result'] && $check['user'])
                     {
-                        if($_SESSION['option']->usePassword)
-                        {
-                            $_SESSION['notify'] = new stdClass();
-                            $_SESSION['notify']->error = $check['message'];
-                            $this->redirect();
-                        }
-                        else
-                        {
+                        // if($_SESSION['option']->usePassword)
+                        // {
+                        //     $_SESSION['notify'] = new stdClass();
+                        //     $_SESSION['notify']->error = $check['message'];
+                        //     $this->redirect();
+                        // }
+                        // else
+                        // {
+                            $loginViaPhone = true;
                             $user_auth_id = $check['user']->auth_id;
                             $this->wl_user_model->setSession($check['user']);
-                            $this->cart_model->updateAdditionalUserFields($_SESSION['user']->id);
-                        }
+                            // $this->cart_model->updateAdditionalUserFields($_SESSION['user']->id);
+                        // }
                     }
                     else
                     {
@@ -766,15 +768,16 @@ class cart extends Controller {
                         $info = $additionall = array();
                         $info['status'] = 1;
                         $info['email'] = $this->data->post('email');
+                        $info['phone'] = $this->validator->getPhone($_POST['phone']);
                         $info['name'] = $this->data->post('name');
                         $info['photo'] = NULL;
-                        if($_SESSION['option']->usePassword)
-                            $info['password'] = $new_user_password = bin2hex(openssl_random_pseudo_bytes(4));
+                        // if($_SESSION['option']->usePassword)
+                        //     $info['password'] = $new_user_password = bin2hex(openssl_random_pseudo_bytes(4));
                         $additionall = array();
-                        if(!empty($this->cart_model->additional_user_fields))
-                            foreach ($this->cart_model->additional_user_fields as $key) {
-                                $additionall[$key] = $this->data->post($key);
-                            }
+                        // if(!empty($this->cart_model->additional_user_fields))
+                        //     foreach ($this->cart_model->additional_user_fields as $key) {
+                        //         $additionall[$key] = $this->data->post($key);
+                        //     }
                         if($user = $this->wl_user_model->add($info, $additionall, $_SESSION['option']->new_user_type, $_SESSION['option']->usePassword, 'cart autoregister'))
                         {
                             $user_auth_id = $user->auth_id;
@@ -783,8 +786,8 @@ class cart extends Controller {
                         $new_user = true;
                     }
                 }
-                else
-                    $this->cart_model->updateAdditionalUserFields($_SESSION['user']->id);
+                // else
+                //     $this->cart_model->updateAdditionalUserFields($_SESSION['user']->id);
 
                 $cart_user_id = $this->cart_model->getUser(false);
                 if($cart_user_id != $_SESSION['user']->id)
@@ -924,10 +927,12 @@ class cart extends Controller {
 
                     $email_manager_notify = $_SESSION['option']->email_manager ?? SITE_EMAIL;
                     
-                    $this->mail->sendTemplate('checkout', $_SESSION['user']->email, $cart);
+                    if(!empty($_SESSION['user']->email)) {
+                        $this->mail->sendTemplate('checkout', $_SESSION['user']->email, $cart);
+                    }
                     $this->mail->sendTemplate('checkout_manager', $email_manager_notify, $cart);
 
-                    if(!$_SESSION['option']->usePassword && $user_auth_id)
+                    if(!$_SESSION['option']->usePassword && $user_auth_id || $loginViaPhone)
                     {
                         $_SESSION['user'] = new stdClass();
                         setcookie('auth_id', '', time() - 3600, '/');
@@ -941,7 +946,7 @@ class cart extends Controller {
                         $pay->payed = 0;
                         $pay->wl_alias = $_SESSION['alias']->id;
                         $pay->return_url = $_SESSION['alias']->alias.'/success?order='.$cart['id'];
-                        if(!$_SESSION['option']->usePassword && $user_auth_id)
+                        if(!$_SESSION['option']->usePassword && $user_auth_id || $loginViaPhone)
                             $pay->return_url .= '&key='.$user_auth_id;
                         
                         $this->load->function_in_alias($payment->wl_alias, '__get_Payment', $pay);
@@ -993,7 +998,7 @@ class cart extends Controller {
                         $_SESSION['notify']->title = $_SESSION['alias']->name;
                         $_SESSION['notify']->success = $_SESSION['alias']->text;
                         $_SESSION['notify']->meta = $_SESSION['alias']->meta;
-                        if(!$_SESSION['option']->usePassword && $user_auth_id)
+                        if(!$_SESSION['option']->usePassword && $user_auth_id || $loginViaPhone)
                             $this->redirect($_SESSION['alias']->alias.'/success?order='.$cart['id'].'&key='.$user_auth_id);
                         else
                             $this->redirect($_SESSION['alias']->alias.'/success?order='.$cart['id']);

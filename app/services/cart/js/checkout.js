@@ -142,41 +142,41 @@ function changeShipping(el) {
     }
 }
 
-$("#cart input#email").on("change", function() {
-    $("#divLoading").addClass('show');
-    email = $(this).val();
-    $.ajax({
-        url: SITE_URL + 'cart/checkEmail',
-        type: 'POST',
-        data: {
-            email: email,
-            ajax: true
-        },
-        complete: function() {
-            $("div#divLoading").removeClass('show');
-        },
-        success: function(res) {
-            if (res.result == true)
-            {
-                $('#new-buyer').addClass('hide');
-                $('#regular-buyer, #cart_notify').removeClass('hide');
-                $('#cart_notify').removeClass('alert-danger').addClass('alert-success');
-                $('#cart #regular-buyer input[name=email]').val(res.email);
-                $('#cart #cart_notify p').html(res.message);
-                $('#cart #regular-buyer input[name=password]').focus();
-            }
-            else
-            {
-                $( 'form#confirm' ).find( 'input[name="email"]' ).val(email);
-                $('#new-buyer').removeClass('hide');
-                $('#regular-buyer').addClass('hide');
-                if($('#recipientName').val() == '')
-                    $('#recipientName').val($('#cart input#name').val());
-                setPercents()
-            }
-        }
-    })
-});
+// $("#cart input#email").on("change", function() {
+//     $("#divLoading").addClass('show');
+//     email = $(this).val();
+//     $.ajax({
+//         url: SITE_URL + 'cart/checkEmail',
+//         type: 'POST',
+//         data: {
+//             email: email,
+//             ajax: true
+//         },
+//         complete: function() {
+//             $("div#divLoading").removeClass('show');
+//         },
+//         success: function(res) {
+//             if (res.result == true)
+//             {
+//                 $('#new-buyer').addClass('hide');
+//                 $('#regular-buyer, #cart_notify').removeClass('hide');
+//                 $('#cart_notify').removeClass('alert-danger').addClass('alert-success');
+//                 $('#cart #regular-buyer input[name=email]').val(res.email);
+//                 $('#cart #cart_notify p').html(res.message);
+//                 $('#cart #regular-buyer input[name=password]').focus();
+//             }
+//             else
+//             {
+//                 $( 'form#confirm' ).find( 'input[name="email"]' ).val(email);
+//                 $('#new-buyer').removeClass('hide');
+//                 $('#regular-buyer').addClass('hide');
+//                 if($('#recipientName').val() == '')
+//                     $('#recipientName').val($('#cart input#name').val());
+//                 setPercents()
+//             }
+//         }
+//     })
+// });
 $("#cart input#phone").on("change", function() {
     var phone = $(this).val(),
         recipientPhone = $('form#confirm input[name="recipientPhone"]');
@@ -185,9 +185,23 @@ $("#cart input#phone").on("change", function() {
         recipientPhone.val(phone);
     setPercents()
 });
-$("#cart input#name").on("change", function() {
-    var name = $(this).val(),
+$("#cart input#first_name, #cart input#last_name").on("change", function() {
+    var first_name = $('#cart input#first_name').val(),
+        last_name = $('#cart input#last_name').val(),
         recipientName = $('form#confirm input[name="recipientName"]');
+
+    if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯ]+$/.test(first_name) === false) {
+        alert('Тільки українські літери');
+        return false;
+    }
+    if(last_name.length > 0)
+        if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯ]+$/.test(last_name) === false) {
+            alert('Тільки українські літери');
+            return false;
+        }
+
+    name = first_name + ' ' + last_name;
+
     $( 'form#confirm' ).find( 'input[name="name"]' ).val(name);
     // if(recipientName.val() == '')
         recipientName.val(name);
