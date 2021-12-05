@@ -38,9 +38,6 @@ class wl_user_model {
         	if($info)
         		foreach ($info as $i) {
         			$user->info[$i->field] = $i->value;
-
-                    if($i->field == 'phone')
-                        $user->phone = $i->value;
         		}
         }
         return $user;
@@ -67,15 +64,16 @@ class wl_user_model {
         if($new_user_type == 0)
             $new_user_type = $_SESSION['option']->new_user_type ?? 4;
 
-    	$user = $this->db->getAllDataById('wl_users', $info['email'], 'email');
+    	$user = $this->db->getAllDataById('wl_users', $info['phone'], 'phone');
         if($user)
         {
-        	if($user->type >= 5 && $set_password)
+        	if($user->type >= 5 && $set_password && !empty($info['password']))
         	{
         		$data = array();
                 $data['alias'] = $user->alias = $this->makeAlias($info['name']);
                 $data['name'] = $user->name = $info['name'];
         		$data['photo'] = $user->photo = $info['photo'];
+                $data['email'] = $user->email = $info['email'] ?? '';
                 $data['phone'] = $user->phone = $info['phone'] ?? '';
 		    	$data['type'] = $user->type = $new_user_type;
                 $data['status'] = $user->status = $status->id;
@@ -87,10 +85,10 @@ class wl_user_model {
 		    		$this->db->register('signup', $comment, $user->id);
         	}
             elseif(!$set_password)
-                $this->user_errors = 'Користувач з таким е-мейлом вже є!';
+                $this->user_errors = 'Користувач з таким номером вже є!';
         	else
     		{
-    			$this->user_errors = 'Користувач з таким е-мейлом вже є!';
+    			$this->user_errors = 'Користувач з таким номером вже є!';
     			return false;
     		}
             $user->info = array();
@@ -110,18 +108,16 @@ class wl_user_model {
             $data['photo'] = $user->photo = $info['photo'];
 	    	$data['type'] = $user->type = $new_user_type;
 	    	$data['status'] = $user->status = $status->id;
-	    	if($set_password)
+            $data['registered'] = $user->registered = time();
+	    	if($set_password && !empty($info['password']))
                 $data['auth_id'] = $user->auth_id = md5($info['name'].'|'.$info['password'].'|'.$user->email);
             else
-                $data['auth_id'] = $user->auth_id = '';
-    		$data['registered'] = $user->registered = time();
+                $data['auth_id'] = $user->auth_id = md5($info['name'].'|'.$user->registered);
             $data['last_login'] = $user->last_login = 0;
 
-	    	if($this->db->insertRow('wl_users', $data))
+	    	if($user->id = $this->db->insertRow('wl_users', $data))
 	    	{
-	    		$user->id = $this->db->getLastInsertedId();
-
-                if($set_password)
+                if($set_password && !empty($info['password']))
                 {
                     $password = $this->getPassword($user->id, $user->email, $info['password']);
                     $this->db->updateRow('wl_users', array('password' => $password), $user->id);
@@ -355,7 +351,7 @@ class wl_user_model {
         $_SESSION['user']->id = $user->id;
 		$_SESSION['user']->alias = $user->alias;
         $_SESSION['user']->name = $user->name;
-        $_SESSION['user']->email = $user->email;
+        $_SESSION['user']->email = $user->email ?? '';
         $_SESSION['user']->phone = $user->phone ?? '';
         $_SESSION['user']->status = $user->status;
         $_SESSION['user']->type = $user->type;

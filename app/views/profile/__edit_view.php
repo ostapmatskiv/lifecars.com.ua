@@ -1,36 +1,44 @@
 <div id="tabs">
+    <?php /*
     <ul class="flex">
         <li><a href="#main"><?=$this->text('Загальні дані')?></a></li>
         <li><a href="#security"><?=$this->text('Безпека')?></a></li>
     </ul>
+    */ ?>
 
     <div id="main">
         <form action="<?= SITE_URL?>profile/saveUserInfo" method="POST">
             <table>
                 <tbody>
-                    <tr>
-                        <td><?=$this->text("Моє ім'я")?></td>
-                        <td><i class="fas fa-pencil-alt pull-right" data-name="name" data-required="true"></i> <?=$user->name?></td>
-                    </tr>
-                    <tr>
-                        <td><?=$this->text('Мій')?> email</td>
-                        <td><?=$user->email?></td>
-                    </tr>
                     <?php $showSave = false;
-                     $info = array('phone' => 'Номер телефону', 'company_info' => 'Компанія');
-                        foreach($info as $key => $title) { ?>
-                            <tr>
-                                <td><?=$this->text($title)?></td>
-                                <td>
-                                    <?php if(isset($user->info[$key])) {
-                                        if($key == 'phone') $user->info[$key] = $this->data->formatPhone($user->info[$key]);
-                                        ?>
-                                        <i class="fas fa-pencil-alt pull-right" data-name="<?= $key ?>"></i> <?=$user->info[$key]?>
-                                    <?php } else { $showSave = true; ?>
-                                        <input type='text' name='<?=$key?>'>
-                                    <?php } ?>
-                                </td>
-                            </tr>
+                    $name = explode(' ', $user->name);
+                    $user->first_name = $name[0];
+                    $user->last_name = $name[1] ?? '';
+                    foreach(['first_name' => "Ім'я", 'last_name' => "Прізвище", 'email' => 'Еmail', 'phone' => 'Номер телефону'] as $key => $title) { ?>
+                        <tr>
+                            <td><?=$this->text($title)?></td>
+                            <td>
+                                <?php if(!empty($user->$key)) {
+                                    if($key == 'phone') $user->$key = $this->data->formatPhone($user->$key); ?>
+                                    <i class="fas fa-pencil-alt pull-right" data-name="<?= $key ?>"></i> <?= $user->$key ?>
+                                <?php } else { $showSave = true; ?>
+                                    <input type="<?= $key == 'email' ? 'email' : 'text' ?>" name="<?= $key ?>">
+                                <?php } ?>
+                            </td>
+                        </tr>
+                    <?php }
+
+                    foreach(['company_info' => 'Компанія'] as $key => $title) { ?>
+                        <tr>
+                            <td><?=$this->text($title)?></td>
+                            <td>
+                                <?php if(isset($user->info[$key])) { ?>
+                                    <i class="fas fa-pencil-alt pull-right" data-name="<?= $key ?>"></i> <?= $user->info[$key] ?>
+                                <?php } else { $showSave = true; ?>
+                                    <input type='text' name='<?= $key ?>'>
+                                <?php } ?>
+                            </td>
+                        </tr>
                     <?php } ?>
                     <tr>
                         <td><?=$this->text('Додати/оновити фото')?></td>
@@ -75,7 +83,7 @@
                     </tr>
                     <tr>
                         <td><?=$this->text('Останній вхід')?></td>
-                        <td><?= date("d.m.Y H:i", $user->last_login) ?></td>
+                        <td><?= $user->last_login ? date("d.m.Y H:i", $user->last_login) : date("d.m.Y H:i", $user->registered) ?></td>
                     </tr>
                     <tr>
                         <td><?=$this->text('Дата реєстрації')?></td>
@@ -84,7 +92,7 @@
                     <tr>
                         <td></td>
                         <td>
-                            <button class="<?=($showSave)?'':'hide'?>" type="submit"><?=$this->text('Зберегти зміни')?></button>
+                            <button class="<?= ($showSave) ? '' : 'hide' ?>" type="submit"><?=$this->text('Зберегти зміни')?></button>
                         </td>
                     </tr>
                 </tbody>
@@ -92,6 +100,7 @@
         </form>
     </div>
     
+    <?php /*
     <div id="security">
         <h4><?=$this->text('Зміна паролю')?></h4>
         <form action="<?= SITE_URL?>profile/save_security" method="POST">
@@ -133,6 +142,7 @@
             </tbody>
         </table>
     </div>
+    */ ?>
 </div>
 
 <?php

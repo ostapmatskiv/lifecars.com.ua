@@ -17,7 +17,7 @@ $(document).ready(function(){
 });
 
 $(function () {
-    $( "#tabs" ).tabs();
+    // $( "#tabs" ).tabs();
 
     $('#fileupload').fileupload({
         url: SITE_URL+"profile/upload_avatar",

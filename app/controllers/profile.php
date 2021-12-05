@@ -64,6 +64,21 @@ class Profile extends Controller {
     {
         if($this->userIs())
         {
+            $this->load->library('validator');
+            foreach(['name' => "Ім'я", 'email' => 'Email', 'phone' => 'Номер телефону'] as $key => $title) {
+                if($value = $this->data->post($key)) {
+                    switch (variable) {
+                        case 'value':
+                            // code...
+                            break;
+                        
+                        default:
+                            // code...
+                            break;
+                    }
+                }
+            }
+
             if($name = $this->data->post('name'))
             {
                 if(mb_strlen($name, 'UTF-8') > 3 && $_SESSION['user']->name != $name)

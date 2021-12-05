@@ -4,7 +4,7 @@ class Signup extends Controller {
 
     private $errors = array();
     private $name = 'first_name, last_name'; // 'name'||'first_name, last_name' ім'я в одній змінній чи 2-х
-    public $additionall = array('phone'); // false додаткові поля при реєстрації. Згодом можна використовувати у ідентифікації, тощо
+    public $additionall = false; //array('address'); // false додаткові поля при реєстрації. Згодом можна використовувати у ідентифікації, тощо
     private $new_user_type = 4; // Ід типу новозареєстрованого користувача
 
     function _remap($method, $data = array())
@@ -52,17 +52,17 @@ class Signup extends Controller {
         	$this->redirect('profile');
     }
 
-    public function email()
-    {
-    	if(!$this->userIs())
-    	{
-    		$this->wl_alias_model->setContent();
-    		$this->load->library('facebook');
-        	$this->load->view('profile/signup/email_view');
-    	}
-        else
-        	$this->redirect('profile');
-    }
+    // public function email()
+    // {
+    // 	if(!$this->userIs())
+    // 	{
+    // 		$this->wl_alias_model->setContent();
+    // 		$this->load->library('facebook');
+    //     	$this->load->view('profile/signup/email_view');
+    // 	}
+    //     else
+    //     	$this->redirect('profile');
+    // }
 
     public function process()
     {
@@ -78,59 +78,65 @@ class Signup extends Controller {
 			// else
 			// {
 		        $this->load->library('validator');
-		 //        if($this->name == 'name')
-			// 		$this->validator->setRules($this->text("Ім'я"), $this->data->post('name'), 'required');
-			// 	else
-			// 	{
-					$this->validator->setRules($this->text("Ім'я"), $this->data->post('first_name'), 'required');
-					$this->validator->setRules($this->text("Прізвище"), $this->data->post('last_name'), 'required');
-				// }
+		        if($this->name == 'name')
+					$this->validator->setRules($this->text("Ім'я"), $this->data->post('name'), 'required');
+				else
+				{
+					$this->validator->setRules($this->text("Ім'я"), $this->data->post('first_name'), 'uk_letters|required');
+					$this->validator->setRules($this->text("Прізвище"), $this->data->post('last_name'), 'uk_letters|required');
+				}
 				// $email = '';
 		  //   	if($email = $this->data->post('email'))
 		  //   		$email = strtolower($email);
 				// $this->validator->setRules('E-mail', $email, 'required|email');
-				// if(in_array('phone', $this->additionall))
-					$this->validator->setRules($this->text('Номер телефону'), $this->data->post('phone'), 'phone|required');	
-					$this->validator->setRules($this->text('Код з СМС'), $this->data->post('code'), 'required');	
+				
+					$phone = $this->data->post('phone');
+					$this->validator->setRules($this->text('Номер телефону'), $phone, 'phone|required');	
+					$this->validator->setRules($this->text('Код з СМС'), $this->data->post('code'), 'int|required');
+					if($phone = $this->validator->getPhone($phone))
+					{
+						$code = $_SESSION['signup'][$phone] ?? '';
+						$this->validator->setRules($this->text('Код з СМС'), $code, 'int|required');	
+						$this->validator->equal($this->data->post('code'), $code, $this->text('Помилка СМС коду! Перевірте дані'));
+					}
 				// $this->validator->setRules($this->text('Пароль'), $this->data->post('password'), 'required|5..20');
-				// $this->validator->password($this->data->post('password'), $this->data->post('re-password'));
+				// $this->validator->equal($this->data->post('password'), $this->data->post('re-password'));
+
 		        if($this->validator->run())
 		        {
 		            $this->load->model('wl_user_model');
 		            $info['email'] = '';
-			    	$info['phone'] = $this->validator->getPhone($this->data->post('phone'));
+			    	$info['phone'] = $phone;
 			    	$info['name'] = $this->data->post('first_name') .' '. $this->data->post('last_name');
 			    	// $info['password'] = $_POST['password'];
 			    	$info['photo'] = '';
-			  //   	$additionall = array();
-			  //   	if(!empty($this->additionall))
-					// {
-					// 	foreach ($this->additionall as $key) {
-					// 		if($value = $this->data->post($key))
-					// 		{
-					// 			if($key == 'phone')
-					// 				$value = $this->validator->getPhone($value);
-					// 			$additionall[$key] = $value;
-					// 		}
-					// 	}
-					// }
-					if(!preg_match('/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯ]+$/', $info['name'])) {
-						$_SESSION['notify']->errors = $this->text('Ім\'я').' '.$this->text('Прізвище').' '.$this->text('Тільки українські літери');
-						$this->redirect('signup');
-					}
-					exit;
-
-	                if($user = $this->wl_user_model->add($info, $additionall, $this->new_user_type))
-	                {
-	                	$this->load->library('mail');
-						$info['auth_id'] = $user->auth_id;
-						if($this->mail->sendTemplate('signup/user_signup', $user->email, $info))
-						{
-							$_SESSION['notify']->title = $this->text('Реєстрація пройшла успішно!');
-							$_SESSION['notify']->success = $this->text('На поштову скриньку відправлено лист з <b>кодом підтвердження</b> та подальшими інструкціями. <br><br> <b>УВАГА!</b> Лист може знаходитися у папці <b>СПАМ!</b>');
+			    	$additionall = array();
+			    	if(!empty($this->additionall))
+					{
+						foreach ($this->additionall as $key) {
+							if($value = $this->data->post($key))
+							{
+								if($key == 'phone')
+									$value = $this->validator->getPhone($value);
+								$additionall[$key] = $value;
+							}
 						}
-						else 
-							$_SESSION['notify']->errors = $this->text('Виникла помилка при додаванні нового користувача');
+					}
+
+	                if($user = $this->wl_user_model->add($info, $additionall, $this->new_user_type, false))
+	                {
+	                	// $this->load->library('mail');
+						// $info['auth_id'] = $user->auth_id;
+						// if($this->mail->sendTemplate('signup/user_signup', $user->email, $info))
+						// {
+						// 	$_SESSION['notify']->title = $this->text('Реєстрація пройшла успішно!');
+						// 	$_SESSION['notify']->success = $this->text('На поштову скриньку відправлено лист з <b>кодом підтвердження</b> та подальшими інструкціями. <br><br> <b>УВАГА!</b> Лист може знаходитися у папці <b>СПАМ!</b>');
+						// }
+						// else 
+						// 	$_SESSION['notify']->errors = $this->text('Виникла помилка при додаванні нового користувача');
+						$this->wl_user_model->setSession($user, false);
+						$_SESSION['notify']->success = $this->text('Реєстрація пройшла успішно!');
+						$this->redirect('profile/edit');
 	                }
 	                else
 	                	$_SESSION['notify']->errors = $this->wl_user_model->user_errors;

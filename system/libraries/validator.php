@@ -80,6 +80,21 @@ class validator {
     }
 
     /**
+     * Тільки українські літери
+     *
+     * @param <string> $field
+     * @param <string> $data
+     */
+    public function uk_letters($field, $data)
+    {
+        if(!preg_match('/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯ]+$/', $data)){
+            array_push($this->errors, '"'.$field.'" Тільки українські літери');
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Перевірямо якщо поле необхідне
      *
      * @param <string> $field
@@ -95,11 +110,11 @@ class validator {
         return true;
     }
 
-    public function password($pas1, $pas2)
+    public function equal($pas1, $pas2, $message = 'Паролі не співпадають')
     {
         if($pas1 != $pas2)
         {
-            array_push($this->errors, 'Паролі не співпадають.');
+            array_push($this->errors, $message);
             return false;
         }
         return true;
@@ -130,6 +145,22 @@ class validator {
         if(strlen($phone) == 12 && is_numeric($phone))
             return $phone;
         return false;
+    }
+
+    public function int($field, $data)
+    {
+        if (is_numeric($data) || is_null($data)) {
+            if (is_int($data + 0)) {
+                return true;
+            }
+        }
+        array_push($this->errors, '"'.$field.'" not integer');
+        return false;
+    }
+
+    public function addError($message)
+    {
+        array_push($this->errors, $message);
     }
 
     /**
