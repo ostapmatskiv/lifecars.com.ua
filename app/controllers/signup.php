@@ -91,7 +91,7 @@ class Signup extends Controller {
 				// $this->validator->setRules('E-mail', $email, 'required|email');
 				
 					$phone = $this->data->post('phone');
-					$this->validator->setRules($this->text('Номер телефону'), $phone, 'phone|required');	
+					$this->validator->setRules($this->text('Номер телефону'), $phone, 'phone|required');
 					$this->validator->setRules($this->text('Код з СМС'), $this->data->post('code'), 'int|required');
 					if($phone = $this->validator->getPhone($phone))
 					{
@@ -109,6 +109,7 @@ class Signup extends Controller {
 			    	$info['phone'] = $phone;
 			    	$info['name'] = $this->data->post('first_name') .' '. $this->data->post('last_name');
 			    	// $info['password'] = $_POST['password'];
+			    	$info['status'] = 1;
 			    	$info['photo'] = '';
 			    	$additionall = array();
 			    	if(!empty($this->additionall))

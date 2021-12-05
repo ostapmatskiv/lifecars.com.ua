@@ -52,7 +52,8 @@ class Profile extends Controller {
             $_SESSION['alias']->code = 202;
 
             $this->load->model('wl_user_model');
-            $registerDo = $this->db->getQuery("SELECT r.*, d.name, d.title_public as title_public FROM wl_user_register as r LEFT JOIN wl_user_register_do as d ON d.id = r.do WHERE r.user = {$_SESSION['user']->id} AND d.public = 1", 'array');
+            $registerDo = false;
+            // $this->db->getQuery("SELECT r.*, d.name, d.title_public as title_public FROM wl_user_register as r LEFT JOIN wl_user_register_do as d ON d.id = r.do WHERE r.user = {$_SESSION['user']->id} AND d.public = 1", 'array');
 
             $this->load->profile_view('__edit_view', array('user' => $this->wl_user_model->getInfo(), 'registerDo' => $registerDo));
         }
@@ -64,57 +65,85 @@ class Profile extends Controller {
     {
         if($this->userIs())
         {
+            $data = [];
+
+            $this->load->model('wl_user_model');
+            $user = $this->wl_user_model->getInfo();
+            
             $this->load->library('validator');
-            foreach(['name' => "Ім'я", 'email' => 'Email', 'phone' => 'Номер телефону'] as $key => $title) {
-                if($value = $this->data->post($key)) {
-                    switch (variable) {
-                        case 'value':
-                            // code...
-                            break;
-                        
-                        default:
-                            // code...
-                            break;
+
+            if(isset($_POST['first_name']) || isset($_POST['last_name'])) {
+                $name = explode(' ', $user->name);
+                $user->first_name = $name[0];
+                $user->last_name = $name[1] ?? '';
+
+                if(isset($_POST['first_name']))
+                    $user->first_name = $this->data->post('first_name');
+                if(isset($_POST['last_name']))
+                    $user->last_name = $this->data->post('last_name');
+
+                $this->validator->setRules($this->text("Ім'я"), $user->first_name, 'uk_letters|required|2..20');
+                $this->validator->setRules($this->text("Прізвище"), $user->last_name, 'uk_letters|required|2..20');
+                if($this->validator->run()) {
+                    $name = $user->first_name .' '. $user->last_name;
+                    if($user->name != $name) {
+                        $data['name'] = $name;
+                        $this->db->register('profile_data', 'Попереднє Ім\'я: '.$user->name);
+                        $_SESSION['user']->name = $name;
+                    }
+                }
+            }
+            
+            if(isset($_POST['email'])) {
+                $email = $this->data->post('email');
+                if(empty($email) || $this->validator->email('Email', $email)) {
+                    if($user->email != $email) {
+                        if($this->db->getAllDataById('wl_users', $email, 'email')) {
+                            $this->validator->addError("Email {$email} вже зайнято!");
+                        } else {
+                            $data['email'] = $email;
+                            if(!empty($user->email))
+                                $this->db->register('profile_data', 'Попередній email: '.$user->email);
+                            $_SESSION['user']->email = $email;
+                        }
                     }
                 }
             }
 
-            if($name = $this->data->post('name'))
-            {
-                if(mb_strlen($name, 'UTF-8') > 3 && $_SESSION['user']->name != $name)
-                {
-                    $this->db->updateRow('wl_users', array('name' => $name), $_SESSION['user']->id);
-                    $this->db->register('profile_data', 'Попереднє значення name: '.$_SESSION['user']->name);
-                    $_SESSION['user']->name = $name;
+            if(isset($_POST['phone'])) {
+                $phone = $this->data->post('phone');
+                if($phone = $this->validator->getPhone($phone)) {
+                    if($user->phone != $phone) {
+                        if($this->db->getAllDataById('wl_users', $phone, 'phone')) {
+                            $this->validator->addError("Номер телефону {$phone} вже зайнято!");
+                        } else {
+                            $data['phone'] = $phone;
+                            if(!empty($user->phone))
+                                $this->db->register('profile_data', 'Попередній Номер телефону: '.$user->phone);
+                            $_SESSION['user']->phone = $phone;
+                        }
+                    }
+                } else {
+                    if(!empty($_POST['phone']))
+                        $this->validator->addError("{$this->data->post('phone')} невірний формат телефону!");
+                    else
+                        $this->validator->addError("Номер телефону обов'язкове!");
                 }
-                unset($_POST['name']);
             }
-                
-            $error = false;
-            if(!empty($_POST['phone']))
-            {
-                $this->load->library('validator');
-                $this->validator->setRules($this->text('Номер телефону'), $_POST['phone'], 'phone');
-                if(!$this->validator->run())
-                {
-                    $error = $this->validator->getErrors();
-                    unset($_POST['phone']);
-                }
-                else
-                    $_POST['phone'] = $this->validator->getPhone($_POST['phone']);
+
+            if(!empty($data)) {
+                $this->db->updateRow('wl_users', $data, $user->id);
             }
+
             if(!empty($_POST))
             {
-                $this->load->model('wl_user_model');
                 foreach ($_POST as $key => $value)
-                    if($key != 'photos')
+                    if(!in_array($key, ['name', 'first_name', 'last_name', 'email', 'phone', 'photos']))
                         $this->wl_user_model->setAdditional($_SESSION['user']->id, $key, $this->data->post($key));
             }
-            if($error)
-            {
-                $_SESSION['notify'] = new stdClass();
-                $_SESSION['notify']->errors = $error;
-            }
+
+            $_SESSION['notify'] = new stdClass();
+            $_SESSION['notify']->errors = $this->validator->getErrors();
         }
         $this->redirect();
     }
