@@ -111,6 +111,8 @@
             <input name="code" type="number" value="<?=$this->data->re_post('code')?>" placeholder="<?=$this->text('Код з СМС', 5)?>" <?=$this->data->re_post('code') ? '' : 'class="hide"'?> />
             <h4 class="text-danger hide" id="codeError"><?=$this->text('Помилка СМС коду! Перевірте дані')?></h4>
 
+            <p class="send_phone_code hide"><?=$this->text('Повторно відправити СМС з кодом')?></p>
+
             <?php /*
             <input name="email" type="email" value="<?=$this->data->re_post('email')?>" placeholder="Email" required />
             <input name="password" type="password" value="<?=$this->data->re_post('password')?>" class="form-control" placeholder="<?=$this->text('Пароль', 4)?>" required />
@@ -165,6 +167,8 @@
 
             <input name="code" type="number" value="<?=$this->data->re_post('code')?>" placeholder="<?=$this->text('Код з СМС', 5)?>" <?=$this->data->re_post('code') ? '' : 'class="hide"'?> />
             <h4 class="text-danger hide" id="codeErrorIn"><?=$this->text('Помилка СМС коду! Перевірте дані')?></h4>
+
+            <p class="send_phone_code hide"><?=$this->text('Повторно відправити СМС з кодом')?></p>
 
             <button type="submit" class="hexa"><?=$this->text('Увійти', 4)?></button>
         </form>
@@ -362,12 +366,14 @@
                                 $('#signupForm input[name=phone]').attr('readonly', true);
                                 $('#signupForm #phoneError2').addClass('hide');
                                 $('#signupForm #codeError').addClass('hide');
+                                $('#signupForm .send_phone_code').removeClass('hide');
                                 $('#signupForm input[name=code]').focus().removeClass('hide').attr('required', true);
                             } else {
                                 signUpStage = 2;
                                 $('#signupForm input[name=phone]').attr('readonly', false).focus();
                                 $('#signupForm #phoneError2').text(res.message).removeClass('hide');
                                 $('#signupForm input[name=code]').addClass('hide').attr('required', false);
+                                $('#signupForm .send_phone_code').addClass('hide');
                             }
                         }
                     });
@@ -450,12 +456,14 @@
                                         $('#signInForm input[name=phone]').attr('readonly', true);
                                         $('#signInForm #codeErrorIn').addClass('hide');
                                         $('#signInForm #phoneErrorView').addClass('hide');
+                                        $('#signInForm .send_phone_code').removeClass('hide');
                                         $('#signInForm input[name=code]').focus().removeClass('hide').attr('required', true);
                                     } else {
                                         signUpStage = 1;
                                         $('#signInForm input[name=phone]').attr('readonly', false).focus();
                                         $('#signInForm #phoneErrorView').text(res.message).removeClass('hide');
                                         $('#signInForm input[name=code]').addClass('hide').attr('required', false);
+                                        $('#signInForm .send_phone_code').addClass('hide');
                                     }
                                 }
                             });
@@ -473,6 +481,26 @@
             }
             return false;
         });
+
+        $('.send_phone_code').click(function(){
+            tel = $(this).closest('form').find('input[name=phone]').val();
+            $('#divLoading').addClass('show');
+            $.ajax({
+                type: "POST",
+                url: SERVER_URL+'signup/send_phone_code',
+                data: {
+                    phone: tel
+                },
+                success: function(res) {
+                    $('#divLoading').removeClass('show');
+                    if(res.status) {
+                        alert('Код відіслано');
+                    } else {
+                        alert(res.message);
+                    }
+                }
+            });
+        });
     };
 </script>
 <?php if($_SESSION['option']->userSignUp && ($_SESSION['option']->facebook_initialise || $this->googlesignin->clientId)) {
@@ -480,3 +508,11 @@
         echo '<script src="https://apis.google.com/js/platform.js" async defer></script>';
     $this->load->js('assets/white-lion/login.js');
 } ?>
+
+<style type="text/css">
+    .send_phone_code {
+        margin: 5px 0 15px !important;
+        text-align: center;
+        cursor: pointer;
+    }
+</style>
