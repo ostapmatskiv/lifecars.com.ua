@@ -104,6 +104,8 @@ class Signup extends Controller {
 
 		        if($this->validator->run())
 		        {
+		        	unset($_SESSION['signup']);
+		        	
 		            $this->load->model('wl_user_model');
 		            $info['email'] = '';
 			    	$info['phone'] = $phone;

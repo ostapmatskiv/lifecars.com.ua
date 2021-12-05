@@ -68,7 +68,7 @@ if(!$showPayment &&  $cart->action == 'closed') {
 			{
 				$myInfo = ['1-manufacturer'];
 				foreach ($myInfo as $info) {
-					if(isset($product->info->options[$info]) && !empty($product->info->options[$info]->value))
+					if(isset($product->info->options[$info]) && !empty($product->info->options[$info]->value) && !empty($product->info->options[$info]->value->name))
 						echo "<p>{$product->info->options[$info]->name}: <strong>{$product->info->options[$info]->value->name}</strong></p>";
 				}
 			} ?>

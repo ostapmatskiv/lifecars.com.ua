@@ -219,8 +219,8 @@ class wl_user_model {
     	$user = false;
 		if($key == 'email')
 		{
-			$user = $this->db->getAllDataById('wl_users', $this->data->post('email'), 'email');
-			if($user)
+			$user = $this->db->getAllDataById('wl_users', $this->data->post($key), $key);
+			if($user && !empty($password))
             {
 				$password = $this->getPassword($user->id, $user->email, $password, $sequred);
                 if($user->password != $password) {
@@ -230,6 +230,10 @@ class wl_user_model {
                 }
             }
 		}
+        else if($key == 'phone')
+        {
+            $user = $this->db->getAllDataById('wl_users', $password, $key);
+        }
 		else
 		{
             $where = array('field' => $key, 'value' => $password);
@@ -238,7 +242,7 @@ class wl_user_model {
 			$user = $this->db->get('single');
 		}
         
-		if($user && $password != '')
+		if($user)
 		{
             $status = $this->db->getAllDataById('wl_user_status', $user->status);
             if($info = $this->db->select('wl_user_info', "value as phone", ['user' => $user->id, 'field' => 'phone'])

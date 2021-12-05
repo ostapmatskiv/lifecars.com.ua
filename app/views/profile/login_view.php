@@ -139,7 +139,7 @@
                 <p><?=$_SESSION['notify']->success?></p>
             </div>
         <?php endif; unset($_SESSION['notify']); } ?>
-        <form  action="<?=SITE_URL?>login/process" method="POST" onsubmit="$('#divLoading').addClass('show');" id="signInForm">
+        <form  action="<?=SITE_URL?>login/process" method="POST" id="signInForm">
             <h1><?=$this->text('Вхід')?></h1>
             <?php if($_SESSION['option']->facebook_initialise || $this->googlesignin->clientId) { ?>
                 <div class="social-container">
@@ -158,9 +158,13 @@
             <input type="password" name="password" placeholder="<?=$this->text('Пароль', 4)?>" required />
             <a href="<?=SITE_URL?>reset"><?=$this->text('Забули пароль?', 4)?></a>
             */ ?>
-            <input name="phone" type="text" value="<?=$this->data->re_post('phone')?>" placeholder="<?=$this->text('Номер телефону', 5)?>" required minlength="19"/>
+            <input name="phone" type="text" value="<?=$this->data->re_post('phone')?>" placeholder="<?=$this->text('Номер телефону', 5)?>" required minlength="17"/>
 
-            <h4 class="text-danger hide" id="phoneError"><?=$this->text('Користувач з таким номером телефону не існує!')?> <button class="ghost hexa" onclick="document.getElementById('login-container').classList.add('right-panel-active')"><?=$this->text('Зареєструватися', 4)?></button></h4>
+            <h4 class="text-danger hide" id="userExist"><?=$this->text('Користувач з таким номером телефону не існує!')?> <button type="button" class="ghost hexa" onclick="document.getElementById('login-container').classList.add('right-panel-active')"><?=$this->text('Зареєструватися', 4)?></button></h4>
+            <h4 class="text-danger hide" id="phoneErrorView"></h4>
+
+            <input name="code" type="number" value="<?=$this->data->re_post('code')?>" placeholder="<?=$this->text('Код з СМС', 5)?>" <?=$this->data->re_post('code') ? '' : 'class="hide"'?> />
+            <h4 class="text-danger hide" id="codeErrorIn"><?=$this->text('Помилка СМС коду! Перевірте дані')?></h4>
 
             <button type="submit" class="hexa"><?=$this->text('Увійти', 4)?></button>
         </form>
@@ -374,6 +378,97 @@
                 
             }
             if(signUpStage == 4) {
+                return true;
+            }
+            return false;
+        });
+
+        let signInStage = 1;
+        $('#signInForm input[name=phone]').change(function() {
+            $('#signInForm #userExist').addClass('hide');
+        });
+
+        $('#signInForm input[name=code]').change(function () {
+            $('#divLoading').addClass('show');
+            $.ajax({
+                type: "POST",
+                url: SERVER_URL+'signup/check_phone_code',
+                data: {
+                    phone: $('#signInForm input[name=phone]').val(),
+                    code: $('#signInForm input[name=code]').val()
+                },
+                success: function(res) {
+                    $('#divLoading').removeClass('show');
+                    if(res.status) {
+                        signInStage = 3;
+                        $('#signInForm #codeErrorIn').addClass('hide');
+                        $('#signInForm').submit();
+                    } else {
+                        $('#signInForm #codeErrorIn').removeClass('hide');
+                    }
+                }
+            });
+        });
+
+        $('#signInForm').submit(() => {
+            $('#signInForm #userExist').addClass('hide');
+            $('#signInForm #phoneErrorView').addClass('hide');
+
+            tel = $('#signInForm input[name=phone]').val();
+            code = $('#signInForm input[name=code]').val();
+            if(signInStage == 1 && tel.length == 17 && code > 0) {
+                signInStage = 2;
+            }
+
+            if(signInStage == 1) {
+                $('#divLoading').addClass('show');
+                $.ajax({
+                    type: "POST",
+                    url: SERVER_URL+'signup/check_phone',
+                    data: {
+                        phone: tel
+                    },
+                    success: function(res) {
+                        $('#divLoading').removeClass('show');
+                        if(res.status) {
+                            $('#signInForm #userExist').removeClass('hide');
+                            $('#signupForm input[name=phone]').val(tel);
+                            $('#signupForm input[name=first_name]').attr('disabled', false);
+                            $('#signupForm input[name=last_name]').attr('disabled', false);
+                        } else {
+                            $('#divLoading').addClass('show');
+                            $.ajax({
+                                type: "POST",
+                                url: SERVER_URL+'signup/send_phone_code',
+                                data: {
+                                    phone: tel
+                                },
+                                success: function(res) {
+                                    $('#divLoading').removeClass('show');
+                                    if(res.status) {
+                                        signUpStage = 2;
+                                        $('#signInForm input[name=phone]').attr('readonly', true);
+                                        $('#signInForm #codeErrorIn').addClass('hide');
+                                        $('#signInForm #phoneErrorView').addClass('hide');
+                                        $('#signInForm input[name=code]').focus().removeClass('hide').attr('required', true);
+                                    } else {
+                                        signUpStage = 1;
+                                        $('#signInForm input[name=phone]').attr('readonly', false).focus();
+                                        $('#signInForm #phoneErrorView').text(res.message).removeClass('hide');
+                                        $('#signInForm input[name=code]').addClass('hide').attr('required', false);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+
+            if(signInStage == 2) {
+                return false;
+            }
+
+            if(signInStage == 3) {
                 return true;
             }
             return false;

@@ -38,17 +38,28 @@ class Login extends Controller {
     public function process()
     {
         $this->load->library('validator');
-        $email = '';
-    	if($email = $this->data->post('email'))
-    		$email = strtolower($email);
-		$this->validator->setRules('E-mail', $email, 'required|email');
-        $this->validator->setRules('Поле пароль', $this->data->post('password'), 'required|5..40');
+        // $email = '';
+    	// if($email = $this->data->post('email'))
+    		// $email = strtolower($email);
+		// $this->validator->setRules('E-mail', $email, 'required|email');
+        // $this->validator->setRules('Поле пароль', $this->data->post('password'), 'required|5..40');
+        $phone = $this->data->post('phone');
+		$this->validator->setRules($this->text('Номер телефону'), $phone, 'phone|required');
+		$this->validator->setRules($this->text('Код з СМС'), $this->data->post('code'), 'int|required');
+		if($phone = $this->validator->getPhone($phone))
+		{
+			$code = $_SESSION['signup'][$phone] ?? '';
+			$this->validator->setRules($this->text('Код з СМС'), $code, 'int|required');	
+			$this->validator->equal($this->data->post('code'), $code, $this->text('Помилка СМС коду! Перевірте дані'));
+		}
 
         if($this->validator->run())
         {
             $this->load->model('wl_user_model');
-            if($status = $this->wl_user_model->login('email', $_POST['password'], $this->data->post('sequred')))
+            if($status = $this->wl_user_model->login('phone', $phone))
             {
+            	unset($_SESSION['signup']);
+            	
             	if($actions = $this->db->getAllDataByFieldInArray('wl_aliases_cooperation', array('alias1' => 0, 'type' => 'login')))
 					foreach ($actions as $action) {
 						$this->load->function_in_alias($action->alias2, '__user_login');
