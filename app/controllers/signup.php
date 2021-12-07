@@ -296,8 +296,9 @@ class Signup extends Controller {
 					$_SESSION['signup'][$phone] = rand(1000 , 9999);
 				}
 	            $this->load->library('turbosms');
-	            if($this->turbosms->send($phone, $_SESSION['signup'][$phone]))
-	            	$res = array('status' => true, 'code' => $_SESSION['signup'][$phone] + 1);
+	            if($this->turbosms->send($phone, 'Ваш код '.$_SESSION['signup'][$phone].' для авторизації на lifecars.com.ua'))
+	            	$res = array('status' => true);
+	           // 	$res = array('status' => true, 'code' => $_SESSION['signup'][$phone] + 1);
 			}
 		}
 		$this->load->json($res);
