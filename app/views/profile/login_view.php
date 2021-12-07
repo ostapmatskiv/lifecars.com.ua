@@ -114,7 +114,8 @@
          <div class="input-group">
             <input name="phone" id="phone" type="text" value="<?= $this->data->re_post('phone') ?>" required minlength="17"/>
             <label for="phone"><?= $this->text('Номер телефону', 5) ?></label>
-            <h5 class="text-danger hide" id="phoneError"><?= $this->text('Користувач з таким номером телефону вже існує!') ?><button type="button" class="ghost hexa" onclick="document.getElementById('login-container').classList.remove('right-panel-active')"><?= $this->text('Увійти', 4) ?></button></h5>
+            <h5 class="text-danger hide" id="phoneError"><?= $this->text('Користувач з таким номером телефону вже існує!') ?></h5>
+            <button type="button" class="ghost hexa hide" id="phoneError" onclick="document.getElementById('login-container').classList.remove('right-panel-active')"><?= $this->text('Увійти', 4) ?></button>
             <h5 class="text-danger hide" id="phoneError2"></h5>
          </div>
 
@@ -184,7 +185,7 @@
                      title="<?= $this->text('Швидкий вхід за допомогою google', 4) ?>"><i class="fab fa-google"></i></a>
                <?php } ?>
             </div>
-            <h4><?= $this->text('Для входу введіть свій номер телефону', 4) ?></h4>
+            <h5><?= $this->text('Для входу введіть свій номер телефону', 4) ?></h5>
          <?php } ?>
          <?php if (isset($_GET['redirect']) || $this->data->re_post('redirect')) { ?>
             <input type="hidden" name="redirect"
@@ -198,29 +199,13 @@
          <div class="input-group">
             <input name="phone" id="phone-1" type="text" value="<?= $this->data->re_post('phone') ?>" placeholder="+380" required minlength="17"/>
             <label for="phone-1"><?= $this->text('Номер телефону', 5) ?></label>
-            <h4 class="text-danger hide" id="userExist"><svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M13 17H11L11 15L13 15L13 17Z"/>
-                  <path d="M13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12L11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8L13 12Z"/>
-                  <path d="M12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22ZM12 4C7.59 4 4 7.59 4 12C4 16.41 7.59 20 12 20C16.41 20 20 16.41 20 12C20 7.59 16.41 4 12 4Z"/>
-               </svg><?= $this->text('Користувач з таким номером телефону не існує!') ?>
-               <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M13 17H11L11 15L13 15L13 17Z"/>
-                  <path d="M13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12L11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8L13 12Z"/>
-                  <path d="M12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22ZM12 4C7.59 4 4 7.59 4 12C4 16.41 7.59 20 12 20C16.41 20 20 16.41 20 12C20 7.59 16.41 4 12 4Z"/>
-               </svg><button type="button" class="ghost hexa" onclick="document.getElementById('login-container').classList.add('right-panel-active')"><?= $this->text('Зареєструватися', 4) ?></button>
-            </h4>
-            <h4 class="text-danger hide" id="phoneErrorView"></h4>
+            <h5 class="text-danger hide" id="phoneErrorView"></h5>
          </div>
 
          <div class="input-group <?= $this->data->re_post('code') ? '' : 'hide' ?>">
             <input name="code" type="number" value="<?= $this->data->re_post('code') ?>" placeholder="<?= $this->text('Код з СМС', 5) ?>" />
             <label for="phone-1"><?= $this->text('Номер телефону', 5) ?></label>
-            <h4 class="text-danger hide" id="codeErrorIn"><svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M13 17H11L11 15L13 15L13 17Z"/>
-                  <path d="M13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12L11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8L13 12Z"/>
-                  <path d="M12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22ZM12 4C7.59 4 4 7.59 4 12C4 16.41 7.59 20 12 20C16.41 20 20 16.41 20 12C20 7.59 16.41 4 12 4Z"/>
-               </svg><?= $this->text('Помилка СМС коду! Перевірте дані') ?></h4>
-
+            <h5 class="text-danger hide" id="codeErrorIn"><?= $this->text('Помилка СМС коду! Перевірте дані') ?></h5>
             <p class="send_phone_code hide"><?= $this->text('Повторно відправити СМС з кодом') ?></p>
          </div>
 
