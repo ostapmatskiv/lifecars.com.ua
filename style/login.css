@@ -1,10 +1,30 @@
-#login-container h1 { font-weight: bold; font-size: 41px;
-    padding-bottom: 24px; }
+#login-container h1 { font-weight: bold; font-size: 41px; }
 
 #login-container form h4 {
     color: #999;
     font-size: 12px;
     font-weight: 500;
+}
+
+#login-container form h5 {
+    text-align: left;
+    font-size: 12px;
+    line-height: 16px;
+    padding-top: 2px;
+    letter-spacing: 0.4px;
+    padding-left: 14px;
+    position: relative;
+}
+#login-container form h5:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 4px;
+    height: 12px;
+    width: 12px;
+    background-image: url("../style/icons/error.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 #login-container a {
@@ -95,9 +115,9 @@
     border: 1px solid rgba(0, 0, 0, 0.12);
     text-align: left;
     transition: border-color 0.3s ease 0s;
-    pointer-events: none;
     border-radius: 10px;
     margin-top: 0;
+    margin-bottom: 0;
     padding-left: 10px;
 }
 #login-container input:focus {
@@ -316,11 +336,12 @@
         min-height: 460px;
     }
 
-    #login-container h1 { font-weight: 500; font-size: 20px; margin-bottom: 20px; }
+    #login-container h1 { font-weight: 500; font-size: 20px; }
     #login-container { font-family: sans-serif }
-    #login-container h1,
-    #login-container h4,
-    #login-container input {
-        margin-bottom: 24px;
-    }
+}
+
+#login-container h1,
+#login-container h4,
+#login-container .input-group {
+    margin-bottom: 24px;
 }

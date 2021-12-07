@@ -114,28 +114,28 @@
          <div class="input-group">
             <input name="phone" id="phone" type="text" value="<?= $this->data->re_post('phone') ?>" required minlength="17"/>
             <label for="phone"><?= $this->text('Номер телефону', 5) ?></label>
+            <h5 class="text-danger hide" id="phoneError"><?= $this->text('Користувач з таким номером телефону вже існує!') ?><button type="button" class="ghost hexa" onclick="document.getElementById('login-container').classList.remove('right-panel-active')"><?= $this->text('Увійти', 4) ?></button></h5>
+            <h5 class="text-danger hide" id="phoneError2"></h5>
          </div>
-         <h4 class="text-danger hide" id="phoneError"><?= $this->text('Користувач з таким номером телефону вже існує!') ?><button type="button" class="ghost hexa" onclick="document.getElementById('login-container').classList.remove('right-panel-active')"><?= $this->text('Увійти', 4) ?></button></h4>
-         <h4 class="text-danger hide" id="phoneError2"></h4>
 
          <div class="input-group">
-            <input name="first_name" id="first_name" type="text" value="<?= $this->data->re_post('first_name') ?>" required <?= $this->data->re_post('first_name') ? '' : 'disabled' ?> />
+            <input name="first_name" id="first_name" type="text" value="<?= $this->data->re_post('first_name') ?>" required />
             <label for="first_name"><?= $this->text('Ім\'я', 5) ?></label>
+            <h5 class="text-danger hide" id="fnError"><?= $this->text('Тільки українські літери') ?></h5>
          </div>
-         <h4 class="text-danger hide" id="fnError"><?= $this->text('Тільки українські літери') ?></h4>
 
          <div class="input-group">
-            <input name="last_name" id="last_name" type="text" value="<?= $this->data->re_post('last_name') ?>" required <?= $this->data->re_post('last_name') ? '' : 'disabled' ?> />
+            <input name="last_name" id="last_name" type="text" value="<?= $this->data->re_post('last_name') ?>" required />
             <label for="last_name"><?= $this->text('Прізвище', 5) ?></label>
+            <h5 class="text-danger hide" id="lnError"><?= $this->text('Тільки українські літери') ?></h5>
          </div>
-         <h4 class="text-danger hide" id="lnError"><?= $this->text('Тільки українські літери') ?></h4>
 
          <div class="input-group <?= $this->data->re_post('code') ? '' : 'hide' ?>">
             <input name="code" type="number" value="<?= $this->data->re_post('code') ?>"/>
             <label for="last_name"><?= $this->text('Код з СМС', 5) ?></label>
+            <h5 class="text-danger hide" id="codeError"><?= $this->text('Помилка СМС коду! Перевірте дані') ?></h5>
+            <p class="send_phone_code hide"><?= $this->text('Повторно відправити СМС з кодом') ?></p>
          </div>
-         <h4 class="text-danger hide" id="codeError"><?= $this->text('Помилка СМС коду! Перевірте дані') ?></h4>
-         <p class="send_phone_code hide"><?= $this->text('Повторно відправити СМС з кодом') ?></p>
 
          <?php /*
             <input name="email" type="email" value="<?=$this->data->re_post('email')?>" placeholder="Email" required />
@@ -170,7 +170,7 @@
          <?php endif;
          unset($_SESSION['notify']);
       } ?>
-      <form action="<?= SITE_URL ?>login/process" method="POST" id="signInForm">
+      <form action="<?= SITE_URL ?>login/process" method="POST" id="signInForm" class="type-2">
          <h1><?= $this->text('Вхід') ?></h1>
          <?php if ($_SESSION['option']->facebook_initialise || $this->googlesignin->clientId) { ?>
             <div class="social-container" style="display: none">
@@ -194,20 +194,35 @@
             <input type="password" name="password" placeholder="<?=$this->text('Пароль', 4)?>" required />
             <a href="<?=SITE_URL?>reset"><?=$this->text('Забули пароль?', 4)?></a>
             */ ?>
-         <input name="phone" type="text" value="<?= $this->data->re_post('phone') ?>" placeholder="+380" required
-                minlength="17"/>
 
-         <h4 class="text-danger hide" id="userExist"><?= $this->text('Користувач з таким номером телефону не існує!') ?>
-            <button type="button" class="ghost hexa"
-                    onclick="document.getElementById('login-container').classList.add('right-panel-active')"><?= $this->text('Зареєструватися', 4) ?></button>
-         </h4>
-         <h4 class="text-danger hide" id="phoneErrorView"></h4>
+         <div class="input-group">
+            <input name="phone" id="phone-1" type="text" value="<?= $this->data->re_post('phone') ?>" placeholder="+380" required minlength="17"/>
+            <label for="phone-1"><?= $this->text('Номер телефону', 5) ?></label>
+            <h4 class="text-danger hide" id="userExist"><svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13 17H11L11 15L13 15L13 17Z"/>
+                  <path d="M13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12L11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8L13 12Z"/>
+                  <path d="M12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22ZM12 4C7.59 4 4 7.59 4 12C4 16.41 7.59 20 12 20C16.41 20 20 16.41 20 12C20 7.59 16.41 4 12 4Z"/>
+               </svg><?= $this->text('Користувач з таким номером телефону не існує!') ?>
+               <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13 17H11L11 15L13 15L13 17Z"/>
+                  <path d="M13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12L11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8L13 12Z"/>
+                  <path d="M12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22ZM12 4C7.59 4 4 7.59 4 12C4 16.41 7.59 20 12 20C16.41 20 20 16.41 20 12C20 7.59 16.41 4 12 4Z"/>
+               </svg><button type="button" class="ghost hexa" onclick="document.getElementById('login-container').classList.add('right-panel-active')"><?= $this->text('Зареєструватися', 4) ?></button>
+            </h4>
+            <h4 class="text-danger hide" id="phoneErrorView"></h4>
+         </div>
 
-         <input name="code" type="number" value="<?= $this->data->re_post('code') ?>"
-                placeholder="<?= $this->text('Код з СМС', 5) ?>" <?= $this->data->re_post('code') ? '' : 'class="hide"' ?> />
-         <h4 class="text-danger hide" id="codeErrorIn"><?= $this->text('Помилка СМС коду! Перевірте дані') ?></h4>
+         <div class="input-group <?= $this->data->re_post('code') ? '' : 'hide' ?>">
+            <input name="code" type="number" value="<?= $this->data->re_post('code') ?>" placeholder="<?= $this->text('Код з СМС', 5) ?>" />
+            <label for="phone-1"><?= $this->text('Номер телефону', 5) ?></label>
+            <h4 class="text-danger hide" id="codeErrorIn"><svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13 17H11L11 15L13 15L13 17Z"/>
+                  <path d="M13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12L11 8C11 7.44772 11.4477 7 12 7C12.5523 7 13 7.44772 13 8L13 12Z"/>
+                  <path d="M12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22ZM12 4C7.59 4 4 7.59 4 12C4 16.41 7.59 20 12 20C16.41 20 20 16.41 20 12C20 7.59 16.41 4 12 4Z"/>
+               </svg><?= $this->text('Помилка СМС коду! Перевірте дані') ?></h4>
 
-         <p class="send_phone_code hide"><?= $this->text('Повторно відправити СМС з кодом') ?></p>
+            <p class="send_phone_code hide"><?= $this->text('Повторно відправити СМС з кодом') ?></p>
+         </div>
 
          <button type="submit" class="hexa"><?= $this->text('Увійти', 4) ?></button>
 
@@ -232,7 +247,7 @@
 
 <style>
     .text-danger {
-        color: red;
+        color: #FF3300;
     }
 </style>
 
@@ -327,8 +342,6 @@
                             console.log('disabled');
                             signUpStage = 1;
                             $('#signInForm input[name=phone]').val(tel);
-                            $('#signupForm input[name=first_name]').attr('disabled', true);
-                            $('#signupForm input[name=last_name]').attr('disabled', true);
                             $('#signupForm #phoneError').removeClass('hide');
                         }
                     }
@@ -419,7 +432,7 @@
                             $('#divLoading').removeClass('show');
                             if (res.status) {
                                 signUpStage = 3;
-                                $('#signupForm input[name=phone]').attr('readonly', true);
+                                /*$('#signupForm input[name=phone]').attr('readonly', true);*/
                                 $('#signupForm #phoneError2').addClass('hide');
                                 $('#signupForm #codeError').addClass('hide');
                                 $('#signupForm .send_phone_code').removeClass('hide');
