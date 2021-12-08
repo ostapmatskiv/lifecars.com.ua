@@ -145,7 +145,7 @@
                 $this->load->library('recaptcha');
                 $this->recaptcha->form(); */ ?>
          <br>
-         <button type="submit" class="hexa disabled"><?= $this->text('Зареєструватися', 5) ?></button>
+         <button type="submit" class="hexa"><?= $this->text('Зареєструватися', 5) ?></button>
          <a href="<?= SITE_URL ?>login"><?= $this->text('Увійти', 4) ?></a>
       </form>
    </div>
