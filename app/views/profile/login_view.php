@@ -131,12 +131,9 @@
             <h5 class="text-danger hide" id="lnError"><?= $this->text('Тільки українські літери') ?></h5>
          </div>
 
-         <div class="input-group <?= $this->data->re_post('code') ? '' : 'hide' ?>">
-            <input name="code" type="number" value="<?= $this->data->re_post('code') ?>"/>
-            <label for="last_name"><?= $this->text('Код з СМС', 5) ?></label>
-            <h5 class="text-danger hide" id="codeError"><?= $this->text('Помилка СМС коду! Перевірте дані') ?></h5>
-            <p class="send_phone_code hide"><?= $this->text('Повторно відправити СМС з кодом') ?></p>
-         </div>
+         <input name="code" type="number" value="<?=$this->data->re_post('code')?>" placeholder="<?=$this->text('Код з СМС', 5)?>" <?=$this->data->re_post('code') ? '' : 'class="hide"'?> />
+         <h4 class="text-danger hide" id="codeError"><?=$this->text('Помилка СМС коду! Перевірте дані')?></h4>
+         <p class="send_phone_code hide"><?=$this->text('Повторно відправити СМС з кодом')?></p>
 
          <?php /*
             <input name="email" type="email" value="<?=$this->data->re_post('email')?>" placeholder="Email" required />
@@ -202,9 +199,8 @@
             <h5 class="text-danger hide" id="phoneErrorView"></h5>
          </div>
 
-         <div class="input-group <?= $this->data->re_post('code') ? '' : 'hide' ?>">
-            <input name="code" type="number" value="<?= $this->data->re_post('code') ?>" placeholder="<?= $this->text('Код з СМС', 5) ?>" />
-            <label for="phone-1"><?= $this->text('Номер телефону', 5) ?></label>
+         <div class="input-group">
+            <input name="code" type="number" id="code1" value="<?= $this->data->re_post('code') ?>" class="<?= $this->data->re_post('code') ? '' : 'hide' ?>" placeholder="<?= $this->text('Код з СМС', 5) ?>"/>
             <h5 class="text-danger hide" id="codeErrorIn"><?= $this->text('Помилка СМС коду! Перевірте дані') ?></h5>
             <p class="send_phone_code hide"><?= $this->text('Повторно відправити СМС з кодом') ?></p>
          </div>
