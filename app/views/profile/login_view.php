@@ -196,7 +196,8 @@
          <div class="input-group">
             <input name="phone" id="phone-1" type="text" value="<?= $this->data->re_post('phone') ?>" placeholder="+380" required minlength="17"/>
             <label for="phone-1"><?= $this->text('Номер телефону', 5) ?></label>
-            <h5 class="text-danger hide" id="phoneErrorView"></h5>
+            <h4 class="text-danger hide" id="userExist"><?=$this->text('Такого номера не існує. Перевірте коректність або зареєструйтесь')?> <button type="button" class="ghost hexa" onclick="document.getElementById('login-container').classList.add('right-panel-active')"><?=$this->text('Зареєструватися', 4)?></button></h4>
+            <h4 class="text-danger hide" id="phoneErrorView"></h4>
          </div>
 
          <div class="input-group">
