@@ -87,8 +87,8 @@ class validator {
      */
     public function uk_letters($field, $data)
     {
-        if(!preg_match('/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯ]+$/', $data)){
-            array_push($this->errors, '"'.$field.'" Тільки українські літери');
+        if(!preg_match('/^[аАбБвВгГґҐдДеЕєЁёЄжЖзЗиИыЫэЭіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬъЪюЮяЯ]+$/', $data)){
+            array_push($this->errors, '"'.$field.'" Тільки кирилиця');
             return false;
         }
         return true;

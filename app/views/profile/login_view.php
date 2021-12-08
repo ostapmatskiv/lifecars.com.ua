@@ -122,13 +122,13 @@
          <div class="input-group">
             <input name="first_name" id="first_name" type="text" value="<?= $this->data->re_post('first_name') ?>" required />
             <label for="first_name"><?= $this->text('Ім\'я', 5) ?></label>
-            <h5 class="text-danger hide" id="fnError"><?= $this->text('Тільки українські літери') ?></h5>
+            <h5 class="text-danger hide" id="fnError"><?= $this->text('Тільки кирилиця') ?></h5>
          </div>
 
          <div class="input-group">
             <input name="last_name" id="last_name" type="text" value="<?= $this->data->re_post('last_name') ?>" required />
             <label for="last_name"><?= $this->text('Прізвище', 5) ?></label>
-            <h5 class="text-danger hide" id="lnError"><?= $this->text('Тільки українські літери') ?></h5>
+            <h5 class="text-danger hide" id="lnError"><?= $this->text('Тільки кирилиця') ?></h5>
          </div>
 
          <input name="code" type="number" value="<?=$this->data->re_post('code')?>" placeholder="<?=$this->text('Код з СМС', 5)?>" <?=$this->data->re_post('code') ? '' : 'class="hide"'?> />
@@ -146,7 +146,7 @@
                 $this->recaptcha->form(); */ ?>
          <br>
          <button type="submit" class="hexa"><?= $this->text('Зареєструватися', 5) ?></button>
-         <a href="<?= SITE_URL ?>login"><?= $this->text('Увійти', 4) ?></a>
+         <a href="<?= SITE_URL ?>login" onclick="document.getElementById('login-container').classList.remove('right-panel-active');return false"><?= $this->text('Увійти', 4) ?></a>
       </form>
    </div>
    <div class="form-container sign-in-container">
@@ -209,7 +209,7 @@
 
          <button type="submit" class="hexa"><?= $this->text('Увійти', 4) ?></button>
 
-         <a href="<?= SITE_URL ?>signup"><?= $this->text('Зареєструватись', 4) ?></a>
+         <a href="<?= SITE_URL ?>signup" onclick="document.getElementById('login-container').classList.add('right-panel-active');return false"><?= $this->text('Зареєструватись', 4) ?></a>
       </form>
    </div>
    <div class="overlay-container m-hide">
@@ -295,9 +295,9 @@
             //   }
         };
         $('input[name=phone]').focus(function () {
-            /*if (this.value.length == 0) {
+            if (this.value.length == 0) {
                 this.value = '+380';
-            }*/
+            }
         }).mask('+38Z NN 000 00 00', mask_options);
 
         let signUpStage = 1;
