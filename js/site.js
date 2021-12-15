@@ -146,10 +146,15 @@ $(document).ready(function(){
      });
 
      $('.fa-times').click(function() {
-         $('.mob__menu').removeClass('active');
+         $('.mob__menu, #filter-bar').removeClass('active');
         $('.mob__nav').css("left", "-281px");
         $('.close__menu').css("display", "none");
-     })
+     });
+
+    $('.show-filters').click(function() {
+        $('#filter-bar').addClass('active').removeClass('m-hide');
+        $('.close__menu').css("display", "block");
+    });
 
      $('.nav__mobile').removeClass("default");
      $(window).scroll(function() {
@@ -199,8 +204,8 @@ function init__main() {
         $('.main__logo a').removeClass('active');
         if ($('.cars__base.models__' + group_alias + ' > a').length > 0) {
         	event.preventDefault();
-            $(this).closest('.main__logo-wrapper').find('.cars__base').slideUp();
-        	$(this).addClass('active').toggleClass('open').closest('.main__logo-wrapper').find('.cars__base.models__' + group_alias).slideToggle();
+            $(this).closest('.main__logo-wrapper').find('.cars__base').stop().slideUp();
+        	$(this).addClass('active').toggleClass('open').closest('.main__logo-wrapper').find('.cars__base.models__' + group_alias).stop().slideToggle();
         }
     });
 }

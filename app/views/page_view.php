@@ -36,7 +36,7 @@
 	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>assets/magnific-popup/magnific-popup.css">
 	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>style/style.css?v=0.5">
 </head>
-<body>
+<body class="<?=$_SESSION['alias']->alias?>">
 	<!-- Google Tag Manager (noscript) -->
 	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MD3SRS2"
 	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>

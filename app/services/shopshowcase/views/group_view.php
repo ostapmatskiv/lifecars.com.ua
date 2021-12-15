@@ -85,10 +85,20 @@
     <section class="flex sale__catalog pt-50">
         <aside class="w25">
             <div class="hide m-flex">
-                <button class="btn w50-5" onclick="$(this).closest('aside').find('form').toggleClass('m-hide')"><?=$this->text('Фільтр')?></button>
-                <button class="btn w50-5" onclick="$(this).closest('section.sale__catalog').find('.catalog__sorted').toggleClass('m-hide')"><?=$this->text('Сортувати')?></button>
+                <button class="btn w50-5 btn-1 show-filters" onclick="$(this).toggleClass('active').closest('aside').find('form').toggleClass('m-hide')">
+                   <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                      <path fill="currentColor" d="M6,13H18V11H6M3,6V8H21V6M10,18H14V16H10V18Z" />
+                   </svg>
+                   <?=$this->text('Фільтр')?>
+                </button>
+                <button class="btn w50-5 btn-1" onclick="$(this).toggleClass('active').closest('section.sale__catalog').find('.catalog__sorted').toggleClass('m-hide')">
+                   <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                      <path fill="currentColor" d="M9,3L5,7H8V14H10V7H13M16,17V10H14V17H11L15,21L19,17H16Z" />
+                   </svg>
+                   <?=$this->text('Сортування')?>
+                </button>
             </div>
-            <form class="m-hide">
+            <form class="m-hide" id="filter-bar">
                 <div class="filter">
                     <p><?=$this->text('Назва товару')?></p>
                     <input type="text" name="name" value="<?=$this->data->get('name')?>" placeholder="<?=$this->text('Пошук за назвою товару', 0)?>">
