@@ -728,9 +728,10 @@ class cart extends Controller {
             {
                 // $this->validator->setRules($this->text('email'), $this->data->post('email'), 'required|email');
                 $this->validator->setRules($this->text('Ім\'я Прізвище'), $this->data->post('name'), 'required|5..50');
+                $this->validator->setRules($this->text('Контактний номер'), $this->data->post('phone'), 'required|phone');
             }
             // if(!empty($_POST['phone']))
-                $this->validator->setRules($this->text('Контактний номер'), $this->data->post('phone'), 'required|phone');
+                
             $shippings = $this->cart_model->getShippings(array('active' => 1));
             if($shippings)
             {
