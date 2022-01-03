@@ -47,7 +47,7 @@ main img {
     background-color: #fff;
     font-size: 22px;
     text-align: center;
-    padding: 50px;
+    padding: 50px 25px;
 }
 #modal-buyProduct .bg-white {
     max-width: 420px;
@@ -78,7 +78,7 @@ main img {
 }
 #modal-buyProduct h4 {
     font-size: 22px;
-    margin-bottom: 10px;
+    margin-bottom: 25px;
 }
 
 #modal-add_success .flex {
@@ -101,7 +101,7 @@ main img {
     width: 49%;
 }
 #modal-buyProduct button[disabled] {
-    background-color: grey;
+    opacity: 0.3;
     cursor: not-allowed;
 }
 
@@ -110,11 +110,11 @@ main img {
 }
 
 #modal-add_success a.close, #modal-buyProduct a.close {
-    background-color: #ffc505;
+    background-color: grey;
 }
 
 #modal-add_success a.close:hover, #modal-buyProduct a.close:hover {
-    background-color: #e4af00;
+    background-color: lightgrey;
 }
 
 @media screen and (max-width: 500px) {
@@ -4230,7 +4230,7 @@ body.parts main .catalog__detal a div {
         z-index: 9999;
         left: -281px;
         top: 0;
-        width: 75vw;
+        width: 281px;
         height: 100vh;
         overflow-y: scroll;
         background: #fff;
@@ -4266,3 +4266,48 @@ body.parts main .catalog__detal a div {
     }
 }
 
+
+.input {
+    color: rgba(0, 0, 0, 0.87);
+    resize: vertical;
+    font-size: 16px;
+    background: transparent;
+    line-height: 16px;
+    letter-spacing: 0.25px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    text-align: left;
+    transition: border-color 0.3s ease 0s;
+    border-radius: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 12px 15px;
+    padding-left: 10px;
+    height: 40px;
+}
+.input:focus {
+    border-color: #7cbe49;
+}
+
+.input-group {
+    position: relative;
+    width: 100%;
+}
+.input-group label {
+    position: absolute;
+    color: rgba(0, 0, 0, 0.4);
+    top: 11px;
+    left: 10px;
+    font-size: 16px;
+    line-height: 17px;
+    letter-spacing: 0.25px;
+    transition: all 0.2s ease 0s;
+    background: #fff;
+    padding: 0px 5px;
+}
+
+.input-group.val label {
+    top: -8px;
+    font-size: 12px;
+    height: 17px;
+    background: #fff;
+}

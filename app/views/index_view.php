@@ -21,6 +21,7 @@ $this->load->js_init('init__main()'); ?>
             } ?>
          </div>
          <?php foreach ($catalogAllGroups as $group) {
+
             if ($group->parent == 0) { ?>
                <section class="flex h-center wrap cars__base models__<?= $group->alias ?>">
                   <?php foreach ($catalogAllGroups as $model) {

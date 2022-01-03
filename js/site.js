@@ -270,3 +270,43 @@ $('.category-mobile-menu>.flex>a').each(function (index){
 $('.category-mobile-menu>.flex>section').each(function (index){
     $(this).css('order', index);
 });
+
+$(document).on('focusout', 'form.type-2 input', function (){
+    if($(this).val().length) {
+        $(this).closest('.input-group').addClass('val');
+    } else {
+        $(this).closest('.input-group').removeClass('val')
+    }
+});
+$(document).on('focus', 'form.type-2 input', function (){
+    $(this).closest('.input-group').addClass('val');
+});
+
+var mask_options = {
+    translation: {
+        'Z': {
+            pattern: 0, optional: false
+        },
+        'N': {
+            pattern: /[1-9]/, optional: false
+        }
+    }
+    // onKeyPress: function(cep, e, field, options) {
+    //   mask = '+38 000 000 00 00';
+    //   if(cep == '+')
+    //       field.mask(mask, mask_options);
+    //   // else if(cep.length > 3)
+    //   // {
+    //   //     cep = cep.substr(0, 3);
+    //   //     if(cep == '+38')
+    //   //         $('input[name=phone]').mask('+38 000 000 00 00', mask_options);
+    //   //     else
+    //   //         field.mask(mask, mask_options);
+    //   // }
+    //   }
+};
+$('input#phone-1').focus(function () {
+    if (this.value.length == 0) {
+        this.value = '+380';
+    }
+}).mask('+38Z NN 000 00 00', mask_options);

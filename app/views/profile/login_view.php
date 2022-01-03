@@ -247,7 +247,7 @@
         container.classList.remove("right-panel-active");
     });
 
-    <?php $this->load->js('assets/jquery.mask.min.js');
+    <?php
     if (!empty($_GET['redirect']) || $this->data->re_post('redirect')) {
        echo 'var redirect = "' . $this->data->re_post('redirect', $this->data->get('redirect')) . '";';
     } else echo "var redirect = false;"; ?>
