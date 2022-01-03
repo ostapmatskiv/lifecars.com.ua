@@ -13,11 +13,18 @@
 			        </div>
 			    </div>
 			    <div class="form-group">
+			        <label class="col-md-3 control-label">Номер телефону користувача</label>
+			        <div class="col-md-9">
+			            <input type="text" name="phone" class="form-control" value="<?=$user->phone?>" required placeholder="Номер телефону користувача"  autocomplete="off"/>
+			        </div>
+			    </div>
+			    <div class="form-group">
 			        <label class="col-md-3 control-label">Alias користувача</label>
 			        <div class="col-md-9">
 			            <input type="text" name="alias" class="form-control" value="<?=$user->alias?>" required placeholder="alias користувача"  autocomplete="off"/>
 			        </div>
-			    </div><div class="form-group">
+			    </div>
+			    <div class="form-group">
 			        <label class="col-md-3 control-label">Ім'я користувача</label>
 			        <div class="col-md-9">
 			            <input type="text" name="name" class="form-control" value="<?=$user->name?>" required placeholder="Ім'я користувача"  autocomplete="off"/>
@@ -92,7 +99,8 @@
 			        </div>
 			    </div>
 
-				<?php if(!empty($user->info)) foreach($user->info as $key => $value) { ?>
+				<?php if(!empty($user->info)) foreach($user->info as $key => $value) {
+				if($key == 'phone') continue; ?>
 				<div class="form-group">
 			        <label class="col-md-3 control-label"><?= $key ?></label>
 			        <div class="col-md-9">
