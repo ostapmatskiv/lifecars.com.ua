@@ -111,7 +111,7 @@ class shopshowcase extends Controller {
 
 				$this->wl_alias_model->setContent(-$group->id);
 				$_SESSION['alias']->breadcrumbs = $this->shop_model->breadcrumbs;
-				$subgroups = $products = $filters = $use_filter = $filter_minMaxPrices = false;
+				$subgroups = $products = $filters = $filters_2 = $use_filter = $filter_minMaxPrices = false;
 
 				if(count($_GET) > 1)
 					foreach ($_GET as $key => $value) {
@@ -175,13 +175,17 @@ class shopshowcase extends Controller {
 					if($_SESSION['option']->showProductsParentsPages || !$group->haveChild || $use_filter)
 					{
 						$filters = $this->shop_model->getOptionsToGroup($group->id);
-						$filter_minMaxPrices = $this->shop_model->getMinMaxPrices($group->id);
+						if(!empty($this->shop_model->productsIdInGroup_2)) {
+							$this->shop_model->productsIdInGroup = $this->shop_model->productsIdInGroup_2;
+							$filters_2 = $this->shop_model->getOptionsToGroup();
+						}
+						// $filter_minMaxPrices = $this->shop_model->getMinMaxPrices($group->id);
 					}
 					if($products)
 						$this->setProductsPrice($products);
 				}
 
-				$this->load->page_view('group_view', array('group' => $group, 'subgroups' => $subgroups, 'use_filter' => $use_filter, 'products' => $products, 'filters' => $filters, 'filter_minMaxPrices' => $filter_minMaxPrices, 'catalogAllGroups' => $this->shop_model->getGroups(-1)));
+				$this->load->page_view('group_view', array('group' => $group, 'subgroups' => $subgroups, 'use_filter' => $use_filter, 'products' => $products, 'filters' => $filters, 'filters_2' => $filters_2, 'filter_minMaxPrices' => $filter_minMaxPrices, 'catalogAllGroups' => $this->shop_model->getGroups(-1)));
 			}
 			else//if($this->userIs())
 				$this->load->page_404(false);

@@ -97,10 +97,10 @@ class wl_users_admin extends Controller {
     {
         if($this->userCan('profile'))
         {
-            $wl_users = $this->db->getQuery('SELECT u.*, t.title as type_name, s.title as status_name, s.color as status_color, ui.value as user_phone FROM wl_users as u LEFT JOIN wl_user_types as t ON t.id = u.type LEFT JOIN wl_user_status as s ON s.id = u.status LEFT JOIN wl_user_info as ui ON ui.field = "phone" AND ui.user = u.id', 'array');
+            $wl_users = $this->db->getQuery('SELECT u.*, t.title as type_name, s.title as status_name, s.color as status_color FROM wl_users as u LEFT JOIN wl_user_types as t ON t.id = u.type LEFT JOIN wl_user_status as s ON s.id = u.status', 'array');
             if($wl_users)
                 foreach ($wl_users as $user) {
-                    $user->email = '<a href="'.SITE_URL.'admin/wl_users/'.$user->email.'">'.$user->email.'</a> <br>'.$user->user_phone;
+                    $user->email = '<a href="'.SITE_URL.'admin/wl_users/'.$user->id.'">'.$user->email.' <br> '.$user->phone.'</a>';
                     if($user->last_login > 0)
                         $user->last_login = (string) date('d.m.Y H:i', $user->last_login);
                     else
@@ -209,6 +209,7 @@ class wl_users_admin extends Controller {
                 }
                 elseif (is_numeric($_POST['id']) && $_POST['id'] > 0)
                 {
+                    $this->validator->setRules('phone', $this->data->post('phone'), 'required|phone');
                     if(isset($_POST['active_password']) && $_POST['active_password'] == 1)
                         $this->validator->setRules('Поле пароль', $this->data->post('password'), 'required|5..40');
                     
@@ -220,13 +221,31 @@ class wl_users_admin extends Controller {
 
                         if($user->email != $email)
                         {
-                            if($check = $this->db->getAllDataByFieldInArray('wl_users', $email, 'email'))
-                                $_SESSION['notify']->errors = 'Даний email вже є у базі!';
+                            if($check = $this->db->getAllDataByFieldInArray('wl_users', $email, 'email')) {
+                                if($user->id != $check[0]->id)
+                                    $_SESSION['notify']->errors = 'Даний email вже використовується #{$check[0]->id}. {$check[0]->name}!';
+                            }
                             else
                             {
                                 $update['email'] = $email;
                                 $this->db->register('profile_data', "Змінено email: {$user->email} => {$email}. Менеджер: #{$_SESSION['user']->id} {$_SESSION['user']->name}", $user->id);
                                 $user->email = $email;
+                            }
+                        }
+
+                        $phone = $this->data->post('phone');
+                        $phone = $this->validator->getPhone($phone);
+                        if($user->phone != $phone)
+                        {
+                            if($check = $this->db->getAllDataByFieldInArray('wl_users', $phone, 'phone')) {
+                                if($user->id != $check[0]->id)
+                                    $_SESSION['notify']->errors = "Даний номер телефону вже використовується #{$check[0]->id}. {$check[0]->name}!";
+                            }
+                            else
+                            {
+                                $update['phone'] = $phone;
+                                $this->db->register('profile_data', "Змінено phone: {$user->phone} => {$phone}. Менеджер: #{$_SESSION['user']->id} {$_SESSION['user']->name}", $user->id);
+                                $user->phone = $phone;
                             }
                         }
 

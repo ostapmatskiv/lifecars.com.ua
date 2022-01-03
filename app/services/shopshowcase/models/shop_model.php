@@ -7,6 +7,7 @@ class shop_model {
 	public $allGroups = false;
 	public $allOptions = false;
 	public $productsIdInGroup = false;
+	public $productsIdInGroup_2 = false; // for lifecars. Subfilter
 
     public function init()
     {
@@ -328,6 +329,16 @@ class shop_model {
 				else
 					return false;
 			}
+			if(empty($where['id'])) {
+				$list = $this->db->select($this->table('_products'), 'id', $where)->get('array');
+				if(empty($list))
+					return false;
+
+				$where['id'] = [];
+				foreach($list as $p) {
+					array_push($where['id'], $p->id);
+				}
+			}
 			
 			foreach ($_GET as $key => $value) {
 				if(in_array($key, ['request', 'page', 'per_page', 'article', 'name', 'sale', 'price_min', 'price_max', 'availability', 'author_add', 'sort']))
@@ -382,6 +393,8 @@ class shop_model {
 						return false;
 				}
 			}
+
+			$this->productsIdInGroup_2 = $where['id'];
 		}
 		if(isset($_GET['sale']) && $_GET['sale'] == 1)
 		{
@@ -1668,7 +1681,14 @@ class shop_model {
 		}
 
 		$cache_key = false;
-		if($group->id > 0 && empty($_GET['name']) && empty($_GET['article']))
+		$getOk = true;
+		if(count($_GET) > 1)
+		{
+			$getOk = false;
+			if(count($_GET) == 2 && isset($_GET['request']) && isset($_GET['page']))
+				$getOk = true;
+		}
+		if($group->id > 0 && $getOk)
 		{
 			$filterKey = $filter ? '+filter' : '-filter';
 			$cache_key = 'optionsToGroup/'.$this->db->getCacheContentKey('group-', $group->id).$filterKey;

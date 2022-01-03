@@ -187,6 +187,9 @@
                 </div>*/ 
                 if($value = $this->data->get('sort'))
                     echo "<input type='hidden' name='sort' value='{$value}' >";
+                if(!empty($filters_2)) {
+                    $filters = $filters_2;
+                }
                 if(!empty($filters))
                 	foreach ($filters as $filter) {
                 		if($filter->id == 2)
@@ -194,13 +197,24 @@
                             if($value = $this->data->get($filter->alias))
                                 echo "<input type='hidden' name='{$filter->alias}' value='{$value}' >";
                 			continue;
-                        } ?>
+                        }
+                        if(!empty($_GET[$filter->alias]) && is_array($_GET[$filter->alias]) && in_array(0, $_GET[$filter->alias]))
+                            unset($_GET[$filter->alias]);
+                        ?>
+                        
     		            <div class="filter">
     		                <div class="flex v-center">
     		                    <p><?=$filter->name?></p>
     		                    <!-- <i class="fas fa-chevron-circle-up"></i> -->
     		                </div>
     		                <div class="values">
+                                <a href="<?=$this->data->get_link($filter->alias, '', 'page')?>">
+                                    <input type="checkbox" <?=empty($_GET[$filter->alias])?'checked':''?>>
+                                    <label><?=$this->text('Всі виробники')?> <?//=$filter->name?></label>
+                                </a>
+                                
+                                
+
     		                	<?php foreach ($filter->values as $value) {
                                     $checked = (!empty($_GET[$filter->alias]) && is_array($_GET[$filter->alias]) && in_array($value->id, $_GET[$filter->alias])) ? 'checked' : '';
                                     ?>

@@ -24,7 +24,8 @@
 	                    	<?php if($user->type != 5 && (($_SESSION['user']->admin && $user->type > 1) || $user->type > 2)) { ?>
 	                    		<a href="<?=SITE_URL?>admin/wl_users/login_as_user?id=<?=$user->id?>" class="btn btn-xs btn-success m-l-5"><i class="fa fa-sign-in"></i> Увійти як <strong><?=$user->name?></strong></a>
 	                    	<?php }
-	                    	if(!empty($user->info['phone'])) echo "<br>".$user->info['phone']; ?>
+	                    	//if(!empty($user->info['phone'])) echo "<br>".$user->info['phone'];
+	                    	echo "<br>".$user->phone; ?>
 	                    </td>
 	                </tr>
 	            	<tr class="divider">
