@@ -71,7 +71,13 @@
 		</div>
 	</div>
 
-	<?php if(!in_array($_SESSION['alias']->alias, ['login', 'signup'])) { ?>
+	<?php if(!in_array($_SESSION['alias']->alias, ['login', 'signup'])) {
+		$first_name = $last_name = '';
+		if($this->userIs() && !empty($_SESSION['user']->name)) {
+			$name = explode(' ', $_SESSION['user']->name, 2);
+			$first_name = $name[0];
+			$last_name = $name[1];
+		} ?>
 	<div id="modal-buyProduct">
 		<form action="<?=SITE_URL?>cart/buyProduct" method="post" class="bg-white type-2">
 			<!-- <img src="<?=SERVER_URL?>style/images/logo.png" alt="logo"> -->
@@ -80,21 +86,21 @@
 
 			<input type="hidden" name="productKey">
 			<input type="hidden" name="quantity" min="1" title="<?=$this->text('Кількість од.')?>">
-         <div class="input-group">
+         <div class="input-group <?= !empty($first_name) ? 'val' : ''?>">
             <label for="firstname-1"><?=$this->text("Ім'я", 0)?>*</label>
-            <input type="text" id="firstname-1" name="name" class="input" value="<?=$this->userIs() ? $_SESSION['user']->name : ''?>" <?=$this->userIs() ? 'disabled' : 'required'?>>
+            <input type="text" id="firstname-1" name="first_name" class="input" value="<?= $first_name ?>" required>
          </div>
-         <div class="input-group">
+         <div class="input-group <?= $last_name ? 'val' : ''?>">
             <label for="lastname-1"><?=$this->text("Прізвище", 0)?>*</label>
-            <input type="text" id="lastname-1" name="name" class="input" value="<?=$this->userIs() ? $_SESSION['user']->name : ''?>" <?=$this->userIs() ? 'disabled' : 'required'?>>
+            <input type="text" id="lastname-1" name="last_name" class="input" value="<?= $last_name ?>" required>
          </div>
-         <div class="input-group">
+         <div class="input-group <?=$this->userIs() && !empty($_SESSION['user']->phone) ? 'val' : ''?>">
             <label for="phone-1"><?=$this->text('Телефон', 0)?>*</label>
-            <input type="text" id="phone-1" name="phone" class="input" minlength="17" value="<?=$this->userIs() ? $_SESSION['user']->phone : ''?>" <?=$this->userIs() ? 'disabled' : 'required'?>>
+            <input type="text" id="phone-1" name="phone" class="input" minlength="17" value="<?=$this->userIs() ? $_SESSION['user']->phone : ''?>" required>
          </div>
          <div class="flex w100" style="margin-top: 10px;">
 				<a class="close" href="javascript:void(0)"><?=$this->text('Закрити', 0)?></a>
-				<button <?=$this->userIs() ? '' : 'disabled title=\'Заповніть "Я не робот"\''?>><img src="<?=SERVER_URL?>style/icons/detal/shopping-cart.svg" alt="cart" style="height: 15px;margin-bottom: 0;"> <?=$this->text('Купити', 0)?></button>
+				<button><img src="<?=SERVER_URL?>style/icons/detal/shopping-cart.svg" alt="cart" style="height: 15px;margin-bottom: 0;"> <?=$this->text('Купити', 0)?></button>
 			</div>
 		</form>
 	</div>

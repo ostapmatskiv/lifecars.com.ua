@@ -1113,11 +1113,12 @@ class cart extends Controller {
         $this->validator->setRules($this->text('productKey'), $this->data->post('productKey'), 'required|3..50');
         if(!$this->userIs())
         {
-            $this->validator->setRules($this->text('email'), $this->data->post('email'), 'required|email');
-            $this->validator->setRules($this->text('Ім\'я Прізвище'), $this->data->post('name'), 'required|5..50');
-        }
-        if(!empty($_POST['phone']))
             $this->validator->setRules($this->text('Контактний номер'), $this->data->post('phone'), 'required|phone');
+            $this->validator->setRules($this->text('Ім\'я'), $this->data->post('first_name'), 'required|3..50');
+            $this->validator->setRules($this->text('Прізвище'), $this->data->post('last_name'), 'required|3..50');
+        }
+        if(!empty($_POST['email']))
+            $this->validator->setRules($this->text('email'), $this->data->post('email'), 'required|email');
         if($this->validator->run())
         {
             $this->load->smodel('cart_model');
@@ -1134,7 +1135,7 @@ class cart extends Controller {
                         {
                             $_SESSION['notify'] = new stdClass();
                             $_SESSION['notify']->error = $check['message'];
-                            $this->redirect();
+                            $this->redirect($_SESSION['alias']->alias . '/confirm');
                         }
                         else
                         {
@@ -1149,7 +1150,8 @@ class cart extends Controller {
                         $info = $additionall = array();
                         $info['status'] = 1;
                         $info['email'] = $this->data->post('email');
-                        $info['name'] = $this->data->post('name');
+                        $info['phone'] = $this->data->post('phone');
+                        $info['name'] = $this->data->post('first_name').' '.$this->data->post('last_name');
                         $info['photo'] = NULL;
                         if($_SESSION['option']->usePassword)
                             $info['password'] = $new_user_password = bin2hex(openssl_random_pseudo_bytes(4));
@@ -1166,10 +1168,14 @@ class cart extends Controller {
                         $new_user = true;
                     }
                 }
-                else
-                    $this->cart_model->updateAdditionalUserFields($_SESSION['user']->id);
+                // else
+                //     $this->cart_model->updateAdditionalUserFields($_SESSION['user']->id);
 
-                $cart = $this->cart_model->checkout($_SESSION['user']->id, array(), false, $product->sum);
+                $delivery = [];
+                $delivery['info']['recipientName'] = $this->data->post('first_name').' '.$this->data->post('last_name');
+                $delivery['info']['recipientPhone'] = $this->data->post('phone');
+
+                $cart = $this->cart_model->checkout($_SESSION['user']->id, $delivery, false, $product->sum);
                 $this->cart_model->addProduct($product, $_SESSION['user']->id, $cart['id']);
                 if($product->storage_invoice && $product->storage_alias)
                 {

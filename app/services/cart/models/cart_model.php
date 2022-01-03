@@ -2,7 +2,7 @@
 
 class cart_model
 {
-	public $additional_user_fields = array('phone');
+	public $additional_user_fields = array();
 	private $productsCountInCart = false;
 
 	public function table($sufix = '', $useAliasTable = false)
@@ -62,7 +62,7 @@ class cart_model
 		$this->db->join($this->table('_status').' as s1', 'name as status_name, color as status_color, weight as status_weight', '#c.status');
 		$this->db->join($this->table('_status').' as s2', 'name as status_1c_name', '#c.1c_status');
 		$this->db->join('wl_users as m', 'name as manager_name, email as manager_email', '#c.manager');
-		$this->db->join('wl_users as u', 'name as user_name, email as user_email, type as user_type, alias as user_alias', '#c.user');
+		$this->db->join('wl_users as u', 'name as user_name, email as user_email, phone as user_phone, type as user_type, alias as user_alias', '#c.user');
 		$this->db->join('wl_user_types', 'title as user_type_name', '#u.type');
 		$shipping_ntkd = array('alias' => '#s.wl_alias', 'content' => 0);
 		if($_SESSION['language'])
@@ -125,7 +125,7 @@ class cart_model
 				->join($this->table('_status').' as s1', 'name as status_name, color as status_color, weight as status_weight', '#c.status')
 				->join($this->table('_status').' as s2', 'name as status_1c_name', '#c.1c_status')
 				->join('wl_users as m', 'name as manager_name, email as manager_email', '#c.manager')
-				->join('wl_users as u', 'name as user_name, email as user_email, type as user_type, alias as user_alias', '#c.user')
+				->join('wl_users as u', 'name as user_name, email as user_email, phone as user_phone, type as user_type, alias as user_alias', '#c.user')
 				->join('wl_user_types', 'title as user_type_name', '#u.type');
 		if(!empty($this->additional_user_fields))
 			foreach ($this->additional_user_fields as $key => $field) {
@@ -182,7 +182,7 @@ class cart_model
 			$this->db->join($this->table('_status').' as s1', 'name as status_name, weight as status_weight, color as status_color', '#c.status');
 			$this->db->join($this->table('_status').' as s2', 'name as status_1c_name', '#c.1c_status');
 			$where = array('field' => "phone", 'user' => "#c.user");
-			$this->db->join('wl_users as u', 'name as user_name, email as user_email, type as user_type, alias as user_alias', '#c.user');
+			$this->db->join('wl_users as u', 'name as user_name, email as user_email, phone as user_phone, type as user_type, alias as user_alias', '#c.user');
 			$this->db->join('wl_users as m', 'name as manager_name, email as manager_email, alias as manager_alias', '#c.manager');
 			$this->db->join('wl_user_types', 'title as user_type_name', '#u.type');
 			if(!empty($this->additional_user_fields))
