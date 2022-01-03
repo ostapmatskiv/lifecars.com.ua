@@ -164,11 +164,17 @@ class Data {
         	foreach ($_GET as $key => $value) {
 	            if($key != 'request' && $key != $skip_key)
 	            {
+	            	if(substr($key, -2) == '[]')
+        				$key = substr($key, 0, -2);
+        			if($key == $new_key && $new_value == '')
+		            {
+		            	$updated = true;
+		            	continue;
+		            }
 	            	if(is_array($value))
 	            	{
 	            		if($key == $nk2)
 	            		{
-	            			
 		            		if(in_array($new_value, $value))
 		            		{
 		            			$updated = true;
@@ -187,7 +193,7 @@ class Data {
 		                        $link .= $key .'[]='.$sub_value . '&';
 		                    }
 	                }
-	             	elseif($key != $nk2)
+	             	elseif($key != $nk2 && $value != '')
 	             		$link .= $key .'='.$value . '&';
 		            elseif($key == $new_key && $new_value != '')
 		            {
