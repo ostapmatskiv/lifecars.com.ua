@@ -309,4 +309,4 @@ $('input#phone-1').focus(function () {
     if (this.value.length == 0) {
         this.value = '+380';
     }
-});
+}).mask('+38Z NN 000 00 00', mask_options);
