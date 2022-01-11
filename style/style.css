@@ -1472,8 +1472,9 @@ ul.pagination .next-off {
 /*                          detal            */
 main.detal h1.detal__heading {
     font-size: 28px;
+    letter-spacing: -0.04em;
     font-weight: normal;
-    line-height: 1.33;
+    line-height: 1.25;
     text-align: left;
     color: #262626;
     text-transform: none;
@@ -3814,9 +3815,9 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
             margin-top: 10px;
         }
 
-        main.detal section.detal__info .info__bonus {
+        /*main.detal section.detal__info .info__bonus {
             display: none;
-        }
+        }*/
 
         main.detal .detal__menu nav {
             flex-direction: column;
@@ -4310,4 +4311,58 @@ body.parts main .catalog__detal a div {
     font-size: 12px;
     height: 17px;
     background: #fff;
+}
+
+.product-info-bordered {
+    margin-top: 0;
+    margin-bottom: 25px;
+    border-radius: 5px;
+    overflow: hidden;
+    padding: 2px;
+    background: #fff;
+}
+
+main.detal .product-info-bordered .card__border_in {
+    max-width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px dashed #7cbe49;
+}
+
+@media (max-width: 430px) {
+    .product-info-bordered {
+        margin-top: 20px;
+        margin-bottom: 0;
+        width: 100%;
+    }
+}
+
+.bonus-info-wrapper {
+    padding: 15px;
+    background: #F3FAF2;
+    width: 100%;
+}
+
+.bonus-info-wrapper h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #7cbe49;
+    letter-spacing: 0.04em;
+}
+
+.bonus-info-wrapper p {
+    font-size: 12px;
+    line-height: 1.5em;
+    font-weight: 500;
+    color: #666666;
+}
+
+.bonus-info-wrapper p:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+@media (max-width: 430px) {
+    .m-order-2 {
+        order: 2;
+    }
 }

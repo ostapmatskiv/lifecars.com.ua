@@ -1,11 +1,22 @@
 <main class="detal">
-    <h1 class="detal__heading"><?=$product->name.' '.mb_strtoupper($product->options['1-manufacturer']->value->name).' ('.$product->article_show.')'?></h1>
+    <h1 class="detal__heading"><?=$product->name.' '.mb_strtoupper($product->options['1-manufacturer']->value->name)?></h1>
 
-    <?php if(!empty($_SESSION['alias']->list)) { ?>
-        <div class="card__border_in">
-            <?=$_SESSION['alias']->list?>
+    <div class="flex h-between v-center card__rating">
+        <div class="rating <?=empty($product->rating)?'empty':''?>" title="<?=empty($product->rating)?$this->text('Оцінка відсутня'):$this->text('Оцінка товару ').' '.$product->rating?>">
+            <?php for($i = 0; $i < round($product->rating); $i++) { ?>
+                <i class="fas fa-star" aria-hidden="true"></i>
+            <?php } for($i = round($product->rating); $i < 5; $i++) { ?>
+                <i class="far fa-star" aria-hidden="true"></i>
+            <?php } ?>
         </div>
-    <?php } ?>
+        <div class="rating__comment">
+            <img src="/style/icons/comment.png" alt="comment">
+            <i><?=$product->rating_votes ?? 0?></i>
+        </div>
+        <div>
+            <h5>Арт. <?=$product->article_show?></h5>
+        </div>
+    </div>
 
     <?php if(!empty($_SESSION['notify']->success)): ?>
         <div id="comment_add_success" class="alert alert-success">
@@ -38,19 +49,6 @@
                     <?php } ?>
                     <!-- <i class="img__hit">ХІТ</i> -->
                 </div>
-                <div class="flex h-evenly v-center card__rating">
-                    <div class="rating <?=empty($product->rating)?'empty':''?>" title="<?=empty($product->rating)?$this->text('Оцінка відсутня'):$this->text('Оцінка товару ').' '.$product->rating?>">
-                        <?php for($i = 0; $i < round($product->rating); $i++) { ?>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                        <?php } for($i = round($product->rating); $i < 5; $i++) { ?>
-                            <i class="far fa-star" aria-hidden="true"></i>
-                        <?php } ?>
-                    </div>
-                    <div class="rating__comment">
-                        <img src="/style/icons/comment.png" alt="comment">
-                        <i><?=$product->rating_votes ?? 0?></i>
-                    </div>
-                </div>
             </div>
             <div class="img__small">
                 <?php if(!empty($_SESSION['alias']->images)) {
@@ -60,9 +58,28 @@
                         </div>
                 <?php } } ?>
             </div>
+
         </div>
-        <div class="info__bonus">
-            <div class="flex h-start v-center bonus__send">
+
+        <?php if(!empty($_SESSION['alias']->list)) { ?>
+            <div class="product-info-bordered hide m-block">
+                <div class="card__border_in">
+                    <?=$_SESSION['alias']->list?>
+                </div>
+            </div>
+        <?php } ?>
+
+        <div class="info__bonus m-order-2">
+
+            <?php if(!empty($_SESSION['alias']->list)) { ?>
+                <div class="product-info-bordered m-hide">
+                    <div class="card__border_in">
+                        <?=$_SESSION['alias']->list?>
+                    </div>
+                </div>
+            <?php } ?>
+
+<?php /*           <div class="flex h-start v-center bonus__send">
                <div class="send__img">
                     <img src="/style/icons/detal/shipped.svg" alt="shipped">
                </div>
@@ -86,6 +103,24 @@
                 </div>
                 <p class="etra__text"><?=$this->text('Нараховуваєм Вам 5% від суми замовлення, при наявності бонусної картки обо за зроблене замовлення при реєстрації на нашому сайті')?></p>
             </div>
+ */ ?>
+
+            <div class="bonus-info-wrapper">
+                <h3>Доставка</h3>
+                <p>Самовивіз з магазину <br>
+                    Доставка новою поштою <br>
+                    Безкоштовна від 40 грн
+                </p>
+                <h3>Відправка</h3>
+                <p>
+                    В день замовлення до 16:00
+                </p>
+                <h3>Оплата</h3>
+                <p>
+                    Наложений платіж, Карта ПриватБанк
+                </p>
+            </div>
+
         </div>
         <div class="text-right info__price">
             <?php if($this->userCan()) { ?>
