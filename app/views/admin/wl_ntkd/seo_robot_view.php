@@ -87,7 +87,7 @@
                                                 <div class="form-group">
                                                     <div class="col-md-2"></div>
                                                     <div class="col-md-10">
-                                                        <button type="button" class="btn btn-sm btn-warning " onclick="saveText(0, <?=$lang?>)">Зберегти текст сторінки</button>
+                                                        <button type="button" class="btn btn-sm btn-warning " onclick="saveText(0, '<?=$lang?>')">Зберегти текст сторінки</button>
                                                     </div>
                                                 </div>
                                             </table>
@@ -219,7 +219,7 @@
                                                 <div class="form-group">
                                                     <div class="col-md-2"></div>
                                                     <div class="col-md-10">
-                                                        <button type="button" class="btn btn-sm btn-warning " onclick="saveText(1, <?=$lang?>)">Зберегти текст сторінки</button>
+                                                        <button type="button" class="btn btn-sm btn-warning " onclick="saveText(1, '<?=$lang?>')">Зберегти текст сторінки</button>
                                                     </div>
                                                 </div>
                                             </table>
@@ -350,7 +350,7 @@
                                                 <div class="form-group">
                                                     <div class="col-md-2"></div>
                                                     <div class="col-md-10">
-                                                        <button type="button" class="btn btn-sm btn-warning " onclick="saveText(-1, <?=$lang?>)">Зберегти текст сторінки</button>
+                                                        <button type="button" class="btn btn-sm btn-warning " onclick="saveText(-1, '<?=$lang?>')">Зберегти текст сторінки</button>
                                                     </div>
                                                 </div>
                                             </table>

@@ -591,9 +591,15 @@ class shop_model {
 
 			$sizes = $this->db->getAliasImageSizes();
 
-			$products_ids = $products_photos = $main_options = $main_options_Alias = $main_options_UseSubOptions = $main_options_Photo = $product_group = array();
-            foreach ($products as $product)
+			$group_ids = $group_links = $group_parents = $products_ids = $products_photos = $main_options = $main_options_Alias = $main_options_UseSubOptions = $main_options_Photo = $product_group = array();
+            foreach ($products as $product) {
             	$products_ids[] = $product->id;
+            	if($_SESSION['option']->ProductMultiGroup == 0) {
+            	    if(!in_array($product->group, $group_ids)) {
+            	        $group_ids[] = $product->group;
+            	    }
+            	}
+            }
             if($photos = $this->getProductPhoto($products_ids))
             {
 	            foreach ($photos as $photo) {
@@ -641,7 +647,7 @@ class shop_model {
 
 	        $link = $_SESSION['alias']->alias.'/';
 	        $parents = NULL;
-			if($_SESSION['option']->useGroups > 0)
+			if($_SESSION['option']->useGroups > 0 && count($group_ids) == 1)
 			{
 				if($_SESSION['option']->ProductMultiGroup == 0 && $products[0]->group > 0)
 				{
@@ -702,6 +708,22 @@ class shop_model {
 					$product->price *= (100 - $product->promo_percent) / 100;
 				}
 
+                if($_SESSION['option']->useGroups > 0 && count($group_ids) > 1) {
+                    if(isset($group_links[$product->group])) {
+                        $link = $group_links[$product->group];
+                        $parents = $group_parents[$product->group];
+                    }
+                    else {
+                        $link = $_SESSION['alias']->alias.'/';
+                        $parents = $this->makeParents($product->group, array());
+    					foreach ($parents as $parent) {
+    						$link .= $parent->alias .'/';
+    					}
+    					$group_links[$product->group] = $link;
+    					$group_parents[$product->group] = $parents;
+                    }
+                }
+                
             	$product->link = $link.$product->alias;
             	$product->parents = $parents;
             	if($getProductOptions)

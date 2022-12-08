@@ -25,11 +25,23 @@ class google_feed
 				   <g:link>".SITE_URL.$product->link."</g:link>";
 				if(!empty($product->options))
 				{
+				    $brand = null;
 					$options = [];
 					foreach ($product->options as $key => $value) {
 						$options[] = $key .' '. $value;
+						
+						if($key == 'Виробник' || $key == 'Производитель')
+						    $brand = $value;
 					}
-					$xml .= "<g:description><![CDATA[".implode('<br>', $options)."]]></g:description>";
+					if(!empty($product->list)) {
+					   // $options[] = $product->list;
+					    if($_SESSION['language'] == 'uk') $xml .= "<g:description><![CDATA[{$product->name} застосовується до автомобіля {$product->list}]]></g:description>";
+					    if($_SESSION['language'] == 'ru') $xml .= "<g:description><![CDATA[{$product->name} применяется к автомобилю {$product->list}]]></g:description>";
+					}
+				// 	$xml .= "<g:description><![CDATA[".implode(' <br>', $options)."]]></g:description>";
+					
+					if(!is_null($brand))
+					    $xml .= "<g:brand>{$brand}</g:brand>";
 				}
 				if(!empty($product->images))
 					foreach ($product->images as $i => $image) {
@@ -77,8 +89,8 @@ class google_feed
 						$xml .= "<g:product_type>".implode(' &gt; ', $parents)."</g:product_type>";
 					}
 				}
-				$xml .= "<g:google_product_category>Hardware &gt; Hardware Accessories &gt; Hardware Fasteners</g:google_product_category>
-				</item>";
+				// $xml .= "<g:google_product_category>Hardware &gt; Hardware Accessories &gt; Hardware Fasteners</g:google_product_category>
+				$xml .= "</item>";
 			}
 		$xml .= "</channel>
 			</rss>";

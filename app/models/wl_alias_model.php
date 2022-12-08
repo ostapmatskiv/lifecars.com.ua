@@ -534,6 +534,7 @@ class wl_alias_model
 	    			}
 	    		}
 	    	$keys['{name}'] = $_SESSION['alias']->name;
+	    	$keys['{list}'] = $_SESSION['alias']->list;
 	    	$keys['{SITE_URL}'] = SITE_URL;
 	    	$keys['{IMG_PATH}'] = IMG_PATH;
 	    	foreach ($ntkd as $key => $value) {

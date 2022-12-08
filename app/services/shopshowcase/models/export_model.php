@@ -225,7 +225,7 @@ class export_model
         $where_ntkd['alias'] = $_SESSION['alias']->id;
         $where_ntkd['content'] = "#p.id";
         if($_SESSION['language']) $where_ntkd['language'] = $_SESSION['language'];
-        $this->db->join('wl_ntkd as n', 'name, text', $where_ntkd);
+        $this->db->join('wl_ntkd as n', 'name, list, text', $where_ntkd);
 
         $products = $this->db->get('array');
 

@@ -304,7 +304,7 @@ class wl_ntkd_admin extends Controller {
                         $this->db->insertRow($table, $data);
                     }
 
-                    if($alias == 0)
+                    if($alias == 0 || true)
                     {
                         if(isset($_SESSION['alias-cache']))
                             unset($_SESSION['alias-cache']);
