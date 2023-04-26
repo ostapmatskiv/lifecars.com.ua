@@ -17,18 +17,9 @@
     	<?php } ?>
 
 	<?=html_entity_decode($_SESSION['option']->global_MetaTags, ENT_QUOTES)?>
-    <?=html_entity_decode($_SESSION['alias']->meta, ENT_QUOTES)?>
-
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-249931547-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-249931547-1');
-</script>
-	<!-- End Google Tag Manager -->
+	<?=html_entity_decode($_SESSION['alias']->meta, ENT_QUOTES)?>
+	
+	<?php require_once '@commons/__head_ga4_events.php'; ?>
 
 	<link rel="canonical" href="<?=SITE_URL_UK?>">
 	<link rel="alternate" hreflang="uk-UA" href="<?=SITE_URL_UK?>">
@@ -40,16 +31,11 @@
 	<link rel="stylesheet" type="text/css" href="<?=SERVER_URL?>style/style.css?v=0.5">
 </head>
 <body class="<?=$_SESSION['alias']->alias?>">
-	<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-248478490-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-248478490-1');
-</script>
+	<!-- Google Tag Manager (noscript) -->
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NL8QZSN"
+	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	<!-- End Google Tag Manager (noscript) -->
+
 	
 	<?php
 		$site_tel_1 = $this->text('+38 096 0000 943', 0);
