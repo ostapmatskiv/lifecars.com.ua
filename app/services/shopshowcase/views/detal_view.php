@@ -1,3 +1,36 @@
+<script>
+    dataLayer.push({
+        ecommerce: null
+    }); // Очищуємо попередній ecommerce об’єкт
+    dataLayer.push({
+        event: "view_item",
+        ecommerce: {
+            items: [{
+                item_name: "<?= $product->name.' '.mb_strtoupper($product->options['1-manufacturer']->value->name) ?>", // Передаємо назву товару
+                item_id: "<?= $product->id ?>", // Передаємо ID товару, під яким він записаний у базі даних сайту
+                price: <?= $product->price ?>.00, // Передаємо ціну товару враховуючи знижку. Важливо! Розділювач крапка. Після крапки дві цифри.
+                item_brand: "<?= $product->options['1-manufacturer']->value->name ?>", // Передаємо бренд товару. 
+                item_category: "<?php 
+                            if(!empty($product->parents)){
+                                $name = [];
+                                foreach ($product->parents as $group) {
+                                    $name[] = $group->name;
+                                }
+                                echo implode(' ', $name);
+                            }
+                            if(!empty($product->options['2-part']->value)){
+                                $part = [];
+                                foreach ($product->options['2-part']->value as $value) {
+                                    $part[] = $value->name;
+                                }
+                                echo ' ' . implode(', ', $part);
+                            } ?>", // Передаємо категорію товару.
+                quantity: 1 // Передаємо кількість товару
+            }]
+        }
+    });
+</script>
+
 <main class="detal">
     <h1 class="detal__heading"><?=$product->name.' '.mb_strtoupper($product->options['1-manufacturer']->value->name)?></h1>
 
