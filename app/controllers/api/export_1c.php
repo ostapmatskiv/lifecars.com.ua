@@ -28,13 +28,13 @@ class export_1c extends Controller
 			if ($users = $this->db->get('array'))
 				foreach ($users as $user) {
 					$user->id = 'life-'.$user->id;
-					$name = explode(' ', $user->name);
-					if(count($name) > 1) {
-					    $first_name = $name[0];
-					    $name[0] = $name[1]; // last name
-					    $name[1] = $first_name;
-					    $user->name = implode(' ', $name);
-					}
+				// 	$name = explode(' ', $user->name);
+				// 	if(count($name) > 1) {
+				// 	    $first_name = $name[0];
+				// 	    $name[0] = $name[1]; // last name
+				// 	    $name[1] = $first_name;
+				// 	    $user->name = implode(' ', $name);
+				// 	}
 					if(substr($user->user_phone, 0, 2) == '38') {
 					    $user->user_phone = substr($user->user_phone, 2);
 					}

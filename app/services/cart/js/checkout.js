@@ -182,21 +182,27 @@ $("#cart input#phone").on("change", function() {
         recipientPhone = $('form#confirm input[name="recipientPhone"]');
     $( 'form#confirm' ).find( 'input[name="phone"]' ).val(phone);
     // if(recipientPhone.val() == '')
+    if(phone.substr(0, 6) == '+38 (0' && phone.length == 19) {
         recipientPhone.val(phone);
-    setPercents()
+        setPercents();
+    }
+    else {
+        alert('Введіть коректний номер телефону починаючи +380');
+        // return false;
+    }
 });
 $("#cart input#first_name, #cart input#last_name").on("change", function() {
     var first_name = $('#cart input#first_name').val(),
         last_name = $('#cart input#last_name').val(),
         recipientName = $('form#confirm input[name="recipientName"]');
 
-    if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯ]+$/.test(first_name) === false) {
-        alert('Тільки українські літери');
+    if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ]+$/.test(first_name) === false) {
+        alert('Тільки кирилиця');
         return false;
     }
     if(last_name.length > 0)
-        if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯ]+$/.test(last_name) === false) {
-            alert('Тільки українські літери');
+        if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ]+$/.test(last_name) === false) {
+            alert('Тільки кирилиця');
             return false;
         }
 

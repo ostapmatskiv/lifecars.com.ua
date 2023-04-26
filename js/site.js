@@ -310,3 +310,8 @@ $('input#phone-1').focus(function () {
         this.value = '+380';
     }
 }).mask('+38Z NN 000 00 00', mask_options);
+$('input#phone-1').change(function(){
+    if (this.value.substr(0, 4) != '+380' || this.value.length != 17) {
+        alert('Введіть коректний номер телефону починаючи +380');
+    }
+});

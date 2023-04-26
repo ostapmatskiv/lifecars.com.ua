@@ -302,9 +302,8 @@
 
         let signUpStage = 1;
         $('#signupForm input[name=phone]').change(function () {
-            console.log('change');
             $('#signupForm #phoneError2').addClass('hide');
-            if (this.value.length == 17) {
+            if (this.value.substr(0, 4) == '+380' && this.value.length == 17) {
                 $('#divLoading').addClass('show');
                 let tel = this.value;
                 $.ajax({
@@ -330,11 +329,14 @@
                     }
                 });
             }
+            else {
+                $('#signupForm #phoneError2').text('Введіть коректний номер телефону починаючи +380').removeClass('hide');
+            }
         });
 
         $('#signupForm input[name=first_name]').change(function () {
             if (this.value.length > 0) {
-                if (/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯ]+$/.test(this.value) === false) {
+                if (/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ]+$/.test(this.value) === false) {
                     $('#signupForm #fnError').removeClass('hide');
                     $('#signupForm input[name=first_name]').focus();
                 } else {
@@ -346,7 +348,7 @@
 
         $('#signupForm input[name=last_name]').change(function () {
             if (this.value.length > 0) {
-                if (/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯ]+$/.test(this.value) === false) {
+                if (/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ]+$/.test(this.value) === false) {
                     $('#signupForm #lnError').removeClass('hide');
                     $('#signupForm input[name=last_name]').focus();
                 } else {
@@ -390,12 +392,12 @@
 
             if (signUpStage == 2) {
                 // verification for ukr letters
-                if (/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯ]+$/.test(first_name) === false) {
+                if (/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ]+$/.test(first_name) === false) {
                     $('#signupForm #fnError').removeClass('hide');
                     return false;
                 }
 
-                if (/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯ]+$/.test(last_name) === false) {
+                if (/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ]+$/.test(last_name) === false) {
                     $('#signupForm #lnError').removeClass('hide');
                     return false;
                 }

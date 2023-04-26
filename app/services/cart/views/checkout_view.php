@@ -38,7 +38,7 @@
 					<input type="text" id="first_name" placeholder="<?=$this->text("Ім'я")?>*" value="<?=$this->data->re_post('first_name')?>">
 					<input type="text" id="last_name" placeholder="<?=$this->text("Прізвище")?>*" value="<?=$this->data->re_post('last_name')?>">
 					<input type="text" id="phone" placeholder="<?=$this->text('Телефон', 0)?>*" value="<?=$this->data->re_post('phone')?>">
-					<input type="text" id="email" placeholder="email" value="<?=$this->data->re_post('email')?>">
+					<!--<input type="text" id="email" placeholder="email" value="<?=$this->data->re_post('email')?>">-->
 				</div>
 
 				<?php /*
