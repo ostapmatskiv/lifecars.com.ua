@@ -1,103 +1,145 @@
-<link rel="stylesheet" type="text/css" href="<?=SERVER_URL.'style/'.$_SESSION['alias']->alias.'/order.css'?>">
+<link rel="stylesheet" type="text/css" href="<?= SERVER_URL . 'style/' . $_SESSION['alias']->alias . '/order.css' ?>">
 
-<?php if(!empty($_SESSION['notify']->errors)) { ?>
-   <div class="alert alert-danger">
-        <span class="close" data-dismiss="alert">×</span>
-        <h4><i class="fas fa-exclamation-triangle"></i> <?=(isset($_SESSION['notify']->title)) ? $_SESSION['notify']->title : $this->text('Помилка!', 0)?></h4>
-        <p><?=$_SESSION['notify']->errors?></p>
-    </div>
-<?php } elseif(!empty($_SESSION['notify']->success)) { ?>
-    <div class="alert alert-success">
-        <span class="close" data-dismiss="alert">×</span>
-        <h4><i class="fas fa-check"></i> <?=(isset($_SESSION['notify']->title)) ? $_SESSION['notify']->title : $this->text('Успіх!', 0)?></h4>
-        <p><?=$_SESSION['notify']->success?></p>
-    </div>
-<?php } unset($_SESSION['notify']); 
+<?php if (!empty($_SESSION['notify']->errors)) { ?>
+	<div class="alert alert-danger">
+		<span class="close" data-dismiss="alert">×</span>
+		<h4><i class="fas fa-exclamation-triangle"></i> <?= (isset($_SESSION['notify']->title)) ? $_SESSION['notify']->title : $this->text('Помилка!', 0) ?></h4>
+		<p><?= $_SESSION['notify']->errors ?></p>
+	</div>
+<?php } elseif (!empty($_SESSION['notify']->success)) { ?>
+	<div class="alert alert-success">
+		<span class="close" data-dismiss="alert">×</span>
+		<h4><i class="fas fa-check"></i> <?= (isset($_SESSION['notify']->title)) ? $_SESSION['notify']->title : $this->text('Успіх!', 0) ?></h4>
+		<p><?= $_SESSION['notify']->success ?></p>
+	</div>
+<?php }
+unset($_SESSION['notify']);
 
 $accessKey = '';
-if(!$this->userIs() && $this->data->get('key'))
-	$accessKey = '?key='.$this->data->get('key');
-?>
+if (!$this->userIs() && $this->data->get('key'))
+	$accessKey = '?key=' . $this->data->get('key');
+
+if($this->data->get('order') == $cart->id) { ?>
+<script>
+	dataLayer.push({
+		ecommerce: null
+	});
+	dataLayer.push({
+		event: "purchase",
+		ecommerce: {
+			transaction_id: "<?= $cart->id ?>",
+			value: "<?= number_format($cart->total, 2, '.', '') ?>",
+			currency: "SEK",
+			items: [
+				<?php foreach ($cart->products as $i => $product) { ?> {
+						item_name: "<?= $product->info->name . ' ' . mb_strtoupper($product->info->options['1-manufacturer']->value->name) ?>",
+						item_id: "<?= $product->info->id ?>",
+						price: <?= number_format($product->price, 2, '.', '') ?>,
+						item_brand: "<?= $product->info->options['1-manufacturer']->value->name ?>",
+						item_category: "<?php if (!empty($product->info->parents)) {
+											$name = [];
+											foreach ($product->info->parents as $group) {
+												$name[] = $group->name;
+											}
+											echo implode(' ', $name);
+										}
+										if (!empty($product->info->options['2-part']->value)) {
+											$part = [];
+											foreach ($product->info->options['2-part']->value as $value) {
+												$part[] = $value->name;
+											}
+											echo ' ' . implode(', ', $part);
+										} ?>",
+						quantity: <?= $product->quantity ?>
+					},
+				<?php } ?>
+			]
+		}
+	});
+</script>
+<?php } ?>
 
 <main id="cart">
-<h1><?=$this->text('Замовлення')?> #<?= $cart->id?> <?=$this->text('від')?> <?= date('d.m.Y H:i', $cart->date_edit)?></h1>
-<p><?=$this->text('Статус замовлення')?>: <strong><?= $cart->status_name ?></strong>. <?=$this->text('Статус оплати')?>: <strong><?= empty($cart->payed) ? 'Очікує оплати' : 'Оплачено' ?></strong></p>
+	<h1><?= $this->text('Замовлення') ?> #<?= $cart->id ?> <?= $this->text('від') ?> <?= date('d.m.Y H:i', $cart->date_edit) ?></h1>
+	<p><?= $this->text('Статус замовлення') ?>: <strong><?= $cart->status_name ?></strong>. <?= $this->text('Статус оплати') ?>: <strong><?= empty($cart->payed) ? 'Очікує оплати' : 'Оплачено' ?></strong></p>
 
-<a href="<?=SITE_URL.$_SESSION['alias']->alias?>/my" class="btn btn-success"><i class="fas fa-undo"></i> <?=$this->text('До всіх замовлень')?></a>
-<a href="<?=SITE_URL?>cart/<?= $cart->id?>/print<?=$accessKey?>" class="btn btn-danger" target="_blank"><i class="fas fa-print"></i> <?=$this->text('Друкувати')?></a>
-<?php if($cart->action == 'new' && $showPayment) { ?>
-	<a href="<?=SITE_URL?>cart/<?= $cart->id?>/pay<?=$accessKey?>" class="btn btn-warning"><i class="fas fa-credit-card"></i> <?=$this->text('Оплатити')?></a>
-<?php } 
-if(!$showPayment &&  $cart->action == 'closed') {
-	$lastday = time() - 86400*14;
-	if($cart->date_edit > $lastday)
-		if($returns = $this->db->select('wl_aliases_cooperation as c', '', ['alias1' => $_SESSION['alias']->id, 'type' => 'returns'])
-									->join('wl_aliases', 'alias, admin_ico as ico', '#c.alias2')
-									->limit(1)->get()) { ?>
-	    	<a href="<?=SITE_URL.$returns->alias.'?cart='.$cart->id?>" class="btn btn-info"><i class="fas <?=$returns->ico?>"></i> <?=$this->text('Повернення')?></a>
-<?php } } ?>
+	<a href="<?= SITE_URL . $_SESSION['alias']->alias ?>/my" class="btn btn-success"><i class="fas fa-undo"></i> <?= $this->text('До всіх замовлень') ?></a>
+	<a href="<?= SITE_URL ?>cart/<?= $cart->id ?>/print<?= $accessKey ?>" class="btn btn-danger" target="_blank"><i class="fas fa-print"></i> <?= $this->text('Друкувати') ?></a>
+	<?php if ($cart->action == 'new' && $showPayment) { ?>
+		<a href="<?= SITE_URL ?>cart/<?= $cart->id ?>/pay<?= $accessKey ?>" class="btn btn-warning"><i class="fas fa-credit-card"></i> <?= $this->text('Оплатити') ?></a>
+		<?php }
+	if (!$showPayment &&  $cart->action == 'closed') {
+		$lastday = time() - 86400 * 14;
+		if ($cart->date_edit > $lastday)
+			if ($returns = $this->db->select('wl_aliases_cooperation as c', '', ['alias1' => $_SESSION['alias']->id, 'type' => 'returns'])
+				->join('wl_aliases', 'alias, admin_ico as ico', '#c.alias2')
+				->limit(1)->get()
+			) { ?>
+			<a href="<?= SITE_URL . $returns->alias . '?cart=' . $cart->id ?>" class="btn btn-info"><i class="fas <?= $returns->ico ?>"></i> <?= $this->text('Повернення') ?></a>
+	<?php }
+	} ?>
 
-<div class="table__cart_products_list2 w100">
-	<div class="thead">
-		<div class="th photo m-hide"><?=$this->text('Фото')?></div>
-		<div class="th name"><?=$this->text('Назва')?></div>
-		<div class="th price"><?=$this->text('Ціна')?></div>
-		<div class="th amount"><?=$this->text('К-сть')?></div>
-		<div class="th sum"><?=$this->text('Сума')?></div>
-	</div>
-	<?php if($cart->products) foreach($cart->products as $i => $product) { ?>
-	<div class="tr">
-		<div class="td photo m-hide"><a href="<?=SITE_URL.$product->info->link?>">
-			<?php if($product->info->photo) { ?>
-				<img src="<?=IMG_PATH?><?=$product->info->cart_photo ?? $product->info->admin_photo ?>" alt="<?=$product->info->name ?>">
-			<?php } else
-						echo '<img src="/style/images/no_image2.png">'; ?>
-			</a>
+	<div class="table__cart_products_list2 w100">
+		<div class="thead">
+			<div class="th photo m-hide"><?= $this->text('Фото') ?></div>
+			<div class="th name"><?= $this->text('Назва') ?></div>
+			<div class="th price"><?= $this->text('Ціна') ?></div>
+			<div class="th amount"><?= $this->text('К-сть') ?></div>
+			<div class="th sum"><?= $this->text('Сума') ?></div>
 		</div>
-		<div class="td name">
-			<a href="<?=SITE_URL.$product->info->link?>"><?=$product->info->name ?></a>
-			<p>Артикул: <strong><?=$product->info->article_show ?></strong></p>
-			<?php if(!empty($product->product_options))
-			{
-				$product->product_options = unserialize($product->product_options);
-				foreach ($product->product_options as $option) {
-					echo "<p>{$option->name}: <strong>{$option->value_name}</strong></p>";
-				}
-			}
-			if(!empty($product->info->options))
-			{
-				$myInfo = ['1-manufacturer'];
-				foreach ($myInfo as $info) {
-					if(isset($product->info->options[$info]) && !empty($product->info->options[$info]->value) && !empty($product->info->options[$info]->value->name))
-						echo "<p>{$product->info->options[$info]->name}: <strong>{$product->info->options[$info]->value->name}</strong></p>";
-				}
-			} ?>
-		</div>
-		<div class="td price"><?=$product->price_format?></div>
-		<div class="td amount">
-			<?=$product->quantity?>
-			<?php if(!empty($product->quantity_returned))
-				echo "<br>Повернено: {$product->quantity_returned} од."; ?>
-		</div>
-		<div class="td sum">
-			<?=!empty($product->sum_before_format) ? '<del>'.$product->sum_before_format.'</del><br>':''?>	
-			<?=$product->sum_format?>	
-		</div>
-	</div>
-	<?php } ?>
-	<div class="tfoot">
-		<?php if ($cart->subTotal != $cart->total) { ?>
-			<p><?=$this->text('Сума')?>: <strong><?= $cart->subTotalFormat ?></strong></p>
-		<?php } if ($cart->discount) { ?>
-			<p><?=$this->text('Знижка')?>: <strong><?= $cart->discountFormat ?></strong></p>
-		<?php } if ($cart->shippingPrice) { ?>
-			<p><?=$this->text('Доставка')?>: <strong><?= $cart->shippingPriceFormat ?></strong></p>
+		<?php if ($cart->products) foreach ($cart->products as $i => $product) { ?>
+			<div class="tr">
+				<div class="td photo m-hide"><a href="<?= SITE_URL . $product->info->link ?>">
+						<?php if (!empty($product->info->photo)) { ?>
+							<img src="<?= IMG_PATH ?><?= $product->info->cart_photo ?? $product->info->admin_photo ?>" alt="<?= $product->info->name ?>">
+						<?php } else
+							echo '<img src="/style/images/no_image2.png">'; ?>
+					</a>
+				</div>
+				<div class="td name">
+					<a href="<?= SITE_URL . $product->info->link ?>"><?= $product->info->name ?></a>
+					<p>Артикул: <strong><?= $product->info->article_show ?></strong></p>
+					<?php if (!empty($product->product_options)) {
+						$product->product_options = unserialize($product->product_options);
+						foreach ($product->product_options as $option) {
+							echo "<p>{$option->name}: <strong>{$option->value_name}</strong></p>";
+						}
+					}
+					if (!empty($product->info->options)) {
+						$myInfo = ['1-manufacturer'];
+						foreach ($myInfo as $info) {
+							if (isset($product->info->options[$info]) && !empty($product->info->options[$info]->value) && !empty($product->info->options[$info]->value->name))
+								echo "<p>{$product->info->options[$info]->name}: <strong>{$product->info->options[$info]->value->name}</strong></p>";
+						}
+					} ?>
+				</div>
+				<div class="td price"><?= $product->price_format ?></div>
+				<div class="td amount">
+					<?= $product->quantity ?>
+					<?php if (!empty($product->quantity_returned))
+						echo "<br>Повернено: {$product->quantity_returned} од."; ?>
+				</div>
+				<div class="td sum">
+					<?= !empty($product->sum_before_format) ? '<del>' . $product->sum_before_format . '</del><br>' : '' ?>
+					<?= $product->sum_format ?>
+				</div>
+			</div>
 		<?php } ?>
-		<p class="total"><?=$this->text('До сплати')?>: <strong><?= $cart->totalFormat ?></strong></p>
+		<div class="tfoot">
+			<?php if ($cart->subTotal != $cart->total) { ?>
+				<p><?= $this->text('Сума') ?>: <strong><?= $cart->subTotalFormat ?></strong></p>
+			<?php }
+			if ($cart->discount) { ?>
+				<p><?= $this->text('Знижка') ?>: <strong><?= $cart->discountFormat ?></strong></p>
+			<?php }
+			if ($cart->shippingPrice) { ?>
+				<p><?= $this->text('Доставка') ?>: <strong><?= $cart->shippingPriceFormat ?></strong></p>
+			<?php } ?>
+			<p class="total"><?= $this->text('До сплати') ?>: <strong><?= $cart->totalFormat ?></strong></p>
+		</div>
 	</div>
-</div>
 
-<?php /*
+	<?php /*
 <table class="products_list">
 	<thead>
 		<tr>
@@ -182,110 +224,102 @@ if(!$showPayment &&  $cart->action == 'closed') {
 	</tfoot>
 </table>
 
-<?php */ 
-if($cart->shipping_id && $this->data->uri(2) != 'edit-shipping')
-{
-	if($cart->action == 'new')
-		echo "<h4>{$this->text('Доставка')} <small style='font-size: small'><a href='/{$_SESSION['alias']->alias}/{$cart->id}/edit-shipping{$accessKey}' class='btn btn-primary'><i class=\"fas fa-pencil-alt\"></i> {$this->text('редагувати')}</a></small></h4>";
-	else
-		echo "<h4>{$this->text('Доставка')}</h4>";
-	if(!empty($cart->shipping->name))
-		echo "<p><strong>{$cart->shipping->name}</strong>";
-	if(!empty($cart->shipping->text))
-	    echo ". {$cart->shipping->text}</p>";
-	elseif(is_array($cart->shipping_info))
-	{
-		{
-			echo "</p>";
-		    if(!empty($cart->shipping_info['city']))
-		        echo "<p>{$this->text('Місто')}: <strong>{$cart->shipping_info['city']}</strong> </p>";
-		    if(!empty($cart->shipping_info['department']))
-		        echo "<p>{$this->text('Відділення')}: <strong>{$cart->shipping_info['department']}</strong> </p>";
-		    if(!empty($cart->shipping_info['address']))
-		        echo "<p>{$this->text('Адреса')}: <strong>{$cart->shipping_info['address']}</strong> </p>";
-		}
-		if(!empty($cart->shipping_info['recipientName']))
-		{
-		    echo "<p>{$this->text('Отримувач')}: <strong>{$cart->shipping_info['recipientName']}";
-		    if(!empty($cart->shipping_info['recipientPhone']))
-		    	echo ", {$cart->shipping_info['recipientPhone']}</strong>";
-			echo "</strong></p>";
-		}
-	}
-	else if(!empty($cart->shipping_info) && is_string($cart->shipping_info))
-		echo "<p>{$cart->shipping_info}</p>";
-	if(!empty($cart->ttn))
-        echo "<p>{$this->text('ТТН')}: <strong>{$cart->ttn}</strong> </p>";
-}
-elseif($cart->action == 'new' && (empty($cart->shipping_id) || $this->data->uri(2) == 'edit-shipping'))
-{
-	if($shippings = $this->cart_model->getShippings(array('active' => 1)))
-	{
-		if(empty($cart->shipping_id)) { ?>
-		<div class="alert alert-warning">
-	        <h4 style="margin: 0"><i class="fas fa-exclamation-triangle "></i> <?=$this->text('Увага! Вкажіть доставку')?></h4>
-	    </div>
-	    <?php }
-	    // if($shippings[0]->pay >= 0)
-	    //     $shippings[0]->priceFormat = $this->load->function_in_alias($products[0]->product_alias, '__formatPrice', $shippings[0]->price);
-	    if(empty($cart->shipping_id))
-			$userShipping = $this->cart_model->getUserShipping($cart->user);
+<?php */
+	if ($cart->shipping_id && $this->data->uri(2) != 'edit-shipping') {
+		if ($cart->action == 'new')
+			echo "<h4>{$this->text('Доставка')} <small style='font-size: small'><a href='/{$_SESSION['alias']->alias}/{$cart->id}/edit-shipping{$accessKey}' class='btn btn-primary'><i class=\"fas fa-pencil-alt\"></i> {$this->text('редагувати')}</a></small></h4>";
 		else
-		{
-			$userShipping = new stdClass();
-			$userShipping->method_id = $cart->shipping_id;
-			$userShipping->info = $cart->shipping_info;
-			$userShipping->city = $userShipping->department = $userShipping->address = '';
-			if(!empty($userShipping->info))
-				foreach ($userShipping->info as $key => $value) {
-					$userShipping->$key = $value;
-				}
+			echo "<h4>{$this->text('Доставка')}</h4>";
+		if (!empty($cart->shipping->name))
+			echo "<p><strong>{$cart->shipping->name}</strong>";
+		if (!empty($cart->shipping->text))
+			echo ". {$cart->shipping->text}</p>";
+		elseif (is_array($cart->shipping_info)) { {
+				echo "</p>";
+				if (!empty($cart->shipping_info['city']))
+					echo "<p>{$this->text('Місто')}: <strong>{$cart->shipping_info['city']}</strong> </p>";
+				if (!empty($cart->shipping_info['department']))
+					echo "<p>{$this->text('Відділення')}: <strong>{$cart->shipping_info['department']}</strong> </p>";
+				if (!empty($cart->shipping_info['address']))
+					echo "<p>{$this->text('Адреса')}: <strong>{$cart->shipping_info['address']}</strong> </p>";
+			}
+			if (!empty($cart->shipping_info['recipientName'])) {
+				echo "<p>{$this->text('Отримувач')}: <strong>{$cart->shipping_info['recipientName']}";
+				if (!empty($cart->shipping_info['recipientPhone']))
+					echo ", {$cart->shipping_info['recipientPhone']}</strong>";
+				echo "</strong></p>";
+			}
+		} else if (!empty($cart->shipping_info) && is_string($cart->shipping_info))
+			echo "<p>{$cart->shipping_info}</p>";
+		if (!empty($cart->ttn))
+			echo "<p>{$this->text('ТТН')}: <strong>{$cart->ttn}</strong> </p>";
+	} elseif ($cart->action == 'new' && (empty($cart->shipping_id) || $this->data->uri(2) == 'edit-shipping')) {
+		if ($shippings = $this->cart_model->getShippings(array('active' => 1))) {
+			if (empty($cart->shipping_id)) { ?>
+				<div class="alert alert-warning">
+					<h4 style="margin: 0"><i class="fas fa-exclamation-triangle "></i> <?= $this->text('Увага! Вкажіть доставку') ?></h4>
+				</div>
+	<?php }
+			// if($shippings[0]->pay >= 0)
+			//     $shippings[0]->priceFormat = $this->load->function_in_alias($products[0]->product_alias, '__formatPrice', $shippings[0]->price);
+			if (empty($cart->shipping_id))
+				$userShipping = $this->cart_model->getUserShipping($cart->user);
+			else {
+				$userShipping = new stdClass();
+				$userShipping->method_id = $cart->shipping_id;
+				$userShipping->info = $cart->shipping_info;
+				$userShipping->city = $userShipping->department = $userShipping->address = '';
+				if (!empty($userShipping->info))
+					foreach ($userShipping->info as $key => $value) {
+						$userShipping->$key = $value;
+					}
+			}
+			echo '<form action="' . SITE_URL . $_SESSION['alias']->alias . '/set__shippingToOrder" method="post" class="w30 m100">';
+			echo '<input type="hidden" name="order_id" value="' . $cart->id . '">';
+			if (!$this->userIs() && $this->data->get('key'))
+				echo '<input type="hidden" name="accessKey" value="' . $this->data->get('key') . '">';
+			require_once '__shippings_subview.php';
+			echo '<button type="submit" class="checkout active">' . $this->text('Зберегти', 0) . '</button>';
+			echo "</form>";
+
+			echo '<link rel="stylesheet" type="text/css" href="' . SERVER_URL . 'style/' . $_SESSION['alias']->alias . '/cart.css">';
+			echo '<link rel="stylesheet" type="text/css" href="' . SERVER_URL . 'style/' . $_SESSION['alias']->alias . '/checkout.css">';
+			echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">';
+			$this->load->js(['assets/jquery-ui/1.12.1/jquery-ui.min.js', 'assets/jquery.mask.min.js', 'js/' . $_SESSION['alias']->alias . '/cities.js', 'js/' . $_SESSION['alias']->alias . '/checkout.js']);
 		}
-	    echo '<form action="'.SITE_URL.$_SESSION['alias']->alias.'/set__shippingToOrder" method="post" class="w30 m100">';
-	    echo '<input type="hidden" name="order_id" value="'.$cart->id.'">';
-	    if(!$this->userIs() && $this->data->get('key'))
-	    	echo '<input type="hidden" name="accessKey" value="'.$this->data->get('key').'">';
-	    require_once '__shippings_subview.php';
-	    echo '<button type="submit" class="checkout active">'.$this->text('Зберегти', 0).'</button>';
-		echo "</form>";
-
-		echo '<link rel="stylesheet" type="text/css" href="'.SERVER_URL.'style/'.$_SESSION['alias']->alias.'/cart.css">';
-		echo '<link rel="stylesheet" type="text/css" href="'.SERVER_URL.'style/'.$_SESSION['alias']->alias.'/checkout.css">';
-		echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">';
-		$this->load->js(['assets/jquery-ui/1.12.1/jquery-ui.min.js', 'assets/jquery.mask.min.js', 'js/'.$_SESSION['alias']->alias.'/cities.js', 'js/'.$_SESSION['alias']->alias.'/checkout.js']);
 	}
-}
 
-if(!empty($cart->payment)) {
-	echo "<h4>{$this->text('Оплата')}</h4>";
-	echo "<p><strong>{$cart->payment->name}</strong></p>";
-	echo "<p>{$cart->payment->info}</p>";
-} ?>
+	if (!empty($cart->payment)) {
+		echo "<h4>{$this->text('Оплата')}</h4>";
+		echo "<p><strong>{$cart->payment->name}</strong></p>";
+		echo "<p>{$cart->payment->info}</p>";
+	} ?>
 
-<h4><?=$this->text('Історія замовлення')?></h4>
-<table class="history">
-    <thead>
-    	<tr>
-    		<td><?=$this->text('Дата')?></td>
-	    	<td><?=$this->text('Статус')?></td>
-	    	<td><?=$this->text('Додатково')?></td>
-    	</tr>
-    </thead>
-    <tbody>
-    	<tr>
-            <td><?= date('d.m.Y H:i',$cart->date_add)?></td>
-            <td><?=$this->text('Нове замовлення')?></td>
-            <td></td>
-        </tr>
-    	<?php if($cart->history) foreach($cart->history as $history) if($history->show) { ?>
-    	<tr>
-            <td><?= date('d.m.Y H:i',$history->date)?></td>
-            <td><?= $history->status_name?></td>
-            <td><?= $history->comment?></td>
-    	</tr>
-    	<?php } ?>
-    </tbody>
-</table>
+	<h4><?= $this->text('Історія замовлення') ?></h4>
+	<table class="history">
+		<thead>
+			<tr>
+				<td><?= $this->text('Дата') ?></td>
+				<td><?= $this->text('Статус') ?></td>
+				<td><?= $this->text('Додатково') ?></td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><?= date('d.m.Y H:i', $cart->date_add) ?></td>
+				<td><?= $this->text('Нове замовлення') ?></td>
+				<td></td>
+			</tr>
+			<?php if ($cart->history) foreach ($cart->history as $history) if ($history->show) { ?>
+				<tr>
+					<td><?= date('d.m.Y H:i', $history->date) ?></td>
+					<td><?= $history->status_name ?></td>
+					<td><?= $history->comment ?></td>
+				</tr>
+			<?php } ?>
+		</tbody>
+	</table>
 
-<!-- <pre><?php //print_r($cart) ?></pre> -->
+	<!-- <pre><?php //print_r($cart) 
+				?></pre> -->
 </main>

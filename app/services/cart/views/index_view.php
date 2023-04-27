@@ -3,6 +3,11 @@
 	$_SESSION['alias']->js_load[] = 'js/'.$_SESSION['alias']->alias.'/cart.js';
 	echo '<link rel="stylesheet" type="text/css" href="'.SITE_URL.'style/'.$_SESSION['alias']->alias.'/cart.css">';
 	$_SESSION['cart']->initJsStyle = false;
+}
+
+if ($products) {
+	$ga4_event = 'view_cart';
+	require_once '__ga4_events.php';
 } ?>
 
 <main id="cart" class="flex w100 m-column" data-sticky-container>
