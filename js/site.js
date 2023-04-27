@@ -73,6 +73,8 @@ $(document).ready(function(){
                         logo_path = res.product.cart_photo;
                     $('#modal-add_success img').attr('src', logo_path);
                     $('#modal-add_success h4.product_name').text(product_name);
+
+                    ga4.add_to_cart(res);
                 }
             }
         });
@@ -97,6 +99,8 @@ $(document).ready(function(){
                         logo_path = res.product.cart_photo;
                     $('#modal-add_success img').attr('src', logo_path);
                     $('#modal-add_success h4.product_name').text(product_name);
+
+                    ga4.add_to_cart(res);
                 }
             }
         });

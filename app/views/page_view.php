@@ -117,7 +117,8 @@
 			$('#modal-buyProduct form button').attr('title', 'Заповніть "Я не робот"');
 		};
 	</script>
-	<script type="text/javascript" src="<?=SERVER_URL?>js/site.js?v1.5"></script>
+	<script type="text/javascript" src="<?=SERVER_URL?>js/ga4_events.js"></script>
+	<script type="text/javascript" src="<?=SERVER_URL?>js/site.js?v1.6"></script>
 	<?php if(!empty($_SESSION['alias']->js_load))
 		foreach ($_SESSION['alias']->js_load as $js) {
 			echo '<script type="text/javascript" src="'.SERVER_URL.$js.'"></script> ';

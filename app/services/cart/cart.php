@@ -459,9 +459,12 @@ class cart extends Controller {
                     if($product->key = $this->cart_model->addProduct($product))
                     {
                         $openProduct = new stdClass();
+                        $openProduct->id = $product->id; // info for GA4 events
                         $openProduct->key = $product->key;
                         $openProduct->article = $product->article_show ?? $product->article;
+                        $openProduct->price = number_format($product->price, 2, '.', '');
                         $openProduct->price_format = $product->price_format;
+                        $openProduct->sum = number_format($product->sum, 2, '.', '');
                         $openProduct->sum_format = $product->sum_format;
                         $openProduct->quantity = $product->quantity;
                         $openProduct->photo = $product->photo ?? false;
@@ -476,6 +479,24 @@ class cart extends Controller {
                                     $openProduct->product_options .= '<br>';
                                 $openProduct->product_options .= $option->name.': '.$option->value_name;
                             }
+                        // info for GA4 events for lifecars.com.ua
+                        $openProduct->brand = $product->options['1-manufacturer']->value->name ?? '';
+                        $openProduct->category = '';
+                        if (!empty($product->parents)) {
+                            $name = [];
+                            foreach ($product->parents as $group) {
+                                $name[] = $group->name;
+                            }
+                            $openProduct->category = implode(' ', $name);
+                        }
+                        if (!empty($product->options['2-part']->value)) {
+                            $part = [];
+                            foreach ($product->options['2-part']->value as $value) {
+                                $part[] = $value->name;
+                            }
+                            $openProduct->category .= ' ' . implode(', ', $part);
+                        }
+                        // 
                         $res['product'] = $openProduct;
                         $res['subTotal'] = $this->cart_model->getSubTotalInCart();
                         $res['subTotalFormat'] = $this->load->function_in_alias($wl_alias, '__formatPrice', $res['subTotal']);
@@ -597,6 +618,31 @@ class cart extends Controller {
                                     $res['result'] = true;
                                     $res['priceFormat'] = $product->info->price_format;
                                     $res['priceSumFormat'] = $product->info->sum_format;
+
+                                    $openProduct = new stdClass();
+                                    $openProduct->id = $product->info->id; // info for GA4 events
+                                    $openProduct->price = number_format($product->info->price, 2, '.', '');
+                                    $openProduct->quantity = $product->quantity;
+                                    $openProduct->name = $product->info->name;
+                                    // info for GA4 events for lifecars.com.ua
+                                    $openProduct->brand = $product->info->options['1-manufacturer']->value->name ?? '';
+                                    $openProduct->category = '';
+                                    if (!empty($product->info->parents)) {
+                                        $name = [];
+                                        foreach ($product->info->parents as $group) {
+                                            $name[] = $group->name;
+                                        }
+                                        $openProduct->category = implode(' ', $name);
+                                    }
+                                    if (!empty($product->info->options['2-part']->value)) {
+                                        $part = [];
+                                        foreach ($product->info->options['2-part']->value as $value) {
+                                            $part[] = $value->name;
+                                        }
+                                        $openProduct->category .= ' ' . implode(', ', $part);
+                                    }
+                                    // 
+                                    $res['product'] = $openProduct;
                                 }
                                 else
                                     $res['error'] = $this->text('Помилка оновлення інформації');

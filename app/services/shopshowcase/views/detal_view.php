@@ -6,10 +6,10 @@
         event: "view_item",
         ecommerce: {
             items: [{
-                item_name: "<?= $product->name.' '.mb_strtoupper($product->options['1-manufacturer']->value->name) ?>", // Передаємо назву товару
-                item_id: "<?= $product->id ?>", // Передаємо ID товару, під яким він записаний у базі даних сайту
-                price: <?= $product->price ?>.00, // Передаємо ціну товару враховуючи знижку. Важливо! Розділювач крапка. Після крапки дві цифри.
-                item_brand: "<?= $product->options['1-manufacturer']->value->name ?>", // Передаємо бренд товару. 
+                item_name: "<?= $product->name.' '.mb_strtoupper($product->options['1-manufacturer']->value->name) ?>",
+                item_id: "<?= $product->id ?>",
+                price: <?= $product->price ?>.00,
+                item_brand: "<?= $product->options['1-manufacturer']->value->name ?>",
                 item_category: "<?php 
                             if(!empty($product->parents)){
                                 $name = [];
@@ -24,8 +24,8 @@
                                     $part[] = $value->name;
                                 }
                                 echo ' ' . implode(', ', $part);
-                            } ?>", // Передаємо категорію товару.
-                quantity: 1 // Передаємо кількість товару
+                            } ?>",
+                quantity: 1
             }]
         }
     });

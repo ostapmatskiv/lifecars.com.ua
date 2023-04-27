@@ -184,6 +184,7 @@ var cart = {
 					$('#cart p.discount strong').html(res.discountTotal);
 
 					recount();
+					ga4.add_to_cart(res);
 				}
 				else
 				{
