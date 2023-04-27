@@ -152,6 +152,8 @@ var cart = {
 						$('#cart .emptyCart').removeClass('hide').fadeIn();
 					}
 					recount(true);
+
+					ga4.remove_from_cart(res);
 				}
 				else
 				{
@@ -219,13 +221,17 @@ var cart = {
 					{
 						$('#product-'+id + ' .product-active i').removeClass('far fa-circle').addClass('fas fa-check');
 						$('#product-'+id + ' .product-active span').text(product_active);
-						$('#product-'+id).removeClass('disabled');
+						$('#product-' + id).removeClass('disabled');
+						
+						ga4.add_to_cart(res);
 					}
 					else
 					{
 						$('#product-'+id + ' .product-active i').addClass('far fa-circle').removeClass('fas fa-check');
 						$('#product-'+id + ' .product-active span').text(product_disabled);
-						$('#product-'+id).addClass('disabled');
+						$('#product-' + id).addClass('disabled');
+						
+						ga4.remove_from_cart(res);
 					}
 					recount();
 				}
