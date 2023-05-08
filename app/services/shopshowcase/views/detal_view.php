@@ -5,6 +5,7 @@
     dataLayer.push({
         event: "view_item",
         ecommerce: {
+            currency: "UAH",
             items: [{
                 item_name: "<?= $product->name.' '.mb_strtoupper($product->options['1-manufacturer']->value->name) ?>",
                 item_id: "<?= $product->id ?>",

@@ -29,7 +29,7 @@ if($this->data->get('order') == $cart->id) { ?>
 		ecommerce: {
 			transaction_id: "<?= $cart->id ?>",
 			value: "<?= number_format($cart->total, 2, '.', '') ?>",
-			currency: "SEK",
+			currency: "UAH",
 			items: [
 				<?php foreach ($cart->products as $i => $product) { ?> {
 						item_name: "<?= $product->info->name . ' ' . mb_strtoupper($product->info->options['1-manufacturer']->value->name) ?>",

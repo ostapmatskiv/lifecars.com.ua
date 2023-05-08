@@ -6,6 +6,7 @@ let ga4 = {
         dataLayer.push({
             event: "add_to_cart",
             ecommerce: {
+                currency: "UAH",
                 items: [{
                     item_name: res.product.name,
                     item_id: res.product.id,
@@ -25,6 +26,7 @@ let ga4 = {
         dataLayer.push({
             event: "remove_from_cart",
             ecommerce: {
+                currency: "UAH",
                 items: [{
                     item_name: res.product.name,
                     item_id: res.product.id,

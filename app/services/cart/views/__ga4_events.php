@@ -5,6 +5,7 @@
     dataLayer.push({
         event: "<?= $ga4_event ?>",
         ecommerce: {
+            currency: "UAH",
             items: [
                 <?php foreach ($products as $i => $product) { ?>
                 {
