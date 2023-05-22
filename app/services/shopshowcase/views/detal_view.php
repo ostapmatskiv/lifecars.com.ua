@@ -36,6 +36,7 @@
     <h1 class="detal__heading"><?=$product->name.' '.mb_strtoupper($product->options['1-manufacturer']->value->name)?></h1>
 
     <div class="flex h-between v-center card__rating">
+        <?php if(empty($product->rating)) $product->rating = 5; ?>
         <div class="rating <?=empty($product->rating)?'empty':''?>" title="<?=empty($product->rating)?$this->text('Оцінка відсутня'):$this->text('Оцінка товару ').' '.$product->rating?>">
             <?php for($i = 0; $i < round($product->rating); $i++) { ?>
                 <i class="fas fa-star" aria-hidden="true"></i>
