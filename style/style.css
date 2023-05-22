@@ -353,7 +353,7 @@ main.detal .card__border_in {
 }
 
 .sale__card .rating:not(.empty) i.fa-star {
-    color: #b59759;
+    color: #ffc508;
 }
 
 .sale__card .check__number { width: 90px }
