@@ -141,8 +141,8 @@
 
             <div class="bonus-info-wrapper">
                 <h3>Доставка</h3>
-                <p>Самовивіз з магазину <strong>безкоштовно</strong> <br>
-                    Доставка Новою Поштою <strong>згідно з тарифами перевізника</strong>
+                <p>Самовивіз з магазину <strong style="float: right;">безкоштовно</strong> <br>
+                    Доставка Новою Поштою <strong style="float: right;">згідно з тарифами перевізника</strong>
                 </p>
                 <h3>Відправка</h3>
                 <p>
