@@ -315,7 +315,59 @@ $('input#phone-1').focus(function () {
     }
 }).mask('+38Z NN 000 00 00', mask_options);
 $('input#phone-1').change(function(){
+    let input = $(this),
+        phoneError = $('#phoneError-1');
+    input.removeClass('with-error');
+    phoneError.addClass('hide');
     if (this.value.substr(0, 4) != '+380' || this.value.length != 17) {
-        alert('Введіть коректний номер телефону починаючи +380');
+        phoneError.removeClass('hide');
+        input.addClass('with-error').focus();
+        // alert('Введіть коректний номер телефону починаючи +380');
+    }
+});
+
+$("._validLettersUK").on("change", function() {
+    var input = $(this),
+        text = input.val(),
+        h5_error = input.parent().find('h5.text-danger');
+
+    input.removeClass('with-error');
+    h5_error.addClass('hide');
+
+    if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ]+$/.test(text) === false) {
+        input.addClass('with-error').focus();
+        h5_error.removeClass('hide');
+        // alert('Тільки кирилиця');
+        return false;
+    }
+});
+
+$('#modal-buyProduct form').submit(function(){
+    let with_error = false;
+    $('#modal-buyProduct input').each(function(){
+        if($(this).val() == '') {
+            $(this).addClass('with-error').focus();
+            with_error = true;
+        }
+    });
+    $('#modal-buyProduct input._validLettersUK').each(function(){
+        var input = $(this),
+            text = input.val(),
+            h5_error = input.parent().find('h5.text-danger');
+    
+        if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ]+$/.test(text) === false) {
+            input.addClass('with-error').focus();
+            h5_error.removeClass('hide');
+            with_error = true;
+        }
+    });
+    phone = $("#phone-1").val();
+    if(phone.substr(0, 4) != '+380' || phone.length != 17) {
+        $("#phone-1").addClass('with-error').focus();
+        $("#phone-1").parent().find('h5.text-danger').removeClass('hide');
+        with_error = true;
+    }
+    if(with_error) {
+        return false;
     }
 });

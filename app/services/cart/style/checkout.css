@@ -147,11 +147,6 @@
     border: 1px solid #FF3300 !important;
 }
 
-.text-danger {
-    color: #FF3300;
-    margin-bottom: 5px;
-}
-
 #cart input:-internal-autofill-selected {
     background-color: #fff !important;
 }

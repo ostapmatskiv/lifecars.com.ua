@@ -4313,6 +4313,37 @@ body.parts main .catalog__detal a div {
     background: #fff;
 }
 
+.input-group input.with-error {
+    border: 1px solid #FF3300 !important;
+    margin-bottom: 0 !important;
+}
+.input-group h5.text-danger {
+    text-align: left;
+    font-size: 12px;
+    line-height: 16px;
+    padding-top: 2px;
+    letter-spacing: 0.4px;
+    padding-left: 14px;
+    position: relative;
+}
+
+.input-group h5.text-danger:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 4px;
+    height: 12px;
+    width: 12px;
+    background-image: url(../style/icons/error.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.text-danger {
+    color: #FF3300;
+    margin-bottom: 5px;
+}
+
 .product-info-bordered {
     margin-top: 0;
     margin-bottom: 25px;
