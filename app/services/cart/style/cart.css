@@ -63,9 +63,11 @@
 	cursor: default;
 	font-size: 20px;
 	text-decoration: none;
-	border: none
+	border: none;
+	cursor: pointer;
 }
-#cart .checkout.active { cursor: pointer; background: #7cbe49 }
+#cart .checkout:hover { background: #d7a601 }
+#cart .checkout.active { background: #7cbe49 }
 #cart .checkout.active:hover { background: rgb(63, 121, 21) }
 
 table.__cart_products_list { border-collapse: collapse; width: 100% }
