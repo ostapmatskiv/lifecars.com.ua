@@ -1,10 +1,25 @@
 $(document).ready(function (){
-    $('input#phone, input[name=recipientPhone]').mask('+38 (000) 000-00-00');
-    if (typeof Sticky === "function")
-    {
-        var sticky_percents = new Sticky('#cart #percents');
-        var sticky_percents_info = new Sticky('#cart #percents+.info');
-    }
+    var mask_options = {
+        translation: {
+            'Z': {
+                pattern: 0, optional: false
+            },
+            'N': {
+                pattern: /[1-9]/, optional: false
+            }
+        }
+    };
+    $('input#phone, input[name=recipientPhone]').focus(function () {
+        if (this.value.length == 0) {
+            this.value = '+380';
+        }
+    }).mask('+38Z NN 000 00 00', mask_options);
+
+    // if (typeof Sticky === "function")
+    // {
+    //     var sticky_percents = new Sticky('#cart #percents');
+    //     var sticky_percents_info = new Sticky('#cart #percents+.info');
+    // }
     
     setPercents();
 
@@ -179,30 +194,44 @@ function changeShipping(el) {
 // });
 $("#cart input#phone").on("change", function() {
     var phone = $(this).val(),
-        recipientPhone = $('form#confirm input[name="recipientPhone"]');
+        recipientPhone = $('form#confirm input[name="recipientPhone"]'),
+        input = $(this),
+        h5_error = input.parent().find('h5.text-danger');
+
+    h5_error.addClass('hide');
     $( 'form#confirm' ).find( 'input[name="phone"]' ).val(phone);
+    
     // if(recipientPhone.val() == '')
-    if(phone.substr(0, 6) == '+38 (0' && phone.length == 19) {
+    if (this.value.substr(0, 4) == '+380' && this.value.length == 17) {
+        // $('#phoneError').addClass('hide');
         recipientPhone.val(phone);
         setPercents();
     }
     else {
-        alert('Введіть коректний номер телефону починаючи +380');
-        // return false;
+        h5_error.removeClass('hide');
+        // $('#phoneError').text('Введіть коректний номер телефону починаючи +380').removeClass('hide');
+        // alert('Введіть коректний номер телефону починаючи +380');
+        return false;
     }
 });
 $("#cart input#first_name, #cart input#last_name").on("change", function() {
     var first_name = $('#cart input#first_name').val(),
         last_name = $('#cart input#last_name').val(),
-        recipientName = $('form#confirm input[name="recipientName"]');
+        recipientName = $('form#confirm input[name="recipientName"]'),
+        input = $(this),
+        h5_error = input.parent().find('h5.text-danger');
+
+        h5_error.addClass('hide');
 
     if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ]+$/.test(first_name) === false) {
-        alert('Тільки кирилиця');
+        h5_error.removeClass('hide');
+        // alert('Тільки кирилиця');
         return false;
     }
     if(last_name.length > 0)
         if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ]+$/.test(last_name) === false) {
-            alert('Тільки кирилиця');
+            h5_error.removeClass('hide');
+            // alert('Тільки кирилиця');
             return false;
         }
 

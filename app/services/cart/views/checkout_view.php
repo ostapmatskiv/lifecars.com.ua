@@ -39,10 +39,24 @@ if ($products) {
 
 				<div id="new-buyer">
 					<h4><?=$this->text('Покупець')?></h4>
-					<input type="text" id="first_name" placeholder="<?=$this->text("Ім'я")?>*" value="<?=$this->data->re_post('first_name')?>">
-					<input type="text" id="last_name" placeholder="<?=$this->text("Прізвище")?>*" value="<?=$this->data->re_post('last_name')?>">
-					<input type="text" id="phone" placeholder="<?=$this->text('Телефон', 0)?>*" value="<?=$this->data->re_post('phone')?>">
-					<!--<input type="text" id="email" placeholder="email" value="<?=$this->data->re_post('email')?>">-->
+
+					<div class="input-group">
+						<input id="phone" type="text" value="<?= $this->data->re_post('phone') ?>" required minlength="17"/>
+						<label for="phone"><?= $this->text('Номер телефону', 5) ?></label>
+						<h5 class="text-danger hide" id="phoneError"><?= $this->text('Введіть коректний номер телефону починаючи +380') ?></h5>
+					</div>
+					
+					<div class="input-group">
+						<input id="first_name" type="text" value="<?= $this->data->re_post('first_name') ?>" required />
+						<label for="first_name"><?= $this->text('Ім\'я', 5) ?></label>
+						<h5 class="text-danger hide"><?= $this->text('Тільки кирилиця') ?></h5>
+					</div>
+
+					<div class="input-group">
+						<input id="last_name" type="text" value="<?= $this->data->re_post('last_name') ?>" required />
+						<label for="last_name"><?= $this->text('Прізвище', 5) ?></label>
+						<h5 class="text-danger hide"><?= $this->text('Тільки кирилиця') ?></h5>
+					</div>
 				</div>
 
 				<?php /*
@@ -181,3 +195,20 @@ if ($products) {
 		</div>
 	</div>
 </main>
+
+<script>
+	window.onload = function () {
+        // $('#signInForm input[name=phone]').focus();
+
+        $(document).on('focusout', '#new-buyer input', function (){
+            if($(this).val().length) {
+                $(this).closest('.input-group').addClass('val');
+            } else {
+                $(this).closest('.input-group').removeClass('val')
+            }
+        });
+        $(document).on('focus', '#new-buyer input', function (){
+            $(this).closest('.input-group').addClass('val');
+        });
+	}
+</script>
