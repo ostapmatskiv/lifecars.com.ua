@@ -143,6 +143,10 @@
     top: 0;
 }
 
+#cart .input-group input.with-error {
+    border: 1px solid #FF3300 !important;
+}
+
 .text-danger {
     color: #FF3300;
     margin-bottom: 5px;

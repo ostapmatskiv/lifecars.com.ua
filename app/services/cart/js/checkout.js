@@ -101,12 +101,13 @@ function setPercents() {
         if(value <= 0 && percents > 0)
             percents--;
     })
-    $('#percents .active').animate({width: percents+'%'});
-    $('#percents .text').text(percents+'%');
+    // $('#percents .active').animate({width: percents+'%'});
+    // $('#percents .text').text(percents+'%');
     if(percents == 100)
         $('form#confirm button.checkout').attr('disabled', false).addClass('active');
     else
-        $('form#confirm button.checkout').attr('disabled', true).removeClass('active');
+        $('form#confirm button.checkout').removeClass('active');
+        // $('form#confirm button.checkout').attr('disabled', true).removeClass('active');
 }
 
 function changeShipping(el) {
@@ -198,6 +199,7 @@ $("#cart input#phone").on("change", function() {
         input = $(this),
         h5_error = input.parent().find('h5.text-danger');
 
+    input.removeClass('with-error');
     h5_error.addClass('hide');
     $( 'form#confirm' ).find( 'input[name="phone"]' ).val(phone);
     
@@ -208,12 +210,14 @@ $("#cart input#phone").on("change", function() {
         setPercents();
     }
     else {
+        input.addClass('with-error').focus();
         h5_error.removeClass('hide');
         // $('#phoneError').text('Введіть коректний номер телефону починаючи +380').removeClass('hide');
         // alert('Введіть коректний номер телефону починаючи +380');
         return false;
     }
 });
+
 $("#cart input#first_name, #cart input#last_name").on("change", function() {
     var first_name = $('#cart input#first_name').val(),
         last_name = $('#cart input#last_name').val(),
@@ -221,15 +225,18 @@ $("#cart input#first_name, #cart input#last_name").on("change", function() {
         input = $(this),
         h5_error = input.parent().find('h5.text-danger');
 
+        input.removeClass('with-error');
         h5_error.addClass('hide');
 
     if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ]+$/.test(first_name) === false) {
+        input.addClass('with-error').focus();
         h5_error.removeClass('hide');
         // alert('Тільки кирилиця');
         return false;
     }
     if(last_name.length > 0)
         if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ]+$/.test(last_name) === false) {
+            input.addClass('with-error').focus();
             h5_error.removeClass('hide');
             // alert('Тільки кирилиця');
             return false;
@@ -284,6 +291,25 @@ function facebookSignUp() {
     }, { scope: 'email' });
     return false;
 }
+
+$('form#confirm button.checkout').click(function() {
+    let with_error = false;
+    $('#new-buyer input').each(function(){
+        if($(this).val() == '') {
+            $(this).addClass('with-error').focus();
+            with_error = true;
+        }
+    });
+    phone = $("#cart input#phone").val();
+    if(phone.substr(0, 4) != '+380' || phone.length != 17) {
+        $("#cart input#phone").addClass('with-error').focus();
+        $("#cart input#phone").parent().find('h5.text-danger').removeClass('hide');
+        with_error = true;
+    }
+    if(with_error) {
+        return false;
+    }
+});
 
 $('form#confirm').on('submit', function () {
     $("#divLoading").addClass('show');

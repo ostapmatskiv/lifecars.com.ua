@@ -179,7 +179,7 @@ if ($products) {
 						</label>
 					<?php } ?>
 
-					<button type="submit" class="checkout" disabled><?=$this->text('Оформити замовлення')?></button>
+					<button type="submit" class="checkout"><?=$this->text('Оформити замовлення')?></button>
 				</div>
 			</form>
 		</div>
