@@ -1028,6 +1028,11 @@ class cart extends Controller {
 
                     $email_manager_notify = $_SESSION['option']->email_manager ?? SITE_EMAIL;
                     
+                    if(!empty($phone)) {
+                        $this->load->library('turbosms');
+	                    $this->turbosms->send($phone, "Ми отримали Ваше замовлення №{$cart['id']}. Ми зв'яжемось з Вами.");
+                    }
+
                     if(!empty($_SESSION['user']->email)) {
                         $this->mail->sendTemplate('checkout', $_SESSION['user']->email, $cart);
                     }
