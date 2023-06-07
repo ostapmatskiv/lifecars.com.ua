@@ -40,6 +40,8 @@
    2.9 (15.02.2021) - makeWhere() підтримка FULLTEXT пошуку. Ключ ~
    2.9.1 (26.08.2021) - insertRows(.., $field_type = array())
    2.9.2 (09.06.2022) - updateRow(.., $field_type = array())
+   2.9.3 - add $cfg['port'], support php 7.4+
+   2.9.4 - add getEnumList(), getTableFields() @author Oleh Holovkin
  */
 
 class Db {
@@ -144,8 +146,6 @@ class Db {
         {
             $update = "UPDATE `".$table."` SET ";
             foreach ($changes as $key => $value) {
-                if($value === NULL)
-                    $update .= "`{$key}` = NULL,";
                 if(!empty($field_type[$key]))
                 {
                     switch ($field_type[$key]) {
@@ -153,6 +153,8 @@ class Db {
                         case 'int':
                         case 'integer':
                         case 'float':
+                        case 'NULL':
+                        case 'null':
                             $update .= "`{$key}` = {$value}, ";
                             break;
 
@@ -169,7 +171,10 @@ class Db {
                 }
                 else
                 {
-                    if (is_numeric($value)) {
+                    if($value === NULL) {
+                        $update .= "`{$key}` = NULL,";
+                    }
+                    else if (is_numeric($value)) {
                         $update .= "`{$key}` = {$value},";
                     } else {
                         $value = $this->sanitizeString($value);
