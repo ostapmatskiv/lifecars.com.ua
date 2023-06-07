@@ -1308,6 +1308,11 @@ class cart extends Controller {
                 $cart['delivery'] = $cart['delivery_price'] = $cart['payment'] = '';
 
                 $email_manager_notify = $_SESSION['option']->email_manager ?? SITE_EMAIL;
+
+                if(!empty($_SESSION['user']->phone)) {
+                    $this->load->library('turbosms');
+                    $this->turbosms->send($_SESSION['user']->phone, "Ми отримали Ваше замовлення №{$cart['id']}. Ми зв'яжемось з Вами.");
+                }
                 
                 $this->load->library('mail');
                 $this->mail->sendTemplate('checkout', $_SESSION['user']->email, $cart);
