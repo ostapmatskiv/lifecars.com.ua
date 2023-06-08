@@ -135,7 +135,9 @@
     top: 14px;
 }
 
-#cart .input-group.val input {
+#cart .input-group input,
+#cart .input-group select,
+#cart textarea {
     border: 1px solid #74C186 !important;
 }
 .input-group.val label {
@@ -149,4 +151,9 @@
 
 #cart input:-internal-autofill-selected {
     background-color: #fff !important;
+}
+
+.cart_section {
+    background: #fff;
+    padding: 15px;
 }

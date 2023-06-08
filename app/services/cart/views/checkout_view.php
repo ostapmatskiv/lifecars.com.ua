@@ -123,7 +123,7 @@ if ($products) {
 					require_once '__shippings_subview.php';
 				if($payments) { ?>
 					<h4><?=$this->text('Оплата')?></h4>
-					<div id="payments">
+					<div id="payments" class="cart_section">
 				    	<?php foreach ($payments as $payment) {
 							$checked = (count($payments) == 1) ? 'checked' : '';
 							if(!empty($userShipping))
@@ -200,14 +200,14 @@ if ($products) {
 	window.onload = function () {
         // $('#signInForm input[name=phone]').focus();
 
-        $(document).on('focusout', '#new-buyer input', function (){
+        $(document).on('focusout', '.input-group input', function (){
             if($(this).val().length) {
                 $(this).closest('.input-group').addClass('val');
             } else {
                 $(this).closest('.input-group').removeClass('val')
             }
         });
-        $(document).on('focus', '#new-buyer input', function (){
+        $(document).on('focus', '.input-group input', function (){
             $(this).closest('.input-group').addClass('val');
         });
 	}
