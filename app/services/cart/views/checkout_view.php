@@ -149,27 +149,32 @@ if ($products) {
 
 				<div class="price-box" data-margin-top="110">
 					
-					<?php if($bonusCodes && !empty($bonusCodes->info))
-						foreach ($bonusCodes->info as $key => $discount) { ?>
+					<?php if($bonusCodes && !empty($bonusCodes->info)) { ?>
+						<p class="bonusCode">
+							<?=$this->text('Разом').': '?>
+							<strong class="right"><?=$subTotalFormat?></strong>
+						</p>
+						<?php foreach ($bonusCodes->info as $key => $discount) { ?>
 						<p class="bonusCode">
 							<?=$this->text('Бонус-код').': '.$key?>
 							<strong class="right"><?=$discount?></strong>
 						</p>
-			        <?php } if($shippings && $shippings[0]->pay >= -1) { ?>
+			        <?php } } 
+					if($shippings && $shippings[0]->pay >= -1) { ?>
 			        	<p class="shipping">
 							<?=$this->text('Доставка')?>
 							<strong class="right"><?=($shippings[0]->pay == -1)?$this->text('безкоштовно'):$shippings[0]->priceFormat?></strong>
 						</p>
 			        <?php } ?>
 
+					<?php if($discountTotal) { ?>
+						<p class="discount"><?=$this->text('Ви економите')?> <strong class="right"><?=$discountTotalFormat ?></strong></p>
+					<?php } ?>
+
 					<p class="price">
 						<?=$this->text('До оплати')?>
 						<strong class="right"><?=$totalFormat?></strong>
 					</p>
-
-					<?php if($discountTotal) { ?>
-						<p class="discount"><?=$this->text('Ви економите')?> <strong class="right"><?=$discountTotalFormat ?></strong></p>
-					<?php } ?>
 
 					<?php if(!empty($_SESSION['option']->dogovirOfertiLink)) { ?>
 						<label id="oferta">
