@@ -319,3 +319,7 @@ $('input#phone-1').change(function(){
         alert('Введіть коректний номер телефону починаючи +380');
     }
 });
+
+$('.alert .close').click(function () {
+    $(this).closest('.alert').slideUp();
+});

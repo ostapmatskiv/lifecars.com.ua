@@ -81,7 +81,7 @@
 .alert.alert-danger { background-color: #f52323 }
 .alert.alert-warning { background-color: #f59c1a }
 .alert.alert-success { background-color: #82c166 }
-.alert .close { float: right }
+.alert .close { float: right; cursor: pointer }
 .alert p { margin: 5px !important }
 
 .btn { padding: 5px 15px; color: #fff; border: none; cursor: pointer }

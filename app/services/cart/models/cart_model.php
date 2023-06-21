@@ -767,17 +767,17 @@ class cart_model
 
 	public function applayBonusCode($code)
 	{
-		$code = trim($code);
-		if($bonus = $this->db->getAllDataById($this->table('_bonus'), array('code' => $code, 'status' => 1)))
+		$code = strtoupper(trim($code));
+		if($bonus = $this->db->getAllDataById($this->table('_bonus'), ['code' => $code, 'status' => 1]))
 		{
 			$now = time();
-			$update = array();
+			$update = [];
 			if($now > $bonus->to && $bonus->to > $bonus->from)
 				$update['status'] = -1;
 			$finish = false;
-			if($bonus->to < $bonus->from || $now <= $bonus->to)
+			if($bonus->to == 0 || $bonus->to < $bonus->from || $now <= $bonus->to)
 				$finish = true;
-			if($bonus->count_do != 0 && $now >= $bonus->from && $finish)
+			if(!empty($bonus->count_do) && $now >= $bonus->from && $finish)
 			{
 				if($bonus->count_do > 0)
 				{
