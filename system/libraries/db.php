@@ -38,6 +38,10 @@
    2.8.1 (09.12.2020) - updateRow() values can set NULL, numeric format. select(.., .., .., clear = true) add default clear param
    2.8.2 (15.01.2021) - makeWhere() масив значень з одного елементу {key} IN ({value}) => {key} = {value}
    2.9 (15.02.2021) - makeWhere() підтримка FULLTEXT пошуку. Ключ ~
+   2.9.1 (26.08.2021) - insertRows(.., $field_type = array())
+   2.9.2 (09.06.2022) - updateRow(.., $field_type = array())
+   2.9.3 - add $cfg['port'], support php 7.4+
+   2.9.4 - add getEnumList(), getTableFields() @author Oleh Holovkin
  */
 
 class Db {
@@ -58,7 +62,8 @@ class Db {
      */
     function __construct($cfg)
     {
-        $this->newConnect($cfg['host'], $cfg['user'], $cfg['password'], $cfg['database']);
+        $port = $cfg['port'] ?? 3306;
+        $this->newConnect($cfg['host'], $cfg['user'], $cfg['password'], $cfg['database'], $port);
 
         if(!empty($cfg['redis_host']))
         {
@@ -79,9 +84,9 @@ class Db {
      * @param <string> $password пароль
      * @param <string> $database назва бази даних
      */
-    function newConnect($host, $user, $password, $database)
+    function newConnect($host, $user, $password, $database, $port = 3306)
     {
-        $this->connects[] = new mysqli($host, $user, $password, $database);
+        $this->connects[] = new mysqli($host, $user, $password, $database, $port);
         $this->current = count($this->connects) - 1;
     }
 
@@ -134,25 +139,52 @@ class Db {
             $this->showTime();
     }
 
-    function updateRow($table, $changes, $key, $row_key = 'id')
+    function updateRow($table, $changes, $key, $row_key = 'id', $field_type = array())
     {
         $where = $this->makeWhere($key, $row_key);
         if($where != '')
         {
             $update = "UPDATE `".$table."` SET ";
             foreach ($changes as $key => $value) {
-                if($value === NULL)
-                    $update .= "`{$key}` = NULL,";
-                elseif(is_numeric($value))
-                    $update .= "`{$key}` = {$value},";
+                if(!empty($field_type[$key]))
+                {
+                    switch ($field_type[$key]) {
+                        case 'number':
+                        case 'int':
+                        case 'integer':
+                        case 'float':
+                        case 'NULL':
+                        case 'null':
+                            $update .= "`{$key}` = {$value}, ";
+                            break;
+
+                        case 'text':
+                        case 'string':
+                            $value = $this->sanitizeString($value);
+                            $update .= "`{$key}` = '{$value}', ";
+                            break;
+                        
+                        default:
+                            $update .= "`{$key}` = '{$value}', ";
+                            break;
+                    }
+                }
                 else
                 {
-                    $value = $this->sanitizeString($value);
-                    $update .= "`{$key}` = '{$value}',";
+                    if($value === NULL) {
+                        $update .= "`{$key}` = NULL,";
+                    }
+                    else if (is_numeric($value)) {
+                        $update .= "`{$key}` = {$value},";
+                    } else {
+                        $value = $this->sanitizeString($value);
+                        $update .= "`{$key}` = '{$value}',";
+                    }
                 }
             }
             $update = substr($update, 0, -1);
             $update .= " WHERE ".$where;
+
             $this->executeQuery($update);
             if($this->affectedRows() > 0)
                 return true;
@@ -178,7 +210,7 @@ class Db {
         return false;
     }
 
-    function insertRows($table, $keys = array(), $data = array(), $perQuery = 50)
+    function insertRows($table, $keys = array(), $data = array(), $perQuery = 50, $field_type = array())
     {
         if(empty($keys) || empty($data))
             return false;
@@ -206,10 +238,33 @@ class Db {
                     continue;
                 if(isset($row[$key]))
                     $value = $this->sanitizeString($row[$key]);
-                if(is_numeric($value))
-                    $values .= "{$value}, ";
+                if(!empty($field_type[$key]))
+                {
+                    switch ($field_type[$key]) {
+                        case 'number':
+                        case 'int':
+                        case 'integer':
+                        case 'float':
+                            $values .= "{$value}, ";
+                            break;
+
+                        case 'text':
+                        case 'string':
+                            $values .= "'{$value}', ";
+                            break;
+                        
+                        default:
+                            $values .= "'{$value}', ";
+                            break;
+                    }
+                }
                 else
-                    $values .= "'{$value}', ";
+                {
+                    if(is_numeric($value))
+                        $values .= "{$value}, ";
+                    else
+                        $values .= "'{$value}', ";
+                }
             }
             $values = substr($values, 0, -2);
             $query .= '( ' . $values . ' ), ';
@@ -297,8 +352,10 @@ class Db {
      */
     function sanitizeString($data)
     {
-        if(get_magic_quotes_gpc())
-            $data = stripslashes($data);
+		if (version_compare(PHP_VERSION, '7.4.0', '<')) {
+            if(get_magic_quotes_gpc())
+                $data = stripslashes($data);
+        }
         return $this->connects[$this->current]->escape_string($data);
     }
 
@@ -402,15 +459,16 @@ class Db {
                         $value = substr($value, 1);
                         $words = explode(' ', $value);
                         if(count($words) == 1)
-                            $value = '%'.$value;
-                        else
-                        {
-                            foreach ($words as &$w)
-                                $w = '+'.$w;
+                            // $value = '%'.$value;
+                        // else
+                        // {
+                            if(count($words) > 1)
+                                foreach ($words as &$w)
+                                    $w = '+'.$w;
                             $words = implode(' ', $words);
-                            $where .= "MATCH ({$key}) AGAINST ('$words' IN BOOLEAN MODE) AND ";
+                            $where .= "MATCH ({$key}) AGAINST ('{$words}' IN BOOLEAN MODE) AND ";
                             continue;
-                        }
+                        // }
                     }
                     
                     if($prefix && $key[0] != '#')
@@ -426,7 +484,14 @@ class Db {
                     if(is_array($value))
                     {
                         if(count($value) == 1)
-                            $where .= " = {$value[0]} AND ";
+                        {
+                            if(is_numeric($value[0])) {
+                                $where .= " = {$value[0]} AND ";
+                            } 
+                            else {
+                                $where .= " = '{$value[0]}' AND ";
+                            }
+                        }
                         else
                         {
                             $where .= " IN ( ";
@@ -451,7 +516,8 @@ class Db {
                         elseif($value[0] == '@')
                         {
                             $value = substr($value, 1);
-                            $where .= " LIKE '{$value}%' AND ";
+                            $where .= " = '{$value}' AND "; // for adatrade
+                            // $where .= " LIKE '{$value}%' AND ";
                         }
                         elseif($value[0] == '>')
                         {
@@ -641,6 +707,19 @@ class Db {
                     }
                 if($this->query_where != '')
                     $where .= 'WHERE '.$this->query_where;
+
+                //group
+                if($this->query_group)
+                {
+                    if($this->query_prefix || $this->query_group_prefix)
+                    {
+                        if($this->query_group_prefix == false)
+                            $this->query_group_prefix = $this->query_prefix;
+                        $where .= "GROUP BY {$this->query_group_prefix}.{$this->query_group} ";
+                    }
+                    else
+                        $where .= "GROUP BY {$this->query_group} ";
+                }
 
                 $query = "SELECT count(*) as count FROM `{$this->query_table}` {$where}";
 
@@ -1257,7 +1336,9 @@ class Db {
             $text = '';
             if(isset($this->result->num_rows))
                 $text = "Результатів: ".$this->result->num_rows;
-            $text .= ' Час виконання: '.round($time, 5).' сек. Використано памяті: '.$mem.'. Від старту: Час виконання: '.round($timeGlobe, 5).' сек. Використано памяті: '.$memGlobe;
+            if ($this->showDBdump || $this->saveDBlog)
+                $text .= ' Час виконання: '.round($time, 5).' сек. Використано памяті: '.$mem.'. Від старту: ';
+            $text .= 'Час виконання: '.round($timeGlobe, 5).' сек. Використано памяті: '.$memGlobe;
             return $text;
         }
         else
@@ -1272,6 +1353,69 @@ class Db {
                 echo ' Від старту: Час виконання: '.round($timeGlobe, 5).' сек. Використано памяті: '.$memGlobe.'. Запитів до БД: '.$this->count_db_queries.' <hr>';
         }
     }
+
+	/**
+	 * Get the value of a field of the list type from the database
+	 *
+	 * @param string $table     table name
+	 * @param string $fieldName field name
+	 *
+	 * @return false|string[]|void
+	 *
+	 * @author Oleh Holovkin
+	 */
+	public function getEnumList ( string $table, string $fieldName )
+	{
+		if ( empty( $table ) || empty( $fieldName ) ) {
+			return;
+		}
+		$bdField = $this->getQuery( "SHOW COLUMNS FROM {$table} WHERE field = '{$fieldName}'" );
+		if ( $bdField ) {
+			$bdField->Type = str_replace( '\'', '', str_replace( ')', '', str_replace( 'enum(', '', $bdField->Type ) ) );
+			$variable = explode( ',', $bdField->Type );
+
+			return $variable;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get a list of all fields from the database
+	 *
+	 * @param string $table table name
+	 *
+	 * @return array|false|void
+	 *
+	 * @author Oleh Holovkin
+	 */
+	public function getTableFields ( string $table )
+	{
+		if ( empty( $table ) ) {
+			return;
+		}
+
+		$bdFields = $this->getQuery( "SHOW COLUMNS FROM {$table}" );
+
+		if ( $bdFields ) {
+			foreach ( $bdFields as $field ) {
+				$field->cType = strtolower( $field->Type );
+				$field->cMax = null;
+
+				if ( preg_match( "/^(.*)\((.*)\)/i", $field->Type, $type ) ) {
+					$field->cType = strtolower( $type[ 1 ] );
+					if ( $field->cType == 'enum' ) {
+						$field->variable = explode( ',', $type[ 2 ] );
+						$field->variable = array_diff( $field->variable, [ '' ] );
+					} elseif ( $type[ 2 ] ) {
+						$field->cMax = intval( $type[ 2 ] );
+					}
+				}
+			}
+		}
+
+		return $bdFields;
+	}
 
 }
 

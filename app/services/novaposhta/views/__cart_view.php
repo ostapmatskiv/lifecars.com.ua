@@ -7,30 +7,34 @@
 <input type="hidden" name="nova-poshta-city-ref" value="<?=$userShipping->city_ref ?? ''?>">
 <input type="hidden" name="nova-poshta-warehouse-ref" value="<?=$userShipping->warehouse_ref ?? ''?>">
 
- <!-- <label><?=$this->text('Місто')?></label> -->
-<input type="text" name="novaposhta-city" placeholder="<?=$this->text('Місто')?>" value="<?=(!empty($userShipping->city_ref) && !empty($userShipping->city)) ? $userShipping->city : ''?>" autocomplete="off" class="form-control" required>
+<div class="input-group <?= (!empty($userShipping->city_ref) && !empty($userShipping->city)) ? 'val' : '' ?>">
+    <label for="novaposhta-city"><?=$this->text('Місто')?></label>
+    <input type="text" id="novaposhta-city" name="novaposhta-city" placeholder="<?=$this->text('Місто')?>" value="<?=(!empty($userShipping->city_ref) && !empty($userShipping->city)) ? $userShipping->city : ''?>" autocomplete="off" required>
+</div>
 
 <div id="nova-poshta-warehouse" <?=(!empty($userShipping->method) && $userShipping->method == 'courier') ? 'class="hide"':''?>>
-    <!-- <label><?=$this->text('Відділення')?></label> -->
-    <select name="nova-poshta-warehouse" class="form-control" <?=(!empty($userShipping->method) && $userShipping->method == 'courier') ? '':'required'?>>
-        <?php $info = '';
-        if (!empty($userShipping->city_ref) && !empty($userShipping->warehouse_ref)) {
-            if($warehouses = $this->getWarehouses($userShipping->city_ref))
-                foreach ($warehouses as $warehouse) {
-                    $selected = '';
-                    if($warehouse->id == $userShipping->warehouse_ref)
-                    {
-                        $selected = 'selected';
-                        $info = $warehouse->info;
+    <div class="input-group val">
+        <label><?=$this->text('Відділення')?></label>
+        <select name="nova-poshta-warehouse" class="" <?=(!empty($userShipping->method) && $userShipping->method == 'courier') ? '':'required'?>>
+            <?php $info = '';
+            if (!empty($userShipping->city_ref) && !empty($userShipping->warehouse_ref)) {
+                if($warehouses = $this->getWarehouses($userShipping->city_ref))
+                    foreach ($warehouses as $warehouse) {
+                        $selected = '';
+                        if($warehouse->id == $userShipping->warehouse_ref)
+                        {
+                            $selected = 'selected';
+                            $info = $warehouse->info;
+                        }
+                        echo '<option data-id="'.$warehouse->id.'" data-info="'.htmlspecialchars($warehouse->info).'" title="'.$warehouse->title.'" '.$selected.'>'.$warehouse->name.'</option>';
                     }
-                    echo '<option data-id="'.$warehouse->id.'" data-info="'.htmlspecialchars($warehouse->info).'" title="'.$warehouse->title.'" '.$selected.'>'.$warehouse->name.'</option>';
-                }
-        } else { ?>
-            <option selected disabled value=""><?=$this->text('Для вибору відділення спершу введіть місто')?></option>
-        <?php } ?>
-    </select>
+            } else { ?>
+                <option selected disabled value=""><?=$this->text('Для вибору відділення спершу введіть місто')?></option>
+            <?php } ?>
+        </select>
 
-    <div class="info <?=empty($info) ? 'hide' : ''?>"><?=$info?></div>
+        <div class="info <?=empty($info) ? 'hide' : ''?>"><?=$info?></div>
+    </div>
 </div>
 
 <div id="nova-poshta-courier" <?=(!empty($userShipping->method) && $userShipping->method == 'courier') ? '':'class="hide"'?>>

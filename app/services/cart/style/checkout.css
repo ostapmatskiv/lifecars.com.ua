@@ -123,3 +123,37 @@
     -ms-animation-iteration-count: infinite;
     -ms-animation-timing-function: linear;
 }
+
+.input-group {
+    padding-top: 10px;
+}
+.input-group input {
+    /* margin: 10px 0; */
+}
+.input-group label {
+    font-size: 15px;
+    top: 14px;
+}
+
+#cart .input-group input,
+#cart .input-group select,
+#cart textarea {
+    border: 1px solid #74C186 !important;
+}
+.input-group.val label {
+    padding: 0 10px !important;
+    top: 0;
+}
+
+#cart .input-group input.with-error {
+    border: 1px solid #FF3300 !important;
+}
+
+#cart input:-internal-autofill-selected {
+    background-color: #fff !important;
+}
+
+.cart_section {
+    background: #fff;
+    padding: 15px;
+}

@@ -5,6 +5,7 @@
     dataLayer.push({
         event: "view_item",
         ecommerce: {
+            currency: "UAH",
             items: [{
                 item_name: "<?= $product->name.' '.mb_strtoupper($product->options['1-manufacturer']->value->name) ?>",
                 item_id: "<?= $product->id ?>",
@@ -35,7 +36,8 @@
     <h1 class="detal__heading"><?=$product->name.' '.mb_strtoupper($product->options['1-manufacturer']->value->name)?></h1>
 
     <div class="flex h-between v-center card__rating">
-        <div class="rating <?=empty($product->rating)?'empty':''?>" title="<?=empty($product->rating)?$this->text('Оцінка відсутня'):$this->text('Оцінка товару ').' '.$product->rating?>">
+        <?php if(empty($product->rating)) $product->rating = 5; ?>
+        <div class="rating <?=empty($product->rating)?'empty':''?>" title="<?=empty($product->rating)?$this->text('Оцінка відсутня'):$this->text('Оцінка товару ').' '.$product->rating?>" style="color: #ffc508;">
             <?php for($i = 0; $i < round($product->rating); $i++) { ?>
                 <i class="fas fa-star" aria-hidden="true"></i>
             <?php } for($i = round($product->rating); $i < 5; $i++) { ?>
@@ -140,9 +142,8 @@
 
             <div class="bonus-info-wrapper">
                 <h3>Доставка</h3>
-                <p>Самовивіз з магазину <br>
-                    Доставка новою поштою <br>
-                    Безкоштовна від 40 грн
+                <p>Самовивіз з магазину <span style="float: right;">безкоштовно</span> <br>
+                    Доставка Новою Поштою <span style="float: right;">згідно з тарифами перевізника</span>
                 </p>
                 <h3>Відправка</h3>
                 <p>

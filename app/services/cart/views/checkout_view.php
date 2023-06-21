@@ -48,11 +48,25 @@ if ($products) {
 				*/ ?>
 
 				<div id="new-buyer">
-					<h4><?= $this->text('Покупець') ?></h4>
-					<input type="text" id="first_name" placeholder="<?= $this->text("Ім'я") ?>*" value="<?= $this->data->re_post('first_name') ?>">
-					<input type="text" id="last_name" placeholder="<?= $this->text("Прізвище") ?>*" value="<?= $this->data->re_post('last_name') ?>">
-					<input type="text" id="phone" placeholder="<?= $this->text('Телефон', 0) ?>*" value="<?= $this->data->re_post('phone') ?>">
-					<!--<input type="text" id="email" placeholder="email" value="<?= $this->data->re_post('email') ?>">-->
+					<h4><?=$this->text('Покупець')?></h4>
+
+					<div class="input-group">
+						<input id="phone" type="text" value="<?= $this->data->re_post('phone') ?>" required minlength="17"/>
+						<label for="phone"><?= $this->text('Номер телефону', 5) ?></label>
+						<h5 class="text-danger hide" id="phoneError"><?= $this->text('Введіть коректний номер телефону починаючи +380') ?></h5>
+					</div>
+					
+					<div class="input-group">
+						<input id="first_name" type="text" value="<?= $this->data->re_post('first_name') ?>" required />
+						<label for="first_name"><?= $this->text('Ім\'я', 5) ?></label>
+						<h5 class="text-danger hide"><?= $this->text('Тільки кирилиця') ?></h5>
+					</div>
+
+					<div class="input-group">
+						<input id="last_name" type="text" value="<?= $this->data->re_post('last_name') ?>" required />
+						<label for="last_name"><?= $this->text('Прізвище', 5) ?></label>
+						<h5 class="text-danger hide"><?= $this->text('Тільки кирилиця') ?></h5>
+					</div>
 				</div>
 
 				<?php /*
@@ -121,10 +135,11 @@ if ($products) {
 				<?php } */
 				if ($shippings)
 					require_once '__shippings_subview.php';
-				if ($payments) { ?>
-					<h4><?= $this->text('Оплата') ?></h4>
-					<div id="payments">
-						<?php foreach ($payments as $payment) {
+
+				if($payments) { ?>
+					<h4><?=$this->text('Оплата')?></h4>
+					<div id="payments" class="cart_section">
+				    	<?php foreach ($payments as $payment) {
 							$checked = (count($payments) == 1) ? 'checked' : '';
 							if (!empty($userShipping)) {
 								if ($userShipping->payment_alias == 0 && $payment->id == $userShipping->payment_id)
@@ -146,20 +161,27 @@ if ($products) {
 				<h4><?= $this->text('Коментар') ?></h4>
 				<textarea name="comment" class="form-control" placeholder="<?= $this->text('Побажання до замовлення, наприклад щодо доставки') ?>" rows="5"><?= $this->data->re_post('comment') ?></textarea>
 
-				<div class="price-box" data-margin-top="110">
-
-					<?php if ($bonusCodes && !empty($bonusCodes->info))
-						foreach ($bonusCodes->info as $key => $discount) { ?>
+				<div class="price-box" data-margin-top="110">					
+					<?php if($bonusCodes && !empty($bonusCodes->info)) { ?>
+						<p class="bonusCode">
+							<?=$this->text('Разом').': '?>
+							<strong class="right"><?=$subTotalFormat?></strong>
+						</p>
+						<?php foreach ($bonusCodes->info as $key => $discount) { ?>
 						<p class="bonusCode">
 							<?= $this->text('Бонус-код') . ': ' . $key ?>
 							<strong class="right"><?= $discount ?></strong>
 						</p>
-					<?php }
-					if ($shippings && $shippings[0]->pay >= -1) { ?>
-						<p class="shipping">
-							<?= $this->text('Доставка') ?>
-							<strong class="right"><?= ($shippings[0]->pay == -1) ? $this->text('безкоштовно') : $shippings[0]->priceFormat ?></strong>
+			        <?php } } 
+					if($shippings && $shippings[0]->pay >= -1) { ?>
+			        	<p class="shipping">
+							<?=$this->text('Доставка')?>
+							<strong class="right"><?=($shippings[0]->pay == -1)?$this->text('безкоштовно'):$shippings[0]->priceFormat?></strong>
 						</p>
+					<?php } ?>
+
+					<?php if($discountTotal) { ?>
+						<p class="discount"><?=$this->text('Ви економите')?> <strong class="right"><?=$discountTotalFormat ?></strong></p>
 					<?php } ?>
 
 					<p class="price">
@@ -167,11 +189,7 @@ if ($products) {
 						<strong class="right"><?= $totalFormat ?></strong>
 					</p>
 
-					<?php if ($discountTotal) { ?>
-						<p class="discount"><?= $this->text('Ви економите') ?> <strong class="right"><?= $discountTotalFormat ?></strong></p>
-					<?php } ?>
-
-					<?php if (!empty($_SESSION['option']->dogovirOfertiLink)) { ?>
+					<?php if(!empty($_SESSION['option']->dogovirOfertiLink)) { ?>
 						<label id="oferta">
 							<input type="checkbox" name="oferta" <?= $this->userIs() ? 'checked' : '' ?> required>
 							<i class="<?= $this->userIs() ? 'fas fa-check-square' : 'far fa-square' ?>"></i>
@@ -179,7 +197,7 @@ if ($products) {
 						</label>
 					<?php } ?>
 
-					<button type="submit" class="checkout" disabled><?= $this->text('Оформити замовлення') ?></button>
+					<button type="submit" class="checkout"><?=$this->text('Оформити замовлення')?></button>
 				</div>
 			</form>
 		</div>
@@ -190,3 +208,20 @@ if ($products) {
 		</div>
 	</div>
 </main>
+
+<script>
+	window.onload = function () {
+        // $('#signInForm input[name=phone]').focus();
+
+        $(document).on('focusout', '.input-group input', function (){
+            if($(this).val().length) {
+                $(this).closest('.input-group').addClass('val');
+            } else {
+                $(this).closest('.input-group').removeClass('val')
+            }
+        });
+        $(document).on('focus', '.input-group input', function (){
+            $(this).closest('.input-group').addClass('val');
+        });
+	}
+</script>

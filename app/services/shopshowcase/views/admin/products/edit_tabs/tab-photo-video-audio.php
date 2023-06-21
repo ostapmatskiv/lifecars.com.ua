@@ -33,7 +33,7 @@
 	</script>
 	<?php
 	$_SESSION['alias']->js_load[] = "assets/blueimp/js/jquery.blueimp-gallery.min.js";
-	echo '<link rel="stylesheet" href="https://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">';
+	echo '<link rel="stylesheet" href="/assets/blueimp/css/blueimp-gallery.min.css">';
 }
 
 
