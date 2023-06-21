@@ -334,6 +334,8 @@ class cart_model
 		$cart_product['storage_alias'] = $product->storage_alias;
 		$cart_product['storage_invoice'] = $product->storage_invoice;
 
+		$bonus_id = $_SESSION['cart']->bonus_id ?? 0;
+
 		if($inCart = $this->db->getAllDataById($this->table('_products'), $cart_product))
 		{
 			$update = array('active' => 1);
@@ -341,7 +343,7 @@ class cart_model
 			$update['price_in'] = $product->price_in ?? $product->price;
 			$update['quantity'] = $update['quantity_wont'] = $product->quantity;
 			$update['discount'] = $product->discount > 0 ? $product->discount : 0;
-			$update['bonus'] = $product->bonus ?? 0;
+			$update['bonus'] = $product->bonus ?? $bonus_id;
 			$update['date'] = time();
 			$this->db->updateRow($this->table('_products'), $update, $inCart->id);
 
@@ -355,7 +357,7 @@ class cart_model
 			$cart_product['quantity'] = $cart_product['quantity_wont'] = $product->quantity;
 			$cart_product['quantity_returned'] = 0;
 			$cart_product['discount'] = $product->discount > 0 ? $product->discount : 0;
-			$cart_product['bonus'] = $product->bonus ?? 0;
+			$cart_product['bonus'] = $product->bonus ?? $bonus_id;
 			$cart_product['date'] = time();
 
 			return $this->db->insertRow($this->table('_products'), $cart_product);
@@ -400,6 +402,8 @@ class cart_model
 				foreach ($this->bonusDiscountInfo as $key => $value) {
 					$history = array();
 					$history['cart'] = $cart['id'];
+					$history['status'] = 1;
+					$history['show'] = 1;
 					$history['user'] = $user;
 					$history['comment'] = 'Бонус-код: '.$key.' '.$value;
 					$history['date'] = $cart['date_add'];
@@ -788,6 +792,7 @@ class cart_model
 				
 				if($user_id = $this->getUser())
 				{
+					$_SESSION['cart']->bonus_id = -$bonus->id;
 					$where_cp = array('user' => $user_id, 'cart' => 0, 'active' => 1);
 					$this->db->updateRow($this->table('_products'), array('bonus' => -$bonus->id), $where_cp);
 				

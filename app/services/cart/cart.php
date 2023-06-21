@@ -1043,6 +1043,7 @@ class cart extends Controller {
                         $_SESSION['user'] = new stdClass();
                         setcookie('auth_id', '', time() - 3600, '/');
                     }
+                    $_SESSION['cart']->bonus_id = 0;
 
                     if($payment && $payment->wl_alias > 0)
                     {
