@@ -108,7 +108,7 @@ if ($products) {
 			</form>
 
 			<?php if ($bonusCodes && $bonusCodes->showForm) { ?>
-				<h4><?= $this->text('Маєте купон на знижку?') ?></h4>
+				<h4 style="margin-bottom: 0;"><?= $this->text('Маєте купон на знижку?') ?></h4>
 				<form action="<?= SITE_URL . $_SESSION['alias']->alias ?>/coupon" method="POST" class="coupon-form text-center">
 					<div class="input-group">
 						<input type="text" name="code" placeholder="<?= $this->text('Код купону') ?>" required>
