@@ -78,7 +78,7 @@ if(empty($recipientPhone) && $this->userIs() && !empty($_SESSION['user']->phone)
     $recipientPhone = $_SESSION['user']->phone;
 ?>
 
-<?php if(isset($cart) || $this->userIs()) { ?>
+<?php if(isset($cart) && $this->userIs()) { ?>
     <h4><?=$this->text('Отримувач')?></h4>
     <div class="cart_section">
         <div class="input-group val <?php //= !empty($recipientName) ? 'val' : '' ?>">
