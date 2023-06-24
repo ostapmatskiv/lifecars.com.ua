@@ -28,9 +28,8 @@ if ($products) {
 	<div class="flex w100">
 		<div class="w30 m100">
 
+			<h4><?= $this->text('Покупець') ?></h4>
 			<?php if (!$this->userIs()) { ?>
-				<h4><?= $this->text('Покупець') ?></h4>
-
 				<div class="input-group">
 					<input id="phone" type="text" value="<?= $this->data->re_post('phone') ?>" required minlength="17" />
 					<label for="phone"><?= $this->text('Номер телефону', 5) ?></label>
@@ -48,7 +47,9 @@ if ($products) {
 					<label for="last_name"><?= $this->text('Прізвище', 5) ?></label>
 					<h5 class="text-danger hide"><?= $this->text('Тільки кирилиця') ?></h5>
 				</div>
-			<?php } ?>
+			<?php } else {
+				echo "<div class=\"cart_section\">{$_SESSION['user']->name} <br> {$_SESSION['user']->phone}</div>";
+			 } ?>
 
 			<form id="confirm" action="<?= SITE_URL . $_SESSION['alias']->alias ?>/confirm" method="POST">
 				<?php if (!$this->userIs()) { ?>
