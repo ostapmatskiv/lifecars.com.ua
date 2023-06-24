@@ -28,8 +28,9 @@ if ($products) {
 	<div class="flex w100">
 		<div class="w30 m100">
 
-			<h4><?= $this->text('Покупець') ?></h4>
 			<?php if (!$this->userIs()) { ?>
+				<h4><?= $this->text('Покупець') ?></h4>
+
 				<div class="input-group">
 					<input id="phone" type="text" value="<?= $this->data->re_post('phone') ?>" required minlength="17" />
 					<label for="phone"><?= $this->text('Номер телефону', 5) ?></label>
@@ -48,25 +49,35 @@ if ($products) {
 					<h5 class="text-danger hide"><?= $this->text('Тільки кирилиця') ?></h5>
 				</div>
 			<?php } else {
-				echo "<div class=\"cart_section\">{$_SESSION['user']->name} <br> {$_SESSION['user']->phone}</div>";
-			 } ?>
+				$name = explode(' ', $_SESSION['user']->name);
+				$phoneFormat = $this->data->formatPhone($_SESSION['user']->phone); ?>
+				<h4><small class="pull-right" onclick="$('#UserName, #form_editUserName').slideToggle()"><?= $this->text('Редагувати') ?></small> <?= $this->text('Покупець') ?></h4>
+
+				<?= "<div id=\"UserName\" class=\"cart_section\">{$_SESSION['user']->name} <br> {$phoneFormat}</div>"; ?>
+				<form action="<?= SITE_URL ?>profile/saveUserInfo" method="post" id="form_editUserName" style="display: none;" class="text-center">
+					<div class="input-group val">
+						<input name="first_name" id="first_name" type="text" value="<?= $name[0] ?>" required />
+						<label for="first_name"><?= $this->text('Ім\'я', 5) ?></label>
+						<h5 class="text-danger hide"><?= $this->text('Тільки кирилиця') ?></h5>
+					</div>
+
+					<div class="input-group <?= empty($name[1]) ? '' : 'val' ?>">
+						<input name="last_name" id="last_name" type="text" value="<?= $name[1] ?? '' ?>" required />
+						<label for="last_name"><?= $this->text('Прізвище', 5) ?></label>
+						<h5 class="text-danger hide"><?= $this->text('Тільки кирилиця') ?></h5>
+					</div>
+
+					<button class=""><?= $this->text('Зберегти') ?></button>
+				</form>
+			<?php } ?>
 
 			<form id="confirm" action="<?= SITE_URL . $_SESSION['alias']->alias ?>/confirm" method="POST">
 				<?php if (!$this->userIs()) { ?>
 					<input type="text" name="email" value="<?= $this->data->re_post('email') ?>" class="hide">
 					<input type="text" name="phone" value="<?= $this->data->re_post('phone') ?>" class="hide" required>
 					<input type="text" name="name" value="<?= $this->data->re_post('name') ?>" class="hide" required>
-				<?php } /* else { ?>
-					<div id="buyer">
-						<h4><?=$this->text('Покупець')?></h4>
-			 			<p>
-				 			<?php echo $_SESSION['user']->name .'<br>'.$_SESSION['user']->email;
-				 			if(empty($_SESSION['user']->phone)) { ?>
-				 				</p><p><input type="text" id="phone" name="phone" value="<?=$this->data->re_post('phone')?>" placeholder="<?=$this->text('+380********* (Контактний номер)')?>" required>
-				 			<?php } else echo '<br>'.$this->data->formatPhone($_SESSION['user']->phone); ?>
-			 			</p>
-					</div>
-				<?php } */
+				<?php }
+
 				if ($shippings)
 					require_once '__shippings_subview.php';
 
