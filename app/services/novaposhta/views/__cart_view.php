@@ -15,7 +15,7 @@
 
 <div class="input-group <?= (!empty($userShipping->city_ref) && !empty($userShipping->city)) ? 'val' : '' ?>">
     <label for="novaposhta-city"><?= $this->text('Місто') ?></label>
-    <input type="text" id="novaposhta-city" name="novaposhta-city" placeholder="<?= $this->text('Місто') ?>" value="<?= (!empty($userShipping->city_ref) && !empty($userShipping->city)) ? $userShipping->city : '' ?>" autocomplete="off" required>
+    <input type="text" id="novaposhta-city" name="novaposhta-city" placeholder="<?= $this->text('Місто') ?>" value="<?= (!empty($userShipping->city_ref) && !empty($userShipping->city)) ? $userShipping->city : '' ?>" autocomplete="off" readonly required>
 </div>
 
 <div id="nova-poshta-warehouse" <?= (!empty($userShipping->method) && $userShipping->method == 'courier') ? 'class="hide"' : '' ?>>
@@ -46,6 +46,10 @@
     <!-- <label><?= $this->text('Вулиця') ?></label> -->
     <input type="text" name="novaposhta-address-street" class="form-control" placeholder="<?= $this->text('Вулиця') ?>" value="<?= $userShipping->address_street ?? '' ?>" <?= (!empty($userShipping->method) && $userShipping->method == 'courier') ? 'required' : '' ?>>
     <input type="text" name="novaposhta-address-house" class="form-control" placeholder="<?= $this->text('Номер будинку/та квартри') ?>" value="<?= $userShipping->address_house ?? '' ?>" <?= (!empty($userShipping->method) && $userShipping->method == 'courier') ? 'required' : '' ?>>
+</div>
+
+<div id="novaposhta-city-modal" class="modal">
+
 </div>
 
 
@@ -97,14 +101,19 @@ if ($userShipping && $userShipping->initShipping)
     function initShipping() {
         $('input[name="nova-poshta-method"]').attr('required', true);
 
-        $('input[name="novaposhta-city"]').autocomplete({
+        $('input[name="novaposhta-city"]').click(function() {
+            $('#modal-bg, #novaposhta-city-modal').css('display', 'flex');
+        });
+
+
+        /* $('input[name="novaposhta-city"]').autocomplete({
             source: '<?= SITE_URL . $_SESSION['alias']->alias ?>/getcities/warehouse',
             minLength: 3,
             select: function(event, ui) {
                 $('input[name="novaposhta-city"]').val(ui.item.value);
                 setCity(ui.item.id);
             }
-        }).attr('autocomplete', 'none');
+        }).attr('autocomplete', 'none'); */
         $('#nova-poshta-method div').click(function() {
             $(this).parent().find('div').removeClass('active');
             $(this).addClass('active');
