@@ -14,8 +14,8 @@
 <input type="hidden" name="nova-poshta-warehouse-ref" value="<?= $userShipping->warehouse_ref ?? '' ?>">
 
 <div class="input-group <?= (!empty($userShipping->city_ref) && !empty($userShipping->city)) ? 'val' : '' ?>">
-    <label for="novaposhta-city"><?= $this->text('Місто') ?></label>
-    <input type="text" id="novaposhta-city" name="novaposhta-city" placeholder="<?= $this->text('Місто') ?>" value="<?= (!empty($userShipping->city_ref) && !empty($userShipping->city)) ? $userShipping->city : '' ?>" autocomplete="off" readonly required>
+    <label for="novaposhta-city-in1"><?= $this->text('Місто') ?></label>
+    <input type="text" id="novaposhta-city-in1" name="novaposhta-city" placeholder="<?= $this->text('Місто') ?>" value="<?= (!empty($userShipping->city_ref) && !empty($userShipping->city)) ? $userShipping->city : '' ?>" autocomplete="off" readonly required>
 </div>
 
 <div id="nova-poshta-warehouse" <?= (!empty($userShipping->method) && $userShipping->method == 'courier') ? 'class="hide"' : '' ?>>
@@ -49,7 +49,27 @@
 </div>
 
 <div id="novaposhta-city-modal" class="modal">
+    <i class="far fa-times-circle"></i>
 
+    <div class="input-group <?= (!empty($userShipping->city_ref) && !empty($userShipping->city)) ? 'val' : '' ?>">
+        <label for="novaposhta-city"><?= $this->text('Місто') ?></label>
+        <input type="text" id="novaposhta-city-in_modal" placeholder="<?= $this->text('Місто') ?>" autocomplete="off" >
+    </div>
+    <h4>Популярні міста</h4>
+    <ul>
+        <li data-id="8d5a980d-391c-11dd-90d9-001a92567626">Київ</li>
+        <li data-id="db5c88e0-391c-11dd-90d9-001a92567626">Харків</li>
+        <li data-id="db5c88f0-391c-11dd-90d9-001a92567626">Дніпро</li>
+        <li data-id="db5c88c6-391c-11dd-90d9-001a92567626">Запоріжжя</li>
+        <li data-id="db5c88d0-391c-11dd-90d9-001a92567626">Одеса</li>
+        <li data-id="db5c88f5-391c-11dd-90d9-001a92567626">Львів</li>
+        <li data-id="db5c8944-391c-11dd-90d9-001a92567626">Маріуполь</li>
+        <li data-id="db5c890d-391c-11dd-90d9-001a92567626">Кривий Ріг</li>
+        <li data-id="db5c888c-391c-11dd-90d9-001a92567626">Миколаїв</li>
+        <li data-id="db5c897c-391c-11dd-90d9-001a92567626">Чернігів</li>
+        <li data-id="db5c88e5-391c-11dd-90d9-001a92567626">Суми</li>
+        <li data-id="db5c88de-391c-11dd-90d9-001a92567626">Вінниця</li>
+    </ul>
 </div>
 
 
@@ -98,22 +118,71 @@ if ($userShipping && $userShipping->initShipping)
             });
     }
 
+    function selectCity() {
+        var id = $(this).data('id'),
+            name = $(this).text();
+        $('input[name="novaposhta-city"]').val(name);
+        $('input[name="novaposhta-city"]').closest('.input-group').addClass('val');
+        setCity(id);
+        $('#modal-bg, #novaposhta-city-modal').css('display', 'none');
+
+        console.log(id + ' ' + name);
+    }
+
     function initShipping() {
         $('input[name="nova-poshta-method"]').attr('required', true);
 
         $('input[name="novaposhta-city"]').click(function() {
-            $('#modal-bg, #novaposhta-city-modal').css('display', 'flex');
+            $('#modal-bg').css('display', 'flex');
+            $('#novaposhta-city-modal').css('display', 'block');
+            $('#novaposhta-city-in_modal').val( $('#novaposhta-city-in1').val() );
         });
 
+        $('#novaposhta-city-modal i.fa-times-circle').click(function(){
+            $('#modal-bg, #novaposhta-city-modal').css('display', 'none');
+        });
 
-        /* $('input[name="novaposhta-city"]').autocomplete({
-            source: '<?= SITE_URL . $_SESSION['alias']->alias ?>/getcities/warehouse',
-            minLength: 3,
-            select: function(event, ui) {
-                $('input[name="novaposhta-city"]').val(ui.item.value);
-                setCity(ui.item.id);
+        $('#novaposhta-city-modal ul li').click(selectCity);
+
+        $('input#novaposhta-city-in_modal').on('change input', function(){
+            var input = $(this);
+                value = this.value;
+            if(value.length > 2) {
+                input.addClass('loading');
+                $.ajax({
+                    url: '<?= SITE_URL . $_SESSION['alias']->alias ?>/getcities/warehouse',
+                    type: 'GET',
+                    data: {
+                        term: value
+                    },
+                    complete: function() {
+                        $('#novaposhta-city-modal h4').hide();
+                        input.removeClass('loading');
+                    },
+                    success: function(list) {
+                        $('#novaposhta-city-modal ul li').remove()
+                        list.forEach(function (el) {
+                            $('<li/>', {
+                                'data-id': el.id,
+                                text: el.value,
+                                click: selectCity
+                            }).appendTo('#novaposhta-city-modal ul');
+                        })
+                    }
+                })
             }
-        }).attr('autocomplete', 'none'); */
+        })
+
+        // $('input#novaposhta-city-in_modal').autocomplete({
+        //     source: '<?= SITE_URL . $_SESSION['alias']->alias ?>/getcities/warehouse',
+        //     minLength: 3,
+        //     select: function(event, ui) {
+        //         $('input[name="novaposhta-city"]').val(ui.item.value);
+        //         $('input#novaposhta-city-in_modal').val(ui.item.value);
+        //         setCity(ui.item.id);
+        //     }
+        // }).attr('autocomplete', 'none');
+
         $('#nova-poshta-method div').click(function() {
             $(this).parent().find('div').removeClass('active');
             $(this).addClass('active');
@@ -159,34 +228,59 @@ if ($userShipping && $userShipping->initShipping)
         border-radius: 2px;
         margin: 5px 0
     }
-
     #nova-poshta-method div {
         padding: 5px;
         text-align: center;
         cursor: pointer
     }
-
     #nova-poshta-method div.active {
         background: #7cbe49;
         color: #fff
     }
-
     #nova-poshta-method div:hover {
         text-decoration: underline
     }
-
     #buyer {
         margin: 15px 0
     }
-
     #nova-poshta-warehouse .info {
         border: #7cbe49 1px solid;
         padding: 5px 10px;
         border-radius: 2px;
         display: none;
     }
-
     #cart input.ui-autocomplete-loading {
         background: #eee url("<?= SERVER_URL ?>style/images/ui-anim_basic_16x16.gif") right center no-repeat !important
     }
+
+    #novaposhta-city-modal {
+        padding-top: 20px;
+    }
+    #novaposhta-city-modal i.fa-times-circle {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+    }
+    #novaposhta-city-modal input.loading {
+        background: #eee url("<?= SERVER_URL ?>style/images/ui-anim_basic_16x16.gif") right center no-repeat !important
+    }
+    #novaposhta-city-modal ul {
+        padding: 0;
+    }
+    #novaposhta-city-modal li {
+        padding-left: 10px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 5px;
+        cursor: pointer;
+        list-style: none;
+    }
+    @media screen and (max-width: 600px) {
+        #novaposhta-city-modal {
+            left: 1%;
+            width: 98%;
+        }
+    }
+
 </style>
