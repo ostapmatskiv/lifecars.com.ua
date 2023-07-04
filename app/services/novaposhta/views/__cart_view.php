@@ -123,7 +123,7 @@ if ($userShipping && $userShipping->initShipping)
                 input_group.removeClass('val');
                 input.val('').attr('placeholder', this.modal_labels[mode]);
                 input_label.text(this.modal_labels[mode]);
-                h4.hide();
+                // h4.hide();
 
                 this.modal_drawLI(this.warehouses);
             }
@@ -175,6 +175,7 @@ if ($userShipping && $userShipping->initShipping)
                 $('input[name="nova-poshta-city-ref"]').val(id);
                 $('input[name="novaposhta-city"]').val(name);
                 $('input[name="novaposhta-city"]').closest('.input-group').addClass('val');
+                $('#novaposhta-modal h4').text(name);
                 $('#novaposhta-modal ul li').remove();
                 $('#novaposhta-modal input').addClass('loading');
 
@@ -303,6 +304,7 @@ if ($userShipping && $userShipping->initShipping)
 
     #novaposhta-modal {
         padding-top: 20px;
+        overflow-y: auto;
     }
     #novaposhta-modal i.fa-times-circle {
         position: absolute;
@@ -323,7 +325,6 @@ if ($userShipping && $userShipping->initShipping)
         margin-bottom: 5px;
         cursor: pointer;
         list-style: none;
-        overflow-y: auto;
     }
     @media screen and (max-width: 600px) {
         #novaposhta-modal {
