@@ -158,6 +158,7 @@ if ($userShipping && $userShipping->initShipping)
             if (mode == 'warehouse' || mode == 'postomat') {
                 input_group.removeClass('val');
                 input.val('').attr('placeholder', this.modal_labels[mode]);
+                input.on('input', NP.modal_inputWarehouseChange);
                 input_label.text(this.modal_labels[mode]);
 
                 this.modal_drawLI(this.warehouses);
@@ -200,6 +201,17 @@ if ($userShipping && $userShipping->initShipping)
                         NP.modal_drawLI(list);
                     }
                 })
+            }
+        },
+
+        modal_inputWarehouseChange() {
+            var value = this.value.toLowerCase();
+            if (value.length) {
+                let filtered = NP.warehouses.filter(warehouse => warehouse.name.toLowerCase().search(value) >= 0);
+                NP.modal_drawLI(filtered);
+            }
+            else {
+                NP.modal_drawLI(NP.warehouses);
             }
         },
 
@@ -311,7 +323,7 @@ if ($userShipping && $userShipping->initShipping)
                 $('input[name="novaposhta-warehouse"]').attr('required', true);
                 $('input[name="novaposhta-address-street"], input[name="novaposhta-address-house"]').attr('required', false);
                 $('#nova-poshta-warehouse label').text(NP.modal_labels[method]);
-                $('#nova-poshta-warehouse input').attr('placeholder', NP.modal_labels[method]);
+                $('#nova-poshta-warehouse input').val('').attr('placeholder', NP.modal_labels[method]);
 
                 // $('input[name="novaposhta-city"]').autocomplete("option", "source", '<?= SITE_URL . $_SESSION['alias']->alias ?>/getcities/warehouse');
             }
