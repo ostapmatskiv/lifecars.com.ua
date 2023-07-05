@@ -304,7 +304,6 @@ if ($userShipping && $userShipping->initShipping)
 
     #novaposhta-modal {
         padding-top: 20px;
-        overflow-y: auto;
     }
     #novaposhta-modal i.fa-times-circle {
         position: absolute;
