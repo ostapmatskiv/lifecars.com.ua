@@ -70,6 +70,7 @@ if ($userShipping && $userShipping->initShipping)
     NP = {
         method: 'warehouse',
         modal_mode: 'city',
+        loading_gif: '<img src="<?= SERVER_URL ?>style/images/icon-loading.gif" style="width:35px">',
 
         modal_labels: {
             city: '<?= $this->text('Місто') ?>',
@@ -176,8 +177,9 @@ if ($userShipping && $userShipping->initShipping)
                 $('input[name="novaposhta-city"]').val(name);
                 $('input[name="novaposhta-city"]').closest('.input-group').addClass('val');
                 $('#novaposhta-modal h4').text(name);
-                $('#novaposhta-modal ul li').remove();
                 $('#novaposhta-modal input').addClass('loading');
+                $('#novaposhta-modal ul li').remove();
+                $('<li/>', { html: NP.loading_gif }).appendTo('#novaposhta-modal ul');
 
                 $.ajax({
                     url: '<?= SITE_URL . $_SESSION['alias']->alias ?>/getWarehouses',
@@ -192,9 +194,7 @@ if ($userShipping && $userShipping->initShipping)
                     complete: function() {
                         $('#novaposhta-modal input').removeClass('loading');
                     },
-                })
-
-                
+                });
             }
         },
 
