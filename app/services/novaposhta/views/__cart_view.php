@@ -44,8 +44,8 @@
     <i class="far fa-times-circle"></i>
 
     <div class="input-group">
-        <label for="novaposhta-city"><?= $this->text('Місто') ?></label>
-        <input type="text" placeholder="<?= $this->text('Місто') ?>" autocomplete="off">
+        <label for="novaposhta-modal-input"><?= $this->text('Місто') ?></label>
+        <input id="novaposhta-modal-input" type="text" placeholder="<?= $this->text('Місто') ?>" autocomplete="off">
     </div>
     <h4></h4>
     <ul></ul>
@@ -137,9 +137,9 @@ if ($userShipping && $userShipping->initShipping)
                 mode = 'city'
             }
             this.modal_mode = mode;
-            input.off('change input');
+            input.off('input');
 
-            console.log(mode);
+            console.log('modal_show: ' + mode);
 
             if (mode == 'city') {
                 let city = $('#novaposhta-city').val();
@@ -152,7 +152,7 @@ if ($userShipping && $userShipping->initShipping)
                 h4.text(this.modal_labels.city_popular).show();
 
                 input.val(city).attr('placeholder', this.modal_labels.city);
-                input.on('change input', NP.modal_inputCityChange);
+                input.on('input', NP.modal_inputCityChange);
                 input_label.text(this.modal_labels.city);
             }
             if (mode == 'warehouse' || mode == 'postomat') {
@@ -168,8 +168,9 @@ if ($userShipping && $userShipping->initShipping)
                     $('#novaposhta-modal ul li').remove();
                 }
 
+                h4.text($('input[name="novaposhta-city"]').val());
                 input.val(street).attr('placeholder', this.modal_labels.street);
-                input.on('change input', NP.modal_inputStreetChange);
+                input.on('input', NP.modal_inputStreetChange);
                 input_label.text(this.modal_labels.street);
             }
 
@@ -254,6 +255,7 @@ if ($userShipping && $userShipping->initShipping)
         modal_selectLI() {
             let id = $(this).data('id'),
                 name = $(this).text();
+            console.log('modal_selectLI: ' + NP.modal_mode);
             if (NP.modal_mode == 'city') {
                 $('input[name="nova-poshta-city-ref"]').val(id);
                 $('input[name="novaposhta-city"]').val(name);
