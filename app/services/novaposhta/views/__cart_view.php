@@ -283,7 +283,8 @@ if ($userShipping && $userShipping->initShipping)
                     url: '<?= SITE_URL . $_SESSION['alias']->alias ?>/getWarehouses',
                     type: 'POST',
                     data: {
-                        'city': id
+                        'city': id,
+                        category: NP.method
                     },
                     success: function(warehouses) {
                         NP.warehouses = warehouses;

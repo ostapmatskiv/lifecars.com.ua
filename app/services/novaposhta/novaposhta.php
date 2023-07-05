@@ -45,17 +45,27 @@ class novaposhta extends Controller {
         $this->load->json($cities);
     }
 
-    public function getWarehouses($CityRef = false)
+    public function getWarehouses($CityRef = false, $category = 'warehouse')
     {
         $warehouses = [];
         $city = $CityRef;
-        if(!$city)
+        if(!$city) {
             $city = $this->data->post('city');
+            if($this->data->post('category') == 'postomat')
+                $category = 'Postomat';
+        }
         if($city) {
             if($_SESSION['option']->api_key)
                 if($data = $this->get_by_api('AddressGeneral', 'getWarehouses', ['CityRef' => $city]))
                     if($data->success && !empty($data->data))
                         foreach ($data->data as $np) {
+                            if($category == 'warehouse' && $np->CategoryOfWarehouse == 'Postomat') {
+                                continue;
+                            }
+                            if($category == 'Postomat' && $np->CategoryOfWarehouse != 'Postomat') {
+                                continue;
+                            }
+                            
                             $warehouse = new stdClass();
                             $warehouse->id = $np->Ref;
                             $warehouse->name = ($_SESSION['language'] == 'ru') ? $np->DescriptionRu : $np->Description;
