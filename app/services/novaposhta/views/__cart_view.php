@@ -18,7 +18,7 @@
     <input type="text" id="novaposhta-city" name="novaposhta-city" placeholder="<?= $this->text('Місто') ?>" value="<?= (!empty($userShipping->city_ref) && !empty($userShipping->city)) ? $userShipping->city : '' ?>" autocomplete="off" readonly required>
 </div>
 
-<div class="input-group <?= (!empty($userShipping->method) && $userShipping->method == 'courier') ? 'hide' : '' ?> <?= (!empty($userShipping->warehouse_ref) && !empty($userShipping->warehouse)) ? 'val' : '' ?>">
+<div id="nova-poshta-warehouse" class="input-group <?= (!empty($userShipping->method) && $userShipping->method == 'courier') ? 'hide' : '' ?> <?= (!empty($userShipping->warehouse_ref) && !empty($userShipping->warehouse)) ? 'val' : '' ?>">
     <label for="novaposhta-warehouse"><?= $this->text('Відділення') ?></label>
     <input type="text" id="novaposhta-warehouse" name="novaposhta-warehouse" placeholder="<?= $this->text('Відділення') ?>" value="<?= (!empty($userShipping->warehouse_ref) && !empty($userShipping->warehouse)) ? $userShipping->warehouse : '' ?>" autocomplete="off" readonly>
 </div>
@@ -235,7 +235,7 @@ if ($userShipping && $userShipping->initShipping)
                 // $('input[name="novaposhta-city"]').autocomplete("option", "source", '<?= SITE_URL . $_SESSION['alias']->alias ?>/getcities/courier');
                 $('#nova-poshta-warehouse').addClass('hide');
                 $('#nova-poshta-courier').removeClass('hide');
-                $('select[name="nova-poshta-warehouse"]').attr('required', false);
+                $('input[name="novaposhta-warehouse"]').attr('required', false);
                 $('input[name="novaposhta-address-street"], input[name="novaposhta-address-house"]').attr('required', true);
             } else {
                 
@@ -261,9 +261,6 @@ if ($userShipping && $userShipping->initShipping)
 </script>
 
 <style>
-    #buyer {
-        margin: 15px 0
-    }
     #cart input.ui-autocomplete-loading {
         background: #eee url("<?= SERVER_URL ?>style/images/ui-anim_basic_16x16.gif") right center no-repeat !important
     }
