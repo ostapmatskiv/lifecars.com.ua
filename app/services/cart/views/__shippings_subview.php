@@ -9,9 +9,9 @@
         if(empty($selected) && $userShipping && $userShipping->method_id)
             $selected = $userShipping->method_id;
         foreach ($shippings as $i => $method) { ?>
-            <label>
+            <label class="flex v-center">
                 <input type="radio" name="shipping-method" value="<?=$method->id?>" <?php if($selected == $method->id) { echo 'checked'; $shippingType = $method->type; $shippingInfo = $method->info; $shippingWlAlias = $method->wl_alias; } ?> onchange="changeShipping(this)">
-                <?=$method->name?>
+                <?= $method->wl_alias ? '<img src="/style/novaposhta/np_logo.png" style="width: 35px;padding-right: 0;">' : '' ?> <span><?=$method->name?></span>
             </label>
             <?php }
         } else { ?>

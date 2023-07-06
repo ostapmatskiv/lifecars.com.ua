@@ -1,4 +1,6 @@
 #cart .w30 label { display: block; padding: 5px; }
+#cart .w30 label.flex { display: flex; justify-content: left;}
+#cart .w30 label.flex * { padding: 0 10px; margin: 0; }
 #cart .w30 input[type=radio] {
     width: 10px;
 }
@@ -160,6 +162,7 @@
 .cart_section {
     background: #fff;
     padding: 15px;
+    /* text-align: center; */
 }
 
 h4 small.pull-right {

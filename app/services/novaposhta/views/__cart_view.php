@@ -1,4 +1,4 @@
-<div style="margin-left: 10px; padding-left: 5px; border-left: 1px solid #ccc">
+<div style="margin-left: 10px; padding-left: 5px">
     <?php foreach (['warehouse' => 'На відділення', 'postomat' => 'Поштомат', 'courier' => "Кур'єром"] as $key => $key_title) {
         $checked = (empty($userShipping->method) && $key == 'warehouse') ? 'checked' : '';
         $checked = (!empty($userShipping->method) && $userShipping->method == $key) ? 'checked' : $checked; ?>

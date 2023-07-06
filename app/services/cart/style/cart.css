@@ -11,11 +11,11 @@
 #cart .w30 input, #cart textarea, #cart select {
     height: auto;
     width: 100%;
-	/*background: #ddd !important;*/
-	border: none !important;
-	border-radius: 2px;
-	padding: 10px;
-	margin-bottom: 5px;
+    /*background: #ddd !important;*/
+    border: none !important;
+    border-radius: 2px;
+    padding: 10px;
+    margin-bottom: 5px;
 }
 #cart input:-internal-autofill-selected { background: #ddd }
 #cart form p { margin: 5px 0 }

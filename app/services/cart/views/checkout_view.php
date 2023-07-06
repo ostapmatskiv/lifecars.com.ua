@@ -116,7 +116,7 @@ if ($products) {
 				<h4 style="margin-bottom: 0;"><?= $this->text('Маєте купон на знижку?') ?></h4>
 				<form action="<?= SITE_URL . $_SESSION['alias']->alias ?>/coupon" method="POST" class="coupon-form text-center">
 					<div class="input-group">
-						<input type="text" name="code" placeholder="<?= $this->text('Код купону') ?>" required>
+						<input type="text" name="code" placeholder="<?= $this->text('Код купону') ?>" class="w100" required>
 						<label for="code"><?= $this->text('Код купону') ?></label>
 					</div>
 					<button class=""><?= $this->text('Застосувати купон') ?></button>
