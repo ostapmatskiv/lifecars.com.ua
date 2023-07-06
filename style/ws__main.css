@@ -129,6 +129,7 @@ input:focus { outline: none }
 		justify-content: space-between;
 	}
 	.m-flex.column, .flex.m-column { flex-direction: column }
+	.m-flex.column-reverse, .flex.m-column-reverse { flex-direction: column-reverse }
 	.m-flex.wrap, .flex.m-wrap { flex-wrap: wrap }
 	.m-flex.h-start, .flex.m-h-start { justify-content: flex-start }
 	.m-flex.h-center, .flex.m-h-center { justify-content: center }

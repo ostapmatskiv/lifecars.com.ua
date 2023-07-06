@@ -25,7 +25,7 @@ if ($products) {
 	<?php }
 	unset($_SESSION['notify']); ?>
 
-	<div class="flex w100">
+	<div class="flex w100 m-column-reverse">
 		<div class="w30 m100">
 
 			<?php if (!$this->userIs()) { ?>
@@ -159,7 +159,7 @@ if ($products) {
 			</div>
 		</div>
 
-		<div class="w70-5 m-hide">
+		<div class="w70-5 m100">
 			<?php $actions = false;
 			require_once '__cart_products_list2.php'; ?>
 		</div>
