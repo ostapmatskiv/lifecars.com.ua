@@ -9,6 +9,10 @@
     border-radius: 2px;
     margin-bottom: 25px
 }
+#cart a.to_cart {
+    position: absolute;
+    left: 10px;
+}
 #cart h4, #cart .price-box { margin-top: 15px }
 #cart_notify * { font-size: 16px; line-height: 20px }
 #percents {

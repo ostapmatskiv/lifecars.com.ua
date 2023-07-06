@@ -1,5 +1,5 @@
-<link rel="stylesheet" type="text/css" href="<?= SERVER_URL . 'style/' . $_SESSION['alias']->alias . '/cart.css' ?>">
-<link rel="stylesheet" type="text/css" href="<?= SERVER_URL . 'style/' . $_SESSION['alias']->alias . '/checkout.css' ?>">
+<link rel="stylesheet" type="text/css" href="<?= SERVER_URL . 'style/' . $_SESSION['alias']->alias . '/cart.css?v1' ?>">
+<link rel="stylesheet" type="text/css" href="<?= SERVER_URL . 'style/' . $_SESSION['alias']->alias . '/checkout.css?v1' ?>">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
 <?php $this->load->js(['assets/jquery-ui/1.12.1/jquery-ui.min.js', 'assets/jquery.mask.min.js', 'js/' . $_SESSION['alias']->alias . '/cart.js', 'js/' . $_SESSION['alias']->alias . '/cities.js', 'js/' . $_SESSION['alias']->alias . '/checkout.js']); // 'assets/sticky.min.js',  
 if ($products) {
@@ -8,9 +8,12 @@ if ($products) {
 } ?>
 
 <main id="cart" data-sticky-container>
-	<a href="<?= SITE_URL . $_SESSION['alias']->alias ?>" class="right"><i class="fas fa-undo"></i> <?= $this->text('Редагувати замовлення') ?></a>
-
-	<h1><?= $_SESSION['alias']->name ?></h1>
+	<a href="<?= SITE_URL . $_SESSION['alias']->alias ?>" class="right m-hide"><i class="fas fa-undo"></i> <?= $this->text('Редагувати замовлення') ?></a>
+	
+	<h1>
+		<a href="<?= SITE_URL . $_SESSION['alias']->alias ?>" class="hide m-block to_cart"><i class="fas fa-arrow-left"></i></a>
+		<?= $_SESSION['alias']->name ?>
+	</h1>
 
 	<div id="cart_notify" class="alert alert-danger <?= (empty($_SESSION['notify']->error)) ? 'hide' : '' ?>">
 		<span class="close"><i class="fas fa-times"></i></span>
@@ -31,22 +34,24 @@ if ($products) {
 			<?php if (!$this->userIs()) { ?>
 				<h4><?= $this->text('Покупець') ?></h4>
 
-				<div class="input-group">
-					<input id="phone" type="text" value="<?= $this->data->re_post('phone') ?>" required minlength="17" />
-					<label for="phone"><?= $this->text('Номер телефону', 5) ?></label>
-					<h5 class="text-danger hide" id="phoneError"><?= $this->text('Введіть коректний номер телефону починаючи +380') ?></h5>
-				</div>
+				<div class="cart_section">
+					<div class="input-group">
+						<input id="phone" type="text" value="<?= $this->data->re_post('phone') ?>" required minlength="17" />
+						<label for="phone"><?= $this->text('Номер телефону', 5) ?></label>
+						<h5 class="text-danger hide" id="phoneError"><?= $this->text('Введіть коректний номер телефону починаючи +380') ?></h5>
+					</div>
 
-				<div class="input-group">
-					<input id="first_name" type="text" value="<?= $this->data->re_post('first_name') ?>" required />
-					<label for="first_name"><?= $this->text('Ім\'я', 5) ?></label>
-					<h5 class="text-danger hide"><?= $this->text('Тільки кирилиця') ?></h5>
-				</div>
+					<div class="input-group">
+						<input id="first_name" type="text" value="<?= $this->data->re_post('first_name') ?>" required />
+						<label for="first_name"><?= $this->text('Ім\'я', 5) ?></label>
+						<h5 class="text-danger hide"><?= $this->text('Тільки кирилиця') ?></h5>
+					</div>
 
-				<div class="input-group">
-					<input id="last_name" type="text" value="<?= $this->data->re_post('last_name') ?>" required />
-					<label for="last_name"><?= $this->text('Прізвище', 5) ?></label>
-					<h5 class="text-danger hide"><?= $this->text('Тільки кирилиця') ?></h5>
+					<div class="input-group">
+						<input id="last_name" type="text" value="<?= $this->data->re_post('last_name') ?>" required />
+						<label for="last_name"><?= $this->text('Прізвище', 5) ?></label>
+						<h5 class="text-danger hide"><?= $this->text('Тільки кирилиця') ?></h5>
+					</div>
 				</div>
 			<?php } else {
 				$name = explode(' ', $_SESSION['user']->name);

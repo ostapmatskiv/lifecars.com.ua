@@ -1,11 +1,11 @@
 * { box-sizing: border-box;}
-#cart { margin-top: 20px }
+#cart {/* margin-top: 20px; */}
 .right { float: right }
 #cart .w75 {width: 75% }
 #cart .w25 {width: 24% }
 #cart .w70 {width: 69% }
 #cart .w30 {width: 30% }
-#cart h1 { text-align: left }
+#cart h1 { text-align: left; position: relative; }
 #cart h4 { font-size: 20px; margin-bottom: 10px; font-weight: normal }
 
 #cart .w30 input, #cart textarea, #cart select {
@@ -306,6 +306,12 @@ table.__cart_products_list .amount button.plusInCart i { margin-left: -4px }
 .table__cart_products_list2 .product-active.postpone:hover { background: #6ba53e; color: #fff }
 
 @media screen and (max-width: 600px) {
+	#cart h1 {
+		background: #fff;
+		font-size: 14px;padding: 5px;
+		text-align: center
+	}
+
 	.table__cart_products_list2 .tr {
 		flex-direction: column;
 		flex-wrap: wrap;
