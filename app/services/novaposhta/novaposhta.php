@@ -45,17 +45,27 @@ class novaposhta extends Controller {
         $this->load->json($cities);
     }
 
-    public function getWarehouses($CityRef = false)
+    public function getWarehouses($CityRef = false, $category = 'warehouse')
     {
         $warehouses = [];
         $city = $CityRef;
-        if(!$city)
+        if(!$city) {
             $city = $this->data->post('city');
+            if($this->data->post('category') == 'postomat')
+                $category = 'Postomat';
+        }
         if($city) {
             if($_SESSION['option']->api_key)
                 if($data = $this->get_by_api('AddressGeneral', 'getWarehouses', ['CityRef' => $city]))
                     if($data->success && !empty($data->data))
                         foreach ($data->data as $np) {
+                            if($category == 'warehouse' && $np->CategoryOfWarehouse == 'Postomat') {
+                                continue;
+                            }
+                            if($category == 'Postomat' && $np->CategoryOfWarehouse != 'Postomat') {
+                                continue;
+                            }
+                            
                             $warehouse = new stdClass();
                             $warehouse->id = $np->Ref;
                             $warehouse->name = ($_SESSION['language'] == 'ru') ? $np->DescriptionRu : $np->Description;
@@ -109,13 +119,13 @@ class novaposhta extends Controller {
     public function __get_info($info)
     {
         $text = '';
-        if($info['method'] == 'warehouse')
+        if($info['method'] == 'warehouse' || $info['method'] == 'postomat')
         {
-            $text = $this->text('На відділення').'<br>';
+            $text = $info['method'] == 'warehouse' ? $this->text('На відділення') . '<br>' : $this->text('Поштомат') . '<br>';
             if(!empty($info['city']))
                 $text .= $info['city'].'<br>';
-            if(!empty($info['department']))
-                $text .= $info['department'];
+            if(!empty($info['warehouse']))
+                $text .= $info['warehouse'];
         }
         else
         {
@@ -123,7 +133,7 @@ class novaposhta extends Controller {
             if(!empty($info['city']))
                 $text .= $info['city'].'<br>';
             if(!empty($info['address_street']))
-                $text .= $info['address_street'].' '.$info['address_house'];
+                $text .= $info['address_street'] . ' ' . $info['address_house'];
         }
         if(!empty($info['recipientName']))
         {
@@ -143,33 +153,26 @@ class novaposhta extends Controller {
 
     public function __set_Shipping_from_cart()
     {
-        $info = array('text' => '');
-        $info['info'] = array('method' => '', 'city' => '', 'department' => '');
+        $info = ['text' => ''];
+        $info['info'] = ['method' => '', 'city' => '', 'warehouse' => ''];
         $info['info']['method'] = $this->data->post('nova-poshta-method');
-        $info['text'] = $info['info']['method'] == 'warehouse' ? $this->text('На відділення') : $this->text("Кур'єром");
-        $info['text'] .= '<br>';
         if($city = $this->data->post('novaposhta-city'))
         {
             $info['info']['city'] = $city;
             $info['info']['city_ref'] = $this->data->post('nova-poshta-city-ref');
-            $info['text'] .= $city.'<br>';
         }
-        if($info['info']['method'] == 'warehouse')
-        {
-            if($department = $this->data->post('nova-poshta-warehouse'))
-            {
-                $info['info']['department'] = $department;
+        if($info['info']['method'] == 'warehouse' || $info['info']['method'] == 'postomat') {
+            if($warehouse = $this->data->post('novaposhta-warehouse')) {
+                $info['info']['warehouse'] = $warehouse;
                 $info['info']['warehouse_ref'] = $this->data->post('nova-poshta-warehouse-ref');
-                $info['text'] .= $department;
             }
         }
-        else
-        {
+        else {
+            $info['info']['address_street_ref'] = $this->data->post('nova-poshta-address-street-ref');
             $info['info']['address_street'] = $this->data->post('novaposhta-address-street');
             $info['info']['address_house'] = $this->data->post('novaposhta-address-house');
-            $info['text'] .= $info['info']['address_street'].' '.$info['info']['address_house'];
         }
-        
+        $info['text'] = $this->__get_info($info['info']);
         return $info;
     }
 
