@@ -275,16 +275,16 @@ $('.category-mobile-menu>.flex>section').each(function (index){
     $(this).css('order', index);
 });
 
-$(document).on('focusout', 'form.type-2 input', function (){
-    if($(this).val().length) {
-        $(this).closest('.input-group').addClass('val');
-    } else {
-        $(this).closest('.input-group').removeClass('val')
-    }
-});
-$(document).on('focus', 'form.type-2 input', function (){
-    $(this).closest('.input-group').addClass('val');
-});
+// $(document).on('focusout', 'form.type-2 input', function (){
+//     if($(this).val().length) {
+//         $(this).closest('.input-group').addClass('val');
+//     } else {
+//         $(this).closest('.input-group').removeClass('val')
+//     }
+// });
+// $(document).on('focus', 'form.type-2 input', function (){
+//     $(this).closest('.input-group').addClass('val');
+// });
 
 var mask_options = {
     translation: {
@@ -374,4 +374,18 @@ $('#modal-buyProduct form').submit(function(){
 
 $('.alert .close').click(function () {
     $(this).closest('.alert').slideUp();
+});
+
+$(document).on('focusout', '.input-group input', function() {
+    if ($(this).val().length) {
+        $(this).closest('.input-group').addClass('val');
+    } else {
+        $(this).closest('.input-group').removeClass('val')
+    }
+});
+$(document).on('focus', '.input-group input', function() {
+    $(this).closest('.input-group').addClass('val');
+});
+$(document).on('click', '.input-group label', function() {
+    $(this).closest('.input-group').addClass('val');
 });

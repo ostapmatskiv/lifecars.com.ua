@@ -169,19 +169,5 @@ if ($products) {
 <script>
 	window.onload = function() {
 		// $('#signInForm input[name=phone]').focus();
-
-		$(document).on('focusout', '.input-group input', function() {
-			if ($(this).val().length) {
-				$(this).closest('.input-group').addClass('val');
-			} else {
-				$(this).closest('.input-group').removeClass('val')
-			}
-		});
-		$(document).on('focus', '.input-group input', function() {
-			$(this).closest('.input-group').addClass('val');
-		});
-		$(document).on('click', '.input-group label', function() {
-			$(this).closest('.input-group').addClass('val');
-		});
 	}
 </script>
