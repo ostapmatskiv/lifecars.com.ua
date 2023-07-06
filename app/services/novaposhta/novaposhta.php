@@ -68,10 +68,11 @@ class novaposhta extends Controller {
                             
                             $warehouse = new stdClass();
                             $warehouse->id = $np->Ref;
-                            $warehouse->name = ($_SESSION['language'] == 'ru') ? $np->DescriptionRu : $np->Description;
+                            // $warehouse->name = ($_SESSION['language'] == 'ru') ? $np->DescriptionRu : $np->Description;
+                            $warehouse->name = str_replace('Відділення ', '', $np->Description);
                             $warehouse->info = $warehouse->title = '';
                             $days = ['Monday' => 'Пн', 'Tuesday' => 'Вт', 'Wednesday' => 'Ср', 'Thursday' => 'Чт', 'Friday' => 'Пт', 'Saturday' => 'Сб', 'Sunday' => 'Нд'];
-                            if($_SESSION['language'] == 'ru') $days['Sunday'] = 'Вс';
+                            // if($_SESSION['language'] == 'ru') $days['Sunday'] = 'Вс';
                             $schedule = [$this->text('Графік роботи:')];
                             foreach ($np->Schedule as $day => $value) {
                                 $value = str_replace('-', ' - ', $value);
