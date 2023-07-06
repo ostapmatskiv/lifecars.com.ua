@@ -4,15 +4,10 @@
         $checked = (!empty($userShipping->method) && $userShipping->method == $key) ? 'checked' : $checked; ?>
         <label <?= $checked ? 'class="active"' : '' ?>>
             <input type="radio" name="nova-poshta-method" value="<?= $key ?>" <?= $checked ?>>
-            <?= $this->text($key_title) ?> <?= $checked ?>
+            <?= $this->text($key_title) ?>
         </label>
     <?php } ?>
 </div>
-
-<pre>
-    <?php // print_r($userShipping); 
-    ?>
-</pre>
 
 <input type="hidden" name="nova-poshta-city-ref" value="<?= $userShipping->city_ref ?? '' ?>">
 <input type="hidden" name="nova-poshta-warehouse-ref" value="<?= $userShipping->warehouse_ref ?? '' ?>">
@@ -124,7 +119,7 @@ if ($userShipping && $userShipping->initShipping)
             }
         ],
 
-        warehouses: null, //[],
+        warehouses: null, //[], array if has data
 
         modal_show(mode = 'city') {
             let modal = $('#novaposhta-modal'),
@@ -160,9 +155,11 @@ if ($userShipping && $userShipping->initShipping)
                 input.val('').attr('placeholder', this.modal_labels[mode]);
                 input.on('input', NP.modal_inputWarehouseChange);
                 input_label.text(this.modal_labels[mode]);
+                h4.text($('input[name="novaposhta-city"]').val());
 
                 if(this.warehouses === null) {
                     let city_ref = $('input[name="nova-poshta-city-ref"]').val();
+                    console.log('GET waregouses. City red: ' + city_ref);
                     this.modal_getWarehouses(city_ref);
                 }
                 else {
