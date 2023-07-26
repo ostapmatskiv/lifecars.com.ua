@@ -87,61 +87,63 @@
 </div>
 
 <div class="row">
-	<div class="col-sm-6">
-		<?php if(!empty($cart->payment->name)) { ?>
-		<div class="panel">
-			<div class="panel-body">
-				<?php
-				echo '<legend><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Оплата</legend></p>';
-				echo '<p>Платіжний механізм: <b>'.$cart->payment->name.'</b></p>';
-				echo "<p>{$cart->payment->info}</p>";
-				if(!empty($cart->payment->admin_link))
-					echo "<a href='{$cart->payment->admin_link}' class='btn btn-info btn-xs'><i class=\"fa fa-external-link\" aria-hidden=\"true\"></i> Повна інформація по оплаті</a>";
-				?>
+	<?php if($this->data->uri(3) != 'edit-shipping') { ?>
+		<div class="col-sm-6">
+			<?php if(!empty($cart->payment->name)) { ?>
+			<div class="panel">
+				<div class="panel-body">
+					<?php
+					echo '<legend><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Оплата</legend></p>';
+					echo '<p>Платіжний механізм: <b>'.$cart->payment->name.'</b></p>';
+					echo "<p>{$cart->payment->info}</p>";
+					if(!empty($cart->payment->admin_link))
+						echo "<a href='{$cart->payment->admin_link}' class='btn btn-info btn-xs'><i class=\"fa fa-external-link\" aria-hidden=\"true\"></i> Повна інформація по оплаті</a>";
+					?>
+				</div>
 			</div>
-		</div>
-		<?php } if($cart->payed < $cart->total && empty($cart->payment_alias) && $this->data->uri(3) != 'edit-shipping') { ?>
-		<div class="panel">
-			<div class="panel-body">
-				<legend><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Внести оплату</legend>
-				<table class="table table-striped table-bordered nowrap" width="100%">
-					<form action="<?= SITE_URL.'admin/'. $_SESSION['alias']->alias.'/addPayment'?>" onsubmit="return confirm('Внести оплату')" method="POST" class="form-horizontal" >
-						<input type="hidden" name="cart" value="<?= $cart->id?>">
-						<tbody>
-							<tr>
-								<th>Механізм</th>
-								<td>
-									<select name="status" class="form-control" required>
-										<?php foreach($cart->paymentsMethod as $method) if(empty($method->wl_alias)) { ?>
-										<option value="<?= $method->id?>"><?= $method->name?></option>
-										<?php } ?>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<th>Сума (у валюті корзини)</th>
-								<td>
-									<input name="amount" type="number" min="0.01" step="0.01" class="form-control" value="<?=round($cart->total - $cart->payed, 2)?>" required />
-								</td>
-							</tr>
-							<tr>
-								<th>Коментар</th>
-								<td><textarea name="comment" class="form-control" rows="5"></textarea></td>
-							</tr>
-							<tr>
-								<th></th>
-								<td>
-									<button type="submit" class="btn btn-md btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i> Внести оплату</button>
-								</td>
-							</tr>
-						</tbody>
-					</form>
-				</table>
+			<?php } if($cart->payed < $cart->total && empty($cart->payment_alias)) { ?>
+			<div class="panel">
+				<div class="panel-body">
+					<legend><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Внести оплату</legend>
+					<table class="table table-striped table-bordered nowrap" width="100%">
+						<form action="<?= SITE_URL.'admin/'. $_SESSION['alias']->alias.'/addPayment'?>" onsubmit="return confirm('Внести оплату')" method="POST" class="form-horizontal" >
+							<input type="hidden" name="cart" value="<?= $cart->id?>">
+							<tbody>
+								<tr>
+									<th>Механізм</th>
+									<td>
+										<select name="status" class="form-control" required>
+											<?php foreach($cart->paymentsMethod as $method) if(empty($method->wl_alias)) { ?>
+											<option value="<?= $method->id?>"><?= $method->name?></option>
+											<?php } ?>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Сума (у валюті корзини)</th>
+									<td>
+										<input name="amount" type="number" min="0.01" step="0.01" class="form-control" value="<?=round($cart->total - $cart->payed, 2)?>" required />
+									</td>
+								</tr>
+								<tr>
+									<th>Коментар</th>
+									<td><textarea name="comment" class="form-control" rows="5"></textarea></td>
+								</tr>
+								<tr>
+									<th></th>
+									<td>
+										<button type="submit" class="btn btn-md btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i> Внести оплату</button>
+									</td>
+								</tr>
+							</tbody>
+						</form>
+					</table>
+				</div>
 			</div>
+			<?php } ?>
 		</div>
-		<?php } ?>
-	</div>
-	<div class="col-sm-6">
+	<?php } ?>
+	<div class="col-sm-<?= $this->data->uri(3) == 'edit-shipping' ? 12 : 6 ?>">
 		<?php if(($cart->shipping_id || !empty($cart->shipping_info)) && $this->data->uri(3) != 'edit-shipping') { ?>
 		<div class="panel">
 			<div class="panel-body">
@@ -209,35 +211,41 @@
 		elseif($cart->action == 'new' && (empty($cart->shipping_id) || $this->data->uri(3) == 'edit-shipping'))
 		{
 			if($shippings = $this->cart_model->getShippings(array('active' => 1))) { ?>
-		<div class="panel" id="cart">
-			<div class="panel-body">
-				<legend><i class="fa fa-truck" aria-hidden="true"></i> Доставка</legend>
-				<?php if(empty($cart->shipping_id))
-							$userShipping = $this->cart_model->getUserShipping($cart->user);
-						else
-						{
-							$userShipping = new stdClass();
-							$userShipping->method_id = $cart->shipping_id;
-							$userShipping->info = $cart->shipping_info;
-							$userShipping->city = $userShipping->department = $userShipping->address = '';
-							if(!empty($userShipping->info))
-								foreach ($userShipping->info as $key => $value) {
-									$userShipping->$key = $value;
-								}
-						}
-				echo '<form action="'.SITE_URL.$_SESSION['alias']->alias.'/set__shippingToOrder" method="post" class="col-sm-4 w30">';
-				echo '<input type="hidden" name="order_id" value="'.$cart->id.'">';
-				echo '<input type="hidden" name="redirect" value="admin/'.$_SESSION['alias']->alias.'/'.$cart->id.'">';
-				require_once APP_PATH.'services/cart/views/__shippings_subview.php';
-				echo '<a href="/admin/'.$_SESSION['alias']->alias.'/'.$cart->id.'" class="btn btn-warning m-r-5" style="display: inline-block;"><i class="fa fa-undo" aria-hidden="true"></i> Назад</a>';
-				echo '<button type="submit" class="btn btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i> Зберегти</button>';
-				echo "</form></div></div>";
+			<div class="panel" id="cart">
+				<div class="panel-body">
+					<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
 
-				echo '<link rel="stylesheet" type="text/css" href="'.SERVER_URL.'style/'.$_SESSION['alias']->alias.'/cart.css">';
-				echo '<link rel="stylesheet" type="text/css" href="'.SERVER_URL.'style/'.$_SESSION['alias']->alias.'/checkout.css">';
-				echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">';
-				$this->load->js(['assets/jquery-ui/1.12.1/jquery-ui.min.js', 'assets/jquery.mask.min.js', 'js/'.$_SESSION['alias']->alias.'/cities.js', 'js/'.$_SESSION['alias']->alias.'/checkout.js']);
-			}
+					<a href="/admin/<?=$_SESSION['alias']->alias.'/'.$cart->id?>" class="btn btn-warning btn-xs pull-right"><i class="fa fa-undo" aria-hidden="true"></i> Назад</a>
+					<legend><i class="fa fa-truck" aria-hidden="true"></i> Доставка</legend>
+					<?php if(empty($cart->shipping_id)) {
+						$userShipping = $this->cart_model->getUserShipping($cart->user);
+					}
+					else
+					{
+						$userShipping = new stdClass();
+						$userShipping->method_id = $cart->shipping_id;
+						$userShipping->info = $cart->shipping_info;
+						$userShipping->city = $userShipping->department = $userShipping->address = '';
+						if(!empty($userShipping->info))
+							foreach ($userShipping->info as $key => $value) {
+								$userShipping->$key = $value;
+							}
+					}
+					echo '<form action="'.SITE_URL.$_SESSION['alias']->alias.'/set__shippingToOrder" method="post" class="col-sm-4 w30 w50">';
+					echo '<input type="hidden" name="order_id" value="'.$cart->id.'">';
+					echo '<input type="hidden" name="redirect" value="admin/'.$_SESSION['alias']->alias.'/'.$cart->id.'">';
+					require_once APP_PATH.'services/cart/views/__shippings_subview.php';
+					echo '<button type="submit" class="btn btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i> Зберегти</button>';
+					echo "</form>";
+
+					echo '<link rel="stylesheet" type="text/css" href="'.SERVER_URL.'style/'.$_SESSION['alias']->alias.'/cart.css">';
+					echo '<link rel="stylesheet" type="text/css" href="'.SERVER_URL.'style/'.$_SESSION['alias']->alias.'/checkout.css">';
+					echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">';
+					$this->load->js(['assets/jquery-ui/1.12.1/jquery-ui.min.js', 'assets/jquery.mask.min.js', 'js/'.$_SESSION['alias']->alias.'/cities.js', 'js/'.$_SESSION['alias']->alias.'/checkout.js']);
+					?>
+				</div>
+			</div>
+			<?php }
 		}
 		?>
 	</div>
@@ -289,6 +297,7 @@
 	</div>
 </div>
 
+<div id="modal-bg"></div>
 
 <script>
 function set_1c_status(btn) {
@@ -322,4 +331,97 @@ function set_1c_status(btn) {
         $('#page-loader').addClass('hide');
     });
 }
+window.onload = function() {
+	$(document).on('focusout', '.input-group input', function() {
+		if ($(this).val().length) {
+			$(this).closest('.input-group').addClass('val');
+		} else {
+			$(this).closest('.input-group').removeClass('val')
+		}
+	});
+	$(document).on('focus', '.input-group input', function() {
+		$(this).closest('.input-group').addClass('val');
+	});
+	$(document).on('click', '.input-group label', function() {
+		$(this).closest('.input-group').addClass('val');
+	});
+}
 </script>
+
+<style>
+	#cart .w30 label {
+		padding: 0;
+	}
+#cart .input-group {
+    position: relative;
+    width: 100%;
+}
+#cart .input-group label {
+    position: absolute;
+    color: rgba(0, 0, 0, 0.4);
+    top: 20px;
+    left: 10px;
+    font-size: 16px;
+    line-height: 17px;
+    letter-spacing: 0.25px;
+    transition: all 0.2s ease 0s;
+    background: #fff;
+    padding: 0px 5px;
+}
+#cart .input-group.val label {
+    top: -8px;
+    font-size: 12px;
+    height: 17px;
+    background: #fff;
+	padding: 0 10px !important;
+    top: 0;
+}
+
+#cart .cart_section {
+	padding: 0;
+}
+
+#cart .modal {
+    position: fixed;
+    border-radius: 5px;
+    background: #fff;
+    padding: 15px;
+    width: 420px;
+    height: 520px;
+    top: 10%;
+    left: calc(50% - 210px);
+    z-index: 999;
+    display: none;
+    overflow-y: auto;
+	padding-top: 20px;
+}
+
+.modal::-webkit-scrollbar {
+    width: 5px;
+}
+
+.modal::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 5px;
+    border: 5px solid #7cbe49;
+    box-shadow: inset 1px 1px 5px #7cbe49 ;
+}
+
+.modal i.fa-times {
+    cursor: pointer
+}
+#modal-bg {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.8);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 998;
+    display: none
+}
+</style>
