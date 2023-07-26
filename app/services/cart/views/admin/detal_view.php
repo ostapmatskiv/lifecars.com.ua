@@ -70,6 +70,15 @@
 	</div>
 </div>
 
+<?php if(!empty($cart->comment) && $this->data->uri(3) != 'edit-shipping') { ?>
+<div class="panel">
+	<div class="panel-body">
+	    <legend><i class="fa fa-commenting" aria-hidden="true"></i> Коментар (побажання) клієнта до замовлення</legend>
+		<p><?=$cart->comment?></p>
+	</div>
+</div>
+<?php } ?>
+
 <div class="panel" id="manager_comment" <?=empty($cart->manager_comment) ? 'style="display:none"':''?>>
 	<div class="panel-body">
 	    <legend><i class="fa fa-comment-o" aria-hidden="true"></i> Службовий коментар до замовлення</legend>
@@ -77,152 +86,172 @@
 	</div>
 </div>
 
-<?php if(!empty($cart->payment->name)) { ?>
-<div class="panel">
-	<div class="panel-body">
-		<?php
-    	echo '<legend><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Оплата</legend></p>';
-	    echo '<p>Платіжний механізм: <b>'.$cart->payment->name.'</b></p>';
-	    echo "<p>{$cart->payment->info}</p>";
-	    if(!empty($cart->payment->admin_link))
-	        echo "<a href='{$cart->payment->admin_link}' class='btn btn-info btn-xs'><i class=\"fa fa-external-link\" aria-hidden=\"true\"></i> Повна інформація по оплаті</a>";
-		?>
-	</div>
-</div>
-<?php } if($cart->payed < $cart->total && empty($cart->payment_alias) && $this->data->uri(3) != 'edit-shipping') { ?>
-<div class="panel">
-	<div class="panel-body">
-		<legend><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Внести оплату</legend>
-		<table class="table table-striped table-bordered nowrap" width="100%">
-		    <form action="<?= SITE_URL.'admin/'. $_SESSION['alias']->alias.'/addPayment'?>" onsubmit="return confirm('Внести оплату')" method="POST" class="form-horizontal" >
-		        <input type="hidden" name="cart" value="<?= $cart->id?>">
-		        <tbody>
-		            <tr>
-		                <th>Механізм</th>
-		                <td>
-		                    <select name="status" class="form-control" required>
-		                        <?php foreach($cart->paymentsMethod as $method) if(empty($method->wl_alias)) { ?>
-		                        <option value="<?= $method->id?>"><?= $method->name?></option>
-		                        <?php } ?>
-		                    </select>
-		                </td>
-		            </tr>
-		            <tr>
-		                <th>Сума (у валюті корзини)</th>
-		                <td>
-		                    <input name="amount" type="number" min="0.01" step="0.01" class="form-control" value="<?=round($cart->total - $cart->payed, 2)?>" required />
-		                </td>
-		            </tr>
-		            <tr>
-		                <th>Коментар</th>
-		                <td><textarea name="comment" class="form-control" rows="5"></textarea></td>
-		            </tr>
-		            <tr>
-		                <th></th>
-		                <td>
-		                    <button type="submit" class="btn btn-md btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i> Внести оплату</button>
-		                </td>
-		            </tr>
-		        </tbody>
-		    </form>
-		</table>
-	</div>
-</div>
-<?php } if(!empty($cart->comment) && $this->data->uri(3) != 'edit-shipping') { ?>
-<div class="panel">
-	<div class="panel-body">
-	    <legend><i class="fa fa-commenting" aria-hidden="true"></i> Коментар (побажання) клієнта до замовлення</legend>
-		<p><?=$cart->comment?></p>
-	</div>
-</div>
-<?php }
-
-if(($cart->shipping_id || !empty($cart->shipping_info)) && $this->data->uri(3) != 'edit-shipping') { ?>
-<div class="panel">
-	<div class="panel-body">
-		<legend><i class="fa fa-truck" aria-hidden="true"></i> Доставка
-			<?=($cart->action == 'new') ? "<a href='/admin/{$_SESSION['alias']->alias}/{$cart->id}/edit-shipping' class='btn btn-primary btn-xs'><i class=\"fa fa-pencil\"></i> редагувати</a>" : '' ?>
-		</legend>
-		<?php
-	    if(!empty($cart->shipping->name))
-	        echo "<p>Служба доставки: <b>{$cart->shipping->name}</b> </p>";
-	    if(!empty($cart->shipping->text))
-	        echo "<p>{$cart->shipping->text}</p>";
-	    elseif(is_array($cart->shipping_info))
-	    {
-	        if(!empty($cart->shipping_info['city']))
-	            echo "<p>Місто: <b>{$cart->shipping_info['city']}</b> </p>";
-	        if(!empty($cart->shipping_info['department']))
-	            echo "<p>Відділення: <b>{$cart->shipping_info['department']}</b> </p>";
-	        if(!empty($cart->shipping_info['address']))
-	            echo "<p>Адреса: <b>{$cart->shipping_info['address']}</b> </p>";
-	    }
-	    elseif(!empty($cart->shipping_info) && is_string($cart->shipping_info))
-	    	echo "<p>{$cart->shipping_info}</p>";
-	    if(!empty($cart->shipping_info['recipient']))
-	        echo "<p>Отримувач: <b>{$cart->shipping_info['recipient']}</b> </p>";
-	    if(!empty($cart->shipping_info['phone']))
-	        echo "<p>Контактний телефон: <b>{$cart->shipping_info['phone']}</b> </p>";
-		?>
-		<div class="form-group">
-            <label class="col-md-3 control-label text-right">ТТН доставки</label>
-            <div class="col-md-9">
-            	<div class="input-group">
-                	<input type="text" class="form-control" data-cart="<?=$cart->id?>" id="shipping_ttn" value="<?=$cart->ttn?>" placeholder="ТТН доставки">
-                	<span class="input-group-btn">
-                		<?php $showTTNmodal = 0;
-                		if($cart->status_weight < 20 && $cartStatuses)
-                			foreach ($cartStatuses as $status) {
-                				if($status->weight >= 20 && $status->weight < 30)
-                				{
-                					$showTTNmodal = 1;
-                					break;
-                				}
-                			}
-                		 ?>
-						<button type="submit" class="btn btn-secondary" onclick="presaveTTN(<?=$showTTNmodal?>)">Зберегти</button>
-					</span>
+<div class="row">
+	<?php if($this->data->uri(3) != 'edit-shipping') { ?>
+		<div class="col-sm-6">
+			<?php if(!empty($cart->payment->name)) { ?>
+			<div class="panel">
+				<div class="panel-body">
+					<?php
+					echo '<legend><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Оплата</legend></p>';
+					echo '<p>Платіжний механізм: <b>'.$cart->payment->name.'</b></p>';
+					echo "<p>{$cart->payment->info}</p>";
+					if(!empty($cart->payment->admin_link))
+						echo "<a href='{$cart->payment->admin_link}' class='btn btn-info btn-xs'><i class=\"fa fa-external-link\" aria-hidden=\"true\"></i> Повна інформація по оплаті</a>";
+					?>
 				</div>
-            </div>
-        </div>
+			</div>
+			<?php } if($cart->payed < $cart->total && empty($cart->payment_alias)) { ?>
+			<div class="panel">
+				<div class="panel-body">
+					<legend><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Внести оплату</legend>
+					<table class="table table-striped table-bordered nowrap" width="100%">
+						<form action="<?= SITE_URL.'admin/'. $_SESSION['alias']->alias.'/addPayment'?>" onsubmit="return confirm('Внести оплату')" method="POST" class="form-horizontal" >
+							<input type="hidden" name="cart" value="<?= $cart->id?>">
+							<tbody>
+								<tr>
+									<th>Механізм</th>
+									<td>
+										<select name="status" class="form-control" required>
+											<?php foreach($cart->paymentsMethod as $method) if(empty($method->wl_alias)) { ?>
+											<option value="<?= $method->id?>"><?= $method->name?></option>
+											<?php } ?>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>Сума (у валюті корзини)</th>
+									<td>
+										<input name="amount" type="number" min="0.01" step="0.01" class="form-control" value="<?=round($cart->total - $cart->payed, 2)?>" required />
+									</td>
+								</tr>
+								<tr>
+									<th>Коментар</th>
+									<td><textarea name="comment" class="form-control" rows="5"></textarea></td>
+								</tr>
+								<tr>
+									<th></th>
+									<td>
+										<button type="submit" class="btn btn-md btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i> Внести оплату</button>
+									</td>
+								</tr>
+							</tbody>
+						</form>
+					</table>
+				</div>
+			</div>
+			<?php } ?>
+		</div>
+	<?php } ?>
+	<div class="col-sm-<?= $this->data->uri(3) == 'edit-shipping' ? 12 : 6 ?>">
+		<?php if(($cart->shipping_id || !empty($cart->shipping_info)) && $this->data->uri(3) != 'edit-shipping') { ?>
+		<div class="panel">
+			<div class="panel-body">
+				<legend><i class="fa fa-truck" aria-hidden="true"></i> Доставка
+					<?=($cart->action == 'new') ? "<a href='/admin/{$_SESSION['alias']->alias}/{$cart->id}/edit-shipping' class='btn btn-primary btn-xs'><i class=\"fa fa-pencil\"></i> редагувати</a>" : '' ?>
+				</legend>
+				<?php
+				if(!empty($cart->shipping_info) && is_string($cart->shipping_info)) {
+					$shipping_info = @unserialize($cart->shipping_info);
+					if(is_array($shipping_info)) {
+						$cart->shipping_info = $shipping_info;
+						if(!empty($shipping_info['recipientName'])) {
+							$cart->shipping_info['recipient'] = $shipping_info['recipientName'];
+						}
+						if(!empty($shipping_info['recipientPhone'])) {
+							$cart->shipping_info['phone'] = $shipping_info['recipientPhone'];
+						}
+					}
+				}
+
+				if(!empty($cart->shipping->name))
+					echo "<p>Служба доставки: <b>{$cart->shipping->name}</b> </p>";
+				if(!empty($cart->shipping->text))
+					echo "<p>{$cart->shipping->text}</p>";
+				elseif(is_array($cart->shipping_info))
+				{
+					if(!empty($cart->shipping_info['city']))
+						echo "<p>Місто: <b>{$cart->shipping_info['city']}</b> </p>";
+					if(!empty($cart->shipping_info['department']))
+						echo "<p>Відділення: <b>{$cart->shipping_info['department']}</b> </p>";
+					if(!empty($cart->shipping_info['address']))
+						echo "<p>Адреса: <b>{$cart->shipping_info['address']}</b> </p>";
+				}
+				elseif(!empty($cart->shipping_info) && is_string($cart->shipping_info))
+					echo "<p>{$cart->shipping_info}</p>";
+				if(!empty($cart->shipping_info['recipient']))
+					echo "<p>Отримувач: <b>{$cart->shipping_info['recipient']}</b> </p>";
+				if(!empty($cart->shipping_info['phone']))
+					echo "<p>Контактний телефон: <b>{$cart->shipping_info['phone']}</b> </p>";
+				?>
+				<div class="form-group">
+					<label class="col-md-3 control-label text-right">ТТН доставки</label>
+					<div class="col-md-9">
+						<div class="input-group">
+							<input type="text" class="form-control" data-cart="<?=$cart->id?>" id="shipping_ttn" value="<?=$cart->ttn?>" placeholder="ТТН доставки">
+							<span class="input-group-btn">
+								<?php $showTTNmodal = 0;
+								if($cart->status_weight < 20 && $cartStatuses)
+									foreach ($cartStatuses as $status) {
+										if($status->weight >= 20 && $status->weight < 30)
+										{
+											$showTTNmodal = 1;
+											break;
+										}
+									}
+								?>
+								<button type="submit" class="btn btn-secondary" onclick="presaveTTN(<?=$showTTNmodal?>)">Зберегти</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<?php }
+		elseif($cart->action == 'new' && (empty($cart->shipping_id) || $this->data->uri(3) == 'edit-shipping'))
+		{
+			if($shippings = $this->cart_model->getShippings(array('active' => 1))) { ?>
+			<div class="panel" id="cart">
+				<div class="panel-body">
+					<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
+
+					<a href="/admin/<?=$_SESSION['alias']->alias.'/'.$cart->id?>" class="btn btn-warning btn-xs pull-right"><i class="fa fa-undo" aria-hidden="true"></i> Назад</a>
+					<legend><i class="fa fa-truck" aria-hidden="true"></i> Доставка</legend>
+					<?php if(empty($cart->shipping_id)) {
+						$userShipping = $this->cart_model->getUserShipping($cart->user);
+					}
+					else
+					{
+						$userShipping = new stdClass();
+						$userShipping->method_id = $cart->shipping_id;
+						$userShipping->info = $cart->shipping_info;
+						$userShipping->city = $userShipping->department = $userShipping->address = '';
+						if(!empty($userShipping->info))
+							foreach ($userShipping->info as $key => $value) {
+								$userShipping->$key = $value;
+							}
+					}
+					echo '<form action="'.SITE_URL.$_SESSION['alias']->alias.'/set__shippingToOrder" method="post" class="col-sm-4 w30 w50">';
+					echo '<input type="hidden" name="order_id" value="'.$cart->id.'">';
+					echo '<input type="hidden" name="redirect" value="admin/'.$_SESSION['alias']->alias.'/'.$cart->id.'">';
+					require_once APP_PATH.'services/cart/views/__shippings_subview.php';
+					echo '<button type="submit" class="btn btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i> Зберегти</button>';
+					echo "</form>";
+
+					echo '<link rel="stylesheet" type="text/css" href="'.SERVER_URL.'style/'.$_SESSION['alias']->alias.'/cart.css">';
+					echo '<link rel="stylesheet" type="text/css" href="'.SERVER_URL.'style/'.$_SESSION['alias']->alias.'/checkout.css">';
+					echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">';
+					$this->load->js(['assets/jquery-ui/1.12.1/jquery-ui.min.js', 'assets/jquery.mask.min.js', 'js/'.$_SESSION['alias']->alias.'/cities.js', 'js/'.$_SESSION['alias']->alias.'/checkout.js']);
+					?>
+				</div>
+			</div>
+			<?php }
+		}
+		?>
 	</div>
 </div>
-<?php }
-elseif($cart->action == 'new' && (empty($cart->shipping_id) || $this->data->uri(3) == 'edit-shipping'))
-{
-	if($shippings = $this->cart_model->getShippings(array('active' => 1))) { ?>
-<div class="panel" id="cart">
-	<div class="panel-body">
-		<legend><i class="fa fa-truck" aria-hidden="true"></i> Доставка</legend>
-	    <?php if(empty($cart->shipping_id))
-	    			$userShipping = $this->cart_model->getUserShipping($cart->user);
-	    		else
-	    		{
-	    			$userShipping = new stdClass();
-	    			$userShipping->method_id = $cart->shipping_id;
-	    			$userShipping->info = $cart->shipping_info;
-	    			$userShipping->city = $userShipping->department = $userShipping->address = '';
-	    			if(!empty($userShipping->info))
-						foreach ($userShipping->info as $key => $value) {
-							$userShipping->$key = $value;
-						}
-	    		}
-	    echo '<form action="'.SITE_URL.$_SESSION['alias']->alias.'/set__shippingToOrder" method="post" class="col-sm-4 w30">';
-	    echo '<input type="hidden" name="order_id" value="'.$cart->id.'">';
-	    echo '<input type="hidden" name="redirect" value="admin/'.$_SESSION['alias']->alias.'/'.$cart->id.'">';
-	    require_once APP_PATH.'services/cart/views/__shippings_subview.php';
-	    echo '<a href="/admin/'.$_SESSION['alias']->alias.'/'.$cart->id.'" class="btn btn-warning m-r-5" style="display: inline-block;"><i class="fa fa-undo" aria-hidden="true"></i> Назад</a>';
-	    echo '<button type="submit" class="btn btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i> Зберегти</button>';
-		echo "</form></div></div>";
 
-		echo '<link rel="stylesheet" type="text/css" href="'.SERVER_URL.'style/'.$_SESSION['alias']->alias.'/cart.css">';
-		echo '<link rel="stylesheet" type="text/css" href="'.SERVER_URL.'style/'.$_SESSION['alias']->alias.'/checkout.css">';
-		echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">';
-		$this->load->js(['assets/jquery-ui/1.12.1/jquery-ui.min.js', 'assets/jquery.mask.min.js', 'js/'.$_SESSION['alias']->alias.'/cities.js', 'js/'.$_SESSION['alias']->alias.'/checkout.js']);
-	}
-}
-
-if($cart->status > 0 && $cart->status_weight < 90 && $this->data->uri(3) != 'edit-shipping') { ?>
+<?php if($cart->status > 0 && $cart->status_weight < 90 && $this->data->uri(3) != 'edit-shipping') { ?>
 <div class="panel">
 	<div class="panel-body">
 		<?php require_once 'tabs/_tabs-history.php'; ?>
@@ -268,6 +297,7 @@ if($cart->status > 0 && $cart->status_weight < 90 && $this->data->uri(3) != 'edi
 	</div>
 </div>
 
+<div id="modal-bg"></div>
 
 <script>
 function set_1c_status(btn) {
@@ -301,4 +331,97 @@ function set_1c_status(btn) {
         $('#page-loader').addClass('hide');
     });
 }
+window.onload = function() {
+	$(document).on('focusout', '.input-group input', function() {
+		if ($(this).val().length) {
+			$(this).closest('.input-group').addClass('val');
+		} else {
+			$(this).closest('.input-group').removeClass('val')
+		}
+	});
+	$(document).on('focus', '.input-group input', function() {
+		$(this).closest('.input-group').addClass('val');
+	});
+	$(document).on('click', '.input-group label', function() {
+		$(this).closest('.input-group').addClass('val');
+	});
+}
 </script>
+
+<style>
+	#cart .w30 label {
+		padding: 0;
+	}
+#cart .input-group {
+    position: relative;
+    width: 100%;
+}
+#cart .input-group label {
+    position: absolute;
+    color: rgba(0, 0, 0, 0.4);
+    top: 20px;
+    left: 10px;
+    font-size: 16px;
+    line-height: 17px;
+    letter-spacing: 0.25px;
+    transition: all 0.2s ease 0s;
+    background: #fff;
+    padding: 0px 5px;
+}
+#cart .input-group.val label {
+    top: -8px;
+    font-size: 12px;
+    height: 17px;
+    background: #fff;
+	padding: 0 10px !important;
+    top: 0;
+}
+
+#cart .cart_section {
+	padding: 0;
+}
+
+#cart .modal {
+    position: fixed;
+    border-radius: 5px;
+    background: #fff;
+    padding: 15px;
+    width: 420px;
+    height: 520px;
+    top: 10%;
+    left: calc(50% - 210px);
+    z-index: 999;
+    display: none;
+    overflow-y: auto;
+	padding-top: 20px;
+}
+
+.modal::-webkit-scrollbar {
+    width: 5px;
+}
+
+.modal::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 5px;
+    border: 5px solid #7cbe49;
+    box-shadow: inset 1px 1px 5px #7cbe49 ;
+}
+
+.modal i.fa-times {
+    cursor: pointer
+}
+#modal-bg {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.8);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 998;
+    display: none
+}
+</style>
