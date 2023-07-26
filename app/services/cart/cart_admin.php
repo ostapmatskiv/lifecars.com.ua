@@ -1944,21 +1944,22 @@ class cart_admin extends Controller {
         if (is_object($cart) && !empty($cart->id)) {
             if(isset($cart->{'1c_status'}) && $cart->{'1c_status'} > 0)
                 $this->db->updateRow('s_cart', ['1c_status' => 0], $cart->id);
+            $s_cart_update = ['date_edit' => time()];
             $total = $this->db->getQuery("SELECT SUM(quantity * price) as totalPrice FROM `s_cart_products` WHERE `cart` = $cart->id")->totalPrice;
             if ($total) {
                 if($cart->bonus)
                 {
                     $this->load->smodel('cart_model');
-                    $discount = $this->cart_model->getBonusDiscount($cart->bonus, $total);
-                    $total -= $discount;
+                    $s_cart_update['discount'] = $this->cart_model->getBonusDiscount($cart->bonus, $total);
+                    $total -= $s_cart_update['discount'];
                 }
                 if($cart->shipping_id)
                     if($shipping = $this->db->getAllDataById('s_cart_shipping', array('id' => $cart->shipping_id, 'active' => 1)))
                         if($shipping->pay >= 0 && $total < $shipping->pay)
                             $total += $shipping->price;
             }
-            $total = round($total, 3);
-            $this->db->updateRow('s_cart', ['total' => $total, 'date_edit' => time()], $cartId);
+            $s_cart_update['total'] = round($total, 3);
+            $this->db->updateRow('s_cart', $s_cart_update, $cartId);
 
             if($cart->payment_alias && $cart->payment_id)
                 $this->load->function_in_alias($cart->payment_alias, '__editPayment', ['id' => $cart->payment_id, 'credit' => $total], true);
