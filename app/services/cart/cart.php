@@ -72,8 +72,17 @@ class cart extends Controller {
             $res['products'] = $this->setProductsInfo($res['products']);
             $res['subTotal'] = $this->cart_model->getSubTotalInCart();
             $res['subTotalFormat'] = $this->load->function_in_alias($res['products'][0]->product_alias, '__formatPrice', $res['subTotal']);
-            if($this->cart_model->discountTotal)
+            if($this->cart_model->discountTotal) {
                 $res['discountTotal'] = $this->load->function_in_alias($res['products'][0]->product_alias, '__formatPrice', $this->cart_model->discountTotal);
+            }
+                
+            if($this->cart_model->discount_percent) {
+                foreach ($res['products'] as &$product) {
+                    $product->discount = round($product->price * $this->cart_model->discount_percent / 100);
+					$product->priceBeforeDiscount = $product->price;
+					$product->price = $product->price - $product->discount;
+                }
+            }
         }
         $this->load->page_view('index_view', $res);
     }
@@ -1180,6 +1189,16 @@ class cart extends Controller {
             $products = $this->setProductsInfo($products);
             $subTotal = $total = $this->cart_model->getSubTotalInCart();
             $subTotal += $this->cart_model->discountTotal;
+
+            if($this->cart_model->discount_percent) {
+                foreach ($products as &$product) {
+                    $product->discount = round($product->price * $this->cart_model->discount_percent / 100);
+					$product->priceBeforeDiscount = $product->price;
+					$product->price = $product->price - $product->discount;
+					$product->priceBeforeDiscount_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->priceBeforeDiscount);
+					$product->info->price_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price);
+                }
+            }
 
             $payments = $this->cart_model->getPayments(array('active' => 1));
 

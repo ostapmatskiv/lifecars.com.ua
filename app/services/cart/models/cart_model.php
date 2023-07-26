@@ -242,6 +242,7 @@ class cart_model
 	}
 
 	public $discountTotal = 0;
+	public $discount_percent = 0;
 	private $bonusDiscountId = 0;
 	public $bonusDiscountInfo = array();
 	public function getSubTotalInCart($user = 0)
@@ -258,10 +259,24 @@ class cart_model
 				if(isset($product->bonus) && $product->bonus < 0 && $bonus == 0)
 					$bonus = $product->bonus;
 			}
-		if($discount = $this->getBonusDiscount(-$bonus, $subTotal))
+		if($discount_sum_percent = $this->getBonusDiscount(-$bonus, $subTotal))
 		{
-			$subTotal -= $discount;
-			$this->discountTotal += $discount;
+			if($discount_sum_percent < 0) {
+				$this->discount_percent = -$discount_sum_percent;
+				$subTotal = 0;
+				foreach ($products as $product) {
+					if($product->active == 0)
+						continue;
+					$product->discount = round($product->price * $this->discount_percent / 100);
+					$product->price = $product->price - $product->discount;
+					$subTotal += $product->price * $product->quantity;
+					$this->discountTotal += ($product->discount * $product->quantity);
+				}
+			}
+			else {
+				$subTotal -= $discount_sum_percent;
+				$this->discountTotal += $discount_sum_percent;
+			}
 			$this->bonusDiscountId = -$bonus;
 		}
 		return $subTotal;
@@ -760,10 +775,13 @@ class cart_model
 				if($discount > $bonus->discount_max && $bonus->discount_max > 0)
 					$discount = $bonus->discount_max;
 				$text = $bonus->code.' (Фіксована знижка)';
-				if($bonus->discount_type == 2)
+				if($bonus->discount_type == 2) {
+					// TODO: recalc discount percentage if discount_max
+					$discount = -$bonus->discount;
 					$text = $bonus->code.' ('.$bonus->discount.'%)';
+				}
 				// $this->bonusDiscountInfo = array($text => $this->priceFormat($discount));
-				$this->bonusDiscountInfo = array($text => $discount);
+				// $this->bonusDiscountInfo = array($text => $discount);
 			}
 		}
 		return $discount;

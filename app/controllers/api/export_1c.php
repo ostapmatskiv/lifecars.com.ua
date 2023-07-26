@@ -79,7 +79,6 @@ class export_1c extends Controller
 					->join('s_cart_shipping as sh', 'name as shipping_name', '#c.shipping_id')
 					->join('s_cart_payments as p', 'name as payment_name, info as payment_info', '#c.payment_id')
 					->join('s_cart_status as s', 'name as status_name', '#c.status')
-					->join('s_cart_bonus as b', 'discount as discount_percent', '#c.bonus')
 					->join('wl_users as u', 'email as user_email, phone as user_phone, name as user_name, type as user_type, id_1c as user_id_1c', '#c.user')
 					// ->join('wl_user_info as i', 'value as user_phone', ['user' => '#c.user', 'field' => 'phone'])
 					->join('wl_user_types as t', 'id as user_type_id, title as type_name', '#u.type');
@@ -176,10 +175,6 @@ class export_1c extends Controller
 				{
 					if($product->cart != $order->id)
 						continue;
-
-					if($order->discount_percent) {
-						$product->price = $product->price - ($product->price * $order->discount_percent / 100);
-					}
 
 					$product->sum = $product->price * $product->quantity;
 
