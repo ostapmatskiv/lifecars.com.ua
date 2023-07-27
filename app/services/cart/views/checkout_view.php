@@ -124,7 +124,7 @@ if ($products) {
 			<?php } ?>
 
 			<div class="price-box" data-margin-top="110">
-				<?php if ($bonusCodes && !empty($bonusCodes->info)) { ?>
+				<?php if (false && $bonusCodes && !empty($bonusCodes->info)) { ?>
 					<p class="bonusCode">
 						<?= $this->text('Разом') . ': ' ?>
 						<strong class="right"><?= $subTotalFormat ?></strong>
@@ -143,8 +143,12 @@ if ($products) {
 					</p>
 				<?php } ?>
 
-				<?php if ($discountTotal && false) { ?>
-					<p class="discount"><?= $this->text('Ви економите') ?> <strong class="right"><?= $discountTotalFormat ?></strong></p>
+				<?php if ($discountTotal || true) { ?>
+					<p class="bonusCode">
+						<?= $this->text('Разом') . ': ' ?>
+						<strong class="right"><?= $subTotalFormat ?></strong>
+					</p>
+					<p class="discount"><?= $this->text('Знижка') ?> <strong class="right"><?= $discountTotalFormat ?></strong></p>
 				<?php } ?>
 
 				<p class="price">

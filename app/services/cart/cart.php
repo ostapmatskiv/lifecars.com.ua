@@ -154,8 +154,12 @@ class cart extends Controller {
                             $product->info = $this->load->function_in_alias($product->product_alias, '__get_Product', $product->product_id);
                             if($product->storage_invoice)
                                 $product->storage = $this->load->function_in_alias($product->storage_alias, '__get_Invoice', array('id' => $product->storage_invoice, 'user_type' => $cart->user_type));
+                            
+                            $product->priceBeforeDiscount = $product->price + $product->discount;
+                            $product->priceBeforeDiscount_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->priceBeforeDiscount);
+
                             $product->price_format =  $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price);
-                            $cart->subTotal += $product->price * $product->quantity + $product->discount;
+                            $cart->subTotal += ($product->price + $product->discount) * $product->quantity;
                             $product->sum_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity);
                             if($product->discount)
                                 $product->sum_before_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity + $product->discount);
@@ -647,7 +651,7 @@ class cart extends Controller {
 
                                 $data = array();
                                 $res['quantity'] = $data['quantity'] = $data['quantity_wont'] = $quantity;
-                                $data['discount'] = !empty($product->info->discount) && $product->info->discount > 0 ? $product->info->discount * $quantity : 0;
+                                $data['discount'] = $product->info->discount ?? 0;
                                 if($this->db->updateRow($this->cart_model->table('_products'), $data, $id))
                                 {
                                     $res['result'] = true;
@@ -721,7 +725,20 @@ class cart extends Controller {
 
 
                         $res['subTotal'] = $this->cart_model->getSubTotalInCart($user_id);
+                        $res['subTotal'] = $res['total'] = $this->cart_model->getSubTotalInCart();
+                        $res['subTotal'] += $this->cart_model->discountTotal;
+
+                        if($this->cart_model->discount_percent) {
+                            $res['product']->discount = round($res['product']->price * $this->cart_model->discount_percent / 100);
+                            $res['product']->priceBeforeDiscount = $res['product']->price;
+                            $res['product']->price = $res['product']->price - $res['product']->discount;
+                            $res['product']->priceBeforeDiscount_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $res['product']->priceBeforeDiscount);
+                            $res['priceFormat'] = "<del>{$res['product']->priceBeforeDiscount_format}</del> " . $this->load->function_in_alias($product->product_alias, '__formatPrice', $res['product']->price);
+                            $res['priceSumFormat'] = $this->load->function_in_alias($product->product_alias, '__formatPrice', $res['product']->price * $product->quantity);
+                        }
+
                         $res['subTotalFormat'] = $this->load->function_in_alias($product->product_alias, '__formatPrice', $res['subTotal']);
+                        $res['totalFormat'] = $this->load->function_in_alias($product->product_alias, '__formatPrice', $res['total']);
                         $res['productsCountInCart'] = $this->cart_model->getProductsCountInCart();
                         if($this->cart_model->discountTotal)
                             $res['discountTotal'] = $this->load->function_in_alias($product->product_alias, '__formatPrice', $this->cart_model->discountTotal);
@@ -1019,8 +1036,8 @@ class cart extends Controller {
                             $product->sum_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity);
                         }
                         if($product->discount)
-                            $product->sumBefore_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity + $product->discount);
-                        $sum += $product->price * $product->quantity + $product->discount;
+                            $product->sumBefore_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', ($product->price + $product->discount) * $product->quantity);
+                        $sum += ($product->price + $product->discount) * $product->quantity;
 
                         if($product->storage_invoice && $product->storage_alias)
                         {
@@ -1197,6 +1214,7 @@ class cart extends Controller {
 					$product->price = $product->price - $product->discount;
 					$product->priceBeforeDiscount_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->priceBeforeDiscount);
 					$product->info->price_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price);
+					$product->info->sum_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity);
                 }
             }
 

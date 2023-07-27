@@ -349,3 +349,7 @@ table.__cart_products_list .amount button.plusInCart i { margin-left: -4px }
 		width: 98%;
 	}
 }
+
+.price del {
+    color: red;
+}

@@ -31,7 +31,12 @@
 			echo "<p>{$p}</p>";
 			} ?>
 		</div>
-		<div class="td price m-hide" id="pricePerOne-<?= $product->key ?>"><?=$product->info->price_format ?></div>
+		<div class="td price m-hide" id="pricePerOne-<?= $product->key ?>">
+			<?php if($product->discount) {
+				echo "<del>{$product->priceBeforeDiscount_format}</del>";
+			} ?>
+			<?=$product->info->price_format ?>
+		</div>
 		<div class="td amount">
 			<span class="minusInCart">-</span>
 			<input type="number" id="productQuantity-<?= $product->key?>" value="<?= $product->quantity?>" data-key="<?= $product->key?>" data-max="<?= $product->storage->amount_free ?? $product->info->availability?>" placeholder="1">

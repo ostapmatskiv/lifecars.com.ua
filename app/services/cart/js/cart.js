@@ -182,8 +182,9 @@ var cart = {
 				{
 					$('#cart #pricePerOne-'+id).html(res.priceFormat);
 					$('#cart #priceSum-'+id).html(res.priceSumFormat);
-					$('#cart p.price strong').html(res.subTotalFormat);
+					$('#cart p.bonusCode strong').html(res.subTotalFormat);
 					$('#cart p.discount strong').html(res.discountTotal);
+					$('#cart p.price strong').html(res.totalFormat);
 
 					recount();
 					ga4.add_to_cart(res);

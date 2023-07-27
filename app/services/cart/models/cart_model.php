@@ -413,6 +413,14 @@ class cart_model
 		{
 			$where = array('user' => $user, 'cart' => 0, 'active' => 1);
 			$this->db->updateRow($this->table('_products'), array('cart' => $cart['id']), $where);
+			if($this->bonusDiscountId && $this->discount_percent != 0) {
+				$discount_percent = abs($this->discount_percent);
+				foreach ($this->db->select($this->table('_products'), 'id, price', array('cart' => $cart['id']))->get('array') as $product) {
+					$discount = round($product->price * $discount_percent / 100);
+					$price = $product->price - $discount;
+					$this->db->updateRow($this->table('_products'), compact('price', 'discount'), $product->id);
+				}
+			}
 			if($this->bonusDiscountId && !empty($this->bonusDiscountInfo))
 				foreach ($this->bonusDiscountInfo as $key => $value) {
 					$history = array();
@@ -781,7 +789,7 @@ class cart_model
 					$text = $bonus->code.' ('.$bonus->discount.'%)';
 				}
 				// $this->bonusDiscountInfo = array($text => $this->priceFormat($discount));
-				// $this->bonusDiscountInfo = array($text => $discount);
+				$this->bonusDiscountInfo = array($text => $discount);
 			}
 		}
 		return $discount;

@@ -113,14 +113,17 @@ if($this->data->get('order') == $cart->id) { ?>
 						}
 					} ?>
 				</div>
-				<div class="td price"><?= $product->price_format ?></div>
+				<div class="td price">
+					<?= !empty($product->priceBeforeDiscount != $product->price) ? '<del>' . $product->priceBeforeDiscount_format . '</del><br>' : '' ?>	
+					<?= $product->price_format ?>
+				</div>
 				<div class="td amount">
 					<?= $product->quantity ?>
 					<?php if (!empty($product->quantity_returned))
 						echo "<br>Повернено: {$product->quantity_returned} од."; ?>
 				</div>
 				<div class="td sum">
-					<?= !empty($product->sum_before_format) ? '<del>' . $product->sum_before_format . '</del><br>' : '' ?>
+					<?php //= !empty($product->sum_before_format) ? '<del>' . $product->sum_before_format . '</del><br>' : '' ?>
 					<?= $product->sum_format ?>
 				</div>
 			</div>
