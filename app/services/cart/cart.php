@@ -81,6 +81,9 @@ class cart extends Controller {
                     $product->discount = round($product->price * $this->cart_model->discount_percent / 100);
 					$product->priceBeforeDiscount = $product->price;
 					$product->price = $product->price - $product->discount;
+					$product->priceBeforeDiscount_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->priceBeforeDiscount);
+					$product->info->price_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price);
+					$product->info->sum_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity);
                 }
             }
         }

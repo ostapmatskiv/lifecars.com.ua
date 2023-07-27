@@ -36,20 +36,25 @@
 	background: #fff;
 	color: #7cbe49;
 	border-radius: 2px;
-	padding: 15px 10px 30px;
+	padding: 5px 0;
 	margin-bottom: 3px
 }
 #cart .price-box { margin-top: 52px }
+#cart .price-box p {
+	display: flex;
+	justify-content: space-between;
+}
 #cart p.price strong { font-size: 25px }
 #cart p.discount {
-	background: #6D6D6D;
-	color: #fff;
-	border-radius: 2px;
-	margin-top: 0;
-	padding: 5px 10px 12px;
-	margin-bottom: 5px
+	/* background: #6D6D6D; */
+	/* color: #fff; */
+	/* border-radius: 2px; */
+	/* margin-top: 0; */
+	/* padding: 5px 10px 12px; */
+	/* margin-bottom: 5px; */
 }
-#cart p.discount strong { font-size: 20px }
+#cart p.bonusCode strong,
+#cart p.discount strong {font-size: 15px;}
 #cart .checkout {
 	box-sizing: border-box;
 	display: block;

@@ -8,9 +8,9 @@ if ($products) {
 } ?>
 
 <main id="cart" data-sticky-container>
-	<a href="<?= SITE_URL . $_SESSION['alias']->alias ?>" class="right m-hide"><i class="fas fa-undo"></i> <?= $this->text('Редагувати замовлення') ?></a>
 	
 	<h1>
+		<a href="<?= SITE_URL . $_SESSION['alias']->alias ?>" class="right m-hide"><i class="fas fa-undo"></i> <?= $this->text('Редагувати замовлення') ?></a>
 		<a href="<?= SITE_URL . $_SESSION['alias']->alias ?>" class="hide m-block to_cart"><i class="fas fa-arrow-left"></i></a>
 		<?= $_SESSION['alias']->name ?>
 	</h1>

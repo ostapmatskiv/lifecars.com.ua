@@ -4,18 +4,22 @@
 #cart .w30 input[type=radio] {
     width: 10px;
 }
-#cart > a.right {
+#cart h1 a.right {
     background: #7cbe49;
     color: #fff;
     padding: 5px 30px;
     border-radius: 2px;
-    margin-bottom: 25px
+    margin-bottom: 25px;
+    /* z-index: 1; */
+    font-size: 10px;
 }
 #cart a.to_cart {
     position: absolute;
     left: 10px;
+    z-index: 110;
 }
-#cart h4, #cart .price-box { margin-top: 15px }
+#cart h4 {margin-top: 15px;}
+#cart .price-box {margin-top: 15px;background: #fff;padding: 10px;}
 #cart_notify * { font-size: 16px; line-height: 20px }
 #percents {
     background: #DCDCDC;
@@ -169,4 +173,9 @@ h4 small.pull-right {
     font-size: 14px;
     cursor: pointer;
     padding-top: 5px;
+}
+
+.coupon-form button {
+    width: 100%;
+    padding: 10px 15px;
 }
