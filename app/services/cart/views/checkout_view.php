@@ -31,24 +31,30 @@ if ($products) {
 	<div class="flex w100 m-column-reverse">
 		<div class="w30 m100">
 
-			<?php if (!$this->userIs()) { ?>
+			<?php if (!$this->userIs()) {
+				$first_name = $last_name = '';
+				if($name = $this->data->re_post('name')) {
+					$name = explode(' ', $name);
+					$first_name = array_shift($name);
+					$last_name = implode(' ', $name);
+				} ?>
 				<h4><?= $this->text('Покупець') ?></h4>
 
 				<div class="cart_section">
-					<div class="input-group">
+					<div class="input-group <?= $this->data->re_post('phone') != '' ? 'val' : '' ?>">
 						<input id="phone" type="text" value="<?= $this->data->re_post('phone') ?>" required minlength="17" />
 						<label for="phone"><?= $this->text('Номер телефону', 5) ?></label>
 						<h5 class="text-danger hide" id="phoneError"><?= $this->text('Введіть коректний номер телефону починаючи +380') ?></h5>
 					</div>
 
-					<div class="input-group">
-						<input id="first_name" type="text" value="<?= $this->data->re_post('first_name') ?>" required />
+					<div class="input-group <?= $first_name != '' ? 'val' : '' ?>">
+						<input id="first_name" type="text" value="<?= $first_name ?>" required />
 						<label for="first_name"><?= $this->text('Ім\'я', 5) ?></label>
 						<h5 class="text-danger hide"><?= $this->text('Тільки кирилиця') ?></h5>
 					</div>
 
-					<div class="input-group">
-						<input id="last_name" type="text" value="<?= $this->data->re_post('last_name') ?>" required />
+					<div class="input-group <?= $last_name != '' ? 'val' : '' ?>">
+						<input id="last_name" type="text" value="<?= $last_name ?>" required />
 						<label for="last_name"><?= $this->text('Прізвище', 5) ?></label>
 						<h5 class="text-danger hide"><?= $this->text('Тільки кирилиця') ?></h5>
 					</div>
@@ -91,11 +97,14 @@ if ($products) {
 					<div id="payments" class="cart_section">
 						<?php foreach ($payments as $payment) {
 							$checked = (count($payments) == 1) ? 'checked' : '';
-							if (!empty($userShipping)) {
+							if (!empty($userShipping) && isset($userShipping->payment_alias)) {
 								if ($userShipping->payment_alias == 0 && $payment->id == $userShipping->payment_id)
 									$checked = 'checked';
 								else if ($userShipping->payment_alias > 0 && $userShipping->payment_alias == $payment->wl_alias)
 									$checked = 'checked';
+							} 
+							if($this->data->re_post('payment_method') == $payment->id) {
+								$checked = 'checked';
 							} ?>
 							<label <?= $checked ? 'class="active"' : '' ?>>
 								<input type="radio" name="payment_method" value="<?= $payment->id ?>" <?= $checked ?>>

@@ -35,7 +35,15 @@ $(document).ready(function (){
                 $("#shipping-cities-list").append('<option>'+city+'</option>');
             })
     }
-})
+});
+
+$('form.coupon-form').submit(function(){
+    $('.couponPreSave').remove();
+    $('form#confirm').find('input[type=text], input[type=hidden], input[type=radio]:checked, textarea').each(function(){
+        $( this ).clone().attr('required', false).addClass('couponPreSave hide').appendTo("form.coupon-form");
+    });
+    return true;
+});
 
 $('#cart-signup div').click(function(){
     $(this).parent().find('div').removeClass('active');

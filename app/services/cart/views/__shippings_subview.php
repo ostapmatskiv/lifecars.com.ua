@@ -56,7 +56,10 @@
     </div>
 
     <div id="Shipping_to_cart">
-        <?php if(!empty($userShipping) && $shippingWlAlias != $_SESSION['alias']->id) {
+        <?php if($shippingWlAlias != $_SESSION['alias']->id) {
+            if(empty($userShipping)) {
+                $userShipping = new stdClass();
+            }
             $userShipping->initShipping = true;
             $this->load->function_in_alias($shippingWlAlias, '__get_Shipping_to_cart', $userShipping);
         } ?>

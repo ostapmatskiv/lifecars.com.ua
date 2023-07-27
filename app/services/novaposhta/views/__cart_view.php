@@ -1,3 +1,11 @@
+<?php
+foreach(['method' => 'nova-poshta-method', 'city_ref' => 'nova-poshta-city-ref', 'warehouse_ref' => 'nova-poshta-warehouse-ref', 'address_street_ref' => 'nova-poshta-address-street-ref', 'city' => 'novaposhta-city', 'warehouse' => 'novaposhta-warehouse', 'address_street' => 'novaposhta-address-street', 'address_house' => 'novaposhta-address-house'] as $objKey => $postKey) {
+    if($value = $this->data->re_post($postKey)) {
+        $userShipping->$objKey = $value;
+    }
+}
+?>
+
 <div style="margin-left: 10px; padding-left: 5px">
     <?php foreach (['warehouse' => 'На відділення', 'postomat' => 'Поштомат', 'courier' => "Кур'єром"] as $key => $key_title) {
         $checked = (empty($userShipping->method) && $key == 'warehouse') ? 'checked' : '';
@@ -48,10 +56,7 @@
 
 
 
-<?php $novaposhta_selected = $this->data->re_post('shipping-novaposhta');
-if (empty($novaposhta_selected) && $userShipping && $userShipping->department)
-    $novaposhta_selected = $userShipping->department;
-if ($userShipping && $userShipping->initShipping)
+<?php if ($userShipping && $userShipping->initShipping)
     $this->load->js_init('initShipping()'); ?>
 <script>
     NP = {
