@@ -78,12 +78,14 @@ class cart_admin extends Controller {
                             if($product->storage_invoice)
                                 $product->storage = $this->load->function_in_alias($product->storage_alias, '__get_Invoice', array('id' => $product->storage_invoice, 'user_type' => $cart->user_type));
                             $product->price_format =  $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price);
-                            $cart->subTotal += $product->price * $product->quantity + $product->discount;
+                            $cart->subTotal += ($product->price + $product->discount) * $product->quantity;
                             $product->sum_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity);
                             if($product->discount)
                             {
-                                $product->sumBefore_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price * $product->quantity + $product->discount);
                                 $product->discountFormat = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->discount);
+                                $product->priceBefore_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->price + $product->discount);
+                                $product->sumBefore_format = $this->load->function_in_alias($product->product_alias, '__formatPrice', ($product->price + $product->discount) * $product->quantity);
+                                $product->discountTotalFormat = $this->load->function_in_alias($product->product_alias, '__formatPrice', $product->discount * $product->quantity);
                             }
                         }
                         else if(!empty($product->product_options))
@@ -96,7 +98,7 @@ class cart_admin extends Controller {
                             $product->info->article = $product->info->article_show = $options['article'] ?? '';
                             $product->info->name = $options['name'];
                             $product->info->link = $options['photo'] ?? '';
-                            $cart->subTotal += $product->price * $product->quantity + $product->discount;
+                            $cart->subTotal += ($product->price + $product->discount) * $product->quantity;
                             if($shop_alias)
                             {
                                 $product->price_format = $this->load->function_in_alias($shop_alias, '__formatPrice', $product->price);

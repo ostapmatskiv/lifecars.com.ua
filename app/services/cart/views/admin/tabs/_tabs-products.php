@@ -98,7 +98,13 @@
 	    		<?php } ?>
 
 	    		<td id="productPrice-<?= $product->id ?>">
-	    			<?= $product->price_format ?>
+					<?php if($product->discount)
+    				{
+    					echo "<del title='Знижка {$product->discountFormat}'>{$product->priceBefore_format}</del><br>";
+    					echo "<strong title='Знижка {$product->discountFormat}'>{$product->price_format}</strong>";
+    				}
+    				else
+    					echo "<strong>{$product->price_format}</strong>"; ?>
 	    			<?php if($cart->status_weight == 0 && $_SESSION['user']->admin){ ?>
 		    			<a href="#modal-edit-product-price" data-toggle="modal" class='right btn btn-xs btn-info' title="Редагувати ціну" data-product-name="<?= $product->info->article_show ?? $product->info->article ?> <?= $product->info->name ?? ''?>" data-product-price="<?=$product->price?>" data-product-row-id="<?=$product->id?>"><i class='fa fa-edit'></i></a>
 		    		<?php } ?>
@@ -131,8 +137,8 @@
 	    		<td id="productTotalPrice-<?= $product->id ?>">
     				<?php if($product->discount)
     				{
-    					echo "<del title='{$product->sumBefore_format}'>{$product->sumBefore_format}</del><br>";
-    					echo "<strong title='Знижка {$product->discountFormat}'>{$product->sum_format}</strong>";
+    					echo "<del title='Знижка {$product->discountTotalFormat}'>{$product->sumBefore_format}</del><br>";
+    					echo "<strong title='Знижка {$product->discountTotalFormat}'>{$product->sum_format}</strong>";
     				}
     				else
     					echo "<strong>{$product->sum_format}</strong>"; ?>
