@@ -13,7 +13,7 @@ $(document).ready(function (){
         if (this.value.length == 0) {
             this.value = '+380';
         }
-    }).mask('+38Z NN 000 00 00', mask_options);
+    }).mask('+38Z N0 000 00 00', mask_options);
 
     // if (typeof Sticky === "function")
     // {
