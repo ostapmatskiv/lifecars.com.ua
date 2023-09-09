@@ -109,7 +109,8 @@ class Signup extends Controller {
 		            $this->load->model('wl_user_model');
 		            $info['email'] = '';
 			    	$info['phone'] = $phone;
-			    	$info['name'] = $this->data->post('first_name') .' '. $this->data->post('last_name');
+			    	// $info['name'] = $this->data->post('first_name') .' '. $this->data->post('last_name');
+			    	$info['name'] = $this->data->post('last_name') .' '. $this->data->post('first_name');
 			    	// $info['password'] = $_POST['password'];
 			    	$info['status'] = 1;
 			    	$info['photo'] = '';

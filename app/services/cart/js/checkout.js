@@ -250,7 +250,8 @@ $("#cart input#first_name, #cart input#last_name").on("change", function() {
             return false;
         }
 
-    name = first_name + ' ' + last_name;
+    // name = first_name + ' ' + last_name;
+    name = last_name + ' ' + first_name;
 
     $( 'form#confirm' ).find( 'input[name="name"]' ).val(name);
     // if(recipientName.val() == '')

@@ -1298,7 +1298,8 @@ class cart extends Controller {
                         $info['status'] = 1;
                         $info['email'] = $this->data->post('email');
                         $info['phone'] = $this->data->post('phone');
-                        $info['name'] = $this->data->post('first_name').' '.$this->data->post('last_name');
+                        // $info['name'] = $this->data->post('first_name').' '.$this->data->post('last_name');
+                        $info['name'] = $this->data->post('last_name').' '.$this->data->post('first_name');
                         $info['photo'] = NULL;
                         if($_SESSION['option']->usePassword)
                             $info['password'] = $new_user_password = bin2hex(openssl_random_pseudo_bytes(4));
