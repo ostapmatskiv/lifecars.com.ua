@@ -157,7 +157,16 @@
 										echo "<span class='label label-danger'>Не оплачено</span>";
 								 ?>
 							</td>
-							<td><?= ($cart->{"1c_status"} == $cart->status && $cart->date_1c > 0) ? '<i class="fa fa-check-circle text-success" aria-hidden="true" title="'.date('d.m.Y H:i', $cart->date_1c).'"></i>' : '<i class="fa fa-ban text-warning" aria-hidden="true" title="Очікуємо: '.$cart->status_1c_name.' => '.$cart->status_name.'"></i>' ?>
+							<td><?php
+								if($cart->{"1c_status"} == $cart->status && $cart->date_1c > 0) {
+									echo '<i class="fa fa-check-circle text-success" aria-hidden="true" title="'.date('d.m.Y H:i', $cart->date_1c).'"></i>';
+								}
+								else if($cart->date_1c == 0 && in_array($cart->status, [5, 6])) {
+									echo '<i class="fa fa-minus-circle text-success" aria-hidden="true" title="Не синхронізуємо"></i>';
+								}
+								else {
+									echo '<i class="fa fa-ban text-warning" aria-hidden="true" title="Очікуємо: '.$cart->status_1c_name.' => '.$cart->status_name.'"></i>';
+								} ?>
 							</td>
 						</tr>
 						<?php } } else { ?>
