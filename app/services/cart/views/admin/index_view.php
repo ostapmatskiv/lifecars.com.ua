@@ -161,7 +161,7 @@
 								if($cart->{"1c_status"} == $cart->status && $cart->date_1c > 0) {
 									echo '<i class="fa fa-check-circle text-success" aria-hidden="true" title="'.date('d.m.Y H:i', $cart->date_1c).'"></i>';
 								}
-								else if($cart->{"1c_status"} == 0 && in_array($cart->status, [5, 6])) {
+								else if(in_array($cart->status, [5, 6])) {
 									echo '<i class="fa fa-minus-circle text-success" aria-hidden="true" title="Не синхронізуємо"></i>';
 								}
 								else {
