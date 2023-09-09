@@ -137,6 +137,7 @@ class Profile extends Controller {
             }
 
             if(!empty($data)) {
+                $data['date_1c'] = 0;
                 $this->db->updateRow('wl_users', $data, $user->id);
             }
 
