@@ -12,8 +12,14 @@
                 <tbody>
                     <?php $showSave = false;
                     $name = explode(' ', $user->name);
-                    $user->first_name = $name[0];
-                    $user->last_name = $name[1] ?? '';
+                    if($user->id >= 1747) {
+                        $user->last_name = $name[0];
+                        $user->first_name = $name[1] ?? '';
+                    }
+                    else {
+                        $user->first_name = $name[0];
+                        $user->last_name = $name[1] ?? '';
+                    }
                     foreach(['first_name' => "Ім'я", 'last_name' => "Прізвище", 'email' => 'Еmail', 'phone' => 'Номер телефону'] as $key => $title) { ?>
                         <tr>
                             <td><?=$this->text($title)?></td>

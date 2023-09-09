@@ -76,6 +76,10 @@ class Profile extends Controller {
                 $name = explode(' ', $user->name);
                 $user->first_name = $name[0];
                 $user->last_name = $name[1] ?? '';
+                if($user->id >= 1747) {
+                    $user->last_name = $name[0];
+                    $user->first_name = $name[1] ?? '';
+                }
 
                 if(isset($_POST['first_name']))
                     $user->first_name = $this->data->post('first_name');
@@ -85,7 +89,8 @@ class Profile extends Controller {
                 $this->validator->setRules($this->text("Ім'я"), $user->first_name, 'uk_letters|required|2..20');
                 $this->validator->setRules($this->text("Прізвище"), $user->last_name, 'uk_letters|required|2..20');
                 if($this->validator->run()) {
-                    $name = $user->first_name .' '. $user->last_name;
+                    // $name = $user->first_name .' '. $user->last_name;
+                    $name = $user->last_name .' '. $user->first_name;
                     if($user->name != $name) {
                         $data['name'] = $name;
                         $this->db->register('profile_data', 'Попереднє Ім\'я: '.$user->name);
