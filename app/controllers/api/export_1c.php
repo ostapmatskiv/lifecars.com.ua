@@ -21,20 +21,20 @@ class export_1c extends Controller
 
 		if($type == 'json')
 		{
-		    $where = $this->data->get('test') ? [] : ['date_1c' => 0];
+		    $where = $this->data->get('test') && $this->userCan() ? [] : ['date_1c' => 0];
 			$this->db->select('wl_users as u', 'id, id_1c, email, phone as user_phone, name, type', $where)
 						// ->join('wl_user_info as i', 'value as user_phone', ['user' => '#u.id', 'field' => 'phone'])
 						->join('wl_user_types as t', 'title as type_name', '#u.type');
 			if ($users = $this->db->get('array'))
 				foreach ($users as $user) {
 					$user->id = 'life-'.$user->id;
-				// 	$name = explode(' ', $user->name);
-				// 	if(count($name) > 1) {
-				// 	    $first_name = $name[0];
-				// 	    $name[0] = $name[1]; // last name
-				// 	    $name[1] = $first_name;
-				// 	    $user->name = implode(' ', $name);
-				// 	}
+					$name = explode(' ', $user->name);
+					if(count($name) > 1) {
+					    $first_name = $name[0];
+					    $name[0] = $name[1]; // last name
+					    $name[1] = $first_name;
+					    $user->name = implode(' ', $name);
+					}
 					if(substr($user->user_phone, 0, 2) == '38') {
 					    $user->user_phone = substr($user->user_phone, 2);
 					}
