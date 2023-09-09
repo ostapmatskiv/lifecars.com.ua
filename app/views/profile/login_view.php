@@ -120,13 +120,13 @@
          </div>
 
          <div class="input-group">
-            <input name="first_name" id="first_name" type="text" value="<?= $this->data->re_post('first_name') ?>" required />
+            <input name="first_name" id="first_name" type="text" value="<?= $this->data->re_post('first_name') ?>" autocomplete="given-name" required />
             <label for="first_name"><?= $this->text('Ім\'я', 5) ?></label>
             <h5 class="text-danger hide" id="fnError"><?= $this->text('Тільки кирилиця') ?></h5>
          </div>
 
          <div class="input-group">
-            <input name="last_name" id="last_name" type="text" value="<?= $this->data->re_post('last_name') ?>" required />
+            <input name="last_name" id="last_name" type="text" value="<?= $this->data->re_post('last_name') ?>" autocomplete="family-name" required />
             <label for="last_name"><?= $this->text('Прізвище', 5) ?></label>
             <h5 class="text-danger hide" id="lnError"><?= $this->text('Тільки кирилиця') ?></h5>
          </div>
