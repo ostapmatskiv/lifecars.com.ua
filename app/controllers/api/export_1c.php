@@ -75,7 +75,7 @@ class export_1c extends Controller
 		$in_xml = [];
 		$xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n
 					<orders>\n";
-		$this->db->select('s_cart as c', '*', ['1c_status' => '#!c.status', '&' => 'c.1c_status NOT IN (5, 6)'])
+		$this->db->select('s_cart as c', '*', ['1c_status' => '#!c.status', '&' => 'c.status NOT IN (5, 6)'])
 					->join('s_cart_shipping as sh', 'name as shipping_name', '#c.shipping_id')
 					->join('s_cart_payments as p', 'name as payment_name, info as payment_info', '#c.payment_id')
 					->join('s_cart_status as s', 'name as status_name', '#c.status')
