@@ -2,7 +2,7 @@
 
 class cart_admin extends Controller {
 
-    private $notify_client_sms_on_delivered = true;
+    private $notify_client_sms_on_delivered = false;
 
     function _remap($method, $data = array())
     {
