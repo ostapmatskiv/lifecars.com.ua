@@ -148,8 +148,10 @@ class export_1c extends Controller
 						$info = unserialize($order->shipping_info);
 						$order->shipping_info = '';
 						foreach ($info as $key => $value) {
-							if(!empty($value))
+							if(!empty($value)) {
 								$order->shipping_info .= "{$key}: {$value}; ";
+							}
+							$xml .= "\t\t\t<{$key}>{$value}</{$key}>\n";
 						}
 						$order->shipping_info = substr($order->shipping_info, 0, -2);
 					}
