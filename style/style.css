@@ -1253,8 +1253,10 @@ main .catalog__detal a div {
     margin-top: 15px;
 }
 
-main .catalog__detal a.active div,
-main .catalog__detal a:hover div,
+main .subgroup-name a.active,
+main .subgroup-name a:hover,
+main .catalog__detal a.active,
+main .catalog__detal a:hover,
 main .catalog__info a.active,
 main .catalog__info a:hover {
     color: #82C166;
@@ -4168,13 +4170,9 @@ textarea:active {
 
 
 body.parts main .catalog__detal a {
-    background: #fff;
-    padding: 5px 10px;
-    margin-top: 8px;
+    padding: 3px 0 0 5px;
     margin-left: 0;
-    margin-right: 8px;
-    border-radius: 10px;
-    border: 1px solid #9d9fa1;
+    text-align: left;
 }
 body.parts main .catalog__detal a div {
     margin-top: 0;

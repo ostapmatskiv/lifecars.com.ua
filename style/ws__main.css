@@ -116,6 +116,7 @@ input:focus { outline: none }
 	.m-m0 { margin: 0 !important }
 
 	.m100 { width: 100% !important }
+	.m-w50 { width: 50% !important }
 	.m-hide { display: none !important }
 	.m-block { display: block !important }
 	.m-inline { display: inline !important }
