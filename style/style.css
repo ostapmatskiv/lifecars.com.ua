@@ -1228,6 +1228,10 @@ main h4.subgroup-name {
     color: #8c8c8c;
 }
 
+h4.subgroup-name img {
+    height: 100px;
+}
+
 main .catalog__detal {
     margin-bottom: 15px;
     align-items: baseline;
