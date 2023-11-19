@@ -4415,3 +4415,27 @@ main.detal .product-info-bordered .card__border_in {
         order: 2;
     }
 }
+
+
+.breadcrumb {
+    padding: 0 0 15px;
+}
+
+.breadcrumb ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    line-height: 20px;
+}
+
+.breadcrumb li:not(:last-child)::after {
+    display: inline-block;
+    margin: 0 .25rem;
+    content: " / ";
+}
+.breadcrumb li:last-child
+{
+    color: #82C166;
+}

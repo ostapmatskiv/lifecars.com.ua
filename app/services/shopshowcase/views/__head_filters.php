@@ -4,8 +4,13 @@
 		if($filter->id == 2) {
             foreach ($filter->values as $value) {
                 if(empty($value->type)) {
-                    $subFilterParentId = empty($value->type) ? $value->id : $value->type; ?>
-                    <div class="w25 m-w50">
+                    $subFilterParentId = empty($value->type) ? $value->id : $value->type;
+                    $filter_class = 'm-w50';
+                    if(!empty($_GET[$filter->alias])) {
+                        $filter_class = $_GET[$filter->alias] == $value->id ? 'm100' : 'm-hide';
+                    }
+                    ?>
+                    <div class="w25 <?= $filter_class ?>">
                         <h4 class="subgroup-name">
                             <a href="<?=$this->data->get_link($filter->alias, $value->id, 'page')?>" <?=isset($_GET[$filter->alias]) && $_GET[$filter->alias] == $value->id ? 'class="active"':''?>>
                                 <?php if(!empty($value->photo)) { ?>

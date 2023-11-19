@@ -1,16 +1,58 @@
+<nav aria-label="Breadcrumb" class="breadcrumb">
+    <ul>
+        <li><a href="<?= SITE_URL ?>"><?= $this->text('Головна') ?></a></li>
+        <li><a href="<?= SITE_URL . $_SESSION['alias']->alias ?>"><?= $_SESSION['alias']->breadcrumb_name ?></a></li>
+        <?php foreach ($_SESSION['alias']->breadcrumbs as $b_name => $b_link) {
+            if(empty($b_link)) {
+                if(!empty($filters) && !empty($_GET['2-part'])) {
+                    $b_link = SITE_URL . $_SESSION['alias']->link;
+                    echo "<li><a href=\"{$b_link}\">{$b_name}</a></li>";
+                    foreach ($filters as $filter) {
+                        if ($filter->id == 2) {
+                            foreach ($filter->values as $value) {
+                                if($_GET['2-part'] == $value->id) {
+                                    if(!empty($value->type)) {
+                                        foreach ($filter->values as $v) {
+                                            if ($value->type == $v->id) {
+                                                echo "<li><a href=\"{$b_link}?2-part={$v->id}\">{$v->name}</a></li>";
+                                                $_SESSION['alias']->list .= ' '.$v->name;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    echo "<li><span aria-current=\"page\">{$value->name}</span></li>";
+                                    $_SESSION['alias']->list .= ' ' . $value->name;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    echo "<li><span aria-current=\"page\">{$b_name}</span></li>";
+                }
+            }
+            else {
+                $b_link = SITE_URL . $b_link;
+                echo "<li><a href=\"{$b_link}\">{$b_name}</a></li>";
+            }
+        } ?>
+    </ul>
+</nav>
+
 <main>
-    <?php if(!empty($_SESSION['alias']->image)) { ?>
+    <?php if (!empty($_SESSION['alias']->image)) { ?>
         <div class="flex m-wrap">
             <div class="w25 text-center m100">
-                <img src="<?=IMG_PATH.$_SESSION['alias']->image?>" alt="<?=$_SESSION['alias']->name?>" class="w80" style="max-width: 250px">
-                <h1><?=(!empty($group) && !empty($group->parents)) ? $group->parents[0]->name : '' ?> <?=$_SESSION['alias']->name?><br><?=$_SESSION['alias']->list?></h1>
+                <img src="<?= IMG_PATH . $_SESSION['alias']->image ?>" alt="<?= $_SESSION['alias']->name ?>" class="w80" style="max-width: 250px">
+                <h1><?= (!empty($group) && !empty($group->parents)) ? $group->parents[0]->name : '' ?> <?= $_SESSION['alias']->name ?><br><?= $_SESSION['alias']->list ?></h1>
             </div>
             <div class="w75-5 m100">
                 <?php require '__head_filters.php'; ?>
             </div>
         </div>
     <?php } else require '__head_filters.php'; ?>
-    
+
 
     <?php /*
     <div class="flex w50 auto__detal">
@@ -81,95 +123,89 @@
     </section>
    
 	<?php */ $this->load->js_init('init__parts()'); ?>
-        
+
     <section class="flex sale__catalog pt-50">
         <aside class="w25">
             <div class="hide m-flex">
                 <button class="btn w50-5 btn-1 show-filters" onclick="$(this).toggleClass('active').closest('aside').find('form').toggleClass('m-hide')">
-                   <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                      <path fill="currentColor" d="M6,13H18V11H6M3,6V8H21V6M10,18H14V16H10V18Z" />
-                   </svg>
-                   <?=$this->text('Фільтр')?>
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M6,13H18V11H6M3,6V8H21V6M10,18H14V16H10V18Z" />
+                    </svg>
+                    <?= $this->text('Фільтр') ?>
                 </button>
                 <button class="btn w50-5 btn-1" onclick="$(this).toggleClass('active').closest('section.sale__catalog').find('.catalog__sorted').toggleClass('m-hide')">
-                   <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                      <path fill="currentColor" d="M9,3L5,7H8V14H10V7H13M16,17V10H14V17H11L15,21L19,17H16Z" />
-                   </svg>
-                   <?=$this->text('Сортування')?>
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M9,3L5,7H8V14H10V7H13M16,17V10H14V17H11L15,21L19,17H16Z" />
+                    </svg>
+                    <?= $this->text('Сортування') ?>
                 </button>
             </div>
             <form class="m-hide" id="filter-bar">
                 <div class="filter">
-                    <p><?=$this->text('Назва товару')?></p>
-                    <input type="text" name="name" value="<?=$this->data->get('name')?>" placeholder="<?=$this->text('Пошук за назвою товару', 0)?>">
+                    <p><?= $this->text('Назва товару') ?></p>
+                    <input type="text" name="name" value="<?= $this->data->get('name') ?>" placeholder="<?= $this->text('Пошук за назвою товару', 0) ?>">
                 </div>
-                <?php if(empty($group)) { ?>
+                <?php if (empty($group)) { ?>
                     <div class="filter">
                         <div class="flex v-center">
-                            <p><?=$this->text('Марка авто')?></p>
+                            <p><?= $this->text('Марка авто') ?></p>
                             <!-- <i class="fas fa-chevron-circle-up"></i> -->
                         </div>
                         <div class="values">
-                            <?php $parent_id = []; foreach ($catalogAllGroups as $g) {
-                                if($g->parent > 0) continue;
+                            <?php $parent_id = [];
+                            foreach ($catalogAllGroups as $g) {
+                                if ($g->parent > 0) continue;
                                 $checked = '';
-                                if(!empty($_GET['group'])) {
-                                    if(is_array($_GET['group']) && in_array($g->id, $_GET['group']))
-                                    {
+                                if (!empty($_GET['group'])) {
+                                    if (is_array($_GET['group']) && in_array($g->id, $_GET['group'])) {
+                                        $parent_id[] = $g->id;
+                                        $checked = 'checked';
+                                    } else if (is_numeric($_GET['group'] && $_GET['group'] == $g->id)) {
                                         $parent_id[] = $g->id;
                                         $checked = 'checked';
                                     }
-                                    else if(is_numeric($_GET['group'] && $_GET['group'] == $g->id))
-                                    {
-                                        $parent_id[] = $g->id;
-                                        $checked = 'checked';
-                                    }
-                                } elseif(!empty($group)) {
-                                    if($group->id == $g->id || $group->parent == $g->id)
-                                    {
+                                } elseif (!empty($group)) {
+                                    if ($group->id == $g->id || $group->parent == $g->id) {
                                         $parent_id[] = $g->id;
                                         $checked = 'checked';
                                     }
                                 } ?>
-                                <input type="checkbox" name="group[]" value="<?=$g->id?>" id="group__id-<?=$g->id?>" <?=$checked?>>
-                                <label for="group__id-<?=$g->id?>"><?=$g->name?></label>
+                                <input type="checkbox" name="group[]" value="<?= $g->id ?>" id="group__id-<?= $g->id ?>" <?= $checked ?>>
+                                <label for="group__id-<?= $g->id ?>"><?= $g->name ?></label>
                             <?php } ?>
                         </div>
                     </div>
-                    <?php if(!empty($parent_id)) { ?>
+                    <?php if (!empty($parent_id)) { ?>
                         <div class="filter">
                             <div class="flex v-center">
-                                <p><?=$this->text('Модель авто')?></p>
+                                <p><?= $this->text('Модель авто') ?></p>
                                 <!-- <i class="fas fa-chevron-circle-up"></i> -->
                             </div>
                             <div class="values">
                                 <?php foreach ($catalogAllGroups as $g) {
-                                    if(!in_array($g->parent, $parent_id)) continue;
+                                    if (!in_array($g->parent, $parent_id)) continue;
                                     $checked = '';
-                                    if(!empty($_GET['subgroup'])) {
-                                        if(is_array($_GET['subgroup']) && in_array($g->id, $_GET['subgroup']))
-                                        {
+                                    if (!empty($_GET['subgroup'])) {
+                                        if (is_array($_GET['subgroup']) && in_array($g->id, $_GET['subgroup'])) {
+                                            $parent_id[] = $g->id;
+                                            $checked = 'checked';
+                                        } else if (is_numeric($_GET['subgroup'] && $_GET['subgroup'] == $g->id)) {
                                             $parent_id[] = $g->id;
                                             $checked = 'checked';
                                         }
-                                        else if(is_numeric($_GET['subgroup'] && $_GET['subgroup'] == $g->id))
-                                        {
-                                            $parent_id[] = $g->id;
-                                            $checked = 'checked';
-                                        }
-                                    } elseif(!empty($group)) {
-                                        if($group->id == $g->id)
-                                        {
+                                    } elseif (!empty($group)) {
+                                        if ($group->id == $g->id) {
                                             $parent_id[] = $g->id;
                                             $checked = 'checked';
                                         }
                                     } ?>
-                                    <input type="checkbox" name="subgroup[]" value="<?=$g->id?>" id="group__id-<?=$g->id?>" <?=$checked?>>
-                                    <label for="group__id-<?=$g->id?>"><?=$g->name?></label>
+                                    <input type="checkbox" name="subgroup[]" value="<?= $g->id ?>" id="group__id-<?= $g->id ?>" <?= $checked ?>>
+                                    <label for="group__id-<?= $g->id ?>"><?= $g->name ?></label>
                                 <?php } ?>
                             </div>
                         </div>
-                <?php } }
+                    <?php }
+                }
                 /*
                 <div class="product__type">
                     <div class="flex v-center">
@@ -184,82 +220,82 @@
                         <input type="checkbox" name="type" id="type__id-3">
                         <label for="type__id-3">Хіт продажу<span>5 687</span></label>
                     </form>
-                </div>*/ 
-                if($value = $this->data->get('sort'))
+                </div>*/
+                if ($value = $this->data->get('sort'))
                     echo "<input type='hidden' name='sort' value='{$value}' >";
-                if(!empty($filters_2)) {
+                if (!empty($filters_2)) {
                     $filters = $filters_2;
                 }
-                if(!empty($filters))
-                	foreach ($filters as $filter) {
-                		if($filter->id == 2)
-                        {
-                            if($value = $this->data->get($filter->alias))
+                if (!empty($filters))
+                    foreach ($filters as $filter) {
+                        if ($filter->id == 2) {
+                            if ($value = $this->data->get($filter->alias))
                                 echo "<input type='hidden' name='{$filter->alias}' value='{$value}' >";
-                			continue;
+                            continue;
                         }
-                        if(!empty($_GET[$filter->alias]) && is_array($_GET[$filter->alias]) && in_array(0, $_GET[$filter->alias]))
+                        if (!empty($_GET[$filter->alias]) && is_array($_GET[$filter->alias]) && in_array(0, $_GET[$filter->alias]))
                             unset($_GET[$filter->alias]);
-                        ?>
-                        
-    		            <div class="filter">
-    		                <div class="flex v-center">
-    		                    <p><?=$filter->name?></p>
-    		                    <!-- <i class="fas fa-chevron-circle-up"></i> -->
-    		                </div>
-    		                <div class="values">
-                                <a href="<?=$this->data->get_link($filter->alias, '', 'page')?>">
-                                    <input type="checkbox" <?=empty($_GET[$filter->alias])?'checked':''?>>
-                                    <label><?=$this->text('Всі виробники')?> <?//=$filter->name?></label>
-                                </a>
-                                
-                                
+                    ?>
 
-    		                	<?php foreach ($filter->values as $value) {
-                                    $checked = (!empty($_GET[$filter->alias]) && is_array($_GET[$filter->alias]) && in_array($value->id, $_GET[$filter->alias])) ? 'checked' : '';
-                                    ?>
-    		                		<input type="checkbox" name="<?=$filter->alias?>[]" value="<?=$value->id?>" id="value__id-<?=$value->id?>" <?=$checked?>>
-    		                    	<label for="value__id-<?=$value->id?>"><?=$value->name?> <span>(<?=$value->count?>)</span></label>
-    		                	<?php } ?>
-                            </div>
-    		            </div>
-    		    <?php } ?>
+                    <div class="filter">
+                        <div class="flex v-center">
+                            <p><?= $filter->name ?></p>
+                            <!-- <i class="fas fa-chevron-circle-up"></i> -->
+                        </div>
+                        <div class="values">
+                            <a href="<?= $this->data->get_link($filter->alias, '', 'page') ?>">
+                                <input type="checkbox" <?= empty($_GET[$filter->alias]) ? 'checked' : '' ?>>
+                                <label><?= $this->text('Всі виробники') ?> <? //=$filter->name
+                                                                            ?></label>
+                            </a>
+
+
+
+                            <?php foreach ($filter->values as $value) {
+                                $checked = (!empty($_GET[$filter->alias]) && is_array($_GET[$filter->alias]) && in_array($value->id, $_GET[$filter->alias])) ? 'checked' : '';
+                            ?>
+                                <input type="checkbox" name="<?= $filter->alias ?>[]" value="<?= $value->id ?>" id="value__id-<?= $value->id ?>" <?= $checked ?>>
+                                <label for="value__id-<?= $value->id ?>"><?= $value->name ?> <span>(<?= $value->count ?>)</span></label>
+                            <?php } ?>
+                        </div>
+                    </div>
+                <?php } ?>
             </form>
         </aside>
         <div class="w75">
             <div class="flex catalog__sorted m-hide" style="margin-top: 10px;">
                 <div>
-                    <a href="<?=$this->data->get_link('sort', 'price_down')?>" <?=($this->data->get('sort') == 'price_down')?'class="active"':''?>><?=$this->text('Спершу дешеві')?></a>
-                    <a href="<?=$this->data->get_link('sort', 'price_up')?>" <?=($this->data->get('sort') == 'price_up')?'class="active"':''?>><?=$this->text('Спершу дорожчі')?></a>
-                    <a href="<?=$this->data->get_link('sort', 'name')?>" <?=($this->data->get('sort') == 'name')?'class="active"':''?>>А &mdash; Я</a>
-                    <a href="<?=$this->data->get_link('sort', 'name_desc')?>" <?=($this->data->get('sort') == 'name_desc')?'class="active"':''?>>Я &mdash; А</a>
+                    <a href="<?= $this->data->get_link('sort', 'price_down') ?>" <?= ($this->data->get('sort') == 'price_down') ? 'class="active"' : '' ?>><?= $this->text('Спершу дешеві') ?></a>
+                    <a href="<?= $this->data->get_link('sort', 'price_up') ?>" <?= ($this->data->get('sort') == 'price_up') ? 'class="active"' : '' ?>><?= $this->text('Спершу дорожчі') ?></a>
+                    <a href="<?= $this->data->get_link('sort', 'name') ?>" <?= ($this->data->get('sort') == 'name') ? 'class="active"' : '' ?>>А &mdash; Я</a>
+                    <a href="<?= $this->data->get_link('sort', 'name_desc') ?>" <?= ($this->data->get('sort') == 'name_desc') ? 'class="active"' : '' ?>>Я &mdash; А</a>
                 </div>
                 <div class="quantity__goods m-hide">
-                    <?=$this->text('Кількість товарів', 0)?> &mdash; <span><?=$_SESSION['option']->paginator_total?></span>
+                    <?= $this->text('Кількість товарів', 0) ?> &mdash; <span><?= $_SESSION['option']->paginator_total ?></span>
                 </div>
             </div>
             <div class="flex wrap sale__wrrap">
-                <?php if($products) {
+                <?php if ($products) {
                     foreach ($products as $product) {
-                        if($product->availability > 0)
-                            require APP_PATH.'views/@commons/__product_subview.php';
-                     }
+                        if ($product->availability > 0)
+                            require APP_PATH . 'views/@commons/__product_subview.php';
+                    }
                     foreach ($products as $product) {
-                        if($product->availability <= 0)
-                            require APP_PATH.'views/@commons/__product_subview.php';
-                     }
-                     $in_row = 5;
-                     if(!empty($filters))
+                        if ($product->availability <= 0)
+                            require APP_PATH . 'views/@commons/__product_subview.php';
+                    }
+                    $in_row = 5;
+                    if (!empty($filters))
                         $in_row = 4;
-                     $add_block = $in_row - count($products) % $in_row;
-                     if($add_block < $in_row)
-                        for ($i=0; $i < $add_block; $i++) { 
+                    $add_block = $in_row - count($products) % $in_row;
+                    if ($add_block < $in_row)
+                        for ($i = 0; $i < $add_block; $i++) {
                             echo "<div class='sale__card empty'></div>";
-                        } 
+                        }
                 } else { ?>
                     <div class="alert alert-danger w100">
-                        <h4><?=$this->text('Товари відсутні!')?></h4>
-                        <p><?=$_SESSION['alias']->name?></p>
+                        <h4><?= $this->text('Товари відсутні!') ?></h4>
+                        <p><?= $_SESSION['alias']->name ?></p>
                     </div>
                 <?php } ?>
             </div>
@@ -271,8 +307,8 @@
     echo $this->paginator->get(); ?>
 
     <section>
-        <h4><?=$_SESSION['alias']->list?></h4>
-        <p><?=html_entity_decode($_SESSION['alias']->text)?></p>
+        <h4><?= $_SESSION['alias']->list ?></h4>
+        <p><?= html_entity_decode($_SESSION['alias']->text) ?></p>
     </section>
 </main>
 
