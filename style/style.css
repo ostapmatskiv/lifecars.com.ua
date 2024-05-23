@@ -934,15 +934,16 @@ main h2.sale__title {
     font-size: 14px;
     font-weight: 600;
     color: #8c8c8c;
-    width: 180px;
+    width: 90px;
     text-align: center;
+    margin-bottom: 15px;
 }
 main h2.sale__title:before {
     content: "";
     display: block;
     height: 4px;
-    width: 180px;
-    margin-bottom: 10px;
+    width: 100%;
+    margin-bottom: 5px;
     background: #7cbe4a;
 }
 
@@ -3338,7 +3339,7 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
         }
 
         main section.sale {
-            padding: 30px 0 0 0;
+            padding: 20px 0 0 0;
         }
 
         main section.cars__catalog .base__detal,
