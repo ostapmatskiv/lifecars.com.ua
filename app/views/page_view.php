@@ -26,10 +26,10 @@
 	<link rel="alternate" hreflang="uk-UA" href="<?= SITE_URL_UK ?>">
 	<link rel="alternate" hreflang="ru-UA" href="<?= SITE_URL_RU ?>">
 	<link rel="shortcut icon" type="image/x-icon" href="<?= SERVER_URL ?>favicon.ico">
-	<link rel="stylesheet" type="text/css" href="<?= SERVER_URL ?>style/ws__main.css?v=1.2">
+	<link rel="stylesheet" type="text/css" href="<?= SERVER_URL ?>style/ws__main.css?v=1.3">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
 	<link rel="stylesheet" type="text/css" href="<?= SERVER_URL ?>assets/magnific-popup/magnific-popup.css">
-	<link rel="stylesheet" type="text/css" href="<?= SERVER_URL ?>style/style.css?v=0.5.9">
+	<link rel="stylesheet" type="text/css" href="<?= SERVER_URL ?>style/style.css?v=0.6.0">
 </head>
 
 <body class="<?= $_SESSION['alias']->alias ?>">

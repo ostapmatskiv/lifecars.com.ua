@@ -15,14 +15,14 @@ $this->load->js_init('init__main()'); ?>
                              alt="<?= $group->name ?>">
                      <?php } ?>
                      <div class="logo__text"><?= $group->name ?></div>
-                     <i class="fas fa-chevron-down m-hide"></i>
+                     <i class="fas fa-chevron-down"></i>
                   </a>
                <?php }
             } ?>
          </div>
          <?php foreach ($catalogAllGroups as $group) {
             if ($group->parent == 0) { ?>
-               <section class="flex h-center wrap cars__base models__<?= $group->alias ?>" style="display:none">
+               <section class="flex h-center wrap m-column m-nowrap cars__base models__<?= $group->alias ?>" style="display:none">
                   <i class="fa fa-times"></i>
                   <?php foreach ($catalogAllGroups as $model) {
                      if ($model->parent == $group->id) { ?>
