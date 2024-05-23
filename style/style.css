@@ -930,6 +930,22 @@ main section.cars__base .fa-times {
     display: none;
 }
 
+main h2.sale__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #8c8c8c;
+    width: 180px;
+    text-align: center;
+}
+main h2.sale__title:before {
+    content: "";
+    display: block;
+    height: 4px;
+    width: 180px;
+    margin-bottom: 10px;
+    background: #7cbe4a;
+}
+
 @media (max-width: 500px) {
     main .main__logo a,
     main section.cars__base .base__detal {
