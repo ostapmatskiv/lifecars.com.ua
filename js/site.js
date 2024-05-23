@@ -212,6 +212,10 @@ function init__main() {
         	$(this).addClass('active').toggleClass('open').closest('.main__logo-wrapper').find('.cars__base.models__' + group_alias).stop().slideToggle();
         }
     });
+    $('main section.cars__base .fa-times').click(function() {
+        $(this).closest('.cars__base').slideUp();
+        $('.main__logo a').removeClass('active');
+    });
 }
 
 function init__parts() {

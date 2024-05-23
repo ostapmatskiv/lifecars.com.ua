@@ -6,7 +6,7 @@ $this->load->js_init('init__main()'); ?>
    <h1 class="hide m-block"><?= $_SESSION['alias']->name ?></h1>
    <div class="main__logo-wrapper">
       <?php if (!empty($catalogAllGroups)) { ?>
-         <div class="flex w50 m100 h-evenly v-end m-wrap m-h-between main__logo m-m0">
+         <div class="flex w50 m100 h-evenly v-end m-column m-v-start  main__logo m-m0">
             <?php foreach ($catalogAllGroups as $group) {
                if ($group->parent == 0) { ?>
                   <a href="<?= SITE_URL . 'parts/' . $group->alias ?>" data-group="<?= $group->alias ?>">
@@ -21,9 +21,9 @@ $this->load->js_init('init__main()'); ?>
             } ?>
          </div>
          <?php foreach ($catalogAllGroups as $group) {
-
             if ($group->parent == 0) { ?>
-               <section class="flex h-center wrap cars__base models__<?= $group->alias ?>">
+               <section class="flex h-center wrap cars__base models__<?= $group->alias ?>" style="display:none">
+                  <i class="fa fa-times"></i>
                   <?php foreach ($catalogAllGroups as $model) {
                      if ($model->parent == $group->id) { ?>
                         <a href="<?= SITE_URL . 'parts/' . $group->alias . '/' . $model->alias ?>" class="base__detal">

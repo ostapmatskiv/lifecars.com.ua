@@ -926,8 +926,43 @@ main .main__logo a.active .fa-chevron-down {
     color: #82C166;
 }
 
+main section.cars__base .fa-times {
+    display: none;
+}
+
 @media (max-width: 500px) {
-    main .main__logo a { width: 30%; margin-bottom: 10px; }
+    main .main__logo a { 
+        width: 100%;
+        height: 40px;
+        margin-bottom: 0px;
+        flex-direction: row;
+    }
+    main .main__logo a img {
+        margin-right: 5px;
+    }
+    main .logo__text {
+        margin-top: 0;
+    }
+
+    main section.cars__base {
+        position: fixed;
+        top: 0;
+        background: white;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        z-index: 999;
+        padding-top: 10%;
+        align-content: center;
+    }
+
+    main section.cars__base .fa-times {
+        position: absolute;
+        right: 30px;
+        top: 30px;
+        font-size: 20px;
+        display: block;
+    }
 }
 
 
