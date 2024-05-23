@@ -71,7 +71,7 @@ $this->load->js_init('init__main()'); ?>
             <a href="#">Поради</a>
         </div> */ ?>
       <h2 class="sale__title"><?= $this->text('Новинки') ?></h2>
-      <div class="flex wrap sale__wrrap  m-m0">
+      <div class="flex wrap sale__wrrap">
          <?php if ($products = $this->load->function_in_alias('parts', '__get_Products', ['sort' => 'id DESC', 'limit' => 10, 'availability' => 1]))
             foreach ($products as $product)
                require '@commons/__product_subview.php'; ?>
