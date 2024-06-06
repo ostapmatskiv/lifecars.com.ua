@@ -269,6 +269,9 @@ class shopshowcase extends Controller {
 						$this->redirect($products[0]->link);
 
 					$this->setProductsPrice($products);
+
+					$_GET['name'] = $name;
+					$_GET['group'] = $group;
 					$this->load->page_view('search_view', array('products' => $products));
 					exit;
 				}
@@ -346,10 +349,11 @@ class shopshowcase extends Controller {
 				unset($_GET['name']);
 				if($products = $this->shop_model->getProducts('%'.$this->makeArticle($name)))
 				{
-					if(count($products) == 1)
+					if(count($products) == 1 && empty($_GET['page']))
 						$this->redirect($products[0]->link);
 
 					$this->setProductsPrice($products);
+					$_GET['name'] = $name;
 					$this->load->page_view('search_view', array('products' => $products));
 					exit;
 				}
