@@ -315,15 +315,15 @@
                     success: function (res) {
                         $('#divLoading').removeClass('show');
                         if (res.status) {
-                            console.log('norm');
                             signUpStage = 2;
                             $('#signupForm input[type=text]').attr('disabled', false);
                             $('#signupForm #phoneError').addClass('hide');
                             $('#signupForm input[name=first_name]').focus();
+                            $('#signInForm input[name=phone]').removeClass('danger');
                         } else {
                             console.log('disabled');
                             signUpStage = 1;
-                            $('#signInForm input[name=phone]').val(tel);
+                            $('#signInForm input[name=phone]').addClass('danger').val(tel);
                             $('#signupForm #phoneError').removeClass('hide');
                         }
                     }
@@ -338,10 +338,10 @@
             if (this.value.length > 0) {
                 if (/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ]+$/.test(this.value) === false) {
                     $('#signupForm #fnError').removeClass('hide');
-                    $('#signupForm input[name=first_name]').focus();
+                    $('#signupForm input[name=first_name]').addClass('danger').focus();
                 } else {
                     $('#signupForm #fnError').addClass('hide');
-                    $('#signupForm input[name=last_name]').focus();
+                    $('#signupForm input[name=last_name]').removeClass('danger').focus();
                 }
             }
         });
@@ -350,9 +350,10 @@
             if (this.value.length > 0) {
                 if (/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ]+$/.test(this.value) === false) {
                     $('#signupForm #lnError').removeClass('hide');
-                    $('#signupForm input[name=last_name]').focus();
+                    $('#signupForm input[name=last_name]').addClass('danger').focus();
                 } else {
                     $('#signupForm #lnError').addClass('hide');
+                    $('#signupForm input[name=last_name]').removeClass('danger');
                 }
             }
         });
@@ -370,7 +371,7 @@
                     $('#divLoading').removeClass('show');
                     if (res.status) {
                         signUpStage = 4;
-                        $('#signupForm #codeError').addClass('hide');
+                        $('#signupForm #codeError').addClass('danger').addClass('hide');
                         $('#signupForm').submit();
                     } else {
                         $('#signupForm #codeError').removeClass('hide');
@@ -568,5 +569,8 @@
         margin: 5px 0 15px !important;
         text-align: center;
         cursor: pointer;
+    }
+    input.danger {
+        border-color: #FF3300;
     }
 </style>
