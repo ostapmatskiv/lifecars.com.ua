@@ -132,7 +132,7 @@
          </div>
 
          <input name="code" type="number" value="<?=$this->data->re_post('code')?>" placeholder="<?=$this->text('Код з СМС', 5)?>" <?=$this->data->re_post('code') ? '' : 'class="hide"'?> />
-         <h4 class="text-danger hide" id="codeError"><?=$this->text('Помилка СМС коду! Перевірте дані')?></h4>
+         <h5 class="text-danger hide" id="codeError"><?=$this->text('Помилка СМС коду! Перевірте дані')?></h5>
          <p class="send_phone_code hide"><?=$this->text('Повторно відправити СМС з кодом')?></p>
 
          <?php /*
