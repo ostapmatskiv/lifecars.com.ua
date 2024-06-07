@@ -319,17 +319,18 @@
                             $('#signupForm input[type=text]').attr('disabled', false);
                             $('#signupForm #phoneError').addClass('hide');
                             $('#signupForm input[name=first_name]').focus();
-                            $('#signInForm input[name=phone]').removeClass('danger');
+                            $('#signupForm input[name=phone]').removeClass('danger');
                         } else {
                             console.log('disabled');
                             signUpStage = 1;
-                            $('#signInForm input[name=phone]').addClass('danger').val(tel);
+                            $('#signupForm input[name=phone]').addClass('danger').val(tel);
                             $('#signupForm #phoneError').removeClass('hide');
                         }
                     }
                 });
             }
             else {
+                $('#signupForm input[name=phone]').addClass('danger');
                 $('#signupForm #phoneError2').text('Введіть коректний номер телефону починаючи +380').removeClass('hide');
             }
         });
@@ -341,7 +342,8 @@
                     $('#signupForm input[name=first_name]').addClass('danger').focus();
                 } else {
                     $('#signupForm #fnError').addClass('hide');
-                    $('#signupForm input[name=last_name]').removeClass('danger').focus();
+                    $('#signupForm input[name=first_name]').removeClass('danger');
+                    $('#signupForm input[name=last_name]').focus();
                 }
             }
         });
@@ -371,9 +373,10 @@
                     $('#divLoading').removeClass('show');
                     if (res.status) {
                         signUpStage = 4;
-                        $('#signupForm #codeError').addClass('danger').addClass('hide');
+                        $('#signupForm #codeError').addClass('hide');
                         $('#signupForm').submit();
                     } else {
+                        $('#signupForm input[name=code]').addClass('danger').focus();
                         $('#signupForm #codeError').removeClass('hide');
                     }
                 }
@@ -571,6 +574,6 @@
         cursor: pointer;
     }
     input.danger {
-        border-color: #FF3300;
+        border-color: #FF3300 !important;
     }
 </style>
