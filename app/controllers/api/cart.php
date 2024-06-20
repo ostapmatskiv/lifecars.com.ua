@@ -22,8 +22,9 @@ class cart extends Controller
 	}
 
     function ttn() {
+        $content = file_get_contents('php://input');
         echo '<pre>';
-        print_r($_POST);
+        print_r($content);
         echo '</pre>';
 
         if($order_id = $this->data->post('order_id')) {
