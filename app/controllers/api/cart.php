@@ -69,6 +69,8 @@ class cart extends Controller
                 }
             }
         }
+
+        $this->db->insertRow('api_cart_ttn_log', ['content' => $content, 'created_at' => time()]);
     }
 
 }
