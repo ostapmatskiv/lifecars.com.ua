@@ -51,7 +51,7 @@ class cart extends Controller
         foreach ($content_json as $row) {
             if($order_id = $row['order_id']) {
                 $data = ['ttn' => $row['ttn'], 'np_status' => $row['np_status']];
-                if($order = $this->db->select('s_cart', 'ttn, np_status', $order_id)->get()) {
+                if($order = $this->db->select('s_cart', 'status, ttn, np_status', $order_id)->get()) {
                     $log = [];
                     foreach ($data as $key => $value) {
                         if($order->$key != $value) {
@@ -59,8 +59,13 @@ class cart extends Controller
                         }
                     }
                     if(!empty($log)) {
+                        $log_status = 0;
+                        // Відправлено
+                        if($order->status < 5) {
+                            $data['status'] = $log_status = 5;
+                        }
                         $this->db->updateRow('s_cart', $data, $order_id);
-                        $this->db->insertRow('s_cart_history', ['cart' => $order_id, 'status' => 0, 'show' => 1, 'user' => 0, 'comment' => implode(', ', $log), 'date' => time()]);
+                        $this->db->insertRow('s_cart_history', ['cart' => $order_id, 'status' => $log_status, 'show' => 1, 'user' => 0, 'comment' => implode(', ', $log), 'date' => time()]);
                     }
                     echo "OK: order {$order_id} updated. " . PHP_EOL;
                 }
