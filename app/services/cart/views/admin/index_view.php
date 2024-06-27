@@ -113,7 +113,13 @@
 								<a href="<?=SITE_URL.'admin/'.$_SESSION['alias']->alias?>/<?=$cart->id?>" class="btn btn-<?=$cart->status_color?> btn-sm pull-left m-r-10">Замовлення #<?=$cart->id?></a>	<?= date('H:i', $cart->date_add)?> <br>
 								<?= ($cart->manager) ? 'Менеджер: <a href="'.SITE_URL.'admin/wl_users/'.$cart->manager_email.'">#'.$cart->manager.'. '.$cart->manager_name.'</a>' : '' ?>
 							</td>
-							<td><strong><?= $cart->status_name?></strong> <?= $cart->date_edit > 0 ? '<br>'.date('d.m.Y H:i', $cart->date_edit) : '' ?></td>
+							<td>
+								<strong><?= $cart->status_name?></strong>
+								<?= $cart->date_edit > 0 ? '<br>'.date('d.m.Y H:i', $cart->date_edit) : '' ?>
+								<?php if (!empty($cart->np_status)) {
+									echo "<br><strong class=\"label label-info\" title=\"Статус від NP\">{$cart->np_status}</strong>";
+								} ?>
+							</td>
 							<td><?php if(!empty($cart->products))
                             foreach ($cart->products as $product) {
                             	if(empty($product->info))
