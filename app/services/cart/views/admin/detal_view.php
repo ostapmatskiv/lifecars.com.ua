@@ -180,6 +180,9 @@
 					echo "<p>Отримувач: <b>{$cart->shipping_info['recipient']}</b> </p>";
 				if(!empty($cart->shipping_info['phone']))
 					echo "<p>Контактний телефон: <b>{$cart->shipping_info['phone']}</b> </p>";
+				if(!empty($cart->np_status)) {
+					echo "<p>Статус від NP: <strong class=\"label label-info\">{$cart->np_status}</strong> </p>";
+				}
 				?>
 				<div class="form-group">
 					<label class="col-md-3 control-label text-right">ТТН доставки</label>
