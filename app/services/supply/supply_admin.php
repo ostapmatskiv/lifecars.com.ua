@@ -31,30 +31,8 @@ class supply_admin extends Controller {
     {
         $this->load->smodel('supply_model');
 
-        if($import_id = $this->data->uri(2)) {
-            if($import_log = $this->supply_model->get_import_log(['id' => $import_id])) {
-                $import_log = $import_log[0];
-                $_SESSION['alias']->name = $_SESSION['alias']->title = 'Імпорт товарів ' . $import_log->storage_name . ' ' . date('d.m.Y H:i', $import_log->created_at);
-
-                $where = compact('import_id');
-                if($this->data->get('out_is_available')) $where['availability'] = '>0';
-                if($this->data->get('minus_brands')) $this->db->addWhereAmp($where, 'i.product_brand NOT IN (SELECT `brand` FROM `supply_minus_brands`)');
-                if ($product_article = $this->data->get('product_article')) {
-                    $where['article_key'] = $this->supply_model->prepareArticleKey($product_article);
-                }
-                $this->load->admin_view('import_products_view', [
-                    'import_log' => $import_log,
-                    'import_products' => $this->supply_model->get_import_products($where)
-                ]);
-            } else {
-                $this->load->admin_view('404_view');
-            }
-            return;
-        }
-
         $_SESSION['alias']->name = $_SESSION['alias']->title = 'Постачальники. Аналіз товарів';
         $this->load->admin_view('index_view', [
-            'supply_import_log' => $this->supply_model->get_import_log(),
             'supply_storages' => $this->supply_model->get_storages(),
             'minus_products' => $this->supply_model->get_minus_products()
         ]);

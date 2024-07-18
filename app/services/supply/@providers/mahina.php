@@ -3,6 +3,7 @@
 class mahina_provider {
 
     private $file;
+    private $link = "https://mahina.in.ua/catalog/?q={$article}&submit=%D0%9D%D0%B0%D0%B9%D1%82%D0%B8&section_depth_1=false&section_id=false";
 
     public function init($file) {
         $this->file = $file;

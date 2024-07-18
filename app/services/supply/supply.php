@@ -115,21 +115,13 @@ class supply extends Controller {
         }
     }
 
-    // init import by cron: set import_flag to 1 for all active storages
-    public function import_init() {
-        $this->db->updateRow('supply_storages', ['import_flag' => 1], ['active' => 1]);
-        $total = $this->db->getCount('supply_storages', ['import_flag' => 1, 'active' => 1]);
-        echo "Total inited: {$total} storages are ready for import.";
-        exit;
-    }
-
     // start importing per each storage by cron
-    public function import_start() {
+    public function import_cron() {
         echo '<pre>';
-        if($storage = $this->db->select('supply_storages', '*', ['active' => 1, 'import_flag' => 1])->limit(1)->get()) {
-            if(empty($storage->provider) || empty($storage->link)) {
-                $this->db->updateRow('supply_storages', ['import_flag' => 0], $storage->id);
-                exit('empty provider or link');
+        if($storage = $this->db->select('supply_storages', '*', ['active' => 1, 'import_cron_flag' => 1])->order('last_import_at ASC')->limit(1)->get()) {
+            if(empty($storage->provider)) {
+                $this->db->updateRow('supply_storages', ['import_cron_flag' => 0], $storage->id);
+                exit('empty provider');
             }
 
             // for dev test
