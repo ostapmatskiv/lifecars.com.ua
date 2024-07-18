@@ -223,6 +223,13 @@ if(empty($_POST) && isset($url[0]) && is_int(stripos($url, '//')))
 	header ('Location: '. SITE_URL.$url);
 	exit;
 }
+if(substr($url, -1, 1) == '?') {
+	$url = substr($url, 0, -1);
+	header ('HTTP/1.1 301 Moved Permanently');
+	header ('Location: '. SITE_URL.$url);
+	exit;
+
+}
 if(isset($_GET['request']))
 {
 	$last = substr($_GET['request'], -1, 1);
@@ -241,21 +248,26 @@ if(isset($_GET['request']))
 	}
 }
 
+if(!defined('IMG_DIR'))
+	define('IMG_DIR', $images_folder.'/');
 if(!defined('IMG_PATH'))
 	define('IMG_PATH', SERVER_URL.$images_folder.'/');
+	define('REQUEST_URI', $_SERVER["REQUEST_URI"]);
 
-$request = ($request == '') ? 'main' : $request;
+$request = ($request == '' || $request == 'index.php' || $request == '/index.php') ? 'main' : $request;
 if($request[0] == '/')
 	$request = substr($request, 1);
 start_route($request);
 
+
 function start_route($request)
 {
+	require_once 'function.php';
 	require 'registry.php';
 	require 'loader.php';
 	require 'controller.php';
 	require 'router.php';
-	
+
 	$route = new Router($request);
 }
 

@@ -16,6 +16,13 @@
  */
 
 class supply extends Controller {
+
+    private $storage_db_config = [
+        'host' => 'localhost',
+        'user' => 'root',
+        'password' => '',
+        'database' => 'adatrade.com.ua',
+    ];
 				
     function _remap($method, $data = array())
     {
@@ -123,6 +130,8 @@ class supply extends Controller {
                 $this->db->updateRow('supply_storages', ['import_cron_flag' => 0], $storage->id);
                 exit('empty provider');
             }
+
+            pp($storage);
 
             // for dev test
             // $file_path = 'import/supply/asiaparts.xml';
