@@ -15,7 +15,7 @@ class install {
 	public $admin_ico = 'fa-area-chart';
 	public $version = "1.0";
 
-	public $options = array('deviation_max_price' => '10');
+	public $options = array('deviation_max_price' => '5');
 	public $options_type = array('deviation_max_price' => 'number');
 	public $options_title = array('deviation_max_price' => 'Відхилення від максимальної ціни, %');
 	public $options_admin = array();
@@ -47,26 +47,18 @@ class install {
                     `name` varchar(255) NOT NULL,
                     `link` varchar(255) NOT NULL,
                     `active` tinyint(1) NOT NULL,
+                    `last_import_product_id` int(11) NOT NULL,
                     `last_import_at` int(11) NOT NULL,
-                    `import_flag` tinyint(1) NOT NULL COMMENT 'flag (1|0) to import on active stage',
+                    `import_cron_flag` tinyint(1) NOT NULL COMMENT 'flag (1|0) to import by cronjob',
                     `created_at` int(11) NOT NULL,
                     PRIMARY KEY (`id`)
                     ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;";
 		$this->db->executeQuery($query);
 
-        $query = "CREATE TABLE IF NOT EXISTS `supply_import_log` (
-                    `id` int(11) NOT NULL AUTO_INCREMENT,
-                    `storage_id` int(11) NOT NULL,
-                    `created_at` int(11) NOT NULL,
-					`link` varchar(255) NOT NULL,
-					`local_file` varchar(255) NOT NULL,
-                    PRIMARY KEY (`id`)
-                    ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;";
-        $this->db->executeQuery($query);
-
         $query = "CREATE TABLE IF NOT EXISTS `supply_products` (
                     `id` int(11) NOT NULL AUTO_INCREMENT,
-                    `import_id` int(11) NOT NULL,
+					`created_at` int(11) NOT NULL,
+					`storage_id` int(11) NOT NULL,
                     `article_key` varchar(100) NOT NULL,
                     `product_article` varchar(255) NOT NULL,
                     `product_brand` varchar(255) NOT NULL,
@@ -109,7 +101,6 @@ class install {
 	public function uninstall($service_id)
 	{
 		$this->db->executeQuery("DROP TABLE IF EXISTS `supply_storages`");
-		$this->db->executeQuery("DROP TABLE IF EXISTS `supply_import_log`");
 		$this->db->executeQuery("DROP TABLE IF EXISTS `supply_products`");
 		$this->db->executeQuery("DROP TABLE IF EXISTS `supply_minus_words`");
 		$this->db->executeQuery("DROP TABLE IF EXISTS `supply_minus_brands`");
