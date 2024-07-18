@@ -4,58 +4,70 @@
  * Шлях: SYS_PATH/libraries/db.php
  *
  * Робота з базою даних.
- * Версія 1.0.1 (25.04.2013 - додано getAllData(), getAllDataByFieldInArray(), language(), latterUAtoEN())
- * Версія 1.0.2 (16.07.2014) - додано getCount(), register(); розширено (можуть приймати в якості умови масив): getAllDataById(), getAllDataByFieldInArray(+сорутвання)
- * Версія 1.0.3 (06.11.2014) - додано getQuery(), (12.11.2014) до getAllDataById(), getAllDataByFieldInArray() додано авто підтримку до умови IN
- * Версія 2.0 (28.09.2015) - переписано код getAllDataById(), getAllDataByFieldInArray(), getCount(). Додано службову функцію makeWhere(). Додано запити по конструкції: prefix(), select(), join(), order(), limit(), get().
- * Версія 2.0.1 (26.03.2016) - до get() додано параметр debug, що дозволяє бачити кінцевий запит перед запуском, виправлено помилку декількаразового запуску get()
- * Версія 2.0.2 (01.04.2016) - до makeWhere() додано параметр сортування НЕ '!'
- * Версія 2.0.3 (26.07.2016) - адаптовано до php7
- * Версія 2.0.4 (12.09.2016) - додано getAliasImageSizes()
- * Версія 2.1 (22.09.2016) - updateRow(), deleteRow() адаптовано через makeWhere(); у makeWhere() виправлено роботу з нульовими значеннями; до getRows() додати перевірку на тип single
- * Версія 2.1.1 (27.09.2016) - до makeWhere() додано повторюване поле через "+"
- * Версія 2.2 (19.12.2016) - додано sitemap_add(), sitemap_redirect(), sitemap_update(), sitemap_index(), sitemap_remove(), cache_clear()
- * Версія 2.2.1 (08.02.2017) - додано "chaining methods";
- * Версія 2.2.2 (05.09.2017) - у випадку успіху insertRow() повернає getLastInsertedId(); fix getRows('single')
- * Версія 2.2.3 (29.10.2017) - додано count_db_queries, showDBdump, виправлено помилку у where() для пустого/нульового значення
- * Версія 2.2.4 (01.11.2017) - додано group(), оптимізовано роботу getAliasImageSizes()
- * Версія 2.2.5 (01.12.2017) - amp версію виключено з індексації
- * Версія 2.3 (17.03.2018) - додано insertRows() - мультивставка рядків
- * Версія 2.4 (10.09.2019) - додано cache_add(), cache_get(), cache_delete(), cache_delete_all() - робота з файловим кешем
- * Версія 2.4.1 (19.11.2019) - Перейменовано cache_clear() => sitemap_cache_clear(). Інтегровано всередину онулення загального індексу по сайту
- * Версія 2.4.2 (26.11.2019) - до makeWhere() додано keyValue #! ['1c_status' => '#!c.status']
- * Версія 2.4.3 (11.12.2019) - до cache_add(), cache_get(), cache_delete(), cache_delete_all() - додано мультимовність
- * Версія 2.4.5 (16.12.2019) - до getAliasImageSizes() додано кешування у сесії
- * Версія 2.4.6 (20.02.2020) - до get('count') додано (виправлено) коректно роботу параметрів $debug, $get
- * Версія 2.5 (20.02.2020) - до makeWhere() додано keyValue & (&, &&, &&&, &&&&+) ['&' => 'p.old_price > p.price || p.promo > 0'] - дозволяє додати "складні" sql умови до запиту
- * Версія 2.6 (12.06.2020) - ініціалізація першого технічного запиту до БД 'SET NAMES utf8', тільки перед першим реальним запитом. Мінімізація пустих запитів.
+ * 1.0.1    25.04.2013 - додано getAllData(), getAllDataByFieldInArray(), language(), latterUAtoEN())
+ * 1.0.2    16.07.2014 - додано getCount(), register(); розширено (можуть приймати в якості умови масив): getAllDataById(), getAllDataByFieldInArray(+сорутвання)
+ * 1.0.3    06.11.2014 - додано getQuery(), (12.11.2014) до getAllDataById(), getAllDataByFieldInArray() додано авто підтримку до умови IN
+ * 2.0      28.09.2015 - переписано код getAllDataById(), getAllDataByFieldInArray(), getCount(). Додано службову функцію makeWhere(). Додано запити по конструкції: prefix(), select(), join(), order(), limit(), get().
+ * 2.0.1    26.03.2016 - до get() додано параметр debug, що дозволяє бачити кінцевий запит перед запуском, виправлено помилку декількаразового запуску get()
+ * 2.0.2    01.04.2016 - до makeWhere() додано параметр сортування НЕ '!'
+ * 2.0.3    26.07.2016 - адаптовано до php7
+ * 2.0.4    12.09.2016 - додано getAliasImageSizes()
+ * 2.1      22.09.2016 - updateRow(), deleteRow() адаптовано через makeWhere(); у makeWhere() виправлено роботу з нульовими значеннями; до getRows() додати перевірку на тип single
+ * 2.1.1    27.09.2016 - до makeWhere() додано повторюване поле через "+"
+ * 2.2      19.12.2016 - додано sitemap_add(), sitemap_redirect(), sitemap_update(), sitemap_index(), sitemap_remove(), cache_clear()
+ * 2.2.1    08.02.2017 - додано "chaining methods";
+ * 2.2.2    05.09.2017 - у випадку успіху insertRow() повернає getLastInsertedId(); fix getRows('single')
+ * 2.2.3    29.10.2017 - додано count_db_queries, showDBdump, виправлено помилку у where() для пустого/нульового значення
+ * 2.2.4    01.11.2017 - додано group(), оптимізовано роботу getAliasImageSizes()
+ * 2.2.5    01.12.2017 - amp версію виключено з індексації
+ * 2.3      17.03.2018 - додано insertRows() - мультивставка рядків
+ * 2.4      10.09.2019 - додано cache_add(), cache_get(), cache_delete(), cache_delete_all() - робота з файловим кешем
+ * 2.4.1    19.11.2019 - Перейменовано cache_clear() => sitemap_cache_clear(). Інтегровано всередину онулення загального індексу по сайту
+ * 2.4.2    26.11.2019 - до makeWhere() додано keyValue #! ['1c_status' => '#!c.status']
+ * 2.4.3    11.12.2019 - до cache_add(), cache_get(), cache_delete(), cache_delete_all() - додано мультимовність
+ * 2.4.5    16.12.2019 - до getAliasImageSizes() додано кешування у сесії
+ * 2.4.6    20.02.2020 - до get('count') додано (виправлено) коректно роботу параметрів $debug, $get
+ * 2.5      20.02.2020 - до makeWhere() додано keyValue & (&, &&, &&&, &&&&+) ['&' => 'p.old_price > p.price || p.promo > 0'] - дозволяє додати "складні" sql умови до запиту
+ * 2.6      12.06.2020 - ініціалізація першого технічного запиту до БД 'SET NAMES utf8', тільки перед першим реальним запитом. Мінімізація пустих запитів.
                             додано public $this->saveDBlog. оновлено showTime()
                             до insertRows() доопрацьовано default значення у keys
- * Версія 2.7 (19.06.2020) - оновлено sitemap_*() - зміни системної таблиці wl_sitemap:link_sha1
-                            оновлено getAliasImageSizes(), sitemap_cache_clear() => html_cache_clear() - робота з файловим кешем
-                            додано getHTMLCacheKey(), getCacheContentKey(), $this->version
-   Версія 2.8 (05.08.2020) - додано redis_set(), redis_get(), redis_del(), redis_delByKey(), redis_ping(), redis_do(), $this->html_cache_in_redis
-   2.8.1 (09.12.2020) - updateRow() values can set NULL, numeric format. select(.., .., .., clear = true) add default clear param
-   2.8.2 (15.01.2021) - makeWhere() масив значень з одного елементу {key} IN ({value}) => {key} = {value}
-   2.9 (15.02.2021) - makeWhere() підтримка FULLTEXT пошуку. Ключ ~
-   2.9.1 (26.08.2021) - insertRows(.., $field_type = array())
-   2.9.2 (09.06.2022) - updateRow(.., $field_type = array())
-   2.9.3 - add $cfg['port'], support php 7.4+
-   2.9.4 - add getEnumList(), getTableFields() @author Oleh Holovkin
+ * 2.7      19.06.2020 - оновлено sitemap_*() - зміни системної таблиці wl_sitemap:link_sha1
+                           оновлено getAliasImageSizes(), sitemap_cache_clear() => html_cache_clear() - робота з файловим кешем
+                           додано getHTMLCacheKey(), getCacheContentKey(), $this->version
+ * 2.8      05.08.2020 - додано redis_set(), redis_get(), redis_del(), redis_delByKey(), redis_ping(), redis_do(), $this->html_cache_in_redis
+ * 2.8.1    09.12.2020 - updateRow() values can set NULL, numeric format. select(.., .., .., clear = true) add default clear param
+ * 2.8.2    15.01.2021 - makeWhere() масив значень з одного елементу {key} IN ({value}) => {key} = {value}
+ * 2.9      15.02.2021 - makeWhere() підтримка FULLTEXT пошуку. Ключ ~
+ * 2.9.1    26.08.2021 - insertRows(.., $field_type = array())
+ * 2.9.2    09.06.2022 - updateRow(.., $field_type = array())
+ * 2.9.3 - add $cfg['port'], support php 7.4+
+ * 2.9.4 - add getEnumList(), getTableFields() @author Oleh Holovkin
+ * 2.9.5 - getRows() support arrayIndexed завжди масив об'єктів [id] => {}
+ * 2.9.6 - getRows() arrayIndexed support {$key} [$key] => {}
+ * 2.9.7 - add addWhereAmp(), makeWhere() private => public, get(type:'query')
+ * 2.9.8    23.08.2023 - addWhereAmp $where as reference
+ * 3.0 - fulltext search support '-' in words, support own prefix in makeWhere(), fix sitemap dublicates
+ * 3.1 - add getGroupCount() by Oleh Holovkin
+ * 3.2 - add saveDBlog_more_sec to db.log if query time > $saveDBlog_more_sec
+ * 3.3      20.06.2024 - add redis_exists(), cache_exists()
+ * 3.4      10.07.2024 - get() fix query_prefix for single table, add # to ignore query_prefix
  */
 
 class Db {
 
     private $connects = array();
     private $current = 0;
-    private $result;
+    private $cfg;
+    public $result;
     public $redis = false;
     public $html_cache_in_redis = false;
-    public $version = '2.8';
+    public $version = '3.4';
     public $imageReSizes = array();
     public $count_db_queries = 0;
     public $showDBdump = false;
     public $saveDBlog = false; // to db.log
+    public $saveDBlog_more_sec = 2; // to db.log if query time > $saveDBlog_more_sec
+    public $db_log_path = 'db.log';
 
     /*
      * Отримуємо дані для з'єднання з конфігураційного файлу
@@ -64,7 +76,7 @@ class Db {
     {
         $port = $cfg['port'] ?? 3306;
         $this->newConnect($cfg['host'], $cfg['user'], $cfg['password'], $cfg['database'], $port);
-
+		$this->cfg = $cfg;
         if(!empty($cfg['redis_host']))
         {
             $this->redis = new Redis();
@@ -73,6 +85,13 @@ class Db {
                 $this->redis->auth($cfg['redis_auth']);
             if(!empty($cfg['html_cache_in_redis']))
                 $this->html_cache_in_redis = true;
+        }
+
+        if($this->saveDBlog || $this->saveDBlog_more_sec) {
+            $path = APP_PATH . 'logs/db';
+            if(!file_exists($path))
+                mkdir($path, 0777, true);
+            $this->db_log_path = $path . '/db_'.date('Y-m-d').'.log';
         }
     }
 
@@ -84,10 +103,25 @@ class Db {
      * @param <string> $password пароль
      * @param <string> $database назва бази даних
      */
-    function newConnect($host, $user, $password, $database, $port = 3306)
+    public function newConnect($host, $user, $password, $database, $port = 3306)
     {
         $this->connects[] = new mysqli($host, $user, $password, $database, $port);
         $this->current = count($this->connects) - 1;
+
+        /* check connection */
+        if ($this->connects[$this->current]->connect_errno) {
+            printf("DB Connect failed: %s\n", $this->connects[$this->current]->connect_error);
+            exit();
+        }
+    }
+
+	/**
+	 *
+	*	return currect connection db name
+	*/
+    public function name($index = 0)
+    {
+        return $this->names[$index] ?? NULL;
     }
 
     /**
@@ -95,27 +129,27 @@ class Db {
      *
      * @param <string> $query запит
      */
-    function executeQuery($query)
+    public function executeQuery($query)
     {
         if($this->count_db_queries === 0)
         {
             $this->connects[$this->current]->query('SET NAMES utf8');
             
             if ($this->saveDBlog)
-                file_put_contents('db.log', PHP_EOL.$this->count_db_queries.': SET NAMES utf8'.PHP_EOL, FILE_APPEND);
+                file_put_contents($this->db_log_path, PHP_EOL.$this->count_db_queries.': SET NAMES utf8'.PHP_EOL, FILE_APPEND);
             if ($this->showDBdump)
                 echo $this->count_db_queries.': SET NAMES utf8 <hr>';
 
             $this->count_db_queries++;
         }
 
-        if ($this->showDBdump || $this->saveDBlog)
+        if ($this->showDBdump || $this->saveDBlog || $this->saveDBlog_more_sec)
         {
             $this->time_start = microtime(true);
             $this->mem_start = memory_get_usage();
             
             if ($this->saveDBlog)
-                file_put_contents('db.log', $this->count_db_queries.': '.$query.PHP_EOL, FILE_APPEND);
+                file_put_contents($this->db_log_path, $this->count_db_queries.': '.$query.PHP_EOL, FILE_APPEND);
             if ($this->showDBdump)
                 echo $this->count_db_queries.': '.$query;
             // if($this->count_db_queries == 11)
@@ -125,7 +159,6 @@ class Db {
             //     echo "</pre>";
             // }
         }
-
         $result = $this->connects[$this->current]->query($query);
         if(!$result)
             echo $this->connects[$this->current]->error;
@@ -133,13 +166,25 @@ class Db {
             $this->result = $result;
         $this->count_db_queries++;
 
+        if($this->saveDBlog_more_sec) {
+            $time = microtime(true) - $this->time_start;
+            if($time > $this->saveDBlog_more_sec) {
+                $uri = $_SERVER['REQUEST_URI'] ?? '';
+                file_put_contents($this->db_log_path, date('Y-m-d H:i:s') . ' '.$uri.PHP_EOL, FILE_APPEND);
+                file_put_contents($this->db_log_path, $this->count_db_queries.': '.$query.PHP_EOL, FILE_APPEND);
+                file_put_contents($this->db_log_path, $this->count_db_queries.': '.$this->showTime(true).PHP_EOL, FILE_APPEND);
+                file_put_contents($this->db_log_path, debug_string_backtrace().PHP_EOL, FILE_APPEND);
+                file_put_contents($this->db_log_path, '-------------------------------------------------------------'.PHP_EOL.PHP_EOL, FILE_APPEND);
+            }
+        }
+
         if ($this->saveDBlog)
-            file_put_contents('db.log', $this->showTime(true).PHP_EOL, FILE_APPEND);
+            file_put_contents($this->db_log_path, $this->showTime(true).PHP_EOL, FILE_APPEND);
         if($this->showDBdump)
             $this->showTime();
     }
 
-    function updateRow($table, $changes, $key, $row_key = 'id', $field_type = array())
+    public function updateRow($table, $changes, $key, $row_key = 'id', $field_type = array())
     {
         $where = $this->makeWhere($key, $row_key);
         if($where != '')
@@ -192,7 +237,7 @@ class Db {
         return false;
     }
 
-    function insertRow($table, $changes)
+    public function insertRow($table, $changes)
     {
         $update = "INSERT INTO `".$table."` ( ";
         $values = '';
@@ -210,7 +255,7 @@ class Db {
         return false;
     }
 
-    function insertRows($table, $keys = array(), $data = array(), $perQuery = 50, $field_type = array())
+    public function insertRows($table, $keys = array(), $data = array(), $perQuery = 50, $field_type = array())
     {
         if(empty($keys) || empty($data))
             return false;
@@ -283,15 +328,16 @@ class Db {
             $this->executeQuery($query);
             $inserted += $this->affectedRows();
         }
+
         return true;
     }
 
-    function getLastInsertedId()
+    public function getLastInsertedId()
     {
         return $this->connects[$this->current]->insert_id;
     }
 
-    function deleteRow($table = '', $id, $row_key = 'id')
+    public function deleteRow($table = '', $id, $row_key = 'id')
     {
         $where = $this->makeWhere($id, $row_key);
         if($where != '')
@@ -308,15 +354,30 @@ class Db {
      *
      * @return <array>
      */
-    function getRows($type = '')
+    public function getRows($type = '')
     {
         if($type == 'single' && $this->result->num_rows != 1)
             return false;
-        if($this->result->num_rows > 1 || $type == 'array')
+        
+        $type = explode(':', $type);
+        if($this->result->num_rows > 1 || $type[0] == 'array' || $type[0] == 'arrayIndexed')
         {
-            $objects = array();
-            while($obj = $this->result->fetch_object()){
-                array_push($objects, $obj);
+            $objects = [];
+            if($type[0] == 'arrayIndexed') {
+                $arrayIndexed_key = $type[1] ?? 'id';
+                while($obj = $this->result->fetch_object()) {
+                    if(isset($obj->$arrayIndexed_key)) {
+                        $objects[$obj->$arrayIndexed_key] = $obj;
+                    }
+                    else {
+                        array_push($objects, $obj);
+                    }
+                }
+            }
+            else {
+                while($obj = $this->result->fetch_object()){
+                    array_push($objects, $obj);
+                }
             }
             return $objects;
         }
@@ -328,7 +389,7 @@ class Db {
      *
      * @return <int>
      */
-    function numRows()
+    public function numRows()
     {
         return $this->result->num_rows;
     }
@@ -338,7 +399,7 @@ class Db {
      *
      * @return <int>
      */
-    function affectedRows()
+    public function affectedRows()
     {
         return $this->result;
     }
@@ -350,7 +411,7 @@ class Db {
      *
      * @return <string>
      */
-    function sanitizeString($data)
+    public function sanitizeString($data)
     {
 		if (version_compare(PHP_VERSION, '7.4.0', '<')) {
             if(get_magic_quotes_gpc())
@@ -359,7 +420,7 @@ class Db {
         return $this->connects[$this->current]->escape_string($data);
     }
 
-    function mysql_real_escape_string($q)
+    public function mysql_real_escape_string($q)
     {
         return $this->connects[$this->current]->real_escape_string($q);
     }
@@ -378,7 +439,7 @@ class Db {
     /**
      * Допоміжні функції
      */
-    function getAllData($table = false, $order = '')
+    public function getAllData($table = false, $order = '')
     {
         if($table)
         {
@@ -390,7 +451,14 @@ class Db {
         return false;
     }
 
-    function getAllDataById($table = '', $key, $row_key = 'id')
+	/**
+	 * @param string           $table
+	 * @param int|string|array $key
+	 * @param string           $row_key
+	 *
+	 * @return array|false
+	 */
+    public function getAllDataById($table = '', $key, $row_key = 'id')
     {
         if($table != '')
         {
@@ -405,7 +473,7 @@ class Db {
         return false;
     }
 
-    function getAllDataByFieldInArray($table = '', $key, $row_key = 'id', $order = '')
+    public function getAllDataByFieldInArray($table = '', $key, $row_key = 'id', $order = '')
     {
         if($table != '')
         {
@@ -422,7 +490,7 @@ class Db {
         return false;
     }
 
-    function getCount($table = '', $key = '', $row_key = 'id')
+    public function getCount($table = '', $key = '', $row_key = 'id')
     {
         if($table != ''){
             $where = $this->makeWhere($key, $row_key);
@@ -438,7 +506,70 @@ class Db {
         return null;
     }
 
-    private function makeWhere($data, $row_key = 'id', $prefix = false)
+	public function getGroupCount($table = '', $key = '', $row_key = 'id', $group = false, $joinAr = []){
+		if($table != ''){
+			$where = $this->makeWhere($key, $row_key);
+			if($where != '')
+				$where = "WHERE {$where}";
+			if(!empty($group)){
+				$where .= (empty($where) ? '' : ' ').'GROUP BY '.$group;
+			}
+			$joinString = '';
+			if ( !empty( $joinAr ) ) {
+				$joins = [];
+				foreach ($joinAr as $join){
+					$jItem  = "LEFT JOIN `{$join['table']}` ON ";
+					$iWhere = [];
+					foreach ( $join['where'] as $c => $w ){
+						$iWhere[] = "{$join['table']}.id = ".(str_replace('#', '', $w));
+					}
+					$jItem .= implode(' && ', $iWhere);
+					$joins[] = $jItem;
+				}
+
+				$joinString .= implode(' ', $joins ).' ';
+			}
+
+			$this->executeQuery("SELECT COUNT(*) AS count FROM (SELECT count(*) as count FROM `{$table}` {$joinString}{$where}) AS grouped_counts;");
+
+			if($this->numRows() == 1)
+			{
+				$count = $this->getRows();
+				return $count->count;
+			}
+		}
+		return null;
+	}
+
+    /**
+     * makeWhere extra params
+     * key rules: 
+     * &, &&, &&&, &&&&+ - conditions as is: $where .= "({$value}) AND ";
+     * +key: additional value with same key: `key`={$value_1} AND `key`={$value_2}
+     * #key: without prefix key as is: "{key}={$value}" else "{$prefix}.{$key}={$value}"
+     * 
+     * value rules (on start):
+     * word - "{key}='{$value}'" or "{$prefix}.{$key}='{$value}'"
+     * ~word - fulltext search if several words, else LIKE %word%
+     * %word - search " LIKE '%{$word}%' AND ";
+     * @word - search " LIKE '{$word}' AND ";
+     * [word1, word2] - search IN ('word1', 'word2')
+     * >word - search > word [for numbers]
+     * <word - search < word [for numbers]
+     * >=word - search >= word [for numbers]
+     * <=word - search <= word [for numbers]
+     * !word - search "{$key} != '{$value}' AND "
+     * #!word - search "{$key} != {$value} AND "
+     * #word - search "{$key} = {$value} AND "
+     * " - "{$key} = '' AND ";
+     * 0 - "{$key} = 0 AND ";
+     *
+     * @param  array|string $data - array [key => value] or string value
+     * @param  string $row_key - row key for (string) $data: "{$prefix}.{$row_key} = '{$data}'"
+     * @param  string $prefix - table prefix
+     * @return string $where - sql where
+     */
+    public function makeWhere($data, $row_key = 'id', $prefix = false)
     {
         $where = '';
         if(is_array($data))
@@ -459,16 +590,22 @@ class Db {
                         $value = substr($value, 1);
                         $words = explode(' ', $value);
                         if(count($words) == 1)
-                            // $value = '%'.$value;
-                        // else
-                        // {
-                            if(count($words) > 1)
-                                foreach ($words as &$w)
+                            $value = '%'.$value;
+                        else
+                        {
+                            foreach ($words as &$w) {
+                                if (strpos($w, '-') !== false) {
+                                    // '-' is found in $w
+                                    $w = '+"' . $w . '"';
+                                } else {
+                                    // '-' is not found in $w
                                     $w = '+'.$w;
+                                }
+                            }
                             $words = implode(' ', $words);
-                            $where .= "MATCH ({$key}) AGAINST ('{$words}' IN BOOLEAN MODE) AND ";
+                            $where .= "MATCH ({$key}) AGAINST ('$words' IN BOOLEAN MODE) AND ";
                             continue;
-                        // }
+                        }
                     }
                     
                     if($prefix && $key[0] != '#')
@@ -600,6 +737,15 @@ class Db {
         return $where;
     }
 
+    public function addWhereAmp(array &$where, string $request)
+    {
+        $key = '&';
+        while (isset($where[$key])) {
+            $key .= '&';
+        }
+        $where[$key] = $request;
+    }
+
     private $query_table = false;
     private $query_prefix = false;
     private $query_fields = '*';
@@ -666,13 +812,18 @@ class Db {
         return $this;
     }
 
-    public function limit($limit, $offset = 0)
-    {
-        $this->query_limit = 'LIMIT '.$limit;
-        if($offset > 0)
-            $this->query_limit .= ', '.$offset;
-        return $this;
-    }
+	public function limit(int $limit, int $offset = 0)
+	{
+		if ($limit > 0)
+		{
+			$this->query_limit = 'LIMIT ';
+			if($offset > 0)
+				$this->query_limit .= $offset.', ';
+
+			$this->query_limit .= $limit;
+		}
+		return $this;
+	}
 
     /**
      * Виконати запит до БД
@@ -681,7 +832,10 @@ class Db {
      *                       auto   якщо один рядок об'єкт, якщо декілька - масив об'єктів
      *                       single тільки один об'єкт. Якщо більше ніж один - false
      *                       array  завжди масив об'єктів
+     *                       arrayIndexed завжди масив об'єктів [id] => {}
+     *                       arrayIndexed:key завжди масив об'єктів [key] => {}
      *                       count  повертає кількість знайдених рядків згідно запиту
+     *                       query повертає запит
      * @param <bool> $clear очистити дані запиту (для нового)
      *
      * @return <object>
@@ -694,9 +848,11 @@ class Db {
             if($type == 'count')
             {
                 $data = 0;
-                $where = '';
-                if($this->query_prefix)
+                $where = $prefix = '';
+                if($this->query_prefix && $this->query_table != $this->query_prefix) {
                     $where = "AS {$this->query_prefix} ";
+                    $prefix = $this->query_prefix;
+                }
                 //join
                 if(!empty($this->query_join))
                     foreach ($this->query_join as $join) {
@@ -721,7 +877,25 @@ class Db {
                         $where .= "GROUP BY {$this->query_group} ";
                 }
 
-                $query = "SELECT count(*) as count FROM `{$this->query_table}` {$where}";
+                $fields = '';
+                if(!is_array($this->query_fields)) {
+                    $this->query_fields = explode(',', $this->query_fields);
+                }
+                $use_fields = false;
+                foreach ($this->query_fields as $field) {
+                    $field = trim($field);
+                    if($field != '') {
+                        if($field[0] == '#') {
+                            $fields .= substr($field, 1).', ';
+                            $use_fields = true;
+                        } else if(strpos($field, '.') === false)
+                            $fields .= $prefix.'.'.$field.', ';
+                        else
+                            $fields .= $field.', ';
+                    }
+                }
+                $fields = $use_fields ? substr($fields, 0, -2) : '*';
+                $query = "SELECT count({$fields}) as count FROM `{$this->query_table}` {$where}";
 
                 if($debug)
                     echo($query);
@@ -742,13 +916,18 @@ class Db {
                     if(!is_array($this->query_fields))
                         $this->query_fields = explode(',', $this->query_fields);
                     $prefix = $this->query_table;
-                    if($this->query_prefix)
+                    if($this->query_prefix && $this->query_table != $this->query_prefix)
                         $prefix = $this->query_prefix;
                     foreach ($this->query_fields as $field) {
                         if($field != '')
                         {
                             $field = trim($field);
-                            $query .= $prefix.'.'.$field.', ';
+                            if($field[0] == '#')
+                                $query .= substr($field, 1).', ';
+                            else if(strpos($field, '.') === false)
+                                $query .= $prefix.'.'.$field.', ';
+                            else
+                                $query .= $field.', ';
                         }
                     }
                     foreach ($this->query_join as $join) {
@@ -764,12 +943,18 @@ class Db {
                     }
                     $query = substr($query, 0, -2);
                 }
-                else
-                    $query .= $this->query_fields;
+                else {
+                    if(is_array($this->query_fields)) {
+                        $query .= implode(',', $this->query_fields);
+                    }
+                    else {
+                        $query .= $this->query_fields;
+                    }
+                }
 
                 //from
                 $query .= " FROM `{$this->query_table}` ";
-                if($this->query_prefix)
+                if($this->query_prefix && $this->query_table != $this->query_prefix)
                     $query .= "AS {$this->query_prefix} ";
 
                 //join
@@ -817,6 +1002,9 @@ class Db {
 
                 if($debug)
                     echo($query);
+
+                if($type == 'query')
+                    return $query;
 
                 if($get)
                     $data = $this->getQuery($query, $type);
@@ -933,6 +1121,20 @@ class Db {
         $sitemap = $where = array();
         $where['alias'] = ($alias == 0) ? $_SESSION['alias']->id : $alias;
         $where['content'] = ($content === NULL) ? 0 : $content;
+
+        $rows = $this->getAllDataByFieldInArray('wl_sitemap', $where);
+        if(empty($rows)) {
+            // TODO: sitemap_update rows not found
+            return;
+        }
+        if(count($rows) > 1) {
+            foreach ($rows as $i => $row) {
+                if($i) {
+                    $this->deleteRow('wl_sitemap', $row->id);
+                }
+            }
+        }
+
         if(is_array($key))
         {
             if(is_numeric($value) && $value > 0)
@@ -976,9 +1178,10 @@ class Db {
             }
             elseif ($key == 'link')
             {
+                // $this->deleteRow('wl_sitemap', ['link_sha1' => sha1($value), 'alias' => '!'.$where['alias'], 'content' => '!'.$where['content']]);
                 $this->deleteRow('wl_sitemap', ['link' => $value, 'alias' => '!'.$where['alias'], 'content' => '!'.$where['content']]);
                 $sitemap['link'] = $value;
-                $sitemap['link_sha1'] = sha1($value);
+                // $sitemap['link_sha1'] = sha1($value);
             }
             else
                 $sitemap[$key] = $value;
@@ -1006,6 +1209,16 @@ class Db {
         return true;
     }
 
+
+    public function redis_exists($key)
+    {
+        if(is_object($this->redis))
+        {
+            $key = str_replace('/', DIRSEP, $key);
+            return $this->redis->exists($key);
+        }
+        return false;
+    }
 
     public function redis_set($key, $data)
     {
@@ -1045,9 +1258,24 @@ class Db {
         if(is_object($this->redis))
         {
             $key = str_replace('/', DIRSEP, $key);
+
             if($allKeys = $this->redis->keys($key.'*'))
             {
-                $this->redis->del($allKeys);
+	            $this->redis->del($allKeys);
+                return true;
+            }
+        }
+        return false;
+    }
+    public function redis_delByMaskKey($key = '')
+    {
+        if(is_object($this->redis))
+        {
+            $key = str_replace('/', DIRSEP, $key);
+
+            if($allKeys = $this->redis->keys($key))
+            {
+	            $this->redis->del($allKeys);
                 return true;
             }
         }
@@ -1065,6 +1293,33 @@ class Db {
     {
         if(is_object($this->redis) && $command)
             return $this->redis->$command($value);
+        return false;
+    }
+
+    public function cache_exists($key, $alias = false, $json = true) {
+        if(!$alias)
+            $alias = $_SESSION['alias']->alias;
+        // if($_SESSION['alias']->code >= 300)
+        //     $alias = 'page_404';
+        if($_SESSION['language'] && $_SESSION['language'] != $_SESSION['all_languages'][0])
+            $alias .= '_'.$_SESSION['language'];
+        if($json)
+        {
+            if(is_object($this->redis)) {
+                return $this->redis_exists($alias . DIRSEP . $key . '.json');
+            }
+
+            $path = CACHE_PATH . $alias . DIRSEP . $key . '.json';
+            return file_exists($path);
+        }
+        else
+        {
+            if($this->html_cache_in_redis && is_object($this->redis))
+                return $this->redis_exists($alias . DIRSEP . $key . '.html');
+
+            $path = CACHE_PATH . $alias . DIRSEP . $key . '.html';
+            return file_exists($path);
+        }
         return false;
     }
 

@@ -83,7 +83,7 @@ class cart_model
 			if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 1) {
 				$start = ($_GET['page'] - 1) * $_SESSION['option']->paginator_per_page;
 			}
-			$this->db->limit($start, $_SESSION['option']->paginator_per_page);
+			$this->db->limit($_SESSION['option']->paginator_per_page, $start);
 		}
 
 		$carts = $this->db->get('array', false);
@@ -140,7 +140,7 @@ class cart_model
 			if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 1) {
 				$start = ($_GET['page'] - 1) * $_SESSION['option']->paginator_per_page;
 			}
-			$this->db->limit($start, $_SESSION['option']->paginator_per_page);
+			$this->db->limit($_SESSION['option']->paginator_per_page, $start);
 		}
 
 		$carts = $this->db->get('array', false);

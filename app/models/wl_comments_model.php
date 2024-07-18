@@ -40,7 +40,7 @@ class wl_comments_model {
 				$_SESSION['option']->paginator_per_page = $_GET['per_page'];
 			if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 1)
 				$start = ($_GET['page'] - 1) * $_SESSION['option']->paginator_per_page;
-			$this->db->limit($start, $_SESSION['option']->paginator_per_page);
+			$this->db->limit($_SESSION['option']->paginator_per_page, $start);
 		}
 		return $this->db->get($type);
 	}

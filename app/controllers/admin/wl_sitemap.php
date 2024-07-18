@@ -44,7 +44,7 @@ class wl_sitemap_admin extends Controller {
                 $_SESSION['option']->paginator_per_page = ($sitemap->code < 299) ? 30 : 10;
                 if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 1)
                     $start = ($_GET['page'] - 1) * $_SESSION['option']->paginator_per_page;
-                $this->db->limit($start, $_SESSION['option']->paginator_per_page);
+                $this->db->limit($_SESSION['option']->paginator_per_page, $start);
                 $statistic = $this->db->get('array');
 
                 $this->load->admin_view('wl_sitemap/edit_view', array('sitemap' => $sitemap, 'wl_statistic' => $statistic));
@@ -71,7 +71,7 @@ class wl_sitemap_admin extends Controller {
                 $this->db->order('id DESC');
             if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 1)
                 $start = ($_GET['page'] - 1) * $_SESSION['option']->paginator_per_page;
-            $this->db->limit($start, $_SESSION['option']->paginator_per_page);
+            $this->db->limit($_SESSION['option']->paginator_per_page, $start);
             $sitemap = $this->db->get('array', false);
             $_SESSION['option']->paginator_total = $this->db->get('count');
             

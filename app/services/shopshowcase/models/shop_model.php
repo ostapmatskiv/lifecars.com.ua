@@ -249,7 +249,7 @@ class shop_model {
 									$_SESSION['option']->paginator_per_page = $_GET['per_page'];
 								if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 1)
 									$start = ($_GET['page'] - 1) * $_SESSION['option']->paginator_per_page;
-								$this->db->limit($start, $_SESSION['option']->paginator_per_page);
+								$this->db->limit($_SESSION['option']->paginator_per_page, $start);
 								$_SESSION['option']->paginator_per_page = 0;
 							}
 
@@ -525,7 +525,7 @@ class shop_model {
 				$_SESSION['option']->paginator_per_page = $_GET['per_page'];
 			if(isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 1)
 				$start = ($_GET['page'] - 1) * $_SESSION['option']->paginator_per_page;
-			$this->db->limit($start, $_SESSION['option']->paginator_per_page);
+			$this->db->limit($_SESSION['option']->paginator_per_page, $start);
 		}
 
 		$products = $set_paginator_total = false;
@@ -546,7 +546,7 @@ class shop_model {
 						$where['#p.availability'] = 0;
 						$paginator_per_page = $_SESSION['option']->paginator_per_page - $count_products_availability;
 						$this->db->select($this->table('_products').' as p', '*', $where, 'id', false);
-						$this->db->limit(0, $paginator_per_page);
+						$this->db->limit($paginator_per_page);
 						if($products_no_availability = $this->db->get('array', false))
 							$products = array_merge($products_availability, $products_no_availability);						
 					}
@@ -556,7 +556,7 @@ class shop_model {
 					$count_products_availability = $this->db->get('count', false);
 					$where['#p.availability'] = 0;
 					$this->db->select($this->table('_products').' as p', '*', $where, 'id', false);
-					$this->db->limit($start - $count_products_availability, $_SESSION['option']->paginator_per_page);
+					$this->db->limit($_SESSION['option']->paginator_per_page, $start - $count_products_availability);
 					$products = $this->db->get('array', false);
 				}
 			}
