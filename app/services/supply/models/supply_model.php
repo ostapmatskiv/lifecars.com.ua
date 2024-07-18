@@ -8,18 +8,6 @@ class supply_model {
         return empty($where) ? $this->db->getAllData('supply_storages') : $this->db->getAllDataByFieldInArray('supply_storages', $where);
     }
 
-    public function get_import_log(array $where = [], int $start = 0, int $limit = 30) {
-        return $this->db->select('supply_import_log as i', '*', $where)
-                        ->join('supply_storages as s', 'name as storage_name', '#i.storage_id')
-                        ->order('id DESC')
-                        ->limit($limit, $start)
-                        ->get('array');
-        
-    }
-
-    public function get_last_imports_for_storages() {
-        return $this->db->getQuery("SELECT MAX(id) AS id, `storage_id`, `created_at` FROM `supply_import_log` WHERE `storage_id` IN (SELECT `id` FROM `supply_storages` WHERE `active` = 1) GROUP BY `storage_id`");
-    }
 
     private $inner_storages;
     public function get_inner_storages() {
@@ -29,35 +17,13 @@ class supply_model {
         return $this->inner_storages;
     }
 
-    public function get_inner_products($where, $page = 1, $limit = 30) {
-        $s_shopstorage = $this->get_inner_storages();
-        $storage_id = (count($s_shopstorage) > 1) ? [] : $s_shopstorage[0]->id;
-        if(is_array($storage_id)) {
-            foreach ($s_shopstorage as $storage) {
-                $storage_id[] = $storage->id;
-            }
-        }
-        $this->db->addWhereAmp($where, 'p.id NOT IN (SELECT `product_id` FROM `supply_minus_products`)');
-        
-        $products = new stdClass();
-        $this->db->select('s_shopshowcase_products as p', 'id, id_1c, article, article_show, alias as uri', $where)
-                        ->join('s_shopshowcase_product_options as po', 'value as brand_id', ['product' => '#p.id', 'option' => 1])
-                        ->join('s_shopshowcase_options_name as b', 'name as brand_name', ['option' => '#po.value'])
-                        ->join('wl_ntkd as n', 'name', ['alias' => '#p.wl_alias', 'content' => '#p.id'])
+    public function get_next_inner_product($where, $db_config) {
+        $where['#s.amount'] = '>0';
+        return $this->db->select('s_shopshowcase_products as p', 'id, article, article_show', $where)
                         ->join('s_shopstorage_products as s', 'storage as storage_id, price_in, amount', ['product' => '#p.id', 'storage' => $storage_id])
-                        ->order('name ASC', 'n');
-        if($page > 0) {
-            $start = ($page - 1) * $limit;
-            $this->db->limit($limit, $start);
-        }
-        $products->rows = $this->db->get('array', false);
-        $products->total = $this->db->get('count');
-        $products->brands = $this->db->select('s_shopshowcase_product_options as po', '#count(*) as count, value as id', ['option' => 1])
-                                        ->join('s_shopshowcase_options_name as n', 'name', ['option' => '#po.value'])
-                                        ->group('value')
-                                        ->order('name ASC', 'n')
-                                        ->get('array');
-        return $products;
+                        ->order('id ASC')
+                        ->limit(1)
+                        ->get();
     }
 
     public function get_import_products(array $where) {
