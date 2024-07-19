@@ -82,9 +82,10 @@ class supply_admin extends Controller {
     public function storage_save() {
         $storage_id = $this->data->post('storage_id');
         $data = $this->data->prepare(['provider', 'name', 'link', 'active']);
+        $data['import_cron_flag'] = empty($data['link']) ? 1 : 0;
         if($storage_id == 0) {
             $data['created_at'] = time();
-            $data['last_import_at'] = $data['last_import_product_id'] = $data['import_cron_flag'] = 0;
+            $data['last_import_at'] = $data['last_import_product_id'] = 0;
             $this->db->insertRow('supply_storages', $data);
         } else {
             $this->db->updateRow('supply_storages', $data, $storage_id);
