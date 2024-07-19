@@ -209,23 +209,47 @@ class supply extends Controller {
                 $_allProducts[$obj->article] = $obj->id;
             }
 
-            $i = $found = $inserted = 0; $rows = [];
+            $in_products = $this->db->select('supply_products', '*', ['storage_id' => $storage->id])->get();
+
+            $found = $inserted = $updated = $skiped = 0; $rows_insert = [];
             foreach ($provider->get_products() as $product) {
                 $found++;
                 $data = $provider->prepare_product($product);
                 $article = $this->supply_model->prepareArticleKey($data['product_article']);
                 if(isset($_allProducts[$article])) {
-                    $inserted++;
-                    $data['article_key'] = $article;
-                    $rows[] = $data;
+                    if(empty($in_products)) {
+                        $inserted++;
+                        $data['article_key'] = $article;
+                        $rows_insert[] = $data;
+                    }
+                    else {
+                        $brand_found = false;
+                        foreach ($in_products as $in) {
+                            if($data['product_brand'] == $in->product_brand && $data['product_article'] == $in->product_article) {
+                                $brand_found = true;
+                                if($data['price'] != $in->price || $data['availability'] != $in->availability) {
+                                    $updated++;
+                                    $this->db->updateRow('supply_products', ['created_at' => $time, 'price' => $data['price'], 'availability' => $data['availability'], 'product_title' => $data['product_title']], $in->id);
+                                }
+                                else {
+                                    $skiped++;
+                                }
+                                break;
+                            }
+                        }
+                        if(!$brand_found) {
+                            $inserted++;
+                            $data['article_key'] = $article;
+                            $rows_insert[] = $data;
+                        }
+                    }
                 }
                 // print_r($data);
-                if(++$i == 200) {
-                    $this->db->insertRows('supply_products', ['created_at' => $time, 'storage_id' => $storage->id, 'article_key', 'product_article', 'product_brand', 'price', 'availability', 'product_title'], $rows, 50, ['article_key' => 'text']);
-                    $i = 0; $rows = [];
-                }
             }
-            echo "Found: {$found}. Inserted: {$inserted}";
+            if(!empty($rows_insert)) {
+                $this->db->insertRows('supply_products', ['created_at' => $time, 'storage_id' => $storage->id, 'article_key', 'product_article', 'product_brand', 'price', 'availability', 'product_title'], $rows_insert, 50, ['article_key' => 'text']);
+            }
+            echo "Found: {$found}. Inserted: {$inserted}, Updated: {$updated}, Skiped: {$skiped}";
         }
     }
 
