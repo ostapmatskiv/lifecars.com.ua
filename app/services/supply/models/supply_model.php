@@ -70,7 +70,7 @@ class supply_model {
     }
 
     public function get_minus_products() {
-        return $this->db_adatrade->select('supply_minus_products as m')
+        return $this->db->select('supply_minus_products as m')
                         ->join('s_shopshowcase_products as p', 'id, article_show, alias as uri', '#m.product_id')
                         ->join('s_shopshowcase_product_options as po', 'value as brand_id', ['product' => '#p.id', 'option' => 1])
                         ->join('s_shopshowcase_options_name as b', 'name as brand_name', ['option' => '#po.value'])
