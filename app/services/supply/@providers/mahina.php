@@ -45,6 +45,7 @@ class mahina_provider {
                 $p->availability_text = trim($counterElement->nodeValue); // Assuming you want to store this in a new property
 
                 if (strpos($p->availability_text, 'В наличии') !== false) {
+                    // input.quantity data-max
                     $inputElements = $xpath->query(".//input[contains(@class, 'quantity')]", $element);
                     if ($inputElements->length > 0) {
                         $inputElement = $inputElements->item(0);
@@ -53,7 +54,13 @@ class mahina_provider {
                 }
             }
 
-            if(empty($p->availability)) {
+            $metaElements = $xpath->query(".//meta[@itemprop='price']", $element);
+            if ($metaElements->length > 0) {
+                $metaElement = $metaElements->item(0);
+                $p->price = $metaElement->getAttribute('content');
+            }
+
+            if(empty($p->availability) || empty($p->price)) {
                 continue;
             }
 
@@ -64,27 +71,26 @@ class mahina_provider {
                 $p->product_title = $aElement->getAttribute('title');
             }
 
-            $metaElements = $xpath->query(".//meta[@itemprop='price']", $element);
-if ($metaElements->length > 0) {
-    $metaElement = $metaElements->item(0);
-    $contentValue = $metaElement->getAttribute('content');
-    // Now you can use $contentValue as needed
-    echo "Content: $contentValue\n";
-}
+            // .a-product__brand-item img alt
+            $imgElements = $xpath->query(".//*[contains(@class, 'a-product__brand-item')]//img", $element);
+            if ($imgElements->length > 0) {
+                $imgElement = $imgElements->item(0);
+                $p->product_brand = $imgElement->getAttribute('alt');
+            }
+
+            // .article №: A11-7903010AB
+            $articleElements = $xpath->query(".//*[contains(@class, 'article')]", $element);
+            if ($articleElements->length > 0) {
+                $articleElement = $articleElements->item(0);
+                $p->product_article = $articleElement->textContent;
+                $p->product_article = trim(str_replace('№:', '', $p->product_article));
+            }
 
             pp($p);
-            
-            // echo $dom->saveHTML($element) . PHP_EOL;
-            
-            // .article №: A11-7903010AB
-            // .a-product__brand-item img alt
-            // <meta itemprop="price" content="250">
-            // .a-product__counter-txt В наличии 5 || input.quantity data-max
-
-            exit;
+            $out_products[] = $p;
         }
-exit;
-        dd($out_products);
+
+        pp($out_products);
     }
 
     /* return $product->
