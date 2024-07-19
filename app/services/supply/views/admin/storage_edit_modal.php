@@ -39,7 +39,7 @@
     <div class="form-group">
         <label for="storage-link" class="col-sm-3 control-label">Посилання на прайс</label>
         <div class="col-sm-9">
-            <input type="text" name="link" value="<?= $storage->link ?>" class="form-control">
+            <input type="text" name="link" value="<?= $storage->link ?>" class="form-control" placeholder="Пусто = Парсинг за розкладом">
         </div>
     </div>
 

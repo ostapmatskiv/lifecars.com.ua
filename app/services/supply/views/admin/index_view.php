@@ -25,29 +25,28 @@
                     <a href="<?= SITE_URL . "admin/{$_SESSION['alias']->alias}/recommendation_price" ?>" class="btn btn-success btn-xs"><i class="fa fa-bar-chart"></i> Рекомендовані ціни</a>
                     <a href="<?= SITE_URL . "admin/{$_SESSION['alias']->alias}/analyze?in_is_available=1" ?>" class="btn btn-warning btn-xs"><i class="fa fa-bar-chart"></i> Аналізувати ціни</a>
                 </div>
-                <h4 class="panel-title">Історія імпорту</h4>
+                <h4 class="panel-title">Останні 50 спаршених товарів</h4>
             </div>
             <div class="panel-body">
                 <table id="supply_import_log" class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>Склад</th>
-                            <th>Дата імпорту (#ID)</th>
-                            <th>Посилання</th>
+                            <th>Товар</th>
+                            <th>Ціна</th>
+                            <th>Наявність</th>
                         </tr>
                     <tbody>
-                        <?php if ($supply_import_log) {
-                            foreach ($supply_import_log as $log) {
+                        <?php if ($last_import_products) {
+                            foreach ($last_import_products as $log) {
                                 foreach (['created_at'] as $key) {
                                     $log->$key = $log->$key ? date('d.m.Y H:i', $log->$key) : '-';
                                 }
-                                if (empty($log->link)) {
-                                    $log->link = $log->local_file;
-                                }
                                 echo "<tr>";
-                                echo "<td><a href='/admin/{$_SESSION['alias']->alias}/{$log->id}'>#{$log->storage_id}. {$log->storage_name}</a></td>";
-                                echo "<td><a href='/{$log->local_file}' target='_blank'>{$log->created_at} (#{$log->id})</a></td>";
-                                echo "<td>{$log->link}</td>";
+                                echo "<td>#{$log->storage_id}. {$log->storage_name}</td>";
+                                echo "<td><strong>{$log->product_article}</strong> {$log->product_brand}</td>";
+                                echo "<td>{$log->price} грн</td>";
+                                echo "<td>{$log->availability}</td>";
                                 echo '</tr>';
                             }
                         } ?>
@@ -89,12 +88,7 @@
                                 if (!empty($storage->link)) {
                                     echo "<td><a href='{$storage->link}' target='_blank'>{$storage->link}</a> <a href='{$import_link}?storage_id={$storage->id}' class='btn btn-xs btn-warning'>Імпортувати</a></td>";
                                 } else {
-                                    echo '<td>'; ?>
-                                    <form action="<?= "{$import_link}?storage_id={$storage->id}" ?>" method="POST" enctype="multipart/form-data" id="import_form_<?= $storage->id ?>">
-                                        <input type="file" name="file" accept=".xlsx,.xls" onchange="import_form_<?= $storage->id ?>.submit()">
-                                    </form>
-                        <?php
-                                    echo '</td>';
+                                    echo '<td>Парсинг за розкладом</td>';
                                 }
                                 echo "<td>{$storage->last_import_at}</td>";
                                 echo "<td>{$storage->created_at}</td>";
@@ -234,7 +228,7 @@
                     <div class="form-group">
                         <label for="storage-link" class="col-sm-3 control-label">Посилання на прайс</label>
                         <div class="col-sm-9">
-                            <input type="text" name="link" class="form-control">
+                            <input type="text" name="link" class="form-control" placeholder="Пусто = Парсинг за розкладом">
                         </div>
                     </div>
 

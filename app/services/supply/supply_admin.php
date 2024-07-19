@@ -34,6 +34,7 @@ class supply_admin extends Controller {
         $_SESSION['alias']->name = $_SESSION['alias']->title = 'Постачальники. Аналіз товарів';
         $this->load->admin_view('index_view', [
             'supply_storages' => $this->supply_model->get_storages(),
+            'last_import_products' => $this->supply_model->get_import_products([], 50),
             'minus_products' => $this->supply_model->get_minus_products()
         ]);
     }
