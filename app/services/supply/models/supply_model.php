@@ -3,6 +3,18 @@
 class supply_model {
 
     public $skip_diff_price_percent = 0.5;
+    public $db_adatrade;
+    private $storage_db_config = [
+        'host' => 'localhost',
+        'user' => 'root',
+        'password' => '',
+        'database' => 'adatrade.com.ua',
+        'port' => 3306
+    ];
+
+    function __construct() {
+        $this->db_adatrade = new db($this->storage_db_config);
+    }
 
     public function get_storages($where = []) {
         return empty($where) ? $this->db->getAllData('supply_storages') : $this->db->getAllDataByFieldInArray('supply_storages', $where);
@@ -12,14 +24,22 @@ class supply_model {
     private $inner_storages;
     public function get_inner_storages() {
         if(empty($this->inner_storages)) {
-            $this->inner_storages = $this->db->select('s_shopstorage', 'id, name', ['active' => 1])->get('array');
+            $this->inner_storages = $this->db_adatrade->select('s_shopstorage', 'id, name', ['active' => 1])->get('array');
         }
         return $this->inner_storages;
     }
 
-    public function get_next_inner_product($where, $db_config) {
+    public function get_next_inner_product(array $where = []) {
+        $s_shopstorage = $this->get_inner_storages();
+        $storage_id = (count($s_shopstorage) > 1) ? [] : $s_shopstorage[0]->id;
+        if(is_array($storage_id)) {
+            foreach ($s_shopstorage as $storage) {
+                $storage_id[] = $storage->id;
+            }
+        }
+
         $where['#s.amount'] = '>0';
-        return $this->db->select('s_shopshowcase_products as p', 'id, article, article_show', $where)
+        return $this->db_adatrade->select('s_shopshowcase_products as p', 'id, article, article_show', $where)
                         ->join('s_shopstorage_products as s', 'storage as storage_id, price_in, amount', ['product' => '#p.id', 'storage' => $storage_id])
                         ->order('id ASC')
                         ->limit(1)
@@ -28,13 +48,13 @@ class supply_model {
 
     public function get_import_products(array $where) {
         // $where['&'] = 'i.product_brand NOT IN (SELECT `brand` FROM `supply_minus_brands`)';
-        return $this->db->select('supply_products as i', '*', $where)
+        return $this->db_adatrade->select('supply_products as i', '*', $where)
                         ->join('supply_import_log as l', 'storage_id as storage_id', '#i.import_id')
                         ->get('array');
     }
 
     public function get_minus_products() {
-        return $this->db->select('supply_minus_products as m')
+        return $this->db_adatrade->select('supply_minus_products as m')
                         ->join('s_shopshowcase_products as p', 'id, article_show, alias as uri', '#m.product_id')
                         ->join('s_shopshowcase_product_options as po', 'value as brand_id', ['product' => '#p.id', 'option' => 1])
                         ->join('s_shopshowcase_options_name as b', 'name as brand_name', ['option' => '#po.value'])
@@ -45,7 +65,7 @@ class supply_model {
 
     public function recommendation_price($inner_products, array $import_products) : array {
         $products_recommendation_price = [];
-        $minus_words = $this->db->getAllData('supply_minus_words');
+        $minus_words = $this->db_adatrade->getAllData('supply_minus_words');
         if (!empty($inner_products) && !empty($import_products)) {
             foreach ($inner_products->rows as $in_product) {
                 $active = new stdClass();

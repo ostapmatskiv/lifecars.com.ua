@@ -16,14 +16,6 @@
  */
 
 class supply extends Controller {
-
-    private $storage_db_config = [
-        'host' => 'localhost',
-        'user' => 'root',
-        'password' => '',
-        'database' => 'adatrade.com.ua',
-        'port' => 3306
-    ];
 				
     function _remap($method, $data = array())
     {
@@ -37,7 +29,7 @@ class supply extends Controller {
 
     public function index()
     {
-        $this->redirect('/');
+        // $this->redirect('/');
     }
 
     // import manual by link
@@ -126,31 +118,34 @@ class supply extends Controller {
     // start importing per each storage by cron
     public function import_cron() {
         echo '<pre>';
-        if($storage = $this->db->select('supply_storages', '*', ['active' => 1, 'import_cron_flag' => 1])->order('last_import_at ASC')->limit(1)->get()) {
-            if(empty($storage->provider)) {
-                $this->db->updateRow('supply_storages', ['import_cron_flag' => 0], $storage->id);
-                exit('empty provider');
-            }
+        if($storages = $this->db->select('supply_storages', '*', ['active' => 1, 'import_cron_flag' => 1])->order('last_import_at ASC')->get('array')) {
+            foreach ($storages as $storage) {
+                if(empty($storage->provider)) {
+                    $this->db->updateRow('supply_storages', ['import_cron_flag' => 0], $storage->id);
+                    continue;
+                }
+                $provider_path = "app/services/supply/@providers/{$storage->provider}.php";
+                if(!file_exists($provider_path)) {
+                    $this->db->updateRow('supply_storages', ['import_cron_flag' => 0], $storage->id);
+                    continue;
+                }
 
-            extract($this->storage_db_config);
-            $this->db->newConnect($host, $user, $password, $database, $port);
+                $this->load->smodel('supply_model');
+                $product = $this->supply_model->get_next_inner_product(['id' => '>'.$storage->last_import_product_id]);
+                if(empty($product)) {
+                    // start from the beginning
+                    $product = $this->supply_model->get_next_inner_product();
+                }
+                if(empty($product)) {
+                    $this->db->updateRow('supply_storages', ['import_cron_flag' => 0], $storage->id);
+                    continue;
+                }
+                // $this->db->updateRow('supply_storages', ['last_import_product_id' => $product->id], $storage->id);
 
-            echo $this->db->name();
-            pp($storage);
-
-            // for dev test
-            // $file_path = 'import/supply/asiaparts.xml';
-            // $file_path = 'import/supply/xpert-auto.xml';
-            // $this->import_process($storage, $file_path);
-            // exit;
-            
-            $date_dmy = date('y-m-d');
-            $date_dmyhis = date('dmy-his');
-            $folder_path = "import/supply/{$date_dmy}";
-            if(!is_dir($folder_path)) mkdir($folder_path, 0777, true);
-            $file_path = "{$folder_path}/{$storage->provider}_st{$storage->id}_{$date_dmyhis}.xml";
-            if(file_put_contents($file_path, file_get_contents($storage->link))) {
-                $this->import_process($storage, $file_path);
+                require $provider_path;
+                $provider_name = str_replace('-', '_', "{$storage->provider}_provider");
+                $provider = new $provider_name;
+                $provider->parse($product);
             }
         }
         exit;
