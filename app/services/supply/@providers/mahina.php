@@ -9,7 +9,8 @@ class mahina_provider {
         echo 'Mahina provider inited' . PHP_EOL;
     }
 
-    public function parse($product) {
+    public function parse($product):array {
+        $out_products = [];
         $url = str_replace('{article}', urlencode($product->article), $this->link);
         // $url = str_replace('{article}', $product->article, $this->link);
 // pp($url);
@@ -31,63 +32,59 @@ class mahina_provider {
 
         // Process the elements
         foreach ($elements as $element) {
-            // Here you can process each element, for example, get the innerHTML or attributes
-            
-            echo $dom->saveHTML($element) . PHP_EOL;
+            // $xpath = new DOMXPath($dom);
+
+            $p = new stdClass();
+            $p->product_article = $p->product_title = $p->product_brand = '';
+            $p->price = $p->availability = 0;
+
+            // Find inner text in .a-product__counter-txt
+            $counterElements = $xpath->query(".//*[contains(@class, 'a-product__counter-txt')]", $element);
+            if ($counterElements->length > 0) {
+                $counterElement = $counterElements->item(0);
+                $p->availability_text = trim($counterElement->nodeValue); // Assuming you want to store this in a new property
+
+                if (strpos($p->availability_text, 'В наличии') !== false) {
+                    $inputElements = $xpath->query(".//input[contains(@class, 'quantity')]", $element);
+                    if ($inputElements->length > 0) {
+                        $inputElement = $inputElements->item(0);
+                        $p->availability = $inputElement->getAttribute('data-max');
+                    }
+                }
+            }
+
+            if(empty($p->availability)) {
+                continue;
+            }
+
             // name = .a-product__info-row a || itemprop="url" title
-            .article №: A11-7903010AB
-            .a-product__brand-item img alt
+            $aElements = $xpath->query('.//a[@itemprop="url"]', $element);
+            if ($aElements->length > 0) {
+                $aElement = $aElements->item(0);
+                $p->product_title = $aElement->getAttribute('title');
+            }
+
+            $metaElements = $xpath->query(".//meta[@itemprop='price']", $element);
+if ($metaElements->length > 0) {
+    $metaElement = $metaElements->item(0);
+    $contentValue = $metaElement->getAttribute('content');
+    // Now you can use $contentValue as needed
+    echo "Content: $contentValue\n";
+}
+
+            pp($p);
+            
+            // echo $dom->saveHTML($element) . PHP_EOL;
+            
+            // .article №: A11-7903010AB
+            // .a-product__brand-item img alt
             // <meta itemprop="price" content="250">
             // .a-product__counter-txt В наличии 5 || input.quantity data-max
 
             exit;
         }
 exit;
-        dd($output);
-    }
-
-    public function get_products() {
-        $products = [];
-
-        $i_article = 2;
-        $i_title = 3;
-        $i_brand = 7;
-        $i_price = 5;
-        $i_availability = 4;
-        if (!empty($this->file)) {
-            foreach ($this->file as $Key => $Row) {
-                if($Key < 7) continue;
-                if($Key == 7 || $Key == 8) {
-                    // [0] => Марка
-                    // [1] => Марка\Модель
-                    // [2] => Артикул
-                    // [3] => Товар
-                    // [4] => Остаток
-                    // [5] => Спец 1
-                    // [6] => Код. Внутр
-                    // [7] => Производитель
-                    // [8] => Новый код товара
-                    // [9] => Харьков
-                    // [10] => Одесса
-                    if($Row[2] == 'Артикул' && $Row[3] == 'Товар' && $Row[4] == 'Остаток' && $Row[7] == 'Производитель') {
-                        continue;
-                    }
-                    else {
-                        echo 'Check file column structure';
-                        exit;
-                    }
-                }
-                // pp($Row);
-                $product = new stdClass();
-                $product->product_article = $Row[$i_article];
-                $product->product_title = $Row[$i_title];
-                $product->product_brand = $Row[$i_brand];
-                $product->price = $Row[$i_price];
-                $product->availability = (int) $Row[$i_availability];
-                $products[] = $product;
-            }
-        }
-        return $products;
+        dd($out_products);
     }
 
     /* return $product->
