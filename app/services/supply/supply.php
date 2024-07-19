@@ -221,7 +221,7 @@ class supply extends Controller {
                 }
                 // print_r($data);
                 if(++$i == 200) {
-                    $this->db->insertRows('supply_products', ['import_id' => $import_id, 'article_key', 'product_article', 'product_brand', 'price', 'availability', 'product_title'], $rows, 50, ['article_key' => 'text']);
+                    $this->db->insertRows('supply_products', ['created_at' => $time, 'storage_id' => $storage->id, 'article_key', 'product_article', 'product_brand', 'price', 'availability', 'product_title'], $rows, 50, ['article_key' => 'text']);
                     $i = 0; $rows = [];
                 }
             }
