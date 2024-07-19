@@ -137,7 +137,7 @@ class supply extends Controller {
                     $product = $this->supply_model->get_next_inner_product();
                 }
                 if(empty($product)) {
-                    $this->db->updateRow('supply_storages', ['import_cron_flag' => 0], $storage->id);
+                    $this->db->updateRow('supply_storages', ['active' => 0, 'last_import_product_id' => 0], $storage->id);
                     continue;
                 }
                 $this->db->updateRow('supply_storages', ['last_import_product_id' => $product->id], $storage->id);
