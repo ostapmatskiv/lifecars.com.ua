@@ -139,7 +139,6 @@ class supply_admin extends Controller {
 
         $this->load->admin_view('analyze_view', [
             'import_storages' => $import_storages,
-            'import_log' => $last_imports_for_storages,
             'inner_storages' => $this->supply_model->get_inner_storages(),
             'inner_products' => $inner_products,
             'import_products' => $this->supply_model->get_import_products($where)

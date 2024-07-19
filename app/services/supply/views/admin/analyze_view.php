@@ -116,7 +116,7 @@
                         </thead>
                         <tbody>
                             <?php if (!empty($inner_products->rows)) {
-                                $shop_admin_url = SITE_URL . 'admin/parts/';
+                                $shop_admin_url = 'https://adatrade.com.ua/admin/parts/';
                                 $row_i = ($page - 1) * $_SESSION['option']->paginator_per_page;
                                 foreach ($inner_products->rows as $in_product) {
                                     if(in_array($this->data->get('in_out_price'), ["down", "up", "ok", "one"])) {
@@ -178,13 +178,7 @@
                                         echo "<th>{$storage->name}</th>";
                                     }
                                     foreach ($import_storages as $storage) {
-                                        $link = SITE_URL . "admin/{$_SESSION['alias']->alias}/";
-                                        foreach ($import_log as $i_log) {
-                                            if ($i_log->storage_id == $storage->id) {
-                                                $link .= $i_log->id;
-                                                break;
-                                            }
-                                        }
+                                        $link = SITE_URL . "admin/{$_SESSION['alias']->alias}/{$storage->id}";
                                         echo "<th><a href='{$link}?product_article={$in_product->article}'>{$storage->name}</a></th>";
                                     }
                                     echo "</tr>";
