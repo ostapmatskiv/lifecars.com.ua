@@ -110,18 +110,10 @@ class supply_admin extends Controller {
         foreach ($storages as $storage) {
             $import_storages[$storage->id] = $storage;
         }
-        $last_imports_for_storages = $this->supply_model->get_last_imports_for_storages();
-        if(empty($last_imports_for_storages)) {
-            echo 'Empty import data';
-            return;
-        }
 
         $where_inner = [];
-        $where = ['import_id' => [], 'availability' => '>0'];
+        $where = ['availability' => '>0'];
         $where['&'] = 'i.product_brand NOT IN (SELECT `brand` FROM `supply_minus_brands`)';
-        foreach ($last_imports_for_storages as $import) {
-            $where['import_id'][] = $import->id;
-        }
         if($this->data->get('in_is_available')) $where_inner['#s.amount'] = '>0';
 
         if ($product_article = $this->data->get('product_article')) {

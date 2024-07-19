@@ -58,6 +58,39 @@ class supply_model {
                         ->get();
     }
 
+    public function get_inner_products($where, $page = 1, $limit = 30) {
+        $s_shopstorage = $this->get_inner_storages();
+        $storage_id = (count($s_shopstorage) > 1) ? [] : $s_shopstorage[0]->id;
+        if(is_array($storage_id)) {
+            foreach ($s_shopstorage as $storage) {
+                $storage_id[] = $storage->id;
+            }
+        }
+        if($supply_minus_products = $this->db->getAllData('supply_minus_products')) {
+            $where['&'] = 'p.id NOT IN (' . implode(',', array_column($supply_minus_products, 'product_id')) . ')';
+        }
+        
+        $products = new stdClass();
+        $this->db_adatrade->select('s_shopshowcase_products as p', 'id, id_1c, article, article_show, alias as uri', $where)
+                            ->join('s_shopshowcase_product_options as po', 'value as brand_id', ['product' => '#p.id', 'option' => 1])
+                            ->join('s_shopshowcase_options_name as b', 'name as brand_name', ['option' => '#po.value'])
+                            ->join('wl_ntkd as n', 'name', ['alias' => '#p.wl_alias', 'content' => '#p.id'])
+                            ->join('s_shopstorage_products as s', 'storage as storage_id, price_in, amount', ['product' => '#p.id', 'storage' => $storage_id])
+                            ->order('name ASC', 'n');
+        if($page > 0) {
+            $start = ($page - 1) * $limit;
+            $this->db_adatrade->limit($limit, $start);
+        }
+        $products->rows = $this->db_adatrade->get('array', false);
+        $products->total = $this->db_adatrade->get('count');
+        $products->brands = $this->db_adatrade->select('s_shopshowcase_product_options as po', '#count(*) as count, value as id', ['option' => 1])
+                                            ->join('s_shopshowcase_options_name as n', 'name', ['option' => '#po.value'])
+                                            ->group('value')
+                                            ->order('name ASC', 'n')
+                                            ->get('array');
+        return $products;
+    }
+
     public function get_import_products(array $where, $limit = 0) {
         // $where['&'] = 'i.product_brand NOT IN (SELECT `brand` FROM `supply_minus_brands`)';
         $this->db->select('supply_products as i', '*', $where);
