@@ -33,8 +33,8 @@
                         <tr>
                             <th>Склад</th>
                             <th>Товар</th>
-                            <th>Ціна</th>
-                            <th>Наявність</th>
+                            <th>Ціна / Наявність</th>
+                            <th>Оновлено</th>
                         </tr>
                     <tbody>
                         <?php if ($last_import_products) {
@@ -44,9 +44,9 @@
                                 }
                                 echo "<tr>";
                                 echo "<td>#{$log->storage_id}. {$log->storage_name}</td>";
-                                echo "<td><strong>{$log->product_article}</strong> {$log->product_brand}</td>";
-                                echo "<td>{$log->price} грн</td>";
-                                echo "<td>{$log->availability}</td>";
+                                echo "<td><strong>{$log->product_article}</strong> {$log->product_brand} <br> <small>{$log->product_title}</small></td>";
+                                echo "<td>{$log->price} грн | {$log->availability} од.</td>";
+                                echo "<td>{$log->created_at}</td>";
                                 echo '</tr>';
                             }
                         } ?>
