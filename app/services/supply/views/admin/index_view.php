@@ -79,6 +79,7 @@
                         <?php if ($supply_storages) {
                             $import_link = SITE_URL . "{$_SESSION['alias']->alias}/import";
                             foreach ($supply_storages as $storage) {
+                                $log_link = SITE_URL . "admin/{$_SESSION['alias']->alias}/{$storage->id}";
                                 foreach (['last_import_at', 'created_at'] as $key) {
                                     $storage->$key = $storage->$key ? date('d.m.Y H:i', $storage->$key) : '-';
                                 }
@@ -90,7 +91,7 @@
                                 } else {
                                     echo '<td>Парсинг за розкладом</td>';
                                 }
-                                echo "<td>{$storage->last_import_at}</td>";
+                                echo "<td><a href='{$log_link}'>{$storage->last_import_at}</a></td>";
                                 echo "<td>{$storage->created_at}</td>";
                                 echo '</tr>';
                             }
