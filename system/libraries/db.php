@@ -51,6 +51,7 @@
  * 3.2 - add saveDBlog_more_sec to db.log if query time > $saveDBlog_more_sec
  * 3.3      20.06.2024 - add redis_exists(), cache_exists()
  * 3.4      10.07.2024 - get() fix query_prefix for single table, add # to ignore query_prefix
+ * 3.5      19.07.2024 - add setActiveConnect() for custom db connection
  */
 
 class Db {
@@ -76,7 +77,7 @@ class Db {
     {
         $port = $cfg['port'] ?? 3306;
         $this->newConnect($cfg['host'], $cfg['user'], $cfg['password'], $cfg['database'], $port);
-		$this->cfg = $cfg;
+		
         if(!empty($cfg['redis_host']))
         {
             $this->redis = new Redis();
@@ -105,6 +106,7 @@ class Db {
      */
     public function newConnect($host, $user, $password, $database, $port = 3306)
     {
+        $this->cfg[] = compact('host', 'user', 'password', 'database', 'port');
         $this->connects[] = new mysqli($host, $user, $password, $database, $port);
         $this->current = count($this->connects) - 1;
 
@@ -115,13 +117,33 @@ class Db {
         }
     }
 
+    public function setActiveConnect($index_or_name = 0) {
+        if(is_int($index_or_name)) {
+            if(isset($this->connects[$index_or_name])) {
+                $this->current = $index_or_name;
+                return true;
+            }
+        }
+        else {
+            foreach ($this->cfg as $index => $cfg) {
+                if($cfg['database'] == $index_or_name)
+                {
+                    $this->current = $index;
+                    break;
+                }
+            }
+        }
+    }
+
 	/**
 	 *
 	*	return currect connection db name
 	*/
-    public function name($index = 0)
+    public function name($index = -1)
     {
-        return $this->names[$index] ?? NULL;
+        if($index == -1)
+            $index = $this->current;
+        return $this->cfg[$index]['database'];
     }
 
     /**
