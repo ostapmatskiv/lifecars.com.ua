@@ -48,19 +48,10 @@ class supply_admin extends Controller {
             echo 'Немає активних постачальників';
             return;
         }
-
-        $last_imports_for_storages = $this->supply_model->get_last_imports_for_storages();
-        if (empty($last_imports_for_storages)) {
-            echo 'Empty import data';
-            return;
-        }
         
         $where_inner = ['#s.amount' => '>0'];
-        $where = ['import_id' => [], 'availability' => '>0'];
+        $where = ['availability' => '>0'];
         $where['&'] = 'i.product_brand NOT IN (SELECT `brand` FROM `supply_minus_brands`)';
-        foreach ($last_imports_for_storages as $import) {
-            $where['import_id'][] = $import->id;
-        }
 
         $inner_products = $this->supply_model->get_inner_products($where_inner, -1);
         $import_products = $this->supply_model->get_import_products($where);
