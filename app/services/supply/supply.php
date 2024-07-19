@@ -156,7 +156,7 @@ class supply extends Controller {
                     $search = ['storage_id' => $storage->id, 'article_key' => $product->article];
                     $in_products = $this->db->select('supply_products', '*', $search)->get();
                     if(empty($in_products)) {
-                        $this->db->insertRows('supply_products', ['created_at' => $time, 'storage_id' => $storage->id, 'article_key' => $product->article, 'product_article', 'product_brand', 'price', 'availability', 'product_title'], $out_products, 50, ['article_key' => 'text']);
+                        $this->db->insertRows('supply_products', ['created_at' => $time, 'storage_id' => $storage->id, 'article_key' => $product->article, 'product_article', 'product_brand', 'price', 'availability', 'product_title'], $out_products, 50, ['article_key' => 'text', 'product_article' => 'text']);
                     }
                     else {
                         foreach ($out_products as $out) {
@@ -227,8 +227,10 @@ class supply extends Controller {
                         foreach ($in_products as $in) {
                             if($data['product_brand'] == $in->product_brand && $data['product_article'] == $in->product_article) {
                                 $brand_found = true;
-                                if($data['price'] != $in->price || $data['availability'] != $in->availability) {
+                                if(round($data['price']) != round($in->price) || $data['availability'] != $in->availability) {
                                     $updated++;
+                                    // pr($data);
+                                    // pp($in);
                                     $this->db->updateRow('supply_products', ['created_at' => $time, 'price' => $data['price'], 'availability' => $data['availability'], 'product_title' => $data['product_title']], $in->id);
                                 }
                                 else {
@@ -247,7 +249,7 @@ class supply extends Controller {
                 // print_r($data);
             }
             if(!empty($rows_insert)) {
-                $this->db->insertRows('supply_products', ['created_at' => $time, 'storage_id' => $storage->id, 'article_key', 'product_article', 'product_brand', 'price', 'availability', 'product_title'], $rows_insert, 50, ['article_key' => 'text']);
+                $this->db->insertRows('supply_products', ['created_at' => $time, 'storage_id' => $storage->id, 'article_key', 'product_article', 'product_brand', 'price', 'availability', 'product_title'], $rows_insert, 50, ['article_key' => 'text', 'product_article' => 'text']);
             }
             echo "Found: {$found}. Inserted: {$inserted}, Updated: {$updated}, Skiped: {$skiped}";
         }
