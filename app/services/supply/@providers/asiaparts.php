@@ -21,11 +21,8 @@ class asiaparts_provider {
                         availability (int)
     */
     public function prepare_product($item) {
-        $price = mb_ereg_replace('/\s+/', '', $item->priceAгрн);
+        $price = mb_ereg_replace('/\s+/', '', $item->{'priceРозн.г'});
         $price = mb_ereg_replace(' ', '', $price);
-        // if ($item->article == '1064001191') {
-        //     pr($price);
-        // }
         $item->price = (float) str_replace(',', '.', $price);
         $item->availability = (int) $item->availability;
         unset($item->image, $item->priceAгрн, $item->{'priceРозн.г'});
