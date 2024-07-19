@@ -35,6 +35,7 @@ class mahina_provider {
             $find_brand_article = [];
             foreach ($elements as $element) {
                 $p = new stdClass();
+                $p->article_key = $product->article;
                 $p->product_article = $p->product_title = $p->product_brand = '';
                 $p->price = $p->availability = 0;
 
