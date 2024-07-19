@@ -53,11 +53,15 @@ class supply_model {
                         ->get();
     }
 
-    public function get_import_products(array $where) {
+    public function get_import_products(array $where, $limit = 0) {
         // $where['&'] = 'i.product_brand NOT IN (SELECT `brand` FROM `supply_minus_brands`)';
-        return $this->db_adatrade->select('supply_products as i', '*', $where)
-                        ->join('supply_import_log as l', 'storage_id as storage_id', '#i.import_id')
-                        ->get('array');
+        $this->db->select('supply_products as i', '*', $where);
+        if($limit > 0) {
+            $this->db->join('supply_storages as s', 'name as storage_name', '#i.storage_id')
+                    ->limit($limit)
+                    ->order('id DESC');
+        }
+        return $this->db->get('array');
     }
 
     public function get_minus_products() {

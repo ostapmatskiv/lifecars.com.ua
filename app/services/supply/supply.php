@@ -118,15 +118,16 @@ class supply extends Controller {
     // start importing per each storage by cron
     public function import_cron() {
         echo '<pre>';
+        $time = time();
         if($storages = $this->db->select('supply_storages', '*', ['active' => 1, 'import_cron_flag' => 1])->order('last_import_at ASC')->get('array')) {
             foreach ($storages as $storage) {
                 if(empty($storage->provider)) {
-                    $this->db->updateRow('supply_storages', ['import_cron_flag' => 0], $storage->id);
+                    $this->db->updateRow('supply_storages', ['active' => 0, 'last_import_at' => $time], $storage->id);
                     continue;
                 }
                 $provider_path = "app/services/supply/@providers/{$storage->provider}.php";
                 if(!file_exists($provider_path)) {
-                    $this->db->updateRow('supply_storages', ['import_cron_flag' => 0], $storage->id);
+                    $this->db->updateRow('supply_storages', ['active' => 0, 'last_import_at' => $time], $storage->id);
                     continue;
                 }
 
@@ -137,10 +138,11 @@ class supply extends Controller {
                     $product = $this->supply_model->get_next_inner_product();
                 }
                 if(empty($product)) {
-                    $this->db->updateRow('supply_storages', ['active' => 0, 'last_import_product_id' => 0], $storage->id);
+                    // remove active = 0 to parse circle again
+                    $this->db->updateRow('supply_storages', ['active' => 0, 'last_import_product_id' => 0, 'last_import_at' => $time], $storage->id);
                     continue;
                 }
-                $this->db->updateRow('supply_storages', ['last_import_product_id' => $product->id], $storage->id);
+                $this->db->updateRow('supply_storages', ['last_import_product_id' => $product->id, 'last_import_at' => $time], $storage->id);
 
                 require $provider_path;
                 $provider_name = str_replace('-', '_', "{$storage->provider}_provider");
@@ -154,7 +156,7 @@ class supply extends Controller {
                     $search = ['storage_id' => $storage->id, 'article_key' => $product->article];
                     $in_products = $this->db->select('supply_products', '*', $search)->get();
                     if(empty($in_products)) {
-                        $this->db->insertRows('supply_products', ['created_at' => time(), 'storage_id' => $storage->id, 'article_key' => $product->article, 'product_article', 'product_brand', 'price', 'availability', 'product_title'], $out_products, 50, ['article_key' => 'text']);
+                        $this->db->insertRows('supply_products', ['created_at' => $time, 'storage_id' => $storage->id, 'article_key' => $product->article, 'product_article', 'product_brand', 'price', 'availability', 'product_title'], $out_products, 50, ['article_key' => 'text']);
                     }
                     else {
                         foreach ($out_products as $out) {
@@ -163,13 +165,13 @@ class supply extends Controller {
                                 if($out->product_brand == $in->product_brand && $out->product_article == $in->product_article) {
                                     $brand_found = true;
                                     if($out->price != $in->price || $out->availability != $in->availability) {
-                                        $this->db->updateRow('supply_products', ['created_at' => time(), 'price' => $out->price, 'availability' => $out->availability, 'product_title' => $out->product_title], $in->id);
+                                        $this->db->updateRow('supply_products', ['created_at' => $time, 'price' => $out->price, 'availability' => $out->availability, 'product_title' => $out->product_title], $in->id);
                                     }
                                     break;
                                 }
                             }
                             if(!$brand_found) {
-                                $this->db->insertRow('supply_products', ['created_at' => time(), 'storage_id' => $storage->id, 'article_key' => $product->article, 'product_article' => $out->product_article, 'product_brand' => $out->product_brand, 'price' => $out->price, 'availability' => $out->availability, 'product_title' => $out->product_title]);
+                                $this->db->insertRow('supply_products', ['created_at' => $time, 'storage_id' => $storage->id, 'article_key' => $product->article, 'product_article' => $out->product_article, 'product_brand' => $out->product_brand, 'price' => $out->price, 'availability' => $out->availability, 'product_title' => $out->product_title]);
                             }
                         }
                     }
