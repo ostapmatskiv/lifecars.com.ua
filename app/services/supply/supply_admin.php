@@ -199,11 +199,11 @@ class supply_admin extends Controller {
         $result_table = "<tr><td class='text-danger'>Помилка: пустий артикул товару</td></tr>";
         if($article = $this->data->post('article')) {
             $article = $this->supply_model->prepareArticleKey($article);
-            $products = $this->db->select('s_shopshowcase_products as p', 'id, article_show, alias as uri', compact('article'))
-                                ->join('s_shopshowcase_product_options as po', 'value as brand_id', ['product' => '#p.id', 'option' => 1])
-                                ->join('s_shopshowcase_options_name as b', 'name as brand_name', ['option' => '#po.value'])
-                                ->join('wl_ntkd as n', 'name', ['alias' => '#p.wl_alias', 'content' => '#p.id'])
-                                ->get('array');
+            $products = $this->supply_model->db_adatrade->select('s_shopshowcase_products as p', 'id, article_show, alias as uri', compact('article'))
+                                    ->join('s_shopshowcase_product_options as po', 'value as brand_id', ['product' => '#p.id', 'option' => 1])
+                                    ->join('s_shopshowcase_options_name as b', 'name as brand_name', ['option' => '#po.value'])
+                                    ->join('wl_ntkd as n', 'name', ['alias' => '#p.wl_alias', 'content' => '#p.id'])
+                                    ->get('array');
             $result_table = "<tr><td class='text-danger'>Товари за артикулом <strong>{$article}</strong> не знайдено!</td></tr>";                                
             if($products) {
                 $result_table = '';
@@ -239,27 +239,6 @@ class supply_admin extends Controller {
     public function __get_Search($content)
     {
         return false;
-    }
-
-    // ALTER TABLE `supply_products` ADD `article_key` VARCHAR(100) NOT NULL AFTER `product_id`;
-    // ALTER TABLE `supply_products` ADD INDEX(`article_key`);
-    // ALTER TABLE `supply_products` DROP `product_id`;
-    function generate_article_key()
-    {
-        $total = 0;
-        $this->load->smodel('supply_model');
-        $this->db->showDBdump = true;
-        if($rows = $this->db->select('supply_products', "id, article_key, product_article")->get('array')) {
-            foreach ($rows as $obj) {
-                $article_key = $this->supply_model->prepareArticleKey($obj->product_article);
-                if($article_key != $obj->article_key) {
-                    $this->db->updateRow('supply_products', compact('article_key'), ['id' => $obj->id], ['id' => 'int', 'article_key' => 'text']);
-                    $total++;
-                }
-            }
-        }
-        echo "Updated {$total} records";
-        exit;
     }
 	
 }
