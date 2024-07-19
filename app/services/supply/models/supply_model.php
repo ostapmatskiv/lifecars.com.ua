@@ -81,7 +81,7 @@ class supply_model {
 
     public function recommendation_price($inner_products, array $import_products) : array {
         $products_recommendation_price = [];
-        $minus_words = $this->db_adatrade->getAllData('supply_minus_words');
+        $minus_words = $this->db->getAllData('supply_minus_words');
         if (!empty($inner_products) && !empty($import_products)) {
             foreach ($inner_products->rows as $in_product) {
                 $active = new stdClass();
