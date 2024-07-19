@@ -29,7 +29,7 @@ class mahina_provider {
 
         // Translate CSS selector to XPath and query the DOM
         $elements = $xpath->query("//*[@id='catalog']//*[contains(@class, 'a-product__item')]");
-
+echo $elements->length;
         // Process the elements
         foreach ($elements as $element) {
             // $xpath = new DOMXPath($dom);
@@ -59,7 +59,7 @@ class mahina_provider {
                 $metaElement = $metaElements->item(0);
                 $p->price = $metaElement->getAttribute('content');
             }
-
+pr($p);
             if(empty($p->availability) || empty($p->price)) {
                 continue;
             }
@@ -82,11 +82,14 @@ class mahina_provider {
             $articleElements = $xpath->query(".//*[contains(@class, 'article')]", $element);
             if ($articleElements->length > 0) {
                 $articleElement = $articleElements->item(0);
-                $p->product_article = $articleElement->textContent;
-                $p->product_article = trim(str_replace('№:', '', $p->product_article));
+
+                $p->product_article = strip_tags($articleElement->textContent);
+                $p->product_article = str_replace('№:', '', $p->product_article);
+                $p->product_article = str_replace('Аналоги', '', $p->product_article);
+                $p->product_article = trim($p->product_article);
             }
 
-            pp($p);
+            // pp($p);
             $out_products[] = $p;
         }
 
