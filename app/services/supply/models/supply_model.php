@@ -4,14 +4,14 @@ class supply_model {
 
     public $skip_diff_price_percent = 0.5;
     public $db_adatrade;
-    // private $db_adatrade_config = [
-    //     'host' => 'localhost',
-    //     'user' => 'root',
-    //     'password' => '',
-    //     'database' => 'adatrade.com.ua',
-    //     'port' => 3306
-    // ];
-    private $db_adatrade_config = [
+    private $db_adatrade_config_localhost = [
+        'host' => 'localhost',
+        'user' => 'root',
+        'password' => '',
+        'database' => 'adatrade.com.ua',
+        'port' => 3306
+    ];
+    private $db_adatrade_config_prod = [
         'host' 		=> 'lifecars.mysql.tools',
         'user' 		=> 'lifecars_adatrade',
         'password'	=> '*363*brcUC',
@@ -20,7 +20,12 @@ class supply_model {
     ];
 
     function __construct() {
-        $this->db_adatrade = new db($this->db_adatrade_config);
+        if (strpos(SITE_URL, 'localhost') !== false) {
+            $this->db_adatrade = new db($this->db_adatrade_config_localhost);
+        }
+        else {
+            $this->db_adatrade = new db($this->db_adatrade_config_prod);
+        }
     }
 
     public function get_storages($where = []) {
