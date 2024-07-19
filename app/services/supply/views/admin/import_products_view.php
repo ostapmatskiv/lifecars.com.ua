@@ -70,8 +70,9 @@
                         <thead>
                             <tr>
                                 <th colspan="2">Товар</th>
-                                <th><?= $import_log->storage_name ?></th>
+                                <th><?= $storage->name ?></th>
                                 <th>Наявність</th>
+                                <th>Оновлено</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -91,8 +92,11 @@
                                             continue;
                                         }
                                     }
+                                    foreach (['created_at'] as $key) {
+                                        $log->$key = $log->$key ? date('d.m.Y H:i', $log->$key) : '-';
+                                    }
                                     $out_price_usd = round($log->price / $_SESSION['currency']['USD'], 2);
-                                    echo "<tr><th>{$log->product_article}</th><td><strong>{$log->product_brand}</strong> <small>{$log->product_title}</small></td><td><strong>\${$out_price_usd}</strong> ({$log->price} грн)</td><td>{$log->availability}</td></tr>";
+                                    echo "<tr><th>{$log->product_article}</th><td><strong>{$log->product_brand}</strong> <small>{$log->product_title}</small></td><td><strong>\${$out_price_usd}</strong> ({$log->price} грн)</td><td>{$log->availability}</td><td>{$log->created_at}</td></tr>";
                                 }
                             } ?>
                         </tbody>
