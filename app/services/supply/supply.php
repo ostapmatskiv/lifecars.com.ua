@@ -225,12 +225,10 @@ class supply extends Controller {
                     else {
                         $brand_found = false;
                         foreach ($in_products as $in) {
-                            if($data['product_brand'] == $in->product_brand && $data['product_article'] == $in->product_article) {
+                            if($data['product_brand'] == $in->product_brand && $article == $in->article_key) {
                                 $brand_found = true;
                                 if(round($data['price']) != round($in->price) || $data['availability'] != $in->availability) {
                                     $updated++;
-                                    // pr($data);
-                                    // pp($in);
                                     $this->db->updateRow('supply_products', ['created_at' => $time, 'price' => $data['price'], 'availability' => $data['availability'], 'product_title' => $data['product_title']], $in->id);
                                 }
                                 else {
