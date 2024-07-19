@@ -15,7 +15,8 @@ class supply_model {
         'host' 		=> 'lifecars.mysql.tools',
         'user' 		=> 'lifecars_adatrade',
         'password'	=> '*363*brcUC',
-        'database'	=> 'lifecars_adatrade'
+        'database'	=> 'lifecars_adatrade',
+        'port' => 3306
     ];
 
     function __construct() {
