@@ -13,7 +13,7 @@ class mahina_provider {
         $out_products = [];
         $url = str_replace('{article}', urlencode($product->article), $this->link);
         // $url = str_replace('{article}', $product->article, $this->link);
-// pp($url);
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
@@ -35,7 +35,6 @@ class mahina_provider {
             $find_brand_article = [];
             foreach ($elements as $element) {
                 $p = new stdClass();
-                $p->article_key = $product->article;
                 $p->product_article = $p->product_title = $p->product_brand = '';
                 $p->price = $p->availability = 0;
 
@@ -96,8 +95,9 @@ class mahina_provider {
                 }
                 $find_brand_article[] = $brand_article;
 
+                unset($p->availability_text);
                 // pp($p);
-                $out_products[] = $p;
+                $out_products[] = (array) $p;
             }
         }
 
@@ -112,31 +112,5 @@ class mahina_provider {
                         price (float)
                         availability (int)
     */
-    public function prepare_product($item) {
-        $price = mb_ereg_replace('/\s+/', '', $item->price);
-        // $price = mb_ereg_replace(' ', '', $price);
-        $item->price = (float) str_replace(',', '.', $price);
-        $item->availability = (int) $item->availability;
-        return (array) $item;
-    }
-
-    public function showRows($spreadsheet, $limit = 50)
-    {
-        echo('<meta charset="utf-8"><pre>');
-        // echo ('<meta charset="utf-8">');
-        $i = 0;
-        if (!empty($spreadsheet))
-        foreach ($spreadsheet as $Key => $Row) {
-            echo $Key . ': ';
-            if ($Row)
-            print_r($Row);
-            else
-            var_dump($Row);
-            $i++;
-            if ($limit > 0 && $i > $limit)
-            exit;
-        }
-        exit;
-    }
 
 }

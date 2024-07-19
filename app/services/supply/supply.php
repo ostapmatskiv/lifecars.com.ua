@@ -140,12 +140,40 @@ class supply extends Controller {
                     $this->db->updateRow('supply_storages', ['import_cron_flag' => 0], $storage->id);
                     continue;
                 }
-                // $this->db->updateRow('supply_storages', ['last_import_product_id' => $product->id], $storage->id);
+                $this->db->updateRow('supply_storages', ['last_import_product_id' => $product->id], $storage->id);
 
                 require $provider_path;
                 $provider_name = str_replace('-', '_', "{$storage->provider}_provider");
                 $provider = new $provider_name;
-                $provider->parse($product);
+                $out_products = $provider->parse($product);
+
+                pr($product);
+                pr($out_products);
+
+                if(!empty($out_products)) {
+                    $search = ['storage_id' => $storage->id, 'article_key' => $product->article];
+                    $in_products = $this->db->select('supply_products', '*', $search)->get();
+                    if(empty($in_products)) {
+                        $this->db->insertRows('supply_products', ['created_at' => time(), 'storage_id' => $storage->id, 'article_key' => $product->article, 'product_article', 'product_brand', 'price', 'availability', 'product_title'], $out_products, 50, ['article_key' => 'text']);
+                    }
+                    else {
+                        foreach ($out_products as $out) {
+                            $brand_found = false;
+                            foreach ($in_products as $in) {
+                                if($out->product_brand == $in->product_brand && $out->product_article == $in->product_article) {
+                                    $brand_found = true;
+                                    if($out->price != $in->price || $out->availability != $in->availability) {
+                                        $this->db->updateRow('supply_products', ['created_at' => time(), 'price' => $out->price, 'availability' => $out->availability, 'product_title' => $out->product_title], $in->id);
+                                    }
+                                    break;
+                                }
+                            }
+                            if(!$brand_found) {
+                                $this->db->insertRow('supply_products', ['created_at' => time(), 'storage_id' => $storage->id, 'article_key' => $product->article, 'product_article' => $out->product_article, 'product_brand' => $out->product_brand, 'price' => $out->price, 'availability' => $out->availability, 'product_title' => $out->product_title]);
+                            }
+                        }
+                    }
+                }
             }
         }
         exit;
