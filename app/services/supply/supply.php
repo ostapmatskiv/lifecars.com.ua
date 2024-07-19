@@ -43,7 +43,7 @@ class supply extends Controller {
                 if (!is_dir($folder_path)) mkdir($folder_path, 0777, true);
 
                 if(empty($storage->provider)) {
-                    $this->db->updateRow('supply_storages', ['import_flag' => 0], $storage->id);
+                    $this->db->updateRow('supply_storages', ['active' => 0], $storage->id);
                     exit('empty provider');
                 }
                 if(empty($storage->link)) {
@@ -183,7 +183,7 @@ class supply extends Controller {
 
     private function import_process($storage, $file_path) {
         $time = time();
-        $this->db->updateRow('supply_storages', ['import_flag' => 0, 'last_import_at' => $time], $storage->id);
+        $this->db->updateRow('supply_storages', ['last_import_at' => $time], $storage->id);
 
         $provider_path = "app/services/supply/@providers/{$storage->provider}.php";
         if(file_exists($provider_path)) {
@@ -204,12 +204,10 @@ class supply extends Controller {
             $provider->init($file);
 
             $_allProducts = []; // article => id
-            $this->db->executeQuery("SELECT `id`, `article` FROM `s_shopshowcase_products`");
-            while($obj = $this->db->result->fetch_object()) {
+            $this->supply_model->db_adatrade->executeQuery("SELECT `id`, `article` FROM `s_shopshowcase_products`");
+            while($obj = $this->supply_model->db_adatrade->result->fetch_object()) {
                 $_allProducts[$obj->article] = $obj->id;
             }
-
-            $import_id = $this->db->insertRow('supply_import_log', ['storage_id' => $storage->id, 'created_at' => $time, 'link' => $storage->link, 'local_file' => $file_path]);
 
             $i = $found = $inserted = 0; $rows = [];
             foreach ($provider->get_products() as $product) {
