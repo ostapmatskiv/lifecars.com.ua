@@ -36,14 +36,14 @@ class supply_admin extends Controller {
                 $storage = $storage[0];
                 $_SESSION['alias']->name = $_SESSION['alias']->title = 'Імпорт товарів ' . $storage->name . ' ' . date('d.m.Y H:i', $storage->last_import_at);
 
-                $where = compact('import_id');
+                $where = compact('storage_id');
                 if($this->data->get('out_is_available')) $where['availability'] = '>0';
                 if($this->data->get('minus_brands')) $this->db->addWhereAmp($where, 'i.product_brand NOT IN (SELECT `brand` FROM `supply_minus_brands`)');
                 if ($product_article = $this->data->get('product_article')) {
                     $where['article_key'] = $this->supply_model->prepareArticleKey($product_article);
                 }
                 $this->load->admin_view('import_products_view', [
-                    'import_log' => $import_log,
+                    'storage' => $storage,
                     'import_products' => $this->supply_model->get_import_products($where)
                 ]);
             } else {

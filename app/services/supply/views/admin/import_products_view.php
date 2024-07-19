@@ -16,7 +16,7 @@
                         <strong><?= "1 USD = {$_SESSION['currency']['USD']} грн"; ?></strong>
                         <label class="m-l-10">
                             <input type="checkbox" name="out_is_available" value="1" <?= $this->data->get('out_is_available') == 1 ? 'checked' : '' ?> onchange="supply_products_filter.submit()">
-                            <span>Товари в наявності на <strong><?= $import_log->storage_name ?></strong></span>
+                            <span>Товари в наявності на <strong><?= $storage->name ?></strong></span>
                         </label>
                         <label class="m-l-10">
                             <input type="checkbox" name="minus_words" value="1" <?= $this->data->get('minus_words') == 1 ? 'checked' : '' ?> onchange="supply_products_filter.submit()">
