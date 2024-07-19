@@ -22,6 +22,7 @@ class supply extends Controller {
         'user' => 'root',
         'password' => '',
         'database' => 'adatrade.com.ua',
+        'port' => 3306
     ];
 				
     function _remap($method, $data = array())
@@ -131,6 +132,10 @@ class supply extends Controller {
                 exit('empty provider');
             }
 
+            extract($this->storage_db_config);
+            $this->db->newConnect($host, $user, $password, $database, $port);
+
+            echo $this->db->name();
             pp($storage);
 
             // for dev test
