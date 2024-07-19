@@ -28,7 +28,7 @@ class mahina_provider {
         $xpath = new DOMXPath($dom);
 
         // Translate CSS selector to XPath and query the DOM
-        $elements = $xpath->query("//*[@id='catalog']//*[contains(@class, 'a-product__item')]");
+        $elements = $xpath->query("//*[@id='catalog']//*[contains(@class, 'a-product__item-content')]");
 echo $elements->length;
         // Process the elements
         foreach ($elements as $element) {
