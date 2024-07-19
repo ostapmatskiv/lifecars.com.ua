@@ -4,7 +4,6 @@
             <div class="panel-heading">
                 <div class="panel-heading-btn">
                     <a href="<?= SITE_URL . 'admin/' . $_SESSION['alias']->alias ?>" class="btn btn-warning btn-xs"><i class="fa fa-list"></i> Dashboard</a>
-                    <a href="<?= SITE_URL . $import_log->local_file ?>" class="btn btn-primary btn-xs"><i class="fa fa-file"></i> Local input file</a>
 
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                 </div>
