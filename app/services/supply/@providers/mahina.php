@@ -29,71 +29,79 @@ class mahina_provider {
 
         // Translate CSS selector to XPath and query the DOM
         $elements = $xpath->query("//*[@id='catalog']//*[contains(@class, 'a-product__item-content')]");
-echo $elements->length;
-        // Process the elements
-        foreach ($elements as $element) {
-            // $xpath = new DOMXPath($dom);
+        // echo "Found: " . $elements->length . PHP_EOL;
+        if($elements->length) {
+            // Process the elements
+            $find_brand_article = [];
+            foreach ($elements as $element) {
+                $p = new stdClass();
+                $p->product_article = $p->product_title = $p->product_brand = '';
+                $p->price = $p->availability = 0;
 
-            $p = new stdClass();
-            $p->product_article = $p->product_title = $p->product_brand = '';
-            $p->price = $p->availability = 0;
+                // Find inner text in .a-product__counter-txt
+                $counterElements = $xpath->query(".//*[contains(@class, 'a-product__counter-txt')]", $element);
+                if ($counterElements->length > 0) {
+                    $counterElement = $counterElements->item(0);
+                    $p->availability_text = trim($counterElement->nodeValue); // Assuming you want to store this in a new property
 
-            // Find inner text in .a-product__counter-txt
-            $counterElements = $xpath->query(".//*[contains(@class, 'a-product__counter-txt')]", $element);
-            if ($counterElements->length > 0) {
-                $counterElement = $counterElements->item(0);
-                $p->availability_text = trim($counterElement->nodeValue); // Assuming you want to store this in a new property
-
-                if (strpos($p->availability_text, 'В наличии') !== false) {
-                    // input.quantity data-max
-                    $inputElements = $xpath->query(".//input[contains(@class, 'quantity')]", $element);
-                    if ($inputElements->length > 0) {
-                        $inputElement = $inputElements->item(0);
-                        $p->availability = $inputElement->getAttribute('data-max');
+                    if (strpos($p->availability_text, 'В наличии') !== false) {
+                        // input.quantity data-max
+                        $inputElements = $xpath->query(".//input[contains(@class, 'quantity')]", $element);
+                        if ($inputElements->length > 0) {
+                            $inputElement = $inputElements->item(0);
+                            $p->availability = $inputElement->getAttribute('data-max');
+                        }
                     }
                 }
-            }
 
-            $metaElements = $xpath->query(".//meta[@itemprop='price']", $element);
-            if ($metaElements->length > 0) {
-                $metaElement = $metaElements->item(0);
-                $p->price = $metaElement->getAttribute('content');
-            }
-pr($p);
-            if(empty($p->availability) || empty($p->price)) {
-                continue;
-            }
+                $metaElements = $xpath->query(".//meta[@itemprop='price']", $element);
+                if ($metaElements->length > 0) {
+                    $metaElement = $metaElements->item(0);
+                    $p->price = $metaElement->getAttribute('content');
+                }
 
-            // name = .a-product__info-row a || itemprop="url" title
-            $aElements = $xpath->query('.//a[@itemprop="url"]', $element);
-            if ($aElements->length > 0) {
-                $aElement = $aElements->item(0);
-                $p->product_title = $aElement->getAttribute('title');
+                if(empty($p->availability) || empty($p->price)) {
+                    continue;
+                }
+
+                // name = .a-product__info-row a || itemprop="url" title
+                $aElements = $xpath->query('.//a[@itemprop="url"]', $element);
+                if ($aElements->length > 0) {
+                    $aElement = $aElements->item(0);
+                    $p->product_title = $aElement->getAttribute('title');
+                }
+
+                // .a-product__brand-item img alt
+                $imgElements = $xpath->query(".//*[contains(@class, 'a-product__brand-item')]//img", $element);
+                if ($imgElements->length > 0) {
+                    $imgElement = $imgElements->item(0);
+                    $p->product_brand = $imgElement->getAttribute('alt');
+                }
+
+                // .article №: A11-7903010AB
+                $articleElements = $xpath->query(".//*[contains(@class, 'article')]", $element);
+                if ($articleElements->length > 0) {
+                    $articleElement = $articleElements->item(0);
+
+                    $p->product_article = strip_tags($articleElement->textContent);
+                    $p->product_article = str_replace('№:', '', $p->product_article);
+                    $p->product_article = str_replace('Аналоги', '', $p->product_article);
+                    $p->product_article = trim($p->product_article);
+                }
+
+                $brand_article = "{$p->product_brand}***{$p->product_article}";
+                if (in_array($brand_article, $find_brand_article)) {
+                    continue;
+                }
+                $find_brand_article[] = $brand_article;
+
+                // pp($p);
+                $out_products[] = $p;
             }
-
-            // .a-product__brand-item img alt
-            $imgElements = $xpath->query(".//*[contains(@class, 'a-product__brand-item')]//img", $element);
-            if ($imgElements->length > 0) {
-                $imgElement = $imgElements->item(0);
-                $p->product_brand = $imgElement->getAttribute('alt');
-            }
-
-            // .article №: A11-7903010AB
-            $articleElements = $xpath->query(".//*[contains(@class, 'article')]", $element);
-            if ($articleElements->length > 0) {
-                $articleElement = $articleElements->item(0);
-
-                $p->product_article = strip_tags($articleElement->textContent);
-                $p->product_article = str_replace('№:', '', $p->product_article);
-                $p->product_article = str_replace('Аналоги', '', $p->product_article);
-                $p->product_article = trim($p->product_article);
-            }
-
-            // pp($p);
-            $out_products[] = $p;
         }
 
-        pp($out_products);
+        // pp($out_products);
+        return $out_products;
     }
 
     /* return $product->
