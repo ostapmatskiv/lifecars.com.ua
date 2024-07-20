@@ -163,9 +163,10 @@ class supply extends Controller {
                             foreach ($in_products as $in) {
                                 if ($out['product_brand'] == $in->product_brand && $out['product_article'] == $in->product_article) {
                                     $brand_found = true;
-                                    if ($out['price'] != $in->price || $out['availability'] != $in->availability) {
+                                    // always update created_at
+                                    // if ($out['price'] != $in->price || $out['availability'] != $in->availability) {
                                         $this->db->updateRow('supply_products', ['created_at' => $time, 'price' => $out['price'], 'availability' => $out['availability'], 'product_title' => $out['product_title']], $in->id);
-                                    }
+                                    // }
                                     break;
                                 }
                             }
