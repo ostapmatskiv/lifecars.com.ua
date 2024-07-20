@@ -267,9 +267,6 @@ class supply extends Controller {
 
         $inner_products = $this->supply_model->get_inner_products($where_inner, -1);
         $import_products = $this->supply_model->get_import_products($where);
-
-        $inner_products = $this->supply_model->get_inner_products($where_inner, -1);
-        $import_products = $this->supply_model->get_import_products($where);
         if($recommendation_price = $this->supply_model->recommendation_price($inner_products, $import_products)) {
             foreach ($recommendation_price as $row) {
                 $row->price_min = (string) $row->price_min;

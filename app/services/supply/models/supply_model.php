@@ -88,6 +88,23 @@ class supply_model {
                                             ->group('value')
                                             ->order('name ASC', 'n')
                                             ->get('array');
+        if($products->rows) {
+            $local_products = $this->db->select('s_shopshowcase_products', 'id_1c, price')->get('array');
+            foreach ($products->rows as $i => $ada) {
+                $ada->price_in = 0;
+                if($local_products) {
+                    foreach ($local_products as $life) {
+                        $id_1c = explode('_', $life->id_1c)[0];
+                        if(mb_substr($id_1c, 0, 2) == '0Н') {
+                            $id_1c = mb_substr($id_1c, 2);
+                        }
+                        if($id_1c == $ada->id_1c) {
+                            $ada->price_in = $life->price;
+                        }
+                    }
+                }
+            }
+        }
         return $products;
     }
 
