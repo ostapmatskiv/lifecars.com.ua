@@ -115,7 +115,7 @@ class supply_model {
         if($limit > 0) {
             $this->db->join('supply_storages as s', 'name as storage_name', '#i.storage_id')
                     ->limit($limit)
-                    ->order('id DESC');
+                    ->order('created_at DESC');
         }
         return $this->db->get('array');
     }
