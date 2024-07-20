@@ -154,7 +154,7 @@ class supply extends Controller {
 
                 if(!empty($out_products)) {
                     $search = ['storage_id' => $storage->id, 'article_key' => $product->article];
-                    $in_products = $this->db->select('supply_products', '*', $search)->get();
+                    $in_products = $this->db->select('supply_products', '*', $search)->get('array');
                     if(empty($in_products)) {
                         $this->db->insertRows('supply_products', ['created_at' => $time, 'storage_id' => $storage->id, 'article_key' => $product->article, 'product_article', 'product_brand', 'price', 'availability', 'product_title'], $out_products, 50, ['article_key' => 'text', 'product_article' => 'text']);
                     }

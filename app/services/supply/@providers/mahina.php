@@ -89,6 +89,10 @@ class mahina_provider {
                     $p->product_article = trim($p->product_article);
                 }
 
+                if (empty($p->product_article) || empty($p->product_brand)) {
+                    continue;
+                }
+
                 $brand_article = "{$p->product_brand}***{$p->product_article}";
                 if (in_array($brand_article, $find_brand_article)) {
                     continue;
