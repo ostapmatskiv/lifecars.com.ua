@@ -133,10 +133,10 @@ class supply extends Controller {
 
                 $this->load->smodel('supply_model');
                 $product = $this->supply_model->get_next_inner_product(['id' => '>'.$storage->last_import_product_id]);
-                if(empty($product)) {
-                    // start from the beginning
-                    $product = $this->supply_model->get_next_inner_product();
-                }
+                // if(empty($product)) {
+                //     // start from the beginning
+                //     $product = $this->supply_model->get_next_inner_product();
+                // }
                 if(empty($product)) {
                     // remove active = 0 to parse circle again
                     $this->db->updateRow('supply_storages', ['active' => 0, 'last_import_product_id' => 0, 'last_import_at' => $time], $storage->id);
