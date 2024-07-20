@@ -100,6 +100,7 @@ class supply_model {
                         }
                         if($id_1c == $ada->id_1c) {
                             $ada->price_in = $life->price;
+                            break;
                         }
                     }
                 }
