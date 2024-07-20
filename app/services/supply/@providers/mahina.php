@@ -18,7 +18,7 @@ class mahina_provider {
     */
     public function parse($product):array {
         $out_products = [];
-        $url = str_replace('{article}', urlencode($product->article), $this->link);
+        $url = str_replace('{article}', urlencode($product->article_show), $this->link);
         // $url = str_replace('{article}', $product->article, $this->link);
 
         $ch = curl_init();
