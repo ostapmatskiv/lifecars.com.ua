@@ -9,6 +9,13 @@ class mahina_provider {
         echo 'Mahina provider inited' . PHP_EOL;
     }
 
+    /* return [$product->
+                        product_title
+                        product_article
+                        product_brand
+                        price (float)
+                        availability (int)]
+    */
     public function parse($product):array {
         $out_products = [];
         $url = str_replace('{article}', urlencode($product->article), $this->link);
@@ -64,6 +71,23 @@ class mahina_provider {
                     continue;
                 }
 
+                // .article №: A11-7903010AB
+                $articleElements = $xpath->query(".//*[contains(@class, 'article')]", $element);
+                if ($articleElements->length > 0) {
+                    $articleElement = $articleElements->item(0);
+
+                    $p->product_article = strip_tags($articleElement->textContent);
+                    $p->product_article = str_replace('№:', '', $p->product_article);
+                    $p->product_article = str_replace('Аналоги', '', $p->product_article);
+                    $p->product_article = trim($p->product_article);
+                }
+
+                // article must same as product->article
+                $articleKey = $this->prepareArticleKey($p->product_article);
+                if($articleKey != $product->article) {
+                    continue;
+                }
+
                 // name = .a-product__info-row a || itemprop="url" title
                 $aElements = $xpath->query('.//a[@itemprop="url"]', $element);
                 if ($aElements->length > 0) {
@@ -76,17 +100,6 @@ class mahina_provider {
                 if ($imgElements->length > 0) {
                     $imgElement = $imgElements->item(0);
                     $p->product_brand = $imgElement->getAttribute('alt');
-                }
-
-                // .article №: A11-7903010AB
-                $articleElements = $xpath->query(".//*[contains(@class, 'article')]", $element);
-                if ($articleElements->length > 0) {
-                    $articleElement = $articleElements->item(0);
-
-                    $p->product_article = strip_tags($articleElement->textContent);
-                    $p->product_article = str_replace('№:', '', $p->product_article);
-                    $p->product_article = str_replace('Аналоги', '', $p->product_article);
-                    $p->product_article = trim($p->product_article);
                 }
 
                 if (empty($p->product_article) || empty($p->product_brand)) {
@@ -109,12 +122,22 @@ class mahina_provider {
         return $out_products;
     }
 
-    /* return $product->
-                        product_title
-                        product_article
-                        product_brand
-                        price (float)
-                        availability (int)
-    */
+    
+
+    public function prepareArticleKey($text)
+    {
+        $text = (string) $text;
+        $text = trim($text);
+        $text = mb_strtolower($text, "utf-8");
+        $ua = array('-', '_', ' ', '`', '~', '!', '@', '#', '$', '%', '^', '&', '"', ',', '\.', '\?', '/', ';', ':', '\'', '[+]', '“', '”'
+        );
+        $en = array('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''
+        );
+        for ($i = 0; $i < count($ua); $i++) {
+            $text = mb_eregi_replace($ua[$i], $en[$i], $text);
+        }
+        $text = mb_eregi_replace("[-]{2,}", '-', $text);
+        return $text;
+    }
 
 }
