@@ -19,6 +19,7 @@ class vostokpartsua_provider {
         $out_products = [];
         $url = str_replace('{article}', urlencode($product->article_show), $this->link);
         // $url = str_replace('{article}', $product->article, $this->link);
+        // echo $url . PHP_EOL;
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -35,7 +36,7 @@ class vostokpartsua_provider {
 
         // Translate CSS selector to XPath and query the DOM
         $elements = $xpath->query("//*[@id='content']//*[contains(@class, 'item')]");
-        // echo "Found: " . $elements->length . PHP_EOL;
+        echo "Found: " . $elements->length . PHP_EOL;
         if($elements->length) {
             // Process the elements
             $find_brand_article = [];
@@ -74,17 +75,17 @@ class vostokpartsua_provider {
                     $p->product_article = str_replace('Артикул:', '', $p->product_article);
                     $p->product_article = trim($p->product_article);
                 }
-
+                
                 // article must same as product->article
                 $articleKey = $this->prepareArticleKey($p->product_article);
                 if($articleKey != $product->article) {
                     continue;
                 }
 
-                $aElements = $xpath->query(".//*[contains(@class, 'name')]/a", $element);
-                if ($aElements->length > 0) {
-                    $aElement = $aElements->item(0);
-                    $p->product_title = $aElement->getAttribute('title');
+                $nameElements = $xpath->query(".//*[contains(@class, 'name')]/a", $element);
+                if ($nameElements->length > 0) {
+                    $nameElement = $nameElements->item(0);
+                    $p->product_title = strip_tags($nameElement->textContent);
                 }
 
                 // .a-product__brand-item img alt
@@ -106,7 +107,7 @@ class vostokpartsua_provider {
                 $find_brand_article[] = $brand_article;
 
                 unset($p->availability_text);
-                pp($p);
+                // pp($p);
                 $out_products[] = (array) $p;
             }
         }
