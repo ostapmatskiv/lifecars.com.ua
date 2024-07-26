@@ -64,7 +64,7 @@ class supply_admin extends Controller {
         $_SESSION['alias']->name = $_SESSION['alias']->title = 'Постачальники. Рекомендовані ціни';
 
         $this->load->smodel('supply_model');
-        $storages = $this->supply_model->get_storages(['active' => 1]);
+        $storages = $this->supply_model->get_storages();
         if (empty($storages)) {
             echo 'Немає активних постачальників';
             return;
@@ -113,7 +113,7 @@ class supply_admin extends Controller {
         if (empty($page)) $page = 1;
 
         $this->load->smodel('supply_model');
-        $storages = $this->supply_model->get_storages(['active' => 1]);
+        $storages = $this->supply_model->get_storages();
         if(empty($storages)) {
             echo 'Немає активних постачальників';
             return;

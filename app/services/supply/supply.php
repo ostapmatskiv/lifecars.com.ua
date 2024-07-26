@@ -258,7 +258,7 @@ class supply extends Controller {
     public function export_recomendation_prices()
     {
         $this->load->smodel('supply_model');
-        $storages = $this->supply_model->get_storages(['active' => 1]);
+        $storages = $this->supply_model->get_storages();
         if (empty($storages)) {
             echo 'Немає активних постачальників';
             return;
