@@ -16,7 +16,6 @@ class pandaautocomua_provider {
                         availability (int)]
     */
     public function parse($product):array {
-        $product->article = $product->article_show = 'a11-1601030ad';
         $out_products = [];
         $url = str_replace('{article}', urlencode($product->article_show), $this->link);
         // $url = str_replace('{article}', $product->article, $this->link);
@@ -44,7 +43,13 @@ class pandaautocomua_provider {
                 $p->product_article = $p->product_title = $p->product_brand = '';
                 $p->price = $p->availability = 0;
 
-                $p->product_article = $xpath->evaluate('string(//@data-code)');
+                $p->product_article = $element->getAttribute('data-code');
+
+                // article must same as product->article
+                $articleKey = $this->prepareArticleKey($p->product_article);
+                if ($articleKey != $product->article) {
+                    continue;
+                }
 
                 $counterElements = $xpath->query(".//*[contains(@class, 'product__status')]/span", $element);
                 if ($counterElements->length > 0) {
@@ -55,49 +60,32 @@ class pandaautocomua_provider {
                     }
                 }
 
-                $metaElements = $xpath->query(".//meta[@itemprop='price']", $element);
-                if ($metaElements->length > 0) {
-                    $metaElement = $metaElements->item(0);
-                    $p->price = $metaElement->getAttribute('content');
+                $priceElements = $xpath->query(".//*[contains(@class, 'product__prices-numbers')]/strong", $element);
+                if ($priceElements->length > 0) {
+                    $priceElement = $priceElements->item(0);
+                    $p->price = strip_tags($priceElement->nodeValue);
+                    $p->price = str_replace('₴', '', $p->price);
+                    $p->price = trim($p->price);
                 }
-                pp($p);
+                
                 if(empty($p->availability) || empty($p->price)) {
                     continue;
                 }
 
-                // .article №: A11-7903010AB
-                $articleElements = $xpath->query(".//*[contains(@class, 'article')]", $element);
-                if ($articleElements->length > 0) {
-                    $articleElement = $articleElements->item(0);
-
-                    $p->product_article = strip_tags($articleElement->textContent);
-                    $p->product_article = str_replace('№:', '', $p->product_article);
-                    $p->product_article = str_replace('Аналоги', '', $p->product_article);
-                    $p->product_article = trim($p->product_article);
+                $brandElements = $xpath->query('.//img[contains(@class, "product__logo--img")]', $element);
+                if ($brandElements->length > 0) {
+                    $brandElement = $brandElements->item(0);
+                    $p->product_brand = $brandElement->getAttribute('title');
                 }
 
-                // article must same as product->article
-                $articleKey = $this->prepareArticleKey($p->product_article);
-                if($articleKey != $product->article) {
-                    continue;
+                if(empty($p->product_brand)) {
+                    $p->product_brand = 'panda-auto';
                 }
 
-                // name = .a-product__info-row a || itemprop="url" title
-                $aElements = $xpath->query('.//a[@itemprop="url"]', $element);
-                if ($aElements->length > 0) {
-                    $aElement = $aElements->item(0);
-                    $p->product_title = $aElement->getAttribute('title');
-                }
-
-                // .a-product__brand-item img alt
-                $imgElements = $xpath->query(".//*[contains(@class, 'a-product__brand-item')]//img", $element);
-                if ($imgElements->length > 0) {
-                    $imgElement = $imgElements->item(0);
-                    $p->product_brand = $imgElement->getAttribute('alt');
-                }
-
-                if (empty($p->product_article) || empty($p->product_brand)) {
-                    continue;
+                $titleElements = $xpath->query('.//div[contains(@class, "product__title")]/a', $element);
+                if ($titleElements->length > 0) {
+                    $titleElement = $titleElements->item(0);
+                    $p->product_title = trim($titleElement->nodeValue);
                 }
 
                 $brand_article = "{$p->product_brand}***{$p->product_article}";
