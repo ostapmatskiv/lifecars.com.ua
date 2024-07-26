@@ -29,7 +29,7 @@ class supply_model {
     }
 
     public function get_storages($where = []) {
-        return empty($where) ? $this->db->getAllData('supply_storages') : $this->db->getAllDataByFieldInArray('supply_storages', $where);
+        return empty($where) ? $this->db->getAllData('supply_storages', 'id') : $this->db->getAllDataByFieldInArray('supply_storages', $where);
     }
 
 
