@@ -16,7 +16,6 @@ class autoasiaua_provider {
                         availability (int)]
     */
     public function parse($product):array {
-        $product->article = $product->article_show = 'a11-1601030ad';
         $out_products = [];
         $url = str_replace('{article}', urlencode($product->article_show), $this->link);
         // $url = str_replace('{article}', $product->article, $this->link);
@@ -69,37 +68,27 @@ class autoasiaua_provider {
                 // article must same as product->article
                 $articleKey = $this->prepareArticleKey($p->product_article);
                 if ($articleKey != $product->article) {
-                    // continue;
+                    continue;
                 }
 
-                $counterElements = $xpath->query(".//*[contains(@class, 'code')]", $element);
-                if ($counterElements->length > 0) {
-                    $counterElement = $counterElements->item(0);
-                    $p->availability_text = trim($counterElement->nodeValue);
-                    if ($p->availability_text == 'В наявності') {
-                        $p->availability = 1;
-                    }
-                }
-
-                $priceElements = $xpath->query(".//*[contains(@class, 'product__prices-numbers')]/strong", $element);
+                $priceElements = $xpath->query(".//*[contains(@class, 'price')]/span", $element);
                 if ($priceElements->length > 0) {
                     $priceElement = $priceElements->item(0);
                     $p->price = strip_tags($priceElement->nodeValue);
-                    $p->price = str_replace('₴', '', $p->price);
+                    $p->price = str_replace(',', '.', $p->price);
                     $p->price = trim($p->price);
+                    $p->availability = 1;
                 }
                 
                 if(empty($p->availability) || empty($p->price)) {
-                    // continue;
+                    continue;
                 }
-
-                
 
                 if(empty($p->product_brand)) {
-                    // $p->product_brand = 'panda-auto';
+                    $p->product_brand = 'autoasia';
                 }
 
-                $titleElements = $xpath->query('.//div[contains(@class, "product__title")]/a', $element);
+                $titleElements = $xpath->query('.//div[contains(@class, "title")]/a', $element);
                 if ($titleElements->length > 0) {
                     $titleElement = $titleElements->item(0);
                     $p->product_title = trim($titleElement->nodeValue);
@@ -117,7 +106,7 @@ class autoasiaua_provider {
             }
         }
 
-        pp($out_products);
+        // pp($out_products);
         return $out_products;
     }
 
