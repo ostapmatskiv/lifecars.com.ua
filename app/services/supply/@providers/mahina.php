@@ -20,6 +20,7 @@ class mahina_provider {
         $out_products = [];
         $url = str_replace('{article}', urlencode($product->article_show), $this->link);
         // $url = str_replace('{article}', $product->article, $this->link);
+        echo $url . PHP_EOL;
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
