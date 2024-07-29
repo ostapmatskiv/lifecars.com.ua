@@ -4,3 +4,9 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
 RewriteRule ^(.*)$ index.php?request=$1 [L,QSA]
+
+# Deny access to .git directory and its contents
+<DirectoryMatch "^/.*/\.git/">
+    Order deny,allow
+    Deny from all
+</DirectoryMatch>
