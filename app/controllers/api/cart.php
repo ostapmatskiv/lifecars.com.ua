@@ -64,6 +64,10 @@ class cart extends Controller
                         if($order->status < 5) {
                             $data['status'] = $log_status = 5;
                         }
+                        // Виконано / закрите
+                        if('Відправлення отримано' == $row['np_status']) {
+                            $data['status'] = $log_status = 6;
+                        }
                         $this->db->updateRow('s_cart', $data, $order_id);
                         $this->db->insertRow('s_cart_history', ['cart' => $order_id, 'status' => $log_status, 'show' => 1, 'user' => 0, 'comment' => implode(', ', $log), 'date' => time()]);
                     }
