@@ -3208,6 +3208,9 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
             display: flex;
             justify-content: center;
             align-items: center;
+            /* background-color: #fff; */
+            border-radius: 100%;
+            padding: 8px;
         }
 
         header .mobile__shoping {
@@ -3238,12 +3241,14 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
         }*/
 
         header div.flex .fa-bars {
-            display: block;
+            display: flex;
             width: 35px;
             height: 35px;
-            font-size: 30px;
-            float: left;
+            font-size: 20px;
+            /* float: left; */
+            align-items: center;
             color: #8c8c8c;
+            justify-content: center;
         }
 
         header .header__address .fa-map-marker-alt,
@@ -3432,7 +3437,7 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
             position: absolute;
             right: 20px;
             top: 20px;
-            font-size: 24px;
+            font-size: 20px;
             color: #fff;
         }
 

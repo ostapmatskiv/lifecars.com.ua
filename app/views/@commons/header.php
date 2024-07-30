@@ -34,7 +34,7 @@
             <img class="header__logo" src="<?= SERVER_URL ?>style/images/logo.png" alt="logo">
          </a>
          <div class="mobile__shoping">
-            <i class="label __CountProductsInCart m-hide">0</i>
+            <i class="label __CountProductsInCart">0</i>
             <a href="<?= SITE_URL ?>cart" class="header__cart">
                <img src="<?= SERVER_URL ?>style/icons/shopping-cart.svg" alt="cart">
             </a>
