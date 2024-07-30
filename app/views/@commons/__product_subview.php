@@ -46,7 +46,7 @@
             </button>
         </div>
     </div>
-    <?php } else { ?>
+    <?php } else { echo '<div style="height: 80px;width:100%"></div>'; /* ?>
         <div class="flex v-center card__price">
             <div class="price__text"><?=$this->text('Під замовлення', 0)?></div>
             <div class="price__cart">
@@ -110,11 +110,15 @@
                 <i class="fas fa-chevron-circle-up"></i>
             </button>
         </div>
-    <?php } ?>
+    <?php */ } ?>
     <div class="flex v-center card__check">
         <div class="flex v-center check__pieces">
             <i class="fas <?=$product->availability > 0 ? 'fa-check-circle' : 'fa-times-circle'?>"></i>
-            <p><?=$this->text('На складі', 0)?> <span class="pieces"><?=$product->availability?></span> шт.</p>
+            <?php if($product->availability > 0) { ?>
+                <p><?=$this->text('На складі', 0)?> <span class="pieces"><?=$product->availability?></span> шт.</p>
+            <?php } else { ?>
+                <p><?=$this->text('Немає в наявності', 0)?></p>
+            <?php } ?>
         </div>
         <div class="flex v-center card__rating">
             <?php if(empty($product->rating)) $product->rating = 5; ?>
