@@ -307,7 +307,6 @@
     echo $this->paginator->get(); ?>
 
     <section>
-        <h4><?= $_SESSION['alias']->list ?></h4>
         <p><?= html_entity_decode($_SESSION['alias']->text) ?></p>
     </section>
 </main>
