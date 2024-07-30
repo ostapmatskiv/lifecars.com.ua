@@ -301,23 +301,17 @@ function facebookSignUp() {
     return false;
 }
 
-$('form#confirm button.checkout').click(function() {
-    let with_error = false;
-    $('#new-buyer input').each(function(){
-        if($(this).val() == '') {
-            $(this).addClass('with-error').focus();
-            with_error = true;
+$('button.checkout').click(function() {
+    $("#cart input#phone").change();
+    $("#cart input#first_name").change();
+    $("#cart input#last_name").change();
+    $('#cart input').each(function(){
+        if($(this).val() == '' || $(this).hasClass('with-error')) {
+            $(this).focus();
+            return false;
         }
     });
-    phone = $("#cart input#phone").val();
-    if(phone.substr(0, 4) != '+380' || phone.length != 17) {
-        $("#cart input#phone").addClass('with-error').focus();
-        $("#cart input#phone").parent().find('h5.text-danger').removeClass('hide');
-        with_error = true;
-    }
-    if(with_error) {
-        return false;
-    }
+    return true;
 });
 
 $('form#confirm').on('submit', function () {
