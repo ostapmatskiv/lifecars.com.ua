@@ -338,7 +338,7 @@ $("._validLettersUK").on("change", function() {
     input.removeClass('with-error');
     h5_error.addClass('hide');
 
-    if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ]+$/.test(text) === false) {
+    if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ ]+$/.test(text) === false) {
         input.addClass('with-error').focus();
         h5_error.removeClass('hide');
         // alert('Тільки кирилиця');
@@ -359,7 +359,7 @@ $('#modal-buyProduct form').submit(function(){
             text = input.val(),
             h5_error = input.parent().find('h5.text-danger');
     
-        if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ]+$/.test(text) === false) {
+        if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ ]+$/.test(text) === false) {
             input.addClass('with-error').focus();
             h5_error.removeClass('hide');
             with_error = true;

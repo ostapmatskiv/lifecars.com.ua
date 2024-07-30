@@ -236,14 +236,14 @@ $("#cart input#first_name, #cart input#last_name").on("change", function() {
         input.removeClass('with-error');
         h5_error.addClass('hide');
 
-    if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ]+$/.test(first_name) === false) {
+    if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ ]+$/.test(first_name) === false) {
         input.addClass('with-error').focus();
         h5_error.removeClass('hide');
         // alert('Тільки кирилиця');
         return false;
     }
     if(last_name.length > 0)
-        if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ]+$/.test(last_name) === false) {
+        if(/^[аАбБвВгГґҐдДеЕєЄжЖзЗиИіІїЇйЙкКлЛмМнНоОпПрРсСтТуУфФхЧцЦчЧшШщЩьЬюЮяЯыЫёЁъЪЭэ ]+$/.test(last_name) === false) {
             input.addClass('with-error').focus();
             h5_error.removeClass('hide');
             // alert('Тільки кирилиця');
