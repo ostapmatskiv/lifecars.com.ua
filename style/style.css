@@ -229,7 +229,7 @@ section.sale .sale__wrrap {
     width: calc(20% - 5px);
     padding: 8px 8px 12px;
     min-height: auto;
-    margin-bottom: 20px;
+    margin-bottom: 7px;
     border: 2px solid #fefefe;
     border-radius: 3px;
     position: relative;
@@ -368,6 +368,10 @@ main.detal .card__border_in {
     margin-bottom: 0;
 }
 
+.sale__card .rating {
+    font-size: 10px;
+    text-align: right;
+}
 .sale__card .rating:not(.empty) i.fa-star {
     color: #ffc508;
 }
@@ -3538,7 +3542,8 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
         }
 
         .sale__card {
-            width: calc(50% - 2px) !important
+            width: calc(50% - 2px) !important;
+            margin-bottom: 4px !important;
         }
 
         main.cars__manufacturers section.catalog__name div a figure img {
@@ -3613,6 +3618,7 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
         main.detal .detal__cart .sale__card,
         section.sale .sale__wrrap .sale__card {
             width: calc(50% - 3px);
+            margin-bottom: 6px;
         }
 
         main.detal .detal__cart .sale__card.no_availabilaty button.cart__order {
@@ -3850,7 +3856,6 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
 
         section.sale .sale__wrrap {
             margin-top: 15px;
-            justify-content: center;
         }
 
         /*       catalog           */
