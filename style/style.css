@@ -2516,10 +2516,6 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
             height: 200px;
         }
 
-        .sale__card .card__text {
-            font-size: 16px;
-        }
-
         .sale__card .card__info .info__article {
             margin-right: 15px;
         }
@@ -3892,10 +3888,6 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
 
         main .catalog__sorted .quantity__goods {
             margin: 10px 0 0 0;
-        }
-
-        main section.sale__catalog .sale__wrrap {
-            justify-content: center;
         }
 
         section.sale__catalog .sale__wrrap .sale__card {
