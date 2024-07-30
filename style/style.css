@@ -233,7 +233,7 @@ section.sale .sale__wrrap {
     border: 2px solid #fefefe;
     border-radius: 3px;
     position: relative;
-    font-family: Exo2;
+    /* font-family: Exo2; */
     background: #fff
 }
 .sale__card.empty {
@@ -323,6 +323,7 @@ section.sale .sale__wrrap {
     display: table-cell;
     vertical-align: middle;
     font-size: 14px;
+    font-weight: bold;
     text-align: left;
     color: #000;
 }
