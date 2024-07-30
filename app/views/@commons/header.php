@@ -80,7 +80,7 @@
             </div>
          <?php } ?>
          <div class="search-btn">
-            <input required="required" type="search" name="name" value="<?= $this->data->get('name') ?>"
+            <input required="required" type="text" name="name" value="<?= $this->data->get('name') ?>"
                    placeholder="<?= $this->text('Я шукаю...', 0) ?>">
             <button class="m-hide"><i class="fas fa-search"></i></button>
             <button class="t-show hide"><?= $this->text('Знайти', 0) ?></button>
