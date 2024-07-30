@@ -319,11 +319,11 @@ section.sale .sale__wrrap {
 }
 
 .sale__card .card__text {
-    height: 80px;
+    height: 70px;
     display: table-cell;
     vertical-align: middle;
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 12px;
+    font-weight: 600;
     text-align: left;
     color: #000;
 }
