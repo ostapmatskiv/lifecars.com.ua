@@ -9,6 +9,7 @@ class googlesignin
 	
 	function __construct($cfg)
 	{
+		if(empty($cfg['clientId'])) return false;
 		if($cfg['clientId'] != 'GOOGLE_CLIENT_ID')
 			$this->clientId = $cfg['clientId'];
 	}
