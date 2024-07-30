@@ -245,11 +245,8 @@
                         <div class="values">
                             <a href="<?= $this->data->get_link($filter->alias, '', 'page') ?>">
                                 <input type="checkbox" <?= empty($_GET[$filter->alias]) ? 'checked' : '' ?>>
-                                <label><?= $this->text('Всі виробники') ?> <? //=$filter->name
-                                                                            ?></label>
+                                <label><?= $this->text('Всі виробники') ?></label>
                             </a>
-
-
 
                             <?php foreach ($filter->values as $value) {
                                 $checked = (!empty($_GET[$filter->alias]) && is_array($_GET[$filter->alias]) && in_array($value->id, $_GET[$filter->alias])) ? 'checked' : '';
@@ -263,7 +260,7 @@
             </form>
         </aside>
         <div class="w75">
-            <div class="flex catalog__sorted m-hide" style="margin-top: 10px;">
+            <div class="flex catalog__sorted m-hide m-m0" style="margin-top: 10px;">
                 <div>
                     <a href="<?= $this->data->get_link('sort', 'price_down') ?>" <?= ($this->data->get('sort') == 'price_down') ? 'class="active"' : '' ?>><?= $this->text('Спершу дешеві') ?></a>
                     <a href="<?= $this->data->get_link('sort', 'price_up') ?>" <?= ($this->data->get('sort') == 'price_up') ? 'class="active"' : '' ?>><?= $this->text('Спершу дорожчі') ?></a>
