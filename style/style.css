@@ -4087,9 +4087,9 @@ textarea:active {
         position: fixed;
         z-index: 99;
         top: 15px;
-        left: 50%;
+        left: calc(50% - 10px);
         transform: translate(-50%, 0);
-        width: calc(100% - 110px);
+        width: calc(100% - 130px);
         margin-top: 0;
     }
     #main-search.scrolled input {

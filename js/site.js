@@ -5,6 +5,8 @@ $(document).ready(function(){
         success: function(res)
         {
             $('.__CountProductsInCart').text(res.count);
+            if(res.count > 0)
+                $('.__CountProductsInCart').removeClass('m-hide');
         }
     });
 
@@ -66,7 +68,7 @@ $(document).ready(function(){
             success:function(res){
                 if(res.result)
                 {
-                    $('.__CountProductsInCart').text(res.productsCountInCart);
+                    $('.__CountProductsInCart').text(res.productsCountInCart).removeClass('m-hide');
                     $('#modal-add_success').css('display', 'flex');
                     var logo_path = '/style/images/logo.png';
                     if(res.product.cart_photo)
@@ -92,7 +94,7 @@ $(document).ready(function(){
             success:function(res){
                 if(res.result)
                 {
-                    $('.__CountProductsInCart').text(res.productsCountInCart);
+                    $('.__CountProductsInCart').text(res.productsCountInCart).removeClass('m-hide');
                     $('#modal-add_success').css('display', 'flex');
                     var logo_path = '/style/images/logo.png';
                     if(res.product.cart_photo)
