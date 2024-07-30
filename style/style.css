@@ -3242,7 +3242,7 @@ main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.
 
         header div.flex .fa-bars {
             display: flex;
-            width: 35px;
+            /* width: 35px; */
             height: 35px;
             font-size: 20px;
             /* float: left; */
@@ -4087,7 +4087,7 @@ textarea:active {
         position: fixed;
         z-index: 99;
         top: 15px;
-        left: calc(50% - 10px);
+        left: calc(50% - 20px);
         transform: translate(-50%, 0);
         width: calc(100% - 130px);
         margin-top: 0;
