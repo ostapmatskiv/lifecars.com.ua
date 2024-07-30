@@ -29,7 +29,7 @@
 	<link rel="stylesheet" type="text/css" href="<?= SERVER_URL ?>style/ws__main.css?v=1.3">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
 	<link rel="stylesheet" type="text/css" href="<?= SERVER_URL ?>assets/magnific-popup/magnific-popup.css">
-	<link rel="stylesheet" type="text/css" href="<?= SERVER_URL ?>style/style.css?v=0.7.0">
+	<link rel="stylesheet" type="text/css" href="<?= SERVER_URL ?>style/style.css?v=0.7.1">
 </head>
 
 <body class="<?= $_SESSION['alias']->alias ?>">
@@ -126,7 +126,7 @@
 		};
 	</script>
 	<script type="text/javascript" src="<?= SERVER_URL ?>js/ga4_events.js"></script>
-	<script type="text/javascript" src="<?= SERVER_URL ?>js/site.js?v1.9"></script>
+	<script type="text/javascript" src="<?= SERVER_URL ?>js/site.js?v2.0"></script>
 	<?php if (!empty($_SESSION['alias']->js_load))
 		foreach ($_SESSION['alias']->js_load as $js) {
 			echo '<script type="text/javascript" src="' . SERVER_URL . $js . '"></script> ';
