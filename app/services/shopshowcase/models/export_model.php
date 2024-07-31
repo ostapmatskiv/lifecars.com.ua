@@ -368,11 +368,11 @@ class export_model
                 $product->images = array();
                 if(isset($imagesAll[$id]))
                 {
-                    if($this->export_to == 'export_prom') {
-                        $product->images = $imagesAll_detal[$id];
-                    } else {
+                    // if($this->export_to == 'export_prom') {
+                    //     $product->images = $imagesAll_detal[$id];
+                    // } else {
                         $product->images = $imagesAll[$id];
-                    }
+                    // }
                     
                     unset($imagesAll[$id]);
                     unset($imagesAll_detal[$id]);
