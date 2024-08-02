@@ -2201,6 +2201,7 @@ main.cars__manufacturers section.catalog__name > div {
     margin-bottom: 15px;
     background: #fff;
     padding: 5px 15px;
+    border-radius: 3px;
 }
 
 main.cars__manufacturers section.catalog__name div label {
@@ -2228,6 +2229,7 @@ main.cars__manufacturers section.catalog__name div a figure img {
     max-height: 100px;
     background: white;
     border-radius: 4px;
+    object-fit: contain;
 }
 main.cars__manufacturers section.catalog__name div a figure img[src*="no_image2.png"]
 {
