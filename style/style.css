@@ -1461,8 +1461,8 @@ section.sale__catalog .sale__wrrap .sale__card .card__img i.card__label {
 
 section.sale__catalog .sale__wrrap .sale__card .card__img i.new__label {
     position: absolute;
-    top: 50px;
-    left: -16px;
+    top: 30px;
+    left: 0;
     transform: translateY(50%);
     font-weight: 600;
     color: #fff;
