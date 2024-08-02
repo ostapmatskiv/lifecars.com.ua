@@ -2197,8 +2197,10 @@ main.cars__manufacturers .manufacturers__name a:hover {
     color: #fff;
 }
 
-main.cars__manufacturers section.catalog__name div {
-    margin-bottom: 20px;
+main.cars__manufacturers section.catalog__name > div {
+    margin-bottom: 15px;
+    background: #fff;
+    padding: 5px 15px;
 }
 
 main.cars__manufacturers section.catalog__name div label {

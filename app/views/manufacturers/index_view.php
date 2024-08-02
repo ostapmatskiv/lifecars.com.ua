@@ -35,10 +35,11 @@
                     if($l != $letter)
                     {
                         if($letter != '')
-                            echo "</div>";
-                        echo '<div class="flex wrap h-start" id="'.$l.'">
+                            echo "</div></div>";
+                        echo '<div class="flex h-start" id="'.$l.'">
                             <label for="#">'.$l.'</label>';
                         $letter = $l;
+                        echo '<div class="flex wrap h-start">';
                     } ?>
                     <a href="<?=SITE_URL?>manufacturers/<?=$m->link?>"> 
                         <figure>
