@@ -73,7 +73,7 @@ class cart_model
 			foreach ($this->additional_user_fields as $key => $field) {
 				$this->db->join('wl_user_info as ui_'.$key, 'value as user_'.$field, array('field' => $field, 'user' => "#c.user"));
 			}
-		$this->db->group('id', 'c');
+		// $this->db->group('id', 'c');
 		if(empty($where['date_add']))
 			$this->db->order('date_add DESC', 'c');
 
