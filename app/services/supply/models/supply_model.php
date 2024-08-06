@@ -121,13 +121,15 @@ class supply_model {
     }
 
     public function get_minus_products() {
-        return $this->db->select('supply_minus_products as m')
-                        ->join('s_shopshowcase_products as p', 'id, article_show, alias as uri', '#m.product_id')
-                        ->join('s_shopshowcase_product_options as po', 'value as brand_id', ['product' => '#p.id', 'option' => 1])
-                        ->join('s_shopshowcase_options_name as b', 'name as brand_name', ['option' => '#po.value'])
-                        ->join('wl_ntkd as n', 'name', ['alias' => '#p.wl_alias', 'content' => '#p.id'])
-                        ->order('name ASC', 'b')
-                        ->get('array');
+        if($supply_minus_products = $this->db->getAllData('supply_minus_products')) {
+            return $this->db_adatrade->select('s_shopshowcase_products as p', 'id, article_show, alias as uri', ['id' => array_column($supply_minus_products, 'product_id')])
+                                    ->join('s_shopshowcase_product_options as po', 'value as brand_id', ['product' => '#p.id', 'option' => 1])
+                                    ->join('s_shopshowcase_options_name as b', 'name as brand_name', ['option' => '#po.value'])
+                                    ->join('wl_ntkd as n', 'name', ['alias' => '#p.wl_alias', 'content' => '#p.id'])
+                                    ->order('name ASC', 'b')
+                                    ->get('array');
+        }
+        return false;
     }
 
     public function recommendation_price($inner_products, array $import_products) : array {
