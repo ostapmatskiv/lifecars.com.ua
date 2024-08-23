@@ -48,10 +48,17 @@ class autoasiaua_provider {
                 if ($codeElements->length > 0) {
                     $codeElement = $codeElements->item(0);
 
-                    $product_article = $xpath->query(".//span[contains(@class, 'highlight')]", $codeElement);
+                    // $product_article = $xpath->query(".//span[contains(@class, 'highlight')]", $codeElement);
+                    // if($product_article->length > 0) {
+                    //     $product_article = $product_article->item(0);
+                    //     $p->product_article = trim($product_article->nodeValue);
+                    // }
+
+                    $product_article = $xpath->query(".//u", $codeElement);
                     if($product_article->length > 0) {
                         $product_article = $product_article->item(0);
-                        $p->product_article = trim($product_article->nodeValue);
+                        $product_article = str_replace('Артикул:', '', $product_article->nodeValue);
+                        $p->product_article = trim($product_article);
                     }
 
                     $brandElements = $xpath->query('.//strong', $codeElement);
