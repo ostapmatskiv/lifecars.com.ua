@@ -210,7 +210,10 @@ class supply extends Controller {
                 $_allProducts[$obj->article] = $obj->id;
             }
 
-            $in_products = $this->db->select('supply_products', '*', ['storage_id' => $storage->id])->get();
+            // Очищати всі значення перед імпортом з xml
+            $this->db->deleteRow('supply_products', ['storage_id' => $storage->id]);
+            $in_products = false; //$this->db->select('supply_products', '*', ['storage_id' => $storage->id])->get();
+            echo "<br>Видалено всі товари по складу перед імпортом<br>";
 
             $found = $inserted = $updated = $skiped = 0;
             $rows_insert = [];
@@ -251,7 +254,7 @@ class supply extends Controller {
             if (!empty($rows_insert)) {
                 $this->db->insertRows('supply_products', ['created_at' => $time, 'storage_id' => $storage->id, 'article_key', 'product_article', 'product_brand', 'price', 'availability', 'product_title'], $rows_insert, 50, ['article_key' => 'text', 'product_article' => 'text']);
             }
-            echo "Found: {$found}. Inserted: {$inserted}, Updated: {$updated}, Skiped: {$skiped}";
+            echo "Знайдено: {$found}. Додано: {$inserted}, Оновлено: {$updated}, Пропущено: {$skiped}";
         }
     }
 
