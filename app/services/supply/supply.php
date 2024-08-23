@@ -152,9 +152,11 @@ class supply extends Controller {
                 pr($product);
                 pr($out_products);
 
+                $search = ['storage_id' => $storage->id, 'article_key' => $product->article];
+                // Видалити значення з бд якщо з павука товар не знайдено
+                $this->db->deleteRow('supply_products', $search);
+                $in_products = false; //$this->db->select('supply_products', '*', $search)->get('array');
                 if (!empty($out_products)) {
-                    $search = ['storage_id' => $storage->id, 'article_key' => $product->article];
-                    $in_products = $this->db->select('supply_products', '*', $search)->get('array');
                     if (empty($in_products)) {
                         $this->db->insertRows('supply_products', ['created_at' => $time, 'storage_id' => $storage->id, 'article_key' => $product->article, 'product_article', 'product_brand', 'price', 'availability', 'product_title'], $out_products, 50, ['article_key' => 'text', 'product_article' => 'text']);
                     } else {
@@ -176,6 +178,10 @@ class supply extends Controller {
                         }
                     }
                 }
+                // else if (!empty($in_products)) {
+                //     // Видалити значення з бд якщо з павука товар не знайдено
+                //     $this->db->deleteRow('supply_products', $search);
+                // }
             }
         }
         exit;
