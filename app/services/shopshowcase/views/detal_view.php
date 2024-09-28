@@ -33,7 +33,7 @@
 </script>
 
 <main class="detal">
-    <h1 class="detal__heading"><?=$product->name.' '.mb_strtoupper($product->options['1-manufacturer']->value->name)?></h1>
+    <h1 class="detal__heading"><?= $product->name ?></h1>
 
     <div class="flex h-between v-center card__rating">
         <?php if(empty($product->rating)) $product->rating = 5; ?>
