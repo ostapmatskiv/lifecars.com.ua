@@ -1675,21 +1675,14 @@ main.detal section.detal__info .info__img .rating__comment i {
 }
 
 main.detal section.detal__info .info__img .img__small .small__img a img {
-    padding: 16px 6px;
     background-color: #fefefe;
     border-radius: 5px;
 }
 
 main.detal section.detal__info .info__img .img__small .small__img {
-    width: 104px;
-    height: 104px;
     border-radius: 5px;
     border: 1px solid transparent;
     margin-bottom: 5px;
-}
-
-main.detal section.detal__info .info__img .img__small .small__img:hover {
-    border-color: #7cbe49;
 }
 
 main.detal section.detal__info .info__bonus {
