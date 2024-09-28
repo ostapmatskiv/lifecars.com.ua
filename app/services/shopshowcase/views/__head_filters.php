@@ -1,4 +1,4 @@
-<div class="flex wrap">
+<div class="flex h-start wrap">
 <?php if(!empty($filters))
 	foreach ($filters as $filter) {
 		if($filter->id == 2) {
