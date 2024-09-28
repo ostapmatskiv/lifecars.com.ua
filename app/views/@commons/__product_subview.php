@@ -115,7 +115,7 @@
         <div class="flex v-center check__pieces m-w50">
             <i class="fas <?=$product->availability > 0 ? 'fa-check-circle' : 'fa-times-circle'?>"></i>
             <?php if($product->availability > 0) { ?>
-                <p><?=$this->text('В наявності', 0)?></p>
+                <p><?=$this->text('В наявності', 0)?> <span class="pieces"><?=$product->availability?></span> шт.</p>
             <?php } else { ?>
                 <p><?=$this->text('Немає в наявності', 0)?></p>
             <?php } ?>

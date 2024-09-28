@@ -1649,6 +1649,7 @@ main.detal section.detal__info .img__big i.img__hit {
 
 main.detal section.detal__info .img__big img {
     width: 100%;
+    border-radius: 5px;
 }
 
 main.detal section.detal__info .info__img div.m__right {
@@ -1778,7 +1779,7 @@ main.detal section.detal__info .info__price .card__check.detal__check .fas {
 }
 
 main.detal section.detal__info .info__price .card__check.detal__check .fa-times-circle {
-    color: #FFC505;
+    color: #f52323;
 }
 
 main.detal section.detal__info .info__price .card__check.detal__check p {

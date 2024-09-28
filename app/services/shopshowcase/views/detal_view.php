@@ -177,7 +177,11 @@
             <div class="flex h-end v-center card__check detal__check">
                 <div class="flex v-center check__pieces">
                     <i class="fas <?=$product->availability > 0 ? 'fa-check-circle' : 'fa-times-circle'?>"></i>
-                    <p><?=$this->text('В наявності')?> <span class="pieces"><?=$product->availability?></span> шт.</p>
+                    <?php if($product->availability > 0) { ?>
+                        <p><?=$this->text('В наявності', 0)?> <span class="pieces"><?=$product->availability?></span> шт.</p>
+                    <?php } else { ?>
+                        <p><?=$this->text('Немає в наявності', 0)?></p>
+                    <?php } ?>
                 </div>
                 <?php if($product->active && $product->availability > 0) { ?>
                 <div class="flex check__number">
