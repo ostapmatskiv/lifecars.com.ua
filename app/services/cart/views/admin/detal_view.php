@@ -145,7 +145,7 @@
 		<div class="panel">
 			<div class="panel-body">
 				<legend><i class="fa fa-truck" aria-hidden="true"></i> Доставка
-					<?=($cart->action == 'new') ? "<a href='/admin/{$_SESSION['alias']->alias}/{$cart->id}/edit-shipping' class='btn btn-primary btn-xs'><i class=\"fa fa-pencil\"></i> редагувати</a>" : '' ?>
+					<?=($cart->action == 'new') ? "<a href='/admin/{$_SESSION['alias']->alias}/{$cart->id}/edit-shipping#cart' class='btn btn-primary btn-xs'><i class=\"fa fa-pencil\"></i> редагувати</a>" : '' ?>
 				</legend>
 				<?php
 				if(!empty($cart->shipping_info) && is_string($cart->shipping_info)) {
@@ -231,7 +231,7 @@
 								$userShipping->$key = $value;
 							}
 					}
-					echo '<form action="'.SITE_URL.$_SESSION['alias']->alias.'/set__shippingToOrder" method="post" class="col-sm-4 w30 w50">';
+					echo '<form action="'.SITE_URL.$_SESSION['alias']->alias.'/set__shippingToOrder" method="post" class="col-sm-12 w30 w50">';
 					echo '<input type="hidden" name="order_id" value="'.$cart->id.'">';
 					echo '<input type="hidden" name="redirect" value="admin/'.$_SESSION['alias']->alias.'/'.$cart->id.'">';
 					require_once APP_PATH.'services/cart/views/__shippings_subview.php';
@@ -379,6 +379,12 @@ window.onload = function() {
 
 #cart .cart_section {
 	padding: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+#cart .w30 {
+	min-width: 300px;
 }
 
 #cart .modal {

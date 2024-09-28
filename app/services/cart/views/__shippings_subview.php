@@ -60,7 +60,7 @@
             if(empty($userShipping)) {
                 $userShipping = new stdClass();
             }
-            $userShipping->initShipping = true;
+            $userShipping->initShipping = false;
             $this->load->function_in_alias($shippingWlAlias, '__get_Shipping_to_cart', $userShipping);
         } ?>
     </div>
