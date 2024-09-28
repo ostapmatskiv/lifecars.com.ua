@@ -82,15 +82,16 @@ class Profile extends Controller {
                 }
 
                 if(isset($_POST['first_name']))
-                    $user->first_name = $this->data->post('first_name');
+                    $user->first_name = trim($this->data->post('first_name'));
                 if(isset($_POST['last_name']))
-                    $user->last_name = $this->data->post('last_name');
+                    $user->last_name = trim($this->data->post('last_name'));
 
                 $this->validator->setRules($this->text("Ім'я"), $user->first_name, 'uk_letters|required|2..20');
                 $this->validator->setRules($this->text("Прізвище"), $user->last_name, 'uk_letters|required|2..20');
                 if($this->validator->run()) {
                     // $name = $user->first_name .' '. $user->last_name;
                     $name = $user->last_name .' '. $user->first_name;
+                    $name = preg_replace('/\s+/', ' ', $name);
                     if($user->name != $name) {
                         $data['name'] = $name;
                         $this->db->register('profile_data', 'Попереднє Ім\'я: '.$user->name);

@@ -474,11 +474,14 @@ class cart_model
 		}
 		
 		$user = $this->db->select('wl_users as u', 'name', $user_id)->get();
-		if(empty($user->name) && !empty($_POST['recipientName']))
-            $this->db->updateRow('wl_users', array('name' => $this->data->post('recipientName')), $_SESSION['user']->id);
+		if(empty($user->name) && !empty($_POST['recipientName'])) {
+			$recipientName = preg_replace('/\s+/', ' ', $this->data->post('recipientName'));
+            $this->db->updateRow('wl_users', array('name' => $recipientName), $_SESSION['user']->id);
+		}
 		elseif(!empty($user->name) && !empty($_POST['name']) && $user->name != $_POST['name'])
 		{
-            $this->db->updateRow('wl_users', array('name' => $this->data->post('name')), $_SESSION['user']->id);
+			$name = preg_replace('/\s+/', ' ', $this->data->post('name'));
+            $this->db->updateRow('wl_users', array('name' => $name), $_SESSION['user']->id);
             $this->db->register('profile_data', 'name before: '.$user->name);
 		}
         

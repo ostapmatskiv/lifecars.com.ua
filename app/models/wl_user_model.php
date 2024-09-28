@@ -71,7 +71,7 @@ class wl_user_model {
         	{
         		$data = array();
                 $data['alias'] = $user->alias = $this->makeAlias($info['name']);
-                $data['name'] = $user->name = $info['name'];
+                $data['name'] = $user->name = preg_replace('/\s+/', ' ', $info['name']);
         		$data['photo'] = $user->photo = $info['photo'];
                 $data['email'] = $user->email = $info['email'] ?? '';
                 $data['phone'] = $user->phone = $info['phone'] ?? '';
@@ -104,7 +104,7 @@ class wl_user_model {
             $data['alias'] = $user->alias = $this->makeAlias($info['name']);
         	$data['email'] = $user->email = $info['email'] ?? '';
             $data['phone'] = $user->phone = $info['phone'] ?? '';
-	    	$data['name'] = $user->name = $info['name'];
+	    	$data['name'] = $user->name = preg_replace('/\s+/', ' ', $info['name']);
             $data['photo'] = $user->photo = $info['photo'];
 	    	$data['type'] = $user->type = $new_user_type;
 	    	$data['status'] = $user->status = $status->id;

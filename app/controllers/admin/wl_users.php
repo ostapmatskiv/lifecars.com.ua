@@ -141,7 +141,7 @@ class wl_users_admin extends Controller {
                         {
                             $this->load->model('wl_user_model');
 
-                            $user['name'] = $this->data->post('name');
+                            $user['name'] = preg_replace('/\s+/', ' ', $this->data->post('name'));
                             $user['alias'] = $alias = $this->data->latterUAtoEN($user['name']);
                             $i = 2;
                             while($this->db->getAllDataById('wl_users', $alias, 'alias'))
@@ -263,12 +263,14 @@ class wl_users_admin extends Controller {
                             }
 
                         foreach (['name' => "ім'я", 'alias' => "uri (alias)"] as $key => $name) {
-                            if($value = $this->data->post($key))
+                            if($value = $this->data->post($key)) {
+                                $value = preg_replace('/\s+/', ' ', $value);
                                 if($user->$key != $value)
                                 {
                                     $update[$key] = $value;
                                     $this->db->register('profile_data', "Змінено {$name}: '{$user->$key}' => '{$value}'. Менеджер: #{$_SESSION['user']->id} {$_SESSION['user']->name}", $user->id);
                                 }
+                            }
                         }
 
                         if(isset($_POST['active_password']) && $_POST['active_password'] == 1 && !empty($_POST['password']))
