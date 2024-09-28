@@ -131,7 +131,7 @@
             <h5 class="text-danger hide" id="lnError"><?= $this->text('Тільки кирилиця') ?></h5>
          </div>
 
-         <input name="code" type="number" value="<?=$this->data->re_post('code')?>" placeholder="<?=$this->text('Код з СМС', 5)?>" <?=$this->data->re_post('code') ? '' : 'class="hide"'?> />
+         <input name="code" type="text" value="<?=$this->data->re_post('code')?>" placeholder="<?=$this->text('Код з СМС', 5)?>" <?=$this->data->re_post('code') ? '' : 'class="hide"'?> />
          <h5 class="text-danger hide" id="codeError"><?=$this->text('Помилка СМС коду! Перевірте дані')?></h5>
          <p class="send_phone_code hide"><?=$this->text('Повторно відправити СМС з кодом')?></p>
 
@@ -202,7 +202,7 @@
          </div>
 
          <div class="input-group">
-            <input name="code" type="number" id="code1" value="<?= $this->data->re_post('code') ?>" class="<?= $this->data->re_post('code') ? '' : 'hide' ?>" placeholder="<?= $this->text('Код з СМС', 5) ?>"/>
+            <input name="code" type="text" id="code1" value="<?= $this->data->re_post('code') ?>" class="<?= $this->data->re_post('code') ? '' : 'hide' ?>" placeholder="<?= $this->text('Код з СМС', 5) ?>"/>
             <h5 class="text-danger hide" id="codeErrorIn"><?= $this->text('Помилка СМС коду! Перевірте дані') ?></h5>
             <p class="send_phone_code hide"><?= $this->text('Повторно відправити СМС з кодом') ?></p>
          </div>
@@ -253,6 +253,28 @@
     } else echo "var redirect = false;"; ?>
 
     window.onload = function () {
+        // Numeric only control handler
+        jQuery.fn.ForceNumericOnly = function() {
+            return this.each(function() {
+                $(this).keydown(function(e) {
+                    var key = e.charCode || e.keyCode || 0;
+                    // allow backspace, tab, delete, enter, arrows, numbers and keypad numbers ONLY
+                    // home, end, period, and numpad decimal
+                    return (
+                        key == 8 || 
+                        key == 9 ||
+                        key == 13 ||
+                        key == 46 ||
+                        key == 110 ||
+                        key == 190 ||
+                        (key >= 35 && key <= 40) ||
+                        (key >= 48 && key <= 57) ||
+                        (key >= 96 && key <= 105));
+                });
+            });
+        };
+        $('input[name=code]').ForceNumericOnly();
+
         // $('#signInForm input[name=phone]').focus();
 
         $(document).on('focusout', 'form.type-2 input', function (){
