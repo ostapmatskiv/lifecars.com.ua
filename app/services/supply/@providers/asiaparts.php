@@ -30,6 +30,10 @@ class asiaparts_provider {
             $item->{"product_{$key}"} = $item->$key;
             unset($item->$key);
         }
+        
+        if(substr($item->product_article, -3) == '-KM') {
+            $item->product_article = substr($item->product_article, 0, -3);
+        }
         return (array) $item;
     }
 
