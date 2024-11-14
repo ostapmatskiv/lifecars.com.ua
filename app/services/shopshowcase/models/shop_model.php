@@ -800,7 +800,7 @@ class shop_model {
 		if(!isset($_GET['edit']) && $key == 'id' && $product = $this->db->cache_get($cache_key))
 			if($product !== NULL)
 			{
-				$this->db->select($this->table('_products').' as p', 'price, old_price, currency, availability', $product->id)
+				$this->db->select($this->table('_products').' as p', 'price, old_price, currency, availability, availability_on', $product->id)
 							->join($this->table('_promo'), 'percent as promo_percent, from as promo_from, to as promo_to', ['id' => '#p.promo', 'status' => 1]);
 				if($_SESSION['option']->useMarkUp > 0)
 					$this->db->join($this->table('_markup'), 'value as markup', array('from' => '<p.price', 'to' => '>=p.price'));
@@ -814,6 +814,7 @@ class shop_model {
 				$product->promo_from = $row->promo_from;
 				$product->promo_to = $row->promo_to;
 				$product->availability = $row->availability;
+				$product->availability_on = $row->availability_on;
 
 				if($this->getBreadcrumbs) {
 					if(isset($product->breadcrumbs)) {
@@ -1033,7 +1034,7 @@ class shop_model {
 	            if($getSimilar = $this->db->getAllDataById($this->table('_products_similar'), array('product' => $product->id)))
 				{
 					$this->db->select($this->table('_products_similar').' as s', '', array('group' => $getSimilar->group, 'product' => '!'.$product->id));
-					$this->db->join($this->table('_products').' as p', 'id, alias, article, article_show, `group`, price, old_price, currency, availability', '#s.product');
+					$this->db->join($this->table('_products').' as p', 'id, alias, article, article_show, `group`, price, old_price, currency, availability, availability_on', '#s.product');
 					$where_ntkd['content'] = '#p.id';
 					unset($where_ntkd['position']);
 					$this->db->join('wl_ntkd', 'name', $where_ntkd);
