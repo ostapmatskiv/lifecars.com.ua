@@ -38,6 +38,10 @@ class import_1c extends Controller
 						$this->parse_VygruzkaKategorij($file);
 					else if($file_name[0] == 'VygruzkaZalyshkiv')
 						$this->parse_VygruzkaZalyshkiv($file, $all);
+
+					if(!$all) {
+						unlink($this->folder.$file_name);
+					}
 				}
 			}
 			else
