@@ -735,7 +735,7 @@ class import_1c extends Controller
 		$all_products = false;
 		
 		if($all_products)
-			$all_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c, price, currency, availability')->get('array');
+			$all_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c, price, currency, availability, availability_on')->get('array');
 		elseif(!empty($file->ОстаткиНоменклатуры))
 		{
 			$id_1c_list = [];
@@ -745,7 +745,7 @@ class import_1c extends Controller
 					continue;
 				$id_1c_list[] = $id_1c;
 			}
-			$all_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c, price, currency, availability', ['id_1c' => $id_1c_list])->get('array');
+			$all_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c, price, currency, availability, availability_on', ['id_1c' => $id_1c_list])->get('array');
 		}
 
 		if(empty($all_products))
@@ -764,9 +764,14 @@ class import_1c extends Controller
 			if(empty($id_1c) || empty($xml_product->Склади) || empty($xml_product->ВидыЦен))
 				continue;
 
-			$price_in = $amount = 0;
+			$price_in = $amount = $availability_on = 0;
 			foreach ($xml_product->Склади->Склад as $storage) {
 				$amount += $this->xml_attribute($storage, 'Остаток');
+				
+				$key = $this->xml_attribute($storage, 'Код');
+				if($key == $this->price_id_1c) {
+					$availability_on = $this->xml_attribute($storage, 'Ожидается');
+				}
 			}
 			foreach ($xml_product->ВидыЦен->Цена as $price) {
 				$key = $this->xml_attribute($price, 'Код');
@@ -785,6 +790,8 @@ class import_1c extends Controller
 						$update['price'] = $price_in;
 					if($site_product->availability != $amount)
 						$update['availability'] = $amount;
+					if($site_product->availability_on != $availability_on)
+						$update['availability_on'] = $availability_on;
 					if($site_product->currency != 'USD')
 						$update['currency'] = 'USD';
 					if(!empty($update))

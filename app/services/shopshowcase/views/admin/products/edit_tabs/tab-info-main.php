@@ -39,6 +39,10 @@
 				<div class="col-md-5 text-right">Наявність</div>
 			    <div class="col-md-7"> <strong> <?=($_SESSION['option']->useAvailability) ? $product->availability .' од.' : $product->availability_name?></strong> </div>
 		    </div>
+			<div class="row m-b-10">
+				<div class="col-md-5 text-right">Очікується</div>
+			    <div class="col-md-7"> <strong> <?= $product->availability ? '' : $product->availability_on ?></strong> </div>
+		    </div>
 		<?php
 
 		if(file_exists(__DIR__ . DIRSEP .'__product_additionall_fields-info.php'))

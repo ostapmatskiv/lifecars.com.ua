@@ -112,15 +112,15 @@
         </div>
     <?php */ } ?>
     <div class="flex v-center card__check">
-        <div class="flex v-center check__pieces m-w50">
-            <i class="fas <?=$product->availability > 0 ? 'fa-check-circle' : 'fa-times-circle'?>"></i>
+        <div class="flex v-center check__pieces m-w60">
+        <i class="<?=$product->availability > 0 ? 'fas fa-check-circle' : (empty($product->availability_on) ? 'fas fa-times-circle' : 'far fa-hourglass')?>"></i>
             <?php if($product->availability > 0) { ?>
                 <p><?=$this->text('В наявності', 0)?> <span class="pieces"><?=$product->availability?></span> шт.</p>
             <?php } else { ?>
-                <p><?=$this->text('Немає в наявності', 0)?></p>
+                <p><?= empty($product->availability_on) ? $this->text('Немає в наявності', 0) : $this->text('Очікується', 0) . " <strong>{$product->availability_on}</strong>" ?></p>
             <?php } ?>
         </div>
-        <div class="flex v-center card__rating m-w50 h-end">
+        <div class="flex v-center card__rating m-w40 h-end">
             <?php if(empty($product->rating)) $product->rating = 5; ?>
             <div class="rating <?=empty($product->rating)?'empty':''?>" title="<?=empty($product->rating)?$this->text('Оцінка відсутня'):$this->text('Оцінка товару ').' '.$product->rating?>">
                 <?php for($i = 0; $i < round($product->rating); $i++) { ?>

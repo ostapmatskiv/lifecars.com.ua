@@ -358,6 +358,10 @@ main.detal .card__border_in {
     font-size: 12px;
     color: #7cbe49;
 }
+.sale__card .card__check .check__pieces .fa-hourglass {
+    font-size: 12px;
+    color: #ffc508;
+}
 .sale__card .card__check .check__pieces .fa-times-circle {
     font-size: 12px;
     color: #f52323;
@@ -370,7 +374,7 @@ main.detal .card__border_in {
 }
 
 .sale__card .rating {
-    font-size: 10px;
+    font-size: 9px;
     text-align: right;
 }
 .sale__card .rating:not(.empty) i.fa-star {
@@ -1771,13 +1775,17 @@ main.detal section.detal__info .info__price .card__check.detal__check {
     margin-top: 24px;
 }
 
-main.detal section.detal__info .info__price .card__check.detal__check .fas {
+main.detal section.detal__info .info__price .card__check.detal__check .fas,
+main.detal section.detal__info .info__price .card__check.detal__check .far {
     margin-right: 12px;
     font-size: 18px;
     color: #7cbe49;
     border-radius: 100%;
 }
-
+main.detal section.detal__info .info__price .card__check.detal__check .fa-hourglass {
+    font-size: 12px;
+    color: #ffc508;
+}
 main.detal section.detal__info .info__price .card__check.detal__check .fa-times-circle {
     color: #f52323;
 }
