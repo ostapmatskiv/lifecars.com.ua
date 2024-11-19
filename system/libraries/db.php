@@ -661,7 +661,7 @@ class Db {
                             $where .= ') AND ';
                         }
                     }
-                    elseif(is_numeric($value))
+                    elseif(is_numeric($value) && strpos(strtoupper($value), 'E') === false)
                         $where .= " = {$value} AND ";
                     elseif($value != '' || $value == 0)
                     {
