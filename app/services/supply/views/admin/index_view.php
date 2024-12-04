@@ -86,8 +86,15 @@
                                 $tr_class = $storage->active ? '' : 'class="danger"';
                                 echo "<tr {$tr_class}>";
                                 echo "<td><a href=\"#edit-storage-modal\" class=\"btn btn-info btn-xs\" data-toggle=\"modal\" data-storage_id=\"{$storage->id}\">#{$storage->id}. {$storage->name}</a></td>";
-                                if (!empty($storage->link)) {
+                                if (!empty($storage->link) && $storage->link != 'file') {
                                     echo "<td><a href='{$storage->link}' target='_blank'>{$storage->link}</a> <a href='{$import_link}?storage_id={$storage->id}' class='btn btn-xs btn-warning'>Імпортувати</a></td>";
+                                } else if ($storage->link == 'file') {
+                                    echo '<td>'; ?>
+                                    <form action="<?= "{$import_link}?storage_id={$storage->id}" ?>" method="POST" enctype="multipart/form-data" id="import_form_<?= $storage->id ?>">
+                                        <input type="file" name="file" accept=".xlsx,.xls,.xml" onchange="import_form_<?= $storage->id ?>.submit()">
+                                    </form>
+                                    <?php
+                                    echo '</td>';
                                 } else {
                                     echo '<td>Парсинг за розкладом</td>';
                                 }

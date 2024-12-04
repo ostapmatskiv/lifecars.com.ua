@@ -46,7 +46,7 @@ class supply extends Controller {
                     $this->db->updateRow('supply_storages', ['active' => 0], $storage->id);
                     exit('empty provider');
                 }
-                if (empty($storage->link)) {
+                if (empty($storage->link) || $storage->link == 'file') {
                     if (isset($_FILES['file'])) {
                         $file = $_FILES['file'];
                         if ($file['error'] === UPLOAD_ERR_OK) {
