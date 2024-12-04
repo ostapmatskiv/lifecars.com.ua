@@ -94,7 +94,7 @@ class supply extends Controller {
                         exit('No file uploaded');
                     }
                 }
-                else {
+                else if (!empty($storage->link) ) {
                     $file_path = "{$folder_path}/{$storage->provider}_st{$storage->id}_{$date_dmyhis}.xml";
                     if (file_put_contents($file_path, file_get_contents($storage->link))) {
                         // $this->import_process($storage, $file_path);
@@ -108,11 +108,11 @@ class supply extends Controller {
                             $_SESSION['notify']->success = $output;
                             $this->redirect('/admin/supply');
                         }
-                        exit;
                     }
                 }
             }
         }
+        exit;
     }
 
     // start importing per each storage by cron
