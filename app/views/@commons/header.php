@@ -121,6 +121,7 @@
       <a href="<?= SITE_URL ?>manufacturers" <?= ($_SESSION['alias']->alias == 'manufacturers') ? 'class="active"' : '' ?>><?= $this->text('Виробники', 0) ?></a>
       <a href="<?= SITE_URL ?>exchange-and-return" <?= ($_SESSION['alias']->alias == 'exchange-and-return') ? 'class="active"' : '' ?>><?= $this->text('Повернення та гарантія', 0) ?></a>
       <a href="<?= SITE_URL ?>delivery-and-payments" <?= ($_SESSION['alias']->alias == 'delivery-and-payments') ? 'class="active"' : '' ?>><?= $this->text('Оплата та доставка', 0) ?></a>
+      <a href="<?= SITE_URL ?>cooperation" <?= ($_SESSION['alias']->alias == 'cooperation') ? 'class="active"' : '' ?>><?= $this->text('Співпраця', 0) ?></a>
       <a href="<?= SITE_URL ?>contacts" <?= ($_SESSION['alias']->alias == 'contacts') ? 'class="active"' : '' ?>><?= $this->text('Контакти', 0) ?></a>
       <?php /* if($this->userIs()) { if($this->userCan()) { ?>
             <a href="<?=SITE_URL?>admin">Admin</a>
@@ -248,6 +249,7 @@
          <a href="<?= SITE_URL ?>exchange-and-return"><?= $this->text('Повернення та гарантія', 0) ?></a>
          <a href="<?= SITE_URL ?>delivery-and-payments"><?= $this->text('Оплата та доставка', 0) ?></a>
          <a href="<?= SITE_URL ?>oferta"><?= $this->text('Договір оферти', 0) ?></a>
+         <a href="<?= SITE_URL ?>cooperation"><?= $this->text('Співпраця', 0) ?></a>
       </div>
    </div>
 </header>
