@@ -72,7 +72,7 @@ class export_horoshop_admin extends Controller
 
 		foreach ($products as $product) {
 			$product->price = ceil($product->price * $currency[$product->currency]);
-			$product->file_name = empty($product->file_name) ? '' : IMG_PATH . "parts/{$product->id}/detal_{$product->file_name}";
+			$product->file_name = empty($product->file_name) ? '' : IMG_PATH . "parts/{$product->id}/{$product->file_name}";
 			if(isset($groups_name[$product->group])) {
 				$product->group_name = $groups_name[$product->group];
 			}
