@@ -1,3 +1,4 @@
+<a href="<?= SITE_URL ?>admin/export_horoshop" class="btn btn-info m-b-15" download><i class="fa fa-download" aria-hidden="true"></i> Horoshop xlsx</a>
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-inverse">
