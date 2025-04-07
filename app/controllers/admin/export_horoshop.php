@@ -9,8 +9,8 @@ class export_horoshop_admin extends Controller
 		ini_set('memory_limit', '1024M');
 
 		$products = $this->db->select('s_shopshowcase_products as p', 'id, article_show, group, price, currency', ['wl_alias' => 8, 'active' => 1])
-								->join('wl_ntkd as n_uk', 'name as name_uk', ['alias' => '#p.wl_alias', 'content' => '#p.id', 'language' => 'uk'])
-								->join('wl_ntkd as n_ru', 'name as name_ru', ['alias' => '#p.wl_alias', 'content' => '#p.id', 'language' => 'ru'])
+								->join('wl_ntkd as n_uk', 'name as name_uk, list as text_uk', ['alias' => '#p.wl_alias', 'content' => '#p.id', 'language' => 'uk'])
+								->join('wl_ntkd as n_ru', 'name as name_ru, list as text_ru', ['alias' => '#p.wl_alias', 'content' => '#p.id', 'language' => 'ru'])
 								->join('wl_images as i', 'file_name', ['alias' => '#p.wl_alias', 'content' => '#p.id', 'position' => 1])
 								->join('s_shopshowcase_product_options as m', 'value as manufacturer_id', ['option' => 1, 'product' => '#p.id'])
 								->join('s_shopshowcase_options_name as m_n', 'name as manufacturer_name', ['option' => '#m.value', 'language' => 'uk'])
@@ -45,8 +45,8 @@ class export_horoshop_admin extends Controller
 			'Отображать' => '=Да',
 			'Наличие' => '=В наявності',
 			'Фото' => 'file_name',
-			'Описание товара (UA)' => '',
-			'Описание товара (RU)' => '',
+			'Описание товара (UA)' => 'text_uk',
+			'Описание товара (RU)' => 'text_ru',
 			'Категорії' => 'parts_name'
 		];
 
@@ -92,6 +92,8 @@ class export_horoshop_admin extends Controller
 				}
 			}
 			$product->parts_name = implode('/', $product->parts_name);
+			$product->text_uk = "{$product->name_uk} застосовується у автомобілях {$product->text_uk}";
+			$product->text_ru = "{$product->name_ru} применяется в автомобилях {$product->text_ru}";
 
 			$y++;
 			$x = 0;
@@ -101,11 +103,9 @@ class export_horoshop_admin extends Controller
 					$this->phpexcel->getActiveSheet()->setCellValue($xy, mb_substr($col_key, 1));
 				}
 				elseif (isset($product->$col_key)) {
-					// $this->phpexcel->getActiveSheet()->setCellValue($xy, $product->$col_key);
 					$this->phpexcel->getActiveSheet()->setCellValueExplicit($xy, $product->{$col_key}, PHPExcel_Cell_DataType::TYPE_STRING);
 				}
 			}
-			// exit;
 		}
 
 		// Set active sheet index to the first sheet, so Excel opens this as the first sheet
