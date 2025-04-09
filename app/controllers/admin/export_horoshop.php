@@ -8,7 +8,7 @@ class export_horoshop_admin extends Controller
 		ini_set('max_input_time', 1800);
 		ini_set('memory_limit', '1024M');
 
-		$products = $this->db->select('s_shopshowcase_products as p', 'id, article_show, group, price, currency', ['wl_alias' => 8, 'active' => 1])
+		$products = $this->db->select('s_shopshowcase_products as p', 'id, article_show, group, price, currency, availability', ['wl_alias' => 8, 'active' => 1])
 								->join('wl_ntkd as n_uk', 'name as name_uk, list as text_uk', ['alias' => '#p.wl_alias', 'content' => '#p.id', 'language' => 'uk'])
 								->join('wl_ntkd as n_ru', 'name as name_ru, list as text_ru', ['alias' => '#p.wl_alias', 'content' => '#p.id', 'language' => 'ru'])
 								->join('wl_images as i', 'file_name', ['alias' => '#p.wl_alias', 'content' => '#p.id', 'position' => 1])
@@ -43,7 +43,7 @@ class export_horoshop_admin extends Controller
 			'Цена' => 'price',
 			'Валюта' => '=UAH',
 			'Отображать' => '=Да',
-			'Наличие' => '=В наявності',
+			'Наличие' => 'availability',
 			'Фото' => 'file_name',
 			'Описание товара (UA)' => 'text_uk',
 			'Описание товара (RU)' => 'text_ru',
@@ -72,6 +72,7 @@ class export_horoshop_admin extends Controller
 
 		foreach ($products as $product) {
 			$product->price = ceil($product->price * $currency[$product->currency]);
+			$product->availability = empty($product->availability) ? 'Немає в наявності' : 'В наявності';
 			$product->file_name = empty($product->file_name) ? '' : IMG_PATH . "parts/{$product->id}/{$product->file_name}";
 			if(isset($groups_name[$product->group])) {
 				$product->group_name = $groups_name[$product->group];
