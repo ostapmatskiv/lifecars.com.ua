@@ -21,11 +21,11 @@ class asiaparts_provider {
                         availability (int)
     */
     public function prepare_product($item) {
-        $price = mb_ereg_replace('/\s+/', '', $item->{'priceРозн.г'});
+        $price = mb_ereg_replace('/\s+/', '', $item->{'priceРозн.грн'});
         $price = mb_ereg_replace(' ', '', $price);
         $item->price = (float) str_replace(',', '.', $price);
         $item->availability = (int) $item->availability;
-        unset($item->image, $item->priceAгрн, $item->{'priceРозн.г'});
+        unset($item->image, $item->priceAгрн, $item->{'priceРозн.грн'});
         foreach (['title', 'article', 'brand'] as $key) {
             $item->{"product_{$key}"} = $item->$key;
             unset($item->$key);
