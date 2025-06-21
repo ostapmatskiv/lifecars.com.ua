@@ -40,7 +40,7 @@ class import_1c extends Controller
 						$this->parse_VygruzkaZalyshkiv($file, $all);
 
 					if(!$all) {
-						unlink($this->folder.$file_name);
+						unlink($this->folder.$this->data->get('file'));
 					}
 				}
 			}
