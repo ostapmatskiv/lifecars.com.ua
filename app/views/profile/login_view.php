@@ -252,7 +252,7 @@
        echo 'var redirect = "' . $this->data->re_post('redirect', $this->data->get('redirect')) . '";';
     } else echo "var redirect = false;"; ?>
 
-    window.onload = function () {
+    // window.onload = function () {
         // Numeric only control handler
         jQuery.fn.ForceNumericOnly = function() {
             return this.each(function() {
@@ -581,7 +581,7 @@
                 }
             });
         });
-    };
+    // };
 </script>
 <?php if ($_SESSION['option']->userSignUp && ($_SESSION['option']->facebook_initialise || $this->googlesignin->clientId)) {
    if ($this->googlesignin->clientId)

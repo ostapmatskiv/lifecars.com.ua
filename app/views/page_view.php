@@ -30,6 +30,8 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
 	<link rel="stylesheet" type="text/css" href="<?= SERVER_URL ?>assets/magnific-popup/magnific-popup.css">
 	<link rel="stylesheet" type="text/css" href="<?= SERVER_URL ?>style/style.css?v=0.7.6">
+
+	<script type="text/javascript" src="<?= SERVER_URL ?>assets/jquery/jquery-3.4.1.min.js"></script>
 </head>
 
 <body class="<?= $_SESSION['alias']->alias ?>">
@@ -108,7 +110,6 @@
 		</div>
 	<?php } ?>
 
-	<script type="text/javascript" src="<?= SERVER_URL ?>assets/jquery/jquery-3.4.1.min.js"></script>
 	<script type="text/javascript" src="<?= SERVER_URL ?>assets/magnific-popup/magnific-popup.min.js"></script>
 	<script type="text/javascript" src="<?= SERVER_URL ?>assets/jquery.mask.min.js"></script>
 	<script type="text/javascript">
