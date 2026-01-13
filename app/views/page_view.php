@@ -32,6 +32,7 @@
 	<link rel="stylesheet" type="text/css" href="<?= SERVER_URL ?>style/style.css?v=0.7.6">
 
 	<script type="text/javascript" src="<?= SERVER_URL ?>assets/jquery/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="<?= SERVER_URL ?>assets/jquery.mask.min.js"></script>
 	<script>
 	  (function(d) {
 	    var s = d.createElement('script');
@@ -119,7 +120,6 @@
 	<?php } ?>
 
 	<script type="text/javascript" src="<?= SERVER_URL ?>assets/magnific-popup/magnific-popup.min.js"></script>
-	<script type="text/javascript" src="<?= SERVER_URL ?>assets/jquery.mask.min.js"></script>
 	<script type="text/javascript">
 		var SERVER_URL = '<?= SERVER_URL ?>';
 		var SITE_URL = '<?= SITE_URL ?>';
