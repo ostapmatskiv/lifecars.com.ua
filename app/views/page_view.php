@@ -32,6 +32,14 @@
 	<link rel="stylesheet" type="text/css" href="<?= SERVER_URL ?>style/style.css?v=0.7.6">
 
 	<script type="text/javascript" src="<?= SERVER_URL ?>assets/jquery/jquery-3.4.1.min.js"></script>
+	<script>
+	  (function(d) {
+	    var s = d.createElement('script');
+	    s.defer = true;
+	    s.src = 'https://multisearch.io/plugin/12683?lang=uk';
+	    if (d.head) d.head.appendChild(s);
+	  })(document);
+	</script>
 </head>
 
 <body class="<?= $_SESSION['alias']->alias ?>">
