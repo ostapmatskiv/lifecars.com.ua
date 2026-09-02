@@ -739,7 +739,7 @@ class import_1c extends Controller
 		$all_products = false;
 		
 		if($all_products)
-			$all_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c, price, currency, availability, availability_on, group')->get('array');
+			$all_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c, price, currency, availability, availability_on, `group`')->get('array');
 		elseif(!empty($file->ОстаткиНоменклатуры))
 		{
 			$id_1c_list = [];
@@ -749,7 +749,7 @@ class import_1c extends Controller
 					continue;
 				$id_1c_list[] = $id_1c;
 			}
-			$all_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c, price, currency, availability, availability_on, group', ['id_1c' => $id_1c_list])->get('array');
+			$all_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c, price, currency, availability, availability_on, `group`', ['id_1c' => $id_1c_list])->get('array');
 		}
 
 		if(empty($all_products))
