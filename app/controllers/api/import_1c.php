@@ -739,7 +739,7 @@ class import_1c extends Controller
 		$all_products = false;
 		
 		if($all_products)
-			$all_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c, price, currency, availability, availability_on')->get('array');
+			$all_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c, price, currency, availability, availability_on, group')->get('array');
 		elseif(!empty($file->ОстаткиНоменклатуры))
 		{
 			$id_1c_list = [];
@@ -749,7 +749,7 @@ class import_1c extends Controller
 					continue;
 				$id_1c_list[] = $id_1c;
 			}
-			$all_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c, price, currency, availability, availability_on', ['id_1c' => $id_1c_list])->get('array');
+			$all_products = $this->db->select('s_shopshowcase_products as p', 'id, id_1c, price, currency, availability, availability_on, group', ['id_1c' => $id_1c_list])->get('array');
 		}
 
 		if(empty($all_products))
@@ -804,6 +804,9 @@ class import_1c extends Controller
 						$update['author_edit'] = 0;
 						$this->db->updateRow('s_shopshowcase_products', $update, $site_product->id);
 						// $this->load->function_in_alias($this->shop_wl_alias, '__after_edit', $site_product->id, true);
+						if ($site_product->group) {
+							$this->db->cache_delete_all("products_in_group".DIRSEP.$this->db->getCacheContentKey('group-', $site_product->group), 'parts');
+						}
 					}
 					break;
 				}
