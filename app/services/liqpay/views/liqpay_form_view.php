@@ -23,7 +23,7 @@ if(isset($pay) && $pay->amount > 0 && !empty($_SESSION['option']->public_key) &&
 	        $payment['amount'] = $pay->amount;
 	        $payment['currency'] = 'UAH';
 	        $payment['description'] = $pay->details;
-	        $payment['order_id'] = $pay->id;
+	        $payment['order_id'] = $pay->cart_id;
 	        $payment['action'] = 'pay';
 	        $payment['language'] = 'uk';
 	        if($_SESSION['option']->testPay)
