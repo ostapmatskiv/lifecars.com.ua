@@ -32,7 +32,13 @@
 					</div>
 				</form>
 			<?php break; }
-			if(!$isset) { ?>
+			if(empty($cooperation)) { ?>
+				<div class="alert alert-warning">
+			        <i class="fa fa-exclamation-triangle fa-2x pull-left"></i>
+			        <h4>Увага! Налаштуйте співпрацю зі сервісом <strong>cart</strong></h4>
+			    </div>
+			<?php }
+			if(!$isset && !empty($cooperation)) { ?>
 				<div class="alert alert-warning">
 			        <i class="fa fa-exclamation-triangle fa-2x pull-left"></i>
 			        <h4>Увага! Додайте до LiqPal Загальне налаштування <strong>successPayStatusToCart</strong> зі значенням <strong>0</strong></h4>
