@@ -182,7 +182,7 @@ class cart_model
 			$this->db->join($this->table('_status').' as s1', 'name as status_name, weight as status_weight, color as status_color', '#c.status');
 			$this->db->join($this->table('_status').' as s2', 'name as status_1c_name', '#c.1c_status');
 			$where = array('field' => "phone", 'user' => "#c.user");
-			$this->db->join('wl_users as u', 'name as user_name, email as user_email, phone as user_phone, type as user_type, alias as user_alias', '#c.user');
+			$this->db->join('wl_users as u', 'name as user_name, email as user_email, phone as user_phone, type as user_type, alias as user_alias, auth_id as user_auth_id', '#c.user');
 			$this->db->join('wl_users as m', 'name as manager_name, email as manager_email, alias as manager_alias', '#c.manager');
 			$this->db->join('wl_user_types', 'title as user_type_name', '#u.type');
 			if(!empty($this->additional_user_fields))

@@ -97,8 +97,14 @@
 						echo "<p>{$cart->payment->info}</p>";
 						if(!empty($cart->payment->admin_link))
 							echo "<a href='{$cart->payment->admin_link}' class='btn btn-info btn-xs'><i class=\"fa fa-external-link\" aria-hidden=\"true\"></i> Повна інформація по оплаті</a>";
-					} if($cart->payed < $cart->total && empty($cart->payment_alias)) { ?>
-						<legend><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Внести оплату</legend>
+					}
+					if($cart->payed < $cart->total) { ?>
+						<legend>
+							<button class="btn btn-xs btn-warning copyBtn pull-right" data-link="<?= SITE_URL . $_SESSION['alias']->alias . "/{$cart->id}/pay?key=" . $cart->user_auth_id ?>">
+								Скопіювати посилання
+							</button>
+							<i class="fa fa-credit-card-alt" aria-hidden="true"></i> Внести оплату
+						</legend>
 						<table class="table table-striped table-bordered nowrap" width="100%">
 							<form action="<?= SITE_URL.'admin/'. $_SESSION['alias']->alias.'/addPayment'?>" onsubmit="return confirm('Внести оплату')" method="POST" class="form-horizontal" >
 								<input type="hidden" name="cart" value="<?= $cart->id?>">
@@ -345,6 +351,32 @@ window.onload = function() {
 	$(document).on('click', '.input-group label', function() {
 		$(this).closest('.input-group').addClass('val');
 	});
+    $('.copyBtn').on('click', async function() {
+        // Отримуємо посилання з атрибута data-link тієї кнопки, на яку клікнули
+        const linkToCopy = $(this).attr('data-link');
+
+        try {
+            // Копіювання в буфер обміну
+            await navigator.clipboard.writeText(linkToCopy);
+
+            // Сповіщення через Gritter при успіху
+            $.gritter.add({
+                title: 'Успішно!',
+                text: 'Посилання скопійовано у буфер обміну.',
+                time: 3000 // час показу в мс
+            });
+
+        } catch (err) {
+            console.error('Помилка копіювання: ', err);
+
+            // Сповіщення через Gritter при помилці
+            $.gritter.add({
+                title: 'Помилка!',
+                text: 'Не вдалося скопіювати посилання.',
+                time: 3000
+            });
+        }
+    });
 }
 </script>
 
