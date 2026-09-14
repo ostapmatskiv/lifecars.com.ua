@@ -30,8 +30,12 @@ class liqpay extends Controller {
         if(is_numeric($id) && $id > 0)
         {
             $this->load->smodel('liqpay_model');
-            if($pay = $this->liqpay_model->validate($id))
-                $this->load->function_in_alias($pay->cart_alias, '__set_Payment', $pay, true);
+            if($pay = $this->liqpay_model->validate($id)) {
+	            $this->load->function_in_alias($pay->cart_alias, '__set_Payment', $pay, true);
+            }
+			else {
+				echo "Payment callback failed.";
+			}
         }
         else
             $this->load->page_404(false);
