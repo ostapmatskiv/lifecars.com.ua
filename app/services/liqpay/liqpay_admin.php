@@ -100,7 +100,7 @@ class liqpay_admin extends Controller {
 				// echo "</pre>";
 
 				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL, SITE_URL . 'api/' . $_SESSION['alias']->alias . '/validate/' . $pay_id);
+				curl_setopt($ch, CURLOPT_URL, SITE_URL . $_SESSION['alias']->alias . '/validate/' . $pay_id);
 				curl_setopt($ch, CURLOPT_USERAGENT, 'server');
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($ch, CURLOPT_TIMEOUT, 3);
