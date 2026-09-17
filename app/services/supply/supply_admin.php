@@ -69,7 +69,7 @@ class supply_admin extends Controller {
             echo 'Немає активних постачальників';
             return;
         }
-        
+
         $where_inner = ['#s.amount' => '>0'];
         $where = ['availability' => '>0'];
         $where['&'] = 'i.product_brand NOT IN (SELECT `brand` FROM `supply_minus_brands`)';
@@ -133,7 +133,7 @@ class supply_admin extends Controller {
             $where_inner['article'] = $this->supply_model->prepareArticleKey($product_article);
         }
         if($in_brand_id = $this->data->get('in_brand_id')) {
-            $where_inner['#po.value'] = $in_brand_id;
+            $where_inner['#po.value_id'] = $in_brand_id;
         }
         if(!empty($this->data->get('in_out_price')) && $this->data->get('in_out_price') != 'per_page') {
             $page = -1;
@@ -211,9 +211,9 @@ class supply_admin extends Controller {
         $result_table = "<tr><td class='text-danger'>Помилка: пустий артикул товару</td></tr>";
         if($article = $this->data->post('article')) {
             $article = $this->supply_model->prepareArticleKey($article);
-            $products = $this->supply_model->db_adatrade->select('s_shopshowcase_products as p', 'id, article_show, alias as uri', compact('article'))
-                                    ->join('s_shopshowcase_product_options as po', 'value as brand_id', ['product' => '#p.id', 'option' => 1])
-                                    ->join('s_shopshowcase_options_name as b', 'name as brand_name', ['option' => '#po.value'])
+            $products = $this->supply_model->db_adatrade->select('s_shopshowcase_products as p', 'id, mpn as article_show, uri', ['mpn_index' => $article])
+                                    ->join('s_shopshowcase_product_options as po', 'value_id as brand_id', ['product_id' => '#p.id', 'option_id' => 1])
+                                    ->join('s_shopshowcase_options_name as b', 'name as brand_name', ['option_id' => '#po.value_id'])
                                     ->join('wl_ntkd as n', 'name', ['alias' => '#p.wl_alias', 'content' => '#p.id'])
                                     ->get('array');
             $result_table = "<tr><td class='text-danger'>Товари за артикулом <strong>{$article}</strong> не знайдено!</td></tr>";                                

@@ -211,7 +211,7 @@ class supply extends Controller {
             $provider->init($file);
 
             $_allProducts = []; // article => id
-            $this->supply_model->db_adatrade->executeQuery("SELECT `id`, `article` FROM `s_shopshowcase_products`");
+            $this->supply_model->db_adatrade->executeQuery("SELECT `id`, mpn_index as article FROM `s_shopshowcase_products`");
             while ($obj = $this->supply_model->db_adatrade->result->fetch_object()) {
                 $_allProducts[$obj->article] = $obj->id;
             }

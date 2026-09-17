@@ -13,9 +13,9 @@ class supply_model {
     ];
     private $db_adatrade_config_prod = [
         'host' 		=> 'lifecars.mysql.tools',
-        'user' 		=> 'lifecars_adatrade',
-        'password'	=> '*363*brcUC',
-        'database'	=> 'lifecars_adatrade',
+		'user' 		=> 'lifecars_adatrade2uah',
+		'password'	=> '37X6Xpk_j*',
+		'database'	=> 'lifecars_adatrade2uah',
         'port' => 3306
     ];
 
@@ -36,7 +36,7 @@ class supply_model {
     private $inner_storages;
     public function get_inner_storages() {
         if(empty($this->inner_storages)) {
-            $this->inner_storages = $this->db_adatrade->select('s_shopstorage', 'id, name', ['active' => 1])->get('array');
+            $this->inner_storages = $this->db_adatrade->select('s_shopstorage', 'id, name', ['active' => 1, 'supply_analyze' => 1])->get('array');
         }
         return $this->inner_storages;
     }
@@ -51,8 +51,8 @@ class supply_model {
         }
 
         $where['#s.amount'] = '>0';
-        return $this->db_adatrade->select('s_shopshowcase_products as p', 'id, article, article_show', $where)
-                        ->join('s_shopstorage_products as s', 'storage as storage_id, price_in, amount', ['product' => '#p.id', 'storage' => $storage_id])
+        return $this->db_adatrade->select('s_shopshowcase_products as p', 'id, mpn_index as article, mpn as article_show', $where)
+                        ->join('s_shopstorage_products as s', 'storage_id, price_in, amount', ['product_id' => '#p.id', 'storage_id' => $storage_id])
                         ->order('id ASC')
                         ->limit(1)
                         ->get();
@@ -71,11 +71,11 @@ class supply_model {
         }
         
         $products = new stdClass();
-        $this->db_adatrade->select('s_shopshowcase_products as p', 'id, id_1c, article, article_show, alias as uri', $where)
-                            ->join('s_shopshowcase_product_options as po', 'value as brand_id', ['product' => '#p.id', 'option' => 1])
-                            ->join('s_shopshowcase_options_name as b', 'name as brand_name', ['option' => '#po.value'])
+        $this->db_adatrade->select('s_shopshowcase_products as p', 'id, external_id as id_1c, mpn_index as article, mpn as article_show, uri', $where)
+                            ->join('s_shopshowcase_product_options as po', 'value_id as brand_id', ['product_id' => '#p.id', 'option_id' => 1])
+                            ->join('s_shopshowcase_options_name as b', 'name as brand_name', ['option_id' => '#po.value_id'])
                             ->join('wl_ntkd as n', 'name', ['alias' => '#p.wl_alias', 'content' => '#p.id'])
-                            ->join('s_shopstorage_products as s', 'storage as storage_id, price_in, amount', ['product' => '#p.id', 'storage' => $storage_id])
+                            ->join('s_shopstorage_products as s', 'storage_id, price_in, amount', ['product_id' => '#p.id', 'storage_id' => $storage_id])
                             ->order('name ASC', 'n');
         if($page > 0) {
             $start = ($page - 1) * $limit;
@@ -83,9 +83,9 @@ class supply_model {
         }
         $products->rows = $this->db_adatrade->get('array', false);
         $products->total = $this->db_adatrade->get('count');
-        $products->brands = $this->db_adatrade->select('s_shopshowcase_product_options as po', '#count(*) as count, value as id', ['option' => 1])
-                                            ->join('s_shopshowcase_options_name as n', 'name', ['option' => '#po.value'])
-                                            ->group('value')
+        $products->brands = $this->db_adatrade->select('s_shopshowcase_product_options as po', '#count(*) as count, value_id as id', ['option_id' => 1])
+                                            ->join('s_shopshowcase_options_name as n', 'name', ['option_id' => '#po.value_id'])
+                                            ->group('value_id')
                                             ->order('name ASC', 'n')
                                             ->get('array');
         if($products->rows) {
@@ -122,9 +122,9 @@ class supply_model {
 
     public function get_minus_products() {
         if($supply_minus_products = $this->db->getAllData('supply_minus_products')) {
-            return $this->db_adatrade->select('s_shopshowcase_products as p', 'id, article_show, alias as uri', ['id' => array_column($supply_minus_products, 'product_id')])
-                                    ->join('s_shopshowcase_product_options as po', 'value as brand_id', ['product' => '#p.id', 'option' => 1])
-                                    ->join('s_shopshowcase_options_name as b', 'name as brand_name', ['option' => '#po.value'])
+            return $this->db_adatrade->select('s_shopshowcase_products as p', 'id, mpn as article_show, uri', ['id' => array_column($supply_minus_products, 'product_id')])
+                                    ->join('s_shopshowcase_product_options as po', 'value_id as brand_id', ['product_id' => '#p.id', 'option_id' => 1])
+                                    ->join('s_shopshowcase_options_name as b', 'name as brand_name', ['option_id' => '#po.value_id'])
                                     ->join('wl_ntkd as n', 'name', ['alias' => '#p.wl_alias', 'content' => '#p.id'])
                                     ->order('name ASC', 'b')
                                     ->get('array');
