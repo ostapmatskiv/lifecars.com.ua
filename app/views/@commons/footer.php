@@ -56,11 +56,11 @@
           <div class="w50 subtitle__text">
            <p>&#169; Life Cars 2013 - <?=date('Y')?> <span><?=$this->text('Всі права захищені', 0)?></span></p>
           </div>
-          <div class="flex h-start v-center w50 subtitle__link">
+          <div class="flex h-end v-center w50 subtitle__link">
               <img class="webspirit__img" src="/style/icons/WebSpirit_logo_mini.png" alt="webspirit">
               <p><?=$this->text('Розробка сайту', 0)?>: <a href="https://webspirit.com.ua/">WebSpirit</a> creative agensy</p>
-              <img class="genetka" src="/style/icons/genekta.png" alt="genekta">
-              <p><?=$this->text('Дизайн сайту', 0)?>: <a href="#">Genekta</a> visual communication studio</p>
+              <?php /* <img class="genetka" src="/style/icons/genekta.png" alt="genekta">
+              <p><?=$this->text('Дизайн сайту', 0)?>: <a href="#">Genekta</a> visual communication studio</p> */ ?>
           </div>
       </div>
   </div>
