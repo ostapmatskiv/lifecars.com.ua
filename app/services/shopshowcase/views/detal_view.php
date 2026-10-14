@@ -152,7 +152,8 @@
                 </p>
                 <h3>Оплата</h3>
                 <p>
-					1. Онлайн-оплата на сайті (LiqPay) <span style="float: right;">Google Pay/Apple Pay<br> Банківською карткою Visa/Mastercard</span><br><br>
+					1. Онлайн-оплата на сайті (LiqPay) <span style="float: right;">Google Pay/Apple Pay</span><br>
+														<span style="float: right;">Банківською карткою Visa/Mastercard</span><br>
 					2. Післяплата <span style="float: right;">Оплата при отриманні</span>
                 </p>
             </div>
