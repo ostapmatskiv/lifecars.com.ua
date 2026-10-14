@@ -114,7 +114,7 @@
                 </div>
             <?php } ?>
 
-<?php /*           <div class="flex h-start v-center bonus__send">
+			<?php /*           <div class="flex h-start v-center bonus__send">
                <div class="send__img">
                     <img src="/style/icons/detal/shipped.svg" alt="shipped">
                </div>
@@ -152,8 +152,8 @@
                 </p>
                 <h3>Оплата</h3>
                 <p>
-					Онлайн-оплата на сайті (LiqPay) <span style="float: right;">Google/Apple Pay; Банківською карткою Visa/Mastercard</span><br>
-					Післяплата <span style="float: right;">Оплата при отриманні</span>
+					1. Онлайн-оплата на сайті (LiqPay) <span style="float: right;">Google Pay/Apple Pay<br> Банківською карткою Visa/Mastercard</span><br>
+					2. Післяплата <span style="float: right;">Оплата при отриманні</span>
                 </p>
             </div>
 
