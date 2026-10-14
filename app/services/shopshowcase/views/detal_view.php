@@ -142,8 +142,9 @@
 
             <div class="bonus-info-wrapper">
                 <h3>Доставка</h3>
-                <p>Самовивіз з магазину <span style="float: right;">безкоштовно</span> <br>
-                    Доставка Новою Поштою <span style="float: right;">згідно з тарифами перевізника</span>
+                <p>
+					<!--Самовивіз з магазину <span style="float: right;">безкоштовно</span> <br>-->
+					Новою Поштою <span style="float: right;">згідно з тарифами перевізника</span>
                 </p>
                 <h3>Відправка</h3>
                 <p>
@@ -151,7 +152,8 @@
                 </p>
                 <h3>Оплата</h3>
                 <p>
-                    Наложений платіж, Карта ПриватБанк
+					Онлайн-оплата на сайті (LiqPay) <span style="float: right;">Google/Apple Pay; Банківською карткою Visa/Mastercard</span><br>
+					Післяплата <span style="float: right;">Оплата при отриманні</span>
                 </p>
             </div>
 
