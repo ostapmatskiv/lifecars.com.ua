@@ -216,7 +216,7 @@ class export_model
         if(!$this->exportProductsWithZeroPrice)
             $where['price'] = '>0';
 	    if($this->export_to == 'export_prom') {
-		    $where['price'] = '>300';
+		    $where['price'] = '>6.65'; // min 300 uah
 	    }
 
         $this->db->select($this->table('_products').' as p', '*', $where);
